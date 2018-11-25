@@ -1,5 +1,4 @@
 FROM ubuntu:18.04
-ENV DEBIAN_FRONTEND noninteractive
 
 RUN apt-get update -qqy
 RUN apt-get install -qqy --no-install-recommends apt-utils
@@ -10,10 +9,6 @@ RUN apt-get install -qqy build-essential libsqlite3-dev sqlite3 bzip2 \
                          libgdbm-compat-dev liblzma-dev libreadline-dev \
                          libncursesw5-dev libffi-dev uuid-dev
 RUN apt-get install -qqy wget
-RUN wget -q https://www.python.org/ftp/python/3.7.0/Python-3.7.0.tgz
-RUN tar -xf Python-3.7.0.tgz
-WORKDIR Python-3.7.0
-RUN ./configure > /dev/null && make -s && make -s install
 RUN python3 -m pip install --upgrade pip
 RUN apt-get install -qqy libcairo2-dev libjpeg-dev libgif-dev
 COPY requirements.txt requirements.txt

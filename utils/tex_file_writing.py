@@ -45,26 +45,12 @@ def get_null():
 
 
 def tex_to_dvi(tex_file):
+    print(tex_file)
     result = tex_file.replace(".tex", ".dvi" if not TEX_USE_CTEX else ".xdv")
     if not os.path.exists(result):
         commands = [
             "latex",
-            "-interaction=batchmode",
-            "-halt-on-error",
-            "-output-directory=" + TEX_DIR,
-            tex_file,
-            ">",
-            get_null()
-        ] if not TEX_USE_CTEX else [
-            "xelatex",
-            "-no-pdf",
-            "-interaction=batchmode",
-            "-halt-on-error",
-            "-output-directory=" + TEX_DIR,
-            tex_file,
-            ">",
-            get_null()
-        ]
+            tex_file]
         exit_code = os.system(" ".join(commands))
         if exit_code != 0:
             log_file = tex_file.replace(".tex", ".log")

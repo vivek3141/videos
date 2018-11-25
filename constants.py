@@ -18,10 +18,7 @@ elif os.path.exists("media_dir.txt"):
     with open("media_dir.txt", 'rU') as media_file:
         MEDIA_DIR = media_file.readline().strip()
 else:
-    MEDIA_DIR = os.path.join(
-        os.path.expanduser('~'),
-        "Dropbox (3Blue1Brown)/3Blue1Brown Team Folder"
-    )
+    MEDIA_DIR = "./Videos/"
 
 if not os.path.exists(MEDIA_DIR):
     raise Exception("""
