@@ -59,7 +59,6 @@ from manim.mobject.types.vectorized_mobject import *
 from manim.mobject.updater import *
 from manim.mobject.value_tracker import *
 
-
 from manim.scene.graph_scene import *
 from manim.scene.moving_camera_scene import *
 from manim.scene.reconfigurable_scene import *
