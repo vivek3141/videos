@@ -1,4 +1,4 @@
-import constants
+import manim.constants as constants
 import os
 import importlib
 

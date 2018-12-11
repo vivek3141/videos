@@ -1,6 +1,6 @@
 import numpy as np
 
-from manim.scipy import linalg
+from scipy import linalg
 from manim.utils.simple_functions import choose_using_cache
 from manim.utils.space_ops import get_norm
 

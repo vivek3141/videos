@@ -2,19 +2,19 @@
 import itertools as it
 from colour import Color
 
-from mobject.mobject import Mobject
-from mobject.three_d_utils import get_3d_vmob_gradient_start_and_end_points
-from constants import *
-from utils.bezier import bezier
-from utils.bezier import get_smooth_handle_points
-from utils.bezier import interpolate
-from utils.bezier import is_closed
-from utils.bezier import partial_bezier_points
-from utils.color import color_to_rgba
-from utils.iterables import make_even
-from utils.iterables import tuplify
-from utils.iterables import stretch_array_to_length
-from utils.simple_functions import clip_in_place
+from manim.mobject.mobject import Mobject
+from manim.mobject.three_d_utils import get_3d_vmob_gradient_start_and_end_points
+from manim.constants import *
+from manim.utils.bezier import bezier
+from manim.utils.bezier import get_smooth_handle_points
+from manim.utils.bezier import interpolate
+from manim.utils.bezier import is_closed
+from manim.utils.bezier import partial_bezier_points
+from manim.utils.color import color_to_rgba
+from manim.utils.iterables import make_even
+from manim.utils.iterables import tuplify
+from manim.utils.iterables import stretch_array_to_length
+from manim.utils.simple_functions import clip_in_place
 
 
 class VMobject(Mobject):
@@ -439,7 +439,7 @@ class VMobject(Mobject):
         """
         If the distance between a given handle point H and its associated
         anchor point A is d, then it changes H to be a distances factor*d
-        away from A, but so that the line from A to H doesn't change.
+        away from manim.A, but so that the line from manim.A to H doesn't change.
         This is mostly useful in the context of applying a (differentiable)
         function, to preserve tangency properties.  One would pull all the
         handles closer to their anchors, apply the function then push them out

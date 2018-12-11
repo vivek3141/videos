@@ -1,15 +1,15 @@
 
 
-from constants import *
+from manim.constants import *
 
-from mobject.mobject import Mobject
-from utils.bezier import interpolate
-from utils.color import color_gradient
-from utils.color import color_to_rgba
-from utils.color import rgba_to_color
-from utils.config_ops import digest_config
-from utils.iterables import stretch_array_to_length
-from utils.space_ops import get_norm
+from manim.mobject.mobject import Mobject
+from manim.utils.bezier import interpolate
+from manim.utils.color import color_gradient
+from manim.utils.color import color_to_rgba
+from manim.utils.color import rgba_to_color
+from manim.utils.config_ops import digest_config
+from manim.utils.iterables import stretch_array_to_length
+from manim.utils.space_ops import get_norm
 
 
 class PMobject(Mobject):
@@ -110,7 +110,7 @@ class PMobject(Mobject):
 
     def sort_points(self, function=lambda p: p[0]):
         """
-        function is any map from R^3 to R
+        function is any map from manim.R^3 to R
         """
         for mob in self.family_members_with_points():
             indices = np.argsort(
