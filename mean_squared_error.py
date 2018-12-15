@@ -99,19 +99,35 @@ class X2(GraphScene):
 
     def construct(self):
         self.setup_axes(animate=True)
-        func_graph = self.get_graph(self.func_to_graph, self.function_color)
+        func_graph = self.get_graph(self.func, self.function_color)
         graph_lab = self.get_graph_label(func_graph, label="y = x^2")
-        label_coord = self.input_to_graph_point(0, func_graph)
-        c.next_to(label_coord, RIGHT + UP)
         text = TextMobject("y is differentiable everywhere")
         text.move_to(3 * RIGHT + 2 * DOWN)
         self.play(ShowCreation(func_graph))
         self.play(ShowCreation(graph_lab))
-        self.wait(2)
         self.play(ApplyMethod(func_graph.shift, 2 * LEFT), ApplyMethod(self.axes.shift, 2 * LEFT),
                   ApplyMethod(graph_lab.shift, 2 * LEFT))
         self.play(Write(text))
         self.wait(2)
 
-    def func_to_graph(self, x):
+    def func(self, x):
         return np.power(x, 2)
+
+
+class Linear(Scene):
+    def construct(self):
+        g = TextMobject("Estimator and Variance are Linear", color=YELLOW)
+        g1 = TextMobject(
+            "$V(x+y)=V(x) + V(y)$")
+        g2 = TextMobject(
+            "$V(\\alpha x) = \\alpha V(x)$")
+        g1.move_to(1 * UP)
+        g2.move_to(1 * DOWN)
+        g1.scale(2)
+        g2.scale(2)
+        g.scale(1.5)
+        self.play(Write(g))
+        self.play(ApplyMethod(g.shift, 3.5 * UP))
+        self.play(Write(g1))
+        self.play(Write(g2))
+        self.wait(2)
