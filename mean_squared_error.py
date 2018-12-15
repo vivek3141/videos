@@ -31,4 +31,11 @@ class CostFunction(Scene):
 class GradientDescent(Scene):
     def construct(self):
         g = TextMobject("Gradient Descent", color=YELLOW)
+        g1 = TextMobject(
+            "$\\Theta_0 = \\Theta_0 - \\alpha \\frac{\\partial}{\\partial \\Theta_0} J(\\Theta_0, \\Theta_1)$")
+        g1.move_to(1 * UP)
+        g.scale(2)
         self.play(Write(g))
+        self.play(ApplyMethod(g.shift, 3 * UP))
+        self.play(Write(g1))
+        self.wait(2)
