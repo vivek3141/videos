@@ -151,8 +151,8 @@ class InnerProduct(Scene):
         plane.add(plane.get_axis_labels())
         self.add(plane)
 
-        vector = Vector(1*UP + 2*RIGHT)
-        vector2 = Vector(2*UP + 1*RIGHT)
+        vector = Vector(1*UP + 3*RIGHT, color=RED)
+        vector2 = Vector(2*UP + 1*RIGHT, color=BLUE)
         self.wait(0.25)
         self.play(ShowCreation(vector))
         self.play(ShowCreation(vector2))
