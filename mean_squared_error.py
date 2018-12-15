@@ -67,16 +67,15 @@ class AbsX(GraphScene):
         self.setup_axes(animate=True)
         func_graph = self.get_graph(self.func_to_graph, self.function_color)
         graph_lab = self.get_graph_label(func_graph, label="y = |x|")
-        two_pi = TexMobject("x = 0")
+        c = TexMobject("x = 0")
         label_coord = self.input_to_graph_point(0, func_graph)
-        two_pi.next_to(label_coord, RIGHT + UP)
+        c.next_to(label_coord, RIGHT + UP)
 
         self.play(ShowCreation(func_graph))
-        self.play(ShowCreation(graph_lab), ShowCreation(two_pi))
+        self.play(ShowCreation(graph_lab), ShowCreation(c))
         self.wait(2)
-        self.play(
-                  ApplyMethod(func_graph.shift, 2*LEFT), ApplyMethod(self.axes.shift, 2*LEFT))
-        self.play(ApplyMethod(func_graph.scale, 0.5), ApplyMethod(self.axes.scale, 0.5))
+        self.play(ApplyMethod(func_graph.shift, 2*LEFT), ApplyMethod(self.axes.shift, 2*LEFT),
+                  ApplyMethod(c.shift, 2 * LEFT), ApplyMethod(graph_lab.shift, 2 * LEFT))
         self.wait(2)
 
     def func_to_graph(self, x):
