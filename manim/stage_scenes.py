@@ -4,11 +4,11 @@ import inspect
 import os
 import sys
 
-from constants import PRODUCTION_QUALITY_CAMERA_CONFIG
-from constants import PRODUCTION_QUALITY_FRAME_DURATION
+from manim.constants import PRODUCTION_QUALITY_CAMERA_CONFIG
+from manim.constants import PRODUCTION_QUALITY_FRAME_DURATION
 from extract_scene import get_module
 from extract_scene import is_scene
-from utils.output_directory_getters import get_movie_output_directory
+from manim.utils.output_directory_getters import get_movie_output_directory
 
 
 def get_sorted_scene_classes(module_name):
@@ -28,7 +28,7 @@ def get_sorted_scene_classes(module_name):
 def stage_animations(module_name):
     scene_classes = get_sorted_scene_classes(module_name)
     if len(scene_classes) == 0:
-        print("There are no rendered animations from this module")
+        print("There are no rendered animations from manim.this module")
         return
     animation_dir = get_movie_output_directory(
         scene_classes[0],

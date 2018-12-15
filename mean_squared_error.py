@@ -74,6 +74,10 @@ class AbsX(GraphScene):
         self.play(ShowCreation(func_graph))
         self.play(ShowCreation(graph_lab), ShowCreation(two_pi))
         self.wait(2)
+        self.play(
+                  ApplyMethod(func_graph.shift, 2*LEFT), ApplyMethod(self.axes.shift, 2*LEFT))
+        self.play(ApplyMethod(func_graph.scale, 0.5), ApplyMethod(self.axes.scale, 0.5))
+        self.wait(2)
 
     def func_to_graph(self, x):
         return np.abs(x)
