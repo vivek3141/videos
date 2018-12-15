@@ -82,3 +82,36 @@ class AbsX(GraphScene):
 
     def func_to_graph(self, x):
         return np.abs(x)
+
+
+class X2(GraphScene):
+    CONFIG = {
+        "x_min": -5,
+        "x_max": 5,
+        "y_min": -5,
+        "y_max": 5,
+        "graph_origin": ORIGIN,
+        "function_color": BLUE,
+        "axes_color": WHITE,
+        "x_labeled_nums": range(-5, 6, 2),
+
+    }
+
+    def construct(self):
+        self.setup_axes(animate=True)
+        func_graph = self.get_graph(self.func_to_graph, self.function_color)
+        graph_lab = self.get_graph_label(func_graph, label="y = x^2")
+        label_coord = self.input_to_graph_point(0, func_graph)
+        c.next_to(label_coord, RIGHT + UP)
+        text = TextMobject("y is differentiable everywhere")
+        text.move_to(3 * RIGHT + 2 * DOWN)
+        self.play(ShowCreation(func_graph))
+        self.play(ShowCreation(graph_lab))
+        self.wait(2)
+        self.play(ApplyMethod(func_graph.shift, 2 * LEFT), ApplyMethod(self.axes.shift, 2 * LEFT),
+                  ApplyMethod(graph_lab.shift, 2 * LEFT))
+        self.play(Write(text))
+        self.wait(2)
+
+    def func_to_graph(self, x):
+        return np.power(x, 2)
