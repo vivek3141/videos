@@ -1,5 +1,9 @@
 from manim import *
 
+V_COLOR = YELLOW
+W_COLOR = MAROON_B
+SUM_COLOR = PINK
+
 
 class Intro(Scene):
     def construct(self):
@@ -116,7 +120,7 @@ class X2(GraphScene):
 
 class Linear(Scene):
     def construct(self):
-        g = TextMobject("Estimator and Variance are Linear", color=YELLOW)
+        g = TextMobject("Estimator and Variance are Linear", color=GREEN)
         g1 = TextMobject(
             "$V(x+y)=V(x) + V(y)$")
         g2 = TextMobject(
@@ -131,3 +135,25 @@ class Linear(Scene):
         self.play(Write(g1))
         self.play(Write(g2))
         self.wait(2)
+
+
+class InnerProduct(Scene):
+    CONFIG = {
+        "plane_kwargs": {
+            "color": RED_B
+        },
+        "point_charge_loc": 0.5 * RIGHT - 1.5 * UP,
+    }
+
+    def construct(self):
+        plane = NumberPlane(**self.plane_kwargs)
+        plane.main_lines.fade(.9)
+        plane.add(plane.get_axis_labels())
+        self.add(plane)
+
+        vector = Vector(1*UP + 2*RIGHT)
+        vector2 = Vector(2*UP + 1*RIGHT)
+        self.wait(0.25)
+        self.play(ShowCreation(vector))
+        self.play(ShowCreation(vector2))
+        self.wait(3)
