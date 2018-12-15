@@ -33,8 +33,13 @@ class GradientDescent(Scene):
         g = TextMobject("Gradient Descent", color=YELLOW)
         g1 = TextMobject(
             "$\\Theta_0 = \\Theta_0 - \\alpha \\frac{\\partial}{\\partial \\Theta_0} J(\\Theta_0, \\Theta_1)$")
-        g1.move_to(1 * UP)
-        g.scale(2)
+        g2 = TextMobject(
+            "$\\Theta_1 = \\Theta_1 - \\alpha \\frac{\\partial}{\\partial \\Theta_1} J(\\Theta_0, \\Theta_1)$")
+        g1.move_to(UP)
+        g1.move_to(DOWN)
+        g1.scale(2)
+        g2.scale(2)
+        g.scale(2.5)
         self.play(Write(g))
         self.play(ApplyMethod(g.shift, 3 * UP))
         self.play(Write(g1))
