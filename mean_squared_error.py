@@ -10,8 +10,8 @@ class Intro(Scene):
 
 class CostFunction(Scene):
     def construct(self):
-        text = TextMobject("Cost Function", tex_to_color_map={"Cost Function": YELLOW})
-        text2 = TextMobject("not", tex_to_color_map={"not": RED})
+        text = TextMobject("Cost Function", color=YELLOW)
+        text2 = TextMobject("not", color=RED)
         eq2 = TextMobject("$\\frac{1}{2m} \\sum_{i=1}^{m} |h_\\theta (x^{(i)}) - y^{(i)}| $")
         eq1 = TextMobject("$\\frac{1}{2m} \\sum_{i=1}^{m} (h_\\theta (x^{(i)}) - y^{(i)})^2 $")
         text.scale(2)
@@ -27,7 +27,8 @@ class CostFunction(Scene):
         self.play(Write(eq2))
         self.wait(2)
 
+
 class GradientDescent(Scene):
     def construct(self):
-        g = TextMobject("Gradient Descent", color=YELLOW
+        g = TextMobject("Gradient Descent", color=YELLOW)
         self.play(Write(g))
