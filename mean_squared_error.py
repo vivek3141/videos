@@ -27,6 +27,7 @@ class CostFunction(Scene):
         self.play(Write(eq2))
         self.wait(2)
 
-class CostGraph(ThreeDScene):
+class GradientDescent(Scene):
     def construct(self):
-        pass
+        g = TextMobject("Gradient Descent", color=YELLOW
+        self.play(Write(g))
