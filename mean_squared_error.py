@@ -76,3 +76,9 @@ class AbsX(GraphScene):
 
         self.play(ShowCreation(func_graph), ShowCreation(func_graph2))
         self.play(ShowCreation(vert_line), ShowCreation(graph_lab), ShowCreation(graph_lab2), ShowCreation(two_pi))
+
+    def func_to_graph(self, x):
+        return np.cos(x)
+
+    def func_to_graph2(self, x):
+        return np.sin(x)
