@@ -69,13 +69,15 @@ class AbsX(GraphScene):
         graph_lab = self.get_graph_label(func_graph, label="y = |x|")
         c = TexMobject("x = 0")
         label_coord = self.input_to_graph_point(0, func_graph)
-        c.next_to(label_coord, RIGHT + UP)
-
+        c.next_to(label_coord, 2 * RIGHT + 2 * UP)
+        text = TextMobject("y is not differentiable at x=0")
+        text.move_to(3 * RIGHT + 2 * DOWN)
         self.play(ShowCreation(func_graph))
         self.play(ShowCreation(graph_lab), ShowCreation(c))
         self.wait(2)
-        self.play(ApplyMethod(func_graph.shift, 2*LEFT), ApplyMethod(self.axes.shift, 2*LEFT),
+        self.play(ApplyMethod(func_graph.shift, 2 * LEFT), ApplyMethod(self.axes.shift, 2 * LEFT),
                   ApplyMethod(c.shift, 2 * LEFT), ApplyMethod(graph_lab.shift, 2 * LEFT))
+        self.play(Write(text))
         self.wait(2)
 
     def func_to_graph(self, x):
