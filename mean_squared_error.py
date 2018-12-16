@@ -153,7 +153,16 @@ class InnerProduct(Scene):
 
         vector = Vector(1*UP + 3*RIGHT, color=RED)
         vector2 = Vector(2*UP + 1*RIGHT, color=BLUE)
+        projected = Vector(1.73768398521 * RIGHT + 0.57922769775 * UP, color=GREEN)
+        full_projected = Vector(4.73768398521 * RIGHT + 1.57922769775 * UP, color=BLUE)
+        l1 = Te
         self.wait(0.25)
         self.play(ShowCreation(vector))
         self.play(ShowCreation(vector2))
+        self.wait(2)
+        self.play(Transform(vector2, projected))
+        self.play(ApplyMethod(vector2.shift, 1*UP, 3*RIGHT))
+        self.wait(2)
+        self.play(Transform(vector2, full_projected), Transform(vector, full_projected))
+        self.play()
         self.wait(3)
