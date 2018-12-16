@@ -191,7 +191,7 @@ class UsingBracesConcise(Scene):
         eq2.shift(DOWN)
         eq_group = VGroup(eq1, eq2)
         braces = Brace(eq_group, LEFT)
-        eq_text = braces.get_text("A pair of equations")
+        eq_text = braces.get_text("A paikkkr of equations")
 
         self.play(Write(eq1), Write(eq2))
         self.play(GrowFromCenter(braces), Write(eq_text))
