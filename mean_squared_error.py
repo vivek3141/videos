@@ -1,9 +1,5 @@
 from manim import *
 
-V_COLOR = YELLOW
-W_COLOR = MAROON_B
-SUM_COLOR = PINK
-
 
 class Intro(Scene):
     def construct(self):
