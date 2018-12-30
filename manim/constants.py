@@ -18,7 +18,7 @@ elif os.path.exists("media_dir.txt"):
     with open("media_dir.txt", 'rU') as media_file:
         MEDIA_DIR = media_file.readline().strip()
 else:
-    MEDIA_DIR = "/home/vivnp/manim/videos"
+    MEDIA_DIR = "/home/vivnp/videos/videos"
 
 if not os.path.exists(MEDIA_DIR):
     raise Exception("""
