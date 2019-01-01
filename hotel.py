@@ -84,11 +84,11 @@ class BruteForce(Scene):
         self.play(Write(h13))
 
 
-class SQLInjection(Scene):
+class ProgramStructure(Scene):
     def construct(self):
-        html = SVGMobject("files/html.svg")
-        py = SVGMobject("files/python.svg")
-        js = SVGMobject("files/js.svg")
+        html = SVGMobject("files/html.svg", color=ORANGE)
+        py = SVGMobject("files/python.svg", color=YELLOW)
+        js = SVGMobject("files/js.svg", color=YELLOW)
         db = SVGMobject("files/database.svg")
         html.move_to(3.5 * LEFT + 1 * UP)
         js.move_to(3.5 * LEFT + 1 * DOWN)
@@ -97,6 +97,17 @@ class SQLInjection(Scene):
         py.scale(0.75)
         db.scale(0.75)
         db.move_to(3.5 * RIGHT)
+        a1 = Arrow(ORIGIN, 2 * RIGHT, color=BLUE)
+        a1.next_to(html, 1 * DOWN + 1 * RIGHT)
+        a2 = Arrow(ORIGIN, 2 * RIGHT, color=BLUE)
+        a2.next_to(py, 1 * RIGHT)
         self.play(Write(html), Write(js))
+        self.play(Write(a1))
         self.play(Write(py))
+        self.play(Write(a2))
         self.play(Write(db))
+
+
+class SQLInjection(Scene):
+    def construct(self):
+        pass
