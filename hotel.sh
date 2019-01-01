@@ -4,4 +4,7 @@ python3 extract_scene.py hotel.py Reconnaissance
 python3 extract_scene.py hotel.py Defining
 python3 extract_scene.py hotel.py BruteForce
 python3 extract_scene.py hotel.py ProgramStructure
-python3 extract_scene.py hotel.py SQLInjection
+python3 extract_scene.py hotel.py Database
+python3 extract_scene.py hotel.py CreateTable
+python3 extract_scene.py hotel.py InsertInto
+python3 extract_scene.py hotel.py Select
