@@ -127,8 +127,55 @@ class SQLInjection(Scene):
         l7 = Line(2 * UP + 2 * RIGHT, 2 * DOWN + 2 * RIGHT)
         l8 = Line(2 * UP + 4 * RIGHT, 2 * DOWN + 4 * RIGHT)
 
-        t1 = TextMobject("")
+        t1 = TextMobject("Room Number")
+        t2 = TextMobject("Code")
+        t3 = TextMobject("703")
+        t4 = TextMobject("192")
+        t5 = TextMobject("214")
+        t6 = TextMobject("1XFF")
+        t7 = TextMobject("2OD1")
+        t8 = TextMobject("1OAB")
+
+        t1.move_to(1.5 * UP + 1 * RIGHT)
+        t1.scale(0.5)
+        t2.move_to(1.5 * UP + 3 * RIGHT)
+        t2.scale(0.5)
+
+        t3.move_to(0.5 * UP + 1 * RIGHT)
+        t4.move_to(0.5 * DOWN + 1 * RIGHT)
+        t5.move_to(1.5 * DOWN + 1 * RIGHT)
+
+        t6.move_to(0.5 * UP + 3 * RIGHT)
+        t7.move_to(0.5 * DOWN + 3 * RIGHT)
+        t8.move_to(1.5 * DOWN + 3 * RIGHT)
+
+        head = TextMobject("Table: Codes", color=RED)
+        head.move_to(3 * UP + 2 * RIGHT)
+        head.scale(1.25)
+
+        db = SVGMobject("files/database.svg")
+        db_text = TextMobject("Database")
+
+        db_text.scale(1.5)
+        db.scale(0.75)
+
+        db.move_to(3.5 * LEFT + 1 * DOWN)
+        db_text.move_to(3.5 * LEFT + 1 * UP)
 
         self.play(Write(l1))
         self.play(Write(l2), Write(l3), Write(l4), Write(l5), Write(l6))
         self.play(Write(l7), Write(l8))
+
+        self.play(Write(t1), Write(t2))
+        self.play(Write(t3), Write(t4), Write(t5))
+        self.play(Write(t6), Write(t7), Write(t8))
+
+        self.play(Write(head))
+
+        self.play(Write(db), Write(db_text))
+        self.wait(2)
+
+
+class CreateTable(Scene):
+    def construct(self):
+        pass
