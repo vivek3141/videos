@@ -172,9 +172,10 @@ class Database(Scene):
 class CreateTable(Scene):
     def construct(self):
         color_map = {
-            "select": ORANGE,
-            "from": ORANGE,
-            "where": ORANGE,
-            "insert into": ORANGE,
-            "create table": ORANGE
+            "select".upper(): ORANGE,
+            "from".upper(): ORANGE,
+            "where".upper(): ORANGE,
+            "insert into".upper(): ORANGE,
+            "create table".upper(): ORANGE
         }
+        statement = TextMobject("CREATE TABLE { \n", tex_to_color_map=color_map)
