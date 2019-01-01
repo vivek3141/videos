@@ -110,4 +110,25 @@ class ProgramStructure(Scene):
 
 class SQLInjection(Scene):
     def construct(self):
-        pass
+        color_map = {
+            "select": ORANGE,
+            "from": ORANGE,
+            "where": ORANGE,
+            "insert into": ORANGE,
+            "create table": ORANGE
+        }
+        l1 = Line(2 * UP, 2 * DOWN)
+        l2 = Line(2 * UP, 2 * UP + 4 * RIGHT)
+        l3 = Line(1 * UP, 1 * UP + 4 * RIGHT)
+        l4 = Line(ORIGIN, ORIGIN + 4 * RIGHT)
+        l5 = Line(1 * DOWN, 1 * DOWN + 4 * RIGHT)
+        l6 = Line(2 * DOWN, 2 * DOWN + 4 * RIGHT)
+
+        l7 = Line(2 * UP + 2 * RIGHT, 2 * DOWN + 2 * RIGHT)
+        l8 = Line(2 * UP + 4 * RIGHT, 2 * DOWN + 4 * RIGHT)
+
+        t1 = TextMobject("")
+
+        self.play(Write(l1))
+        self.play(Write(l2), Write(l3), Write(l4), Write(l5), Write(l6))
+        self.play(Write(l7), Write(l8))
