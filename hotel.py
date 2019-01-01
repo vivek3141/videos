@@ -178,4 +178,11 @@ class CreateTable(Scene):
             "insert into".upper(): ORANGE,
             "create table".upper(): ORANGE
         }
-        statement = TextMobject("CREATE TABLE { \n", tex_to_color_map=color_map)
+        s1 = TextMobject("CREATE TABLE 'Codes' (", tex_to_color_map=color_map)
+        s2 = TextMobject("'Room Number' INTEGER,", tex_to_color_map=color_map)
+        s3 = TextMobject("'Code' TEXT(4)", tex_to_color_map=color_map)
+        s4 = TextMobject(");", tex_to_color_map=color_map)
+        s2.next_to(s1.get_corner(DOWN + LEFT), 1 * DOWN)
+        s3.next_to(s2.get_corner(DOWN + LEFT), 1 * DOWN)
+        s4.next_to(s3.get_corner(DOWN + LEFT), 1 * DOWN)
+        self.play(Write(s1), Write(s2), Write(s3), Write(s4))
