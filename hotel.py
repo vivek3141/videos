@@ -336,6 +336,7 @@ class Select(Scene):
         ll1 = Line(2 * UP + 1 * RIGHT, 1 * RIGHT)
         ll2 = Line(2 * UP + 1 * RIGHT, 2 * UP + 5 * RIGHT)
         ll3 = Line(1 * RIGHT, 5 * RIGHT)
+        ll4 = Line(1 * UP + 1 * RIGHT, 1 * UP + 5 * RIGHT)
 
         ll7 = Line(2 * UP + 3 * RIGHT, 3 * RIGHT)
         ll8 = Line(2 * UP + 5 * RIGHT, 5 * RIGHT)
@@ -350,8 +351,12 @@ class Select(Scene):
 
         self.play(Transform(s1, s), Write(s2))
         self.play(Transform(l1, ll1), Transform(l2, ll2),
-                  Transform(l3, ll3), Transform(l4, ll1),
-                  Transform(l5, ll2))
+                  Transform(l3, ll3), Transform(l4, ll4),
+                  Transform(l5, ll2), Transform(l6, ll3),
+                  Transform(l7, ll7), Transform(l8, ll8),
+                  Transform(t7, t6), Transform(t8, t6),
+                  Transform(t5, t3), Transform(t4, t3)
+                  )
 
         self.wait(2)
 
