@@ -360,3 +360,16 @@ class Select(Scene):
 
         self.wait(2)
 
+
+class Injection(Scene):
+    def construct(self):
+        color_map = {
+            "select".upper(): ORANGE,
+            "from".upper(): ORANGE,
+            "where".upper(): ORANGE,
+            "insert into".upper(): ORANGE,
+            "create table".upper(): ORANGE
+        }
+        s1 = TextMobject("SELECT * FROM Codes WHERE Code='1XFF';", tex_to_color_map={**color_map, **{"Codes": RED}})
+        s2 = TextMobject("SELECT * FROM Codes WHERE 1=1;", tex_to_color_map={**color_map, **{"Codes": RED}})
+        self.play(Write(s1))
