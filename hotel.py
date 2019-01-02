@@ -178,11 +178,84 @@ class CreateTable(Scene):
             "insert into".upper(): ORANGE,
             "create table".upper(): ORANGE
         }
-        s1 = TextMobject("CREATE TABLE 'Codes' (", tex_to_color_map=color_map)
-        s2 = TextMobject("'Room Number' INTEGER,", tex_to_color_map=color_map)
-        s3 = TextMobject("'Code' TEXT(4)", tex_to_color_map=color_map)
-        s4 = TextMobject(");", tex_to_color_map=color_map)
-        s2.next_to(s1.get_corner(DOWN + LEFT), 1 * DOWN)
-        s3.next_to(s2.get_corner(DOWN + LEFT), 1 * DOWN)
-        s4.next_to(s3.get_corner(DOWN + LEFT), 1 * DOWN)
+        s1 = TextMobject("CREATE TABLE `Codes` (", tex_to_color_map={**color_map, **{"`Codes`": RED}})
+        s1.move_to(3 * LEFT + 1.5 * UP)
+
+        s2 = TextMobject("`Room Number` INTEGER,", tex_to_color_map={**color_map, **{"`Room Number`": RED}})
+        s3 = TextMobject("`Code` TEXT(4)", tex_to_color_map={**color_map, **{"`Code`": RED, "TEXT": BLUE}})
+        s4 = TextMobject(");", tex_to_color_map={**color_map})
+
+        s2.next_to(s1.get_corner(DOWN + LEFT), 1 * DOWN + RIGHT)
+        s3.next_to(s2.get_corner(DOWN + LEFT), 1 * DOWN + RIGHT)
+        s4.next_to(s3.get_corner(DOWN + LEFT), 1 * DOWN + RIGHT)
+
+        l1 = Line(2 * UP + 1 * RIGHT, 2 * DOWN + 1 * RIGHT)
+        l2 = Line(2 * UP + 1 * RIGHT, 2 * UP + 5 * RIGHT)
+        l3 = Line(1 * UP + 1 * RIGHT, 1 * UP + 5 * RIGHT)
+        l4 = Line(1 * RIGHT, 5 * RIGHT)
+        l5 = Line(1 * DOWN + 1 * RIGHT, 1 * DOWN + 5 * RIGHT)
+        l6 = Line(2 * DOWN + 1 * RIGHT, 2 * DOWN + 5 * RIGHT)
+
+        l7 = Line(2 * UP + 3 * RIGHT, 2 * DOWN + 3 * RIGHT)
+        l8 = Line(2 * UP + 5 * RIGHT, 2 * DOWN + 5 * RIGHT)
+
+        t1 = TextMobject("Room Number")
+        t2 = TextMobject("Code")
+        t3 = TextMobject("703")
+        t4 = TextMobject("192")
+        t5 = TextMobject("214")
+        t6 = TextMobject("1XFF")
+        t7 = TextMobject("2OD1")
+        t8 = TextMobject("1OAB")
+
+        t1.move_to(1.5 * UP + 2 * RIGHT)
+        t1.scale(0.5)
+        t2.move_to(1.5 * UP + 4 * RIGHT)
+        t2.scale(0.5)
+
+        t3.move_to(0.5 * UP + 2 * RIGHT)
+        t4.move_to(0.5 * DOWN + 2 * RIGHT)
+        t5.move_to(1.5 * DOWN + 2 * RIGHT)
+
+        t6.move_to(0.5 * UP + 4 * RIGHT)
+        t7.move_to(0.5 * DOWN + 4 * RIGHT)
+        t8.move_to(1.5 * DOWN + 4 * RIGHT)
+
+        head = TextMobject("Table: Codes", color=RED)
+        head.move_to(3 * UP + 3 * RIGHT)
+        head.scale(1.25)
+
         self.play(Write(s1), Write(s2), Write(s3), Write(s4))
+
+        self.play(Write(l1))
+        self.play(Write(l2), Write(l3), Write(l4), Write(l5), Write(l6))
+        self.play(Write(l7), Write(l8))
+
+        self.play(Write(head))
+
+        self.play(Write(t1), Write(t2))
+
+        self.wait(2)
+
+        i1 = TextMobject("INSERT INTO `Codes`", tex_to_color_map={**color_map, **{"`Codes`": RED}})
+        i1.move_to(3 * LEFT + 1.5 * UP)
+
+        i2 = TextMobject("values(", tex_to_color_map={**color_map, **{"values": BLUE}})
+        i3 = TextMobject("703, `1XFF`", tex_to_color_map={**color_map, **{"703": RED, "`1XFF`": RED}})
+        i4 = TextMobject(");", tex_to_color_map={**color_map})
+
+        i2.next_to(i1.get_corner(DOWN + LEFT), 1 * DOWN + RIGHT)
+        i3.next_to(i2.get_corner(DOWN + LEFT), 1 * DOWN + RIGHT)
+        i4.next_to(i3.get_corner(DOWN + LEFT), 1 * DOWN + RIGHT)
+
+        i5 = TextMobject("192, `2OD1`", tex_to_color_map={**color_map, **{"192": RED, "`2OD1`": RED}})
+        i5.next_to(i2.get_corner(DOWN + LEFT), 1 * DOWN + RIGHT)
+
+        i6 = TextMobject("214, `1OAB`", tex_to_color_map={**color_map, **{"214": RED, "`1OAB`": RED}})
+        i6.next_to(i2.get_corner(DOWN + LEFT), 1 * DOWN + RIGHT)
+
+
+        self.play(Transform(s1, i1), Transform(s2, i2), Transform(s3, i3), Transform(s4, i4))
+        self.play(Write(t3), Write(t6))
+        self.play(Transform(s3, i5), Write(t4), Write(t7))
+        self.play(Transform(s3, i6), Write(t5), Write(t8))
