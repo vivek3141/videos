@@ -441,3 +441,13 @@ class Injection(Scene):
                   Write(t5), Write(t6), Write(t7), Write(t8))
 
         self.wait(2)
+
+        r1 = TextMobject("SELECT * FROM Codes", tex_to_color_map={**color_map, **{"`Codes`": RED}})
+        r1.move_to(3 * LEFT + 0.5 * UP)
+
+        r2 = TextMobject("WHERE `a` OR 1=1", tex_to_color_map={**color_map})
+        r2.move_to(3 * LEFT + 0.5 * DOWN)
+
+        self.play(Transform(s1, r1), Transform(st2, r2))
+
+        self.wait(2)
