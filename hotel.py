@@ -254,7 +254,6 @@ class CreateTable(Scene):
         i6 = TextMobject("214, `1OAB`", tex_to_color_map={**color_map, **{"214": RED, "`1OAB`": RED}})
         i6.next_to(i2.get_corner(DOWN + LEFT), 1 * DOWN + RIGHT)
 
-
         self.play(Transform(s1, i1), Transform(s2, i2), Transform(s3, i3), Transform(s4, i4))
         self.play(Write(t3), Write(t6))
         self.play(Transform(s3, i5), Write(t4), Write(t7))
