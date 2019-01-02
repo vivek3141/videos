@@ -370,6 +370,74 @@ class Injection(Scene):
             "insert into".upper(): ORANGE,
             "create table".upper(): ORANGE
         }
-        s1 = TextMobject("SELECT * FROM Codes WHERE Code='1XFF';", tex_to_color_map={**color_map, **{"Codes": RED}})
-        s2 = TextMobject("SELECT * FROM Codes WHERE 1=1;", tex_to_color_map={**color_map, **{"Codes": RED}})
+        s1 = TextMobject("SELECT * FROM Codes WHERE Code=`1XFF`;",
+                         tex_to_color_map={**color_map, **{"Codes": RED, '`1XFF`': RED}})
+        s2 = TextMobject("SELECT * FROM Codes WHERE Code=`2DDA`;",
+                         tex_to_color_map={**color_map, **{"Codes": RED, '`2DDA`': RED}})
+        s3 = TextMobject("SELECT * FROM Codes WHERE Code=`WHAT`;",
+                         tex_to_color_map={**color_map, **{"Codes": RED, '`WHAT`': RED}})
+        s4 = TextMobject("SELECT * FROM Codes WHERE Code=```;",
+                         tex_to_color_map={**color_map, **{"Codes": RED, '```': RED}})
+
+        text1 = TextMobject("Test for vulnerability", color=BLUE)
+        text1.scale(2)
+        text1.move_to(2.5 * UP)
+
+        text2 = TextMobject("This will always return something", color=BLUE)
+        text2.scale(1.25)
+        text2.move_to(2.5 * UP)
+
         self.play(Write(s1))
+        self.play(Transform(s1, s2))
+        self.play(Transform(s1, s3))
+        self.play(Write(text1))
+        self.play(Transform(s1, s4))
+
+        self.wait(2)
+
+        st1 = TextMobject("SELECT * FROM Codes", tex_to_color_map={**color_map, **{"`Codes`": RED}})
+        st1.move_to(3 * LEFT + 0.5 * UP)
+
+        st2 = TextMobject("WHERE 1=1", tex_to_color_map={**color_map})
+        st2.move_to(3 * LEFT + 0.5 * DOWN)
+
+        l1 = Line(2 * UP + 1 * RIGHT, 2 * DOWN + 1 * RIGHT)
+        l2 = Line(2 * UP + 1 * RIGHT, 2 * UP + 5 * RIGHT)
+        l3 = Line(1 * UP + 1 * RIGHT, 1 * UP + 5 * RIGHT)
+        l4 = Line(1 * RIGHT, 5 * RIGHT)
+        l5 = Line(1 * DOWN + 1 * RIGHT, 1 * DOWN + 5 * RIGHT)
+        l6 = Line(2 * DOWN + 1 * RIGHT, 2 * DOWN + 5 * RIGHT)
+
+        l7 = Line(2 * UP + 3 * RIGHT, 2 * DOWN + 3 * RIGHT)
+        l8 = Line(2 * UP + 5 * RIGHT, 2 * DOWN + 5 * RIGHT)
+
+        t1 = TextMobject("Room Number")
+        t2 = TextMobject("Code")
+        t3 = TextMobject("703")
+        t4 = TextMobject("192")
+        t5 = TextMobject("214")
+        t6 = TextMobject("1XFF")
+        t7 = TextMobject("2OD1")
+        t8 = TextMobject("1OAB")
+
+        t1.move_to(1.5 * UP + 2 * RIGHT)
+        t1.scale(0.5)
+        t2.move_to(1.5 * UP + 4 * RIGHT)
+        t2.scale(0.5)
+
+        t3.move_to(0.5 * UP + 2 * RIGHT)
+        t4.move_to(0.5 * DOWN + 2 * RIGHT)
+        t5.move_to(1.5 * DOWN + 2 * RIGHT)
+
+        t6.move_to(0.5 * UP + 4 * RIGHT)
+        t7.move_to(0.5 * DOWN + 4 * RIGHT)
+        t8.move_to(1.5 * DOWN + 4 * RIGHT)
+
+        self.play(Transform(s1, st1), Write(st2))
+
+        self.play(Write(l1), Write(l2), Write(l3), Write(l4),
+                  Write(l5), Write(l6), Write(l7), Write(l8), Transform(text1, text2))
+        self.play(Write(t1), Write(t2), Write(t3), Write(t4),
+                  Write(t5), Write(t6), Write(t7), Write(t8))
+
+        self.wait(2)
