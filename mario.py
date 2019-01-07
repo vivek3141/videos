@@ -20,8 +20,16 @@ class Sigmoid(GraphScene):
         graph_lab = self.get_graph_label(func_graph, label=r"y = \sigma (x)")
         self.play(ShowCreation(func_graph))
         self.play(ShowCreation(graph_lab))
-        self.wait(2)
+        self.wait(10)
 
     @staticmethod
     def func_to_graph(x):
         return 1 / (1 + np.exp(-x))
+
+
+class SigmoidEq(Scene):
+    def construct(self):
+        text = TexMobject(r"\sigma (x) = \frac{1}{1 + e^{-x}}", tex_to_color_map={"Mean Squared Error": YELLOW})
+        text.scale(4)
+        self.play(Write(text))
+        self.wait(10)
