@@ -442,12 +442,23 @@ class Injection(Scene):
 
         self.wait(2)
 
-        r1 = TextMobject("SELECT * FROM Codes", tex_to_color_map={**color_map, **{"`Codes`": RED}})
-        r1.move_to(3 * LEFT + 0.5 * UP)
+        text3 = TextMobject("SQL Injection", color=BLUE)
+        text3.scale(1.25)
+        text3.move_to(2.5 * UP)
 
-        r2 = TextMobject("WHERE `a` OR 1=1", tex_to_color_map={**color_map})
+        r2 = TextMobject("WHERE", tex_to_color_map={**color_map})
         r2.move_to(3 * LEFT + 0.5 * DOWN)
 
-        self.play(Transform(s1, r1), Transform(st2, r2))
+        r4 = TextMobject("`Room Number`=`a` OR 1=1 OR `b`", tex_to_color_map={"OR": BLUE})
+        r4.move_to(3 * LEFT + 1.5 * DOWN)
+        r4.scale(0.75)
 
+        r3 = TextMobject("WHERE Code=101 OR 1=1", tex_to_color_map={**color_map})
+        r3.move_to(3 * LEFT + 0.5 * DOWN)
+
+        self.play(Transform(st2, r2), Transform(text1, text3))
+        self.play(Write(r4))
+        self.wait(2)
+
+        self.play(Transform(st2, r3), Transform(r4, r3))
         self.wait(2)
