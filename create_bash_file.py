@@ -8,6 +8,6 @@ with open(f"{file}.sh", "w") as f:
 
 with open(f"{file}.sh", "a+") as f:
     f.write("#!/usr/bin/env bash")
-    for name, obj in inspect.getmembers(sys.modules[f"{file}.py"]):
+    for name, obj in inspect.getmembers(f"{file}.py"):
         if inspect.isclass(obj):
             f.write(f"python3 extract_scene.py mean_squared_error.py {obj}")
