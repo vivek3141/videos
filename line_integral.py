@@ -7,7 +7,7 @@ class LineIntegral(ThreeDScene):
         "u_max": 1,
         "v_min": 0,
         "v_max": 1,
-        "resolution": 32,
+        "resolution": 6,
         "surface_piece_config": {},
         "fill_color": BLUE_D,
         "fill_opacity": 1.0,
