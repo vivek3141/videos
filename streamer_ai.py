@@ -1,5 +1,5 @@
 from manim import *
-from files.network import *
+from network import NeuralNetworkMobject
 
 
 class Intro(Scene):
