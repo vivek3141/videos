@@ -72,6 +72,9 @@ class NeuralNetwork(Scene):
         weight_text = TextMobject("Weights")
         weight_text.next_to(weight_arrow, 1 * DOWN)
 
+        brace = Brace(VGroup(network), DOWN)
+        text = brace.get_text("Bias")
+
         self.play(ShowCreation(network))
         self.wait(2)
 
@@ -85,5 +88,8 @@ class NeuralNetwork(Scene):
         self.wait(2)
 
         self.play(ShowCreation(weight_arrow), ShowCreation(weight_text))
+        self.wait(2)
+
+        self.play(ShowCreation(brace), ShowCreation(text))
         self.wait(2)
 
