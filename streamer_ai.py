@@ -113,15 +113,14 @@ class Sigmoid(GraphScene):
 
         self.setup_axes(animate=True)
 
-        func_graph = self.get_graph(self.sigmoid, self.function_color)
-        graph_lab = self.get_graph_label(func_graph, label=r"y = \frac{1}{1+ e^{-x}}")
+        self.play(ApplyMethod(self.axes.scale, 0.75))
+
+        func_graph = self.get_graph(self.leaky_relu, self.function_color)
+        graph_lab = self.get_graph_label(func_graph, label=r"y = max(x, \alpha x)")
 
         self.play(ShowCreation(func_graph))
         self.play(ShowCreation(graph_lab))
-        self.play(ShowCreation(text),
-                  ApplyMethod(self.axes.scale, 0.75),
-                  ApplyMethod(func_graph.scale, 0.75),
-                  ApplyMethod(graph_lab.scale, 0.75))
+        self.play(ShowCreation(text))
         self.wait(2)
 
     def sigmoid(self, x):
@@ -132,10 +131,10 @@ class Relu(GraphScene):
     CONFIG = {
         "x_min": -5,
         "x_max": 5,
-        "y_min": 0,
-        "y_max": 1,
-        "graph_origin": 3 * DOWN,
-        "function_color": RED,
+        "y_min": -5,
+        "y_max": 5,
+        "graph_origin": ORIGIN,
+        "function_color": BLUE,
         "axes_color": WHITE,
         "x_labeled_nums": range(-5, 6, 2)
     }
@@ -147,18 +146,18 @@ class Relu(GraphScene):
 
         self.setup_axes(animate=True)
 
-        func_graph = self.get_graph(self.relu, self.function_color)
-        graph_lab = self.get_graph_label(func_graph, label=r"y = \frac{1}{1+ e^{-x}}")
+        self.play(ApplyMethod(self.axes.scale, 0.75))
+
+        func_graph = self.get_graph(self.leaky_relu, self.function_color)
+        graph_lab = self.get_graph_label(func_graph, label=r"y = max(x, \alpha x)")
 
         self.play(ShowCreation(func_graph))
         self.play(ShowCreation(graph_lab))
-        self.play(ShowCreation(text),
-                  ApplyMethod(self.axes.scale, 0.75),
-                  ApplyMethod(func_graph.scale, 0.75),
-                  ApplyMethod(graph_lab.scale, 0.75))
+        self.play(ShowCreation(text))
         self.wait(2)
 
-    def relu(self, x):
+    @staticmethod
+    def relu(x):
         return max(x, 0)
 
 
@@ -166,10 +165,10 @@ class LeakyRelu(GraphScene):
     CONFIG = {
         "x_min": -5,
         "x_max": 5,
-        "y_min": 0,
-        "y_max": 1,
-        "graph_origin": 3 * DOWN,
-        "function_color": RED,
+        "y_min": -5,
+        "y_max": 5,
+        "graph_origin": ORIGIN,
+        "function_color": BLUE,
         "axes_color": WHITE,
         "x_labeled_nums": range(-5, 6, 2)
     }
@@ -181,16 +180,16 @@ class LeakyRelu(GraphScene):
 
         self.setup_axes(animate=True)
 
+        self.play(ApplyMethod(self.axes.scale, 0.75))
+
         func_graph = self.get_graph(self.leaky_relu, self.function_color)
-        graph_lab = self.get_graph_label(func_graph, label=r"y = \frac{1}{1+ e^{-x}}")
+        graph_lab = self.get_graph_label(func_graph, label=r"y = max(x, \alpha x)")
 
         self.play(ShowCreation(func_graph))
         self.play(ShowCreation(graph_lab))
-        self.play(ShowCreation(text),
-                  ApplyMethod(self.axes.scale, 0.75),
-                  ApplyMethod(func_graph.scale, 0.75),
-                  ApplyMethod(graph_lab.scale, 0.75))
+        self.play(ShowCreation(text))
         self.wait(2)
 
-    def leaky_relu(self, x):
-        return x if x >= 0 else -x / 2
+    @staticmethod
+    def leaky_relu(x):
+        return max(x, x / 4)
