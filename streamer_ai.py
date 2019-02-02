@@ -19,9 +19,23 @@ class InputANN(Scene):
     def construct(self):
         mario = SVGMobject("files/mario.svg")
         a = Arrow(LEFT, RIGHT, color=RED)
+
         nn = SVGMobject("files/nn.svg")
         nn.move_to(2.5 * RIGHT)
+
+        head = TextMobject("Artificial Neural Network", c=BLUE)
+        head.move_to(2 * UP)
+
+        foot = TextMobject("Recommender System")
+        foot.move_to(2 * DOWN)
+
         self.play(ShowCreation(mario))
         self.play(ApplyMethod(mario.shift, 2.5 * LEFT), ShowCreation(a))
         self.play(ShowCreation(nn))
+        self.wait(2)
+
+        self.play(ShowCreation(head))
+        self.wait(2)
+
+        self.play(ShowCreation(foot))
         self.wait(2)
