@@ -127,8 +127,70 @@ class Sigmoid(GraphScene):
     def sigmoid(self, x):
         return 1 / (1 + math.e ** (-x))
 
+
+class Relu(GraphScene):
+    CONFIG = {
+        "x_min": -5,
+        "x_max": 5,
+        "y_min": 0,
+        "y_max": 1,
+        "graph_origin": 3 * DOWN,
+        "function_color": RED,
+        "axes_color": WHITE,
+        "x_labeled_nums": range(-5, 6, 2)
+    }
+
+    def construct(self):
+        text = TextMobject("ReLU")
+        text.scale(2)
+        text.move_to(3 * UP)
+
+        self.setup_axes(animate=True)
+
+        func_graph = self.get_graph(self.relu, self.function_color)
+        graph_lab = self.get_graph_label(func_graph, label=r"y = \frac{1}{1+ e^{-x}}")
+
+        self.play(ShowCreation(func_graph))
+        self.play(ShowCreation(graph_lab))
+        self.play(ShowCreation(text),
+                  ApplyMethod(self.axes.scale, 0.75),
+                  ApplyMethod(func_graph.scale, 0.75),
+                  ApplyMethod(graph_lab.scale, 0.75))
+        self.wait(2)
+
     def relu(self, x):
         return max(x, 0)
+
+
+class LeakyRelu(GraphScene):
+    CONFIG = {
+        "x_min": -5,
+        "x_max": 5,
+        "y_min": 0,
+        "y_max": 1,
+        "graph_origin": 3 * DOWN,
+        "function_color": RED,
+        "axes_color": WHITE,
+        "x_labeled_nums": range(-5, 6, 2)
+    }
+
+    def construct(self):
+        text = TextMobject("Leaky ReLU")
+        text.scale(2)
+        text.move_to(3 * UP)
+
+        self.setup_axes(animate=True)
+
+        func_graph = self.get_graph(self.leaky_relu, self.function_color)
+        graph_lab = self.get_graph_label(func_graph, label=r"y = \frac{1}{1+ e^{-x}}")
+
+        self.play(ShowCreation(func_graph))
+        self.play(ShowCreation(graph_lab))
+        self.play(ShowCreation(text),
+                  ApplyMethod(self.axes.scale, 0.75),
+                  ApplyMethod(func_graph.scale, 0.75),
+                  ApplyMethod(graph_lab.scale, 0.75))
+        self.wait(2)
 
     def leaky_relu(self, x):
         return x if x >= 0 else -x / 2
