@@ -116,11 +116,17 @@ class Sigmoid(GraphScene):
         self.play(ApplyMethod(self.axes.scale, 0.75))
 
         func_graph = self.get_graph(self.sigmoid, self.function_color)
-        graph_lab = self.get_graph_label(func_graph, label=r"y = max(x, \alpha x)")
+        graph_lab = self.get_graph_label(func_graph, label=r"\sigma (x) = max(x, \alpha x)", color=WHITE)
+        graph_lab.scale(0.75)
+
+        brace = Brace(VGroup(func_graph), LEFT)
+        b_text = brace.get_tex(r"0 < \sigma (x) < 1")
 
         self.play(ShowCreation(func_graph))
         self.play(ShowCreation(graph_lab))
         self.play(ShowCreation(text))
+
+        self.play(ShowCreation(brace), ShowCreation(b_text))
         self.wait(2)
 
     def sigmoid(self, x):
@@ -193,3 +199,17 @@ class LeakyRelu(GraphScene):
     @staticmethod
     def leaky_relu(x):
         return max(x, x / 4)
+
+
+class SoftMax(GraphScene):
+    def construct(self):
+        equation = TexMobject(r"\sigma (x_j) = \frac{e^{x_j}}{\sum _i {e^{x_i}}")
+        head = TextMobject("Softmax", color=GREEN)
+
+        equation.scale(2)
+        head.scale(2)
+        head.move_to(2 * UP)
+
+        self.play(ShowCreation(head))
+        self.play(ShowCreation(equation))
+        self.wait(2)
