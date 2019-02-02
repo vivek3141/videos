@@ -67,11 +67,10 @@ class NeuralNetwork(Scene):
         output_text = TextMobject("Outputs", color=RED)
         output_text.next_to(output_arrow, 1 * UP)
 
-        weight_arrow = Arrow(ORIGIN, 1 * UP)
-        weight_arrow.next_to(network, 1 * UP)
+        weight_arrow = Arrow(2 * LEFT, 2 * LEFT + 2 * DOWN)
 
         weight_text = TextMobject("Weights")
-        weight_text.next_to(weight_arrow, 1 * UP)
+        weight_text.next_to(weight_arrow, 1 * DOWN)
 
         self.play(ShowCreation(network))
         self.wait(2)
@@ -84,3 +83,7 @@ class NeuralNetwork(Scene):
 
         self.play(ShowCreation(output_arrow), ShowCreation(output_text))
         self.wait(2)
+
+        self.play(ShowCreation(weight_arrow), ShowCreation(weight_text))
+        self.wait(2)
+
