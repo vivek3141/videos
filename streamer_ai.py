@@ -92,4 +92,3 @@ class NeuralNetwork(Scene):
 
         self.play(ShowCreation(brace), ShowCreation(text))
         self.wait(2)
-
