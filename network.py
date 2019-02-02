@@ -101,4 +101,71 @@ class NeuralNetworkMobject(VGroup):
             stroke_width=self.edge_stroke_width,
         )
 
+    def get_active_layer(self, layer_index, activation_vector):
+        layer = self.layers[layer_index].deepcopy()
+        self.activate_layer(layer, activation_vector)
+        return layer
 
+    def activate_layer(self, layer, activation_vector):
+        n_neurons = len(layer.neurons)
+        av = activation_vector
+
+        def arr_to_num(arr):
+            return (np.sum(arr > 0.1) / float(len(arr))) ** (1. / 3)
+
+        if len(av) > n_neurons:
+            if self.average_shown_activation_of_large_layer:
+                indices = np.arange(n_neurons)
+                indices *= int(len(av) / n_neurons)
+                indices = list(indices)
+                indices.append(len(av))
+                av = np.array([
+                    arr_to_num(av[i1:i2])
+                    for i1, i2 in zip(indices[:-1], indices[1:])
+                ])
+            else:
+                av = np.append(
+                    av[:n_neurons / 2],
+                    av[-n_neurons / 2:],
+                )
+        for activation, neuron in zip(av, layer.neurons):
+            neuron.set_fill(
+                color=self.neuron_fill_color,
+                opacity=activation
+            )
+        return layer
+
+    def activate_layers(self, input_vector):
+        activations = self.neural_network.get_activation_of_all_layers(input_vector)
+        for activation, layer in zip(activations, self.layers):
+            self.activate_layer(layer, activation)
+
+    def deactivate_layers(self):
+        all_neurons = VGroup(*it.chain(*[
+            layer.neurons
+            for layer in self.layers
+        ]))
+        all_neurons.set_fill(opacity=0)
+        return self
+
+    def get_edge_propogation_animations(self, index):
+        edge_group_copy = self.edge_groups[index].copy()
+        edge_group_copy.set_stroke(
+            self.edge_propogation_color,
+            width=1.5 * self.edge_stroke_width
+        )
+        return [ShowCreationThenDestruction(
+            edge_group_copy,
+            run_time=self.edge_propogation_time,
+            submobject_mode="lagged_start"
+        )]
+
+    def add_output_labels(self):
+        self.output_labels = VGroup()
+        for n, neuron in enumerate(self.layers[-1].neurons):
+            label = TexMobject(str(n))
+            label.set_height(0.75 * neuron.get_height())
+            label.move_to(neuron)
+            label.shift(neuron.get_width() * RIGHT)
+            self.output_labels.add(label)
+        self.add(self.output_labels)
