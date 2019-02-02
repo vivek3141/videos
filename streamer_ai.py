@@ -115,7 +115,7 @@ class Sigmoid(GraphScene):
 
         self.play(ApplyMethod(self.axes.scale, 0.75))
 
-        func_graph = self.get_graph(self.leaky_relu, self.function_color)
+        func_graph = self.get_graph(self.sigmoid, self.function_color)
         graph_lab = self.get_graph_label(func_graph, label=r"y = max(x, \alpha x)")
 
         self.play(ShowCreation(func_graph))
@@ -134,7 +134,7 @@ class Relu(GraphScene):
         "y_min": -5,
         "y_max": 5,
         "graph_origin": ORIGIN,
-        "function_color": BLUE,
+        "function_color": GREEN,
         "axes_color": WHITE,
         "x_labeled_nums": range(-5, 6, 2)
     }
@@ -148,7 +148,7 @@ class Relu(GraphScene):
 
         self.play(ApplyMethod(self.axes.scale, 0.75))
 
-        func_graph = self.get_graph(self.leaky_relu, self.function_color)
+        func_graph = self.get_graph(self.relu, self.function_color)
         graph_lab = self.get_graph_label(func_graph, label=r"y = max(x, \alpha x)")
 
         self.play(ShowCreation(func_graph))
