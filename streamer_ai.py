@@ -122,7 +122,7 @@ class Sigmoid(GraphScene):
         brace = Brace(VGroup(func_graph), LEFT)
         b_text = brace.get_tex(r"0 < \sigma (x) < 1")
 
-        self.play(ShowpCreation(func_graph))
+        self.play(ShowCreation(func_graph))
         self.play(ShowCreation(graph_lab))
         self.play(ShowCreation(text))
 
@@ -262,11 +262,30 @@ class NeuroEvolution(Scene):
             m * DOWN + n * RIGHT
         ]
 
+        head = TextMobject("Neuroevolution", color=RED)
+        head.scale(2)
+        head2 = TextMobject("Neuroevolution", color=RED)
+        head2.scale(2)
+        head2.shift(3 * UP)
+
+        one = TextMobject("1994", color=RED)
+        one.scale(2)
+
+        survival = TextMobject("Survival of the fittest")
+        survival.scale(1.5)
+        survival.shift(2 * DOWN)
+
         net_group = VGroup()
         for i in range(6):
             net = NeuralNetworkMobject([2, 3, 2])
             net.shift(shift[i])
             net_group.add(net)
 
+        self.play(ShowCreation(one))
+        self.play(Transform(one, head))
+        self.play(ShowCreation(survival))
+        self.wait(2)
+
+        self.play(ApplyMethod(one.shift, 3 * UP), Transform(survival, head2))
         self.play(ShowCreation(net_group))
         self.wait(2)
