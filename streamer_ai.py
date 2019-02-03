@@ -248,5 +248,25 @@ class BackProp(Scene):
 
 
 class NeuroEvolution(Scene):
-    def construct(self):
 
+    def construct(self):
+        n = 3
+        m = 1
+
+        shift = [
+            m * UP + n * LEFT,
+            m * UP,
+            m * UP + n * RIGHT,
+            m * DOWN + n * LEFT,
+            m * DOWN,
+            m * DOWN + n * RIGHT
+        ]
+
+        net_group = VGroup()
+        for i in range(6):
+            net = NeuralNetworkMobject([2, 3, 2])
+            net.shift(shift[i])
+            net_group.add(net)
+
+        self.play(ShowCreation(net_group))
+        self.wait(2)
