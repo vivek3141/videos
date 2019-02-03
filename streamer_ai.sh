@@ -9,4 +9,5 @@ python3 extract_scene.py streamer_ai.py SoftMax
 python3 extract_scene.py streamer_ai.py LayerToLayer
 python3 extract_scene.py streamer_ai.py BackProp
 python3 extract_scene.py streamer_ai.py NeuroEvolution
+python3 extract_scene.py streamer_ai.py TWEANN
 

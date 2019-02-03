@@ -268,12 +268,23 @@ class NeuroEvolution(Scene):
             "332",
             "521"
         ]
+        scores2 = [
+            "624",
+            "512",
+            "765",
+            "432",
+            "332",
+            "521"
+        ]
 
         head = TextMobject("Neuroevolution", color=RED)
         head.scale(2)
         head2 = TextMobject("Neuroevolution", color=RED)
         head2.scale(2)
         head2.shift(3 * UP)
+
+        rep = TextMobject("This process is repeated", color=BLUE)
+        rep.scale(2)
 
         one = TextMobject("1994", color=RED)
         one.scale(2)
@@ -284,6 +295,19 @@ class NeuroEvolution(Scene):
 
         net_group = VGroup()
         text_group = VGroup()
+        text_group2 = VGroup()
+
+        circle1 = Circle(color=GREEN)
+        circle1.shift(shift[5])
+
+        circle2 = Circle(color=GREEN)
+        circle2.shift(shift[1])
+
+        circle3 = Circle(color=GREEN)
+        circle3.shift(shift[0])
+
+        circle4 = Circle(color=GREEN)
+        circle4.shift(shift[2])
 
         for i in range(6):
             net = NeuralNetworkMobject([2, 3, 2])
@@ -292,7 +316,13 @@ class NeuroEvolution(Scene):
 
             text = TextMobject(scores[i])
             text.shift(shift[i])
+            text.scale(1.5)
             text_group.add(text)
+
+            text2 = TextMobject(scores2[i])
+            text2.shift(shift[i])
+            text2.scale(1.5)
+            text_group2.add(text2)
 
         self.play(ShowCreation(one))
         self.play(Transform(one, head))
@@ -305,3 +335,59 @@ class NeuroEvolution(Scene):
 
         self.play(ShowCreation(text_group))
         self.wait(2)
+
+        self.play(ShowCreation(circle1), ShowCreation(circle2))
+        self.wait(2)
+
+        self.play(Transform(circle1, net_group),
+                  Uncreate(circle2),
+                  Uncreate(text_group),
+                  Uncreate(net_group))
+        self.wait(2)
+
+        self.play(ShowCreation(text_group2))
+        self.play(ShowCreation(circle3), ShowCreation(circle4))
+
+        self.wait(2)
+
+        self.play(Uncreate(circle1),
+                  Uncreate(text_group2),
+                  Uncreate(circle3),
+                  Uncreate(circle4),
+                  ShowCreation(rep)
+                  )
+        self.wait(2)
+
+
+class TWEANN(Scene):
+    def construct(self):
+        network1 = NeuralNetworkMobject([3, 4, 3])
+        network2 = NeuralNetworkMobject([2, 3, 3])
+        network3 = NeuralNetworkMobject([4, 2, 3])
+        network4 = NeuralNetworkMobject([3, 2, 3])
+
+        f = 2
+        network1.scale(f)
+        network2.scale(f)
+        network3.scale(f)
+        network4.scale(f)
+
+        sub = TextMobject("Topology and Weight Evolving Artificial Neural Networks")
+        head = TextMobject("TWEANNs", color=BLUE)
+        head.scale(2)
+
+        head.shift(2 * UP)
+        sub.shift(1 * UP)
+
+        self.play(ShowCreation(head), ShowCreation(sub))
+        self.play(ShowCreation(network1))
+        self.wait()
+
+        self.play(Transform(network1, network2))
+        self.wait()
+
+        self.play(Transform(network1, network3))
+        self.wait()
+
+        self.play(Transform(network1, network4))
+        self.wait()
