@@ -374,10 +374,17 @@ class TWEANN(Scene):
 
         sub = TextMobject("Topology and Weight Evolving Artificial Neural Networks")
         head = TextMobject("TWEANNs", color=BLUE)
-        head.scale(2)
+        head.scale(1.5)
 
-        head.shift(2 * UP)
-        sub.shift(1 * UP)
+        head.shift(3.5 * UP)
+        sub.shift(2.5 * UP)
+
+        sub2 = TextMobject("Neuroevolution of Augmenting Topologies")
+        head2 = TextMobject("NEAT", color=RED)
+        head2.scale(1.5)
+
+        head2.shift(3.5 * UP)
+        sub2.shift(2.5 * UP)
 
         self.play(ShowCreation(head), ShowCreation(sub))
         self.play(ShowCreation(network1))
@@ -391,3 +398,11 @@ class TWEANN(Scene):
 
         self.play(Transform(network1, network4))
         self.wait()
+
+        self.play(Transform(sub, sub2), Transform(head, head2))
+        self.wait(2)
+
+
+class Commentary(Scene):
+    def construct(self):
+        pass
