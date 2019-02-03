@@ -122,7 +122,7 @@ class Sigmoid(GraphScene):
         brace = Brace(VGroup(func_graph), LEFT)
         b_text = brace.get_tex(r"0 < \sigma (x) < 1")
 
-        self.play(ShowCreation(func_graph))
+        self.play(ShowpCreation(func_graph))
         self.play(ShowCreation(graph_lab))
         self.play(ShowCreation(text))
 
