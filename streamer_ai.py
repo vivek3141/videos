@@ -405,11 +405,23 @@ class TWEANN(Scene):
 
 class Commentary(Scene):
     def construct(self):
-        l1 = Line(1 * UP, ORIGIN)
-        l2 = Line(2 * RIGHT, 2 * LEFT)
-        l3 = Line(2 * RIGHT, 2 * RIGHT + 1 * DOWN)
-        l4 = Line(2 * LEFT, 2 * LEFT + 2 * DOWN)
+        head = TextMobject("Commentary")
+        head.scale(2)
+        head.shift(2 * UP)
 
-        self.play(ShowCreation(l1))
-        self.play(ShowCreation(l2))
+        node1 = TextMobject("Thanking")
+        node1.scale(1.5)
+        node1.shift(3 * LEFT + 3 * DOWN)
+
+        node2 = TextMobject("Actual Commentary")
+        node2.scale(1.5)
+        node2.shift(3 * RIGHT + 3 * DOWN)
+
+        l1 = Line(1 * UP, ORIGIN, color=GREEN)
+        l2 = Line(3 * RIGHT, 3 * LEFT, color=GREEN)
+        l3 = Line(3 * RIGHT, 3 * RIGHT + 1 * DOWN, color=GREEN)
+        l4 = Line(3 * LEFT, 3 * LEFT + 1 * DOWN, color=GREEN)
+
+        self.play(ShowCreation(head), ShowCreation(l1), ShowCreation(l2))
         self.play(ShowCreation(l3), ShowCreation(l4))
+        self.play(ShowCreation(node1), ShowCreation(node2))
