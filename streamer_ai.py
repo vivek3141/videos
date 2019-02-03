@@ -248,7 +248,6 @@ class BackProp(Scene):
 
 
 class NeuroEvolution(Scene):
-
     def construct(self):
         n = 3
         m = 1
@@ -260,6 +259,14 @@ class NeuroEvolution(Scene):
             m * DOWN + n * LEFT,
             m * DOWN,
             m * DOWN + n * RIGHT
+        ]
+        scores = [
+            "312",
+            "434",
+            "145",
+            "254",
+            "332",
+            "521"
         ]
 
         head = TextMobject("Neuroevolution", color=RED)
@@ -276,10 +283,16 @@ class NeuroEvolution(Scene):
         survival.shift(2 * DOWN)
 
         net_group = VGroup()
+        text_group = VGroup()
+
         for i in range(6):
             net = NeuralNetworkMobject([2, 3, 2])
             net.shift(shift[i])
             net_group.add(net)
+
+            text = TextMobject(scores[i])
+            text.shift(shift[i])
+            text_group.add(text)
 
         self.play(ShowCreation(one))
         self.play(Transform(one, head))
@@ -288,4 +301,7 @@ class NeuroEvolution(Scene):
 
         self.play(ApplyMethod(one.shift, 3 * UP), Transform(survival, head2))
         self.play(ShowCreation(net_group))
+        self.wait(2)
+
+        self.play(ShowCreation(text_group))
         self.wait(2)
