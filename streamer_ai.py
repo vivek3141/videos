@@ -46,7 +46,7 @@ class InputANN(Scene):
 
 class NeuralNetwork(Scene):
     def construct(self):
-        network = NeuralNetworkMobject([3, 4, 3])
+        network = NeuralNetworkMobject([3, 4, 3], 0.15)
         network.scale(2.5)
 
         neuron_arrow = Arrow(ORIGIN, 1 * UP)
@@ -216,7 +216,9 @@ class SoftMax(GraphScene):
 
 
 class LayerToLayer(Scene):
+
     def construct(self):
-        nn = NeuralNetworkMobject([5, 1])
+        nn = NeuralNetworkMobject([5, 1], 0.2)
         nn.scale(2)
+        nn.add_input_labels()
         self.play(ShowCreation(nn))

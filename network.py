@@ -19,9 +19,10 @@ class NeuralNetworkMobject(VGroup):
         "include_output_labels": False,
     }
 
-    def __init__(self, neural_network, **kwargs):
+    def __init__(self, neural_network, size, **kwargs):
         VGroup.__init__(self, **kwargs)
         self.layer_sizes = neural_network
+        self.neuron_radius = size
         self.add_neurons()
         self.add_edges()
 
@@ -167,5 +168,15 @@ class NeuralNetworkMobject(VGroup):
             label.set_height(0.75 * neuron.get_height())
             label.move_to(neuron)
             label.shift(neuron.get_width() * RIGHT)
+            self.output_labels.add(label)
+        self.add(self.output_labels)
+
+    def add_input_labels(self):
+        self.output_labels = VGroup()
+        for n, neuron in enumerate(self.layers[0].neurons):
+            label = TexMobject(f"x_{n}")
+            label.set_height(0.3 * neuron.get_height())
+            label.move_to(neuron)
+
             self.output_labels.add(label)
         self.add(self.output_labels)
