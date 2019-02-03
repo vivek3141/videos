@@ -177,6 +177,14 @@ class NeuralNetworkMobject(VGroup):
             label = TexMobject(f"x_{n}")
             label.set_height(0.3 * neuron.get_height())
             label.move_to(neuron)
+            self.output_labels.add(label)
+        self.add(self.output_labels)
 
+    def add_y(self):
+        self.output_labels = VGroup()
+        for n, neuron in enumerate(self.layers[-1].neurons):
+            label = TexMobject("y")
+            label.set_height(0.3 * neuron.get_height())
+            label.move_to(neuron)
             self.output_labels.add(label)
         self.add(self.output_labels)

@@ -221,4 +221,6 @@ class LayerToLayer(Scene):
         nn = NeuralNetworkMobject([5, 1], 0.2)
         nn.scale(2)
         nn.add_input_labels()
+        nn.add_y()
+
         self.play(ShowCreation(nn))
