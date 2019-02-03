@@ -213,3 +213,10 @@ class SoftMax(GraphScene):
         self.play(ShowCreation(head))
         self.play(ShowCreation(equation))
         self.wait(2)
+
+
+class LayerToLayer(Scene):
+    def construct(self):
+        nn = NeuralNetworkMobject([5, 1])
+        nn.scale(2)
+        self.play(ShowCreation(nn))
