@@ -222,5 +222,9 @@ class LayerToLayer(Scene):
         nn.scale(2)
         nn.add_input_labels()
         nn.add_y()
+        nn.add_weight_labels()
+
+        eq = TexMobject(r"y = \sigma (w_1x_1 + w_2x_2 + w_3x_3 + w_4x_4) ")
 
         self.play(ShowCreation(nn))
+        self.wait(2)

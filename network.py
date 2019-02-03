@@ -174,7 +174,7 @@ class NeuralNetworkMobject(VGroup):
     def add_input_labels(self):
         self.output_labels = VGroup()
         for n, neuron in enumerate(self.layers[0].neurons):
-            label = TexMobject(f"x_{n}")
+            label = TexMobject(f"x_{n+1}")
             label.set_height(0.3 * neuron.get_height())
             label.move_to(neuron)
             self.output_labels.add(label)
@@ -188,3 +188,13 @@ class NeuralNetworkMobject(VGroup):
             label.move_to(neuron)
             self.output_labels.add(label)
         self.add(self.output_labels)
+
+    def add_weight_labels(self):
+        weight_group = VGroup()
+
+        for n, i in enumerate(self.layers[0].neurons):
+            edge = self.get_edge(i, self.layers[-1][0])
+            text = TexMobject(f"w_{n+1}", color=RED)
+            text.move_to(edge)
+            weight_group.add(text)
+        self.add(weight_group)
