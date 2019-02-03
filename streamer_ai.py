@@ -405,4 +405,11 @@ class TWEANN(Scene):
 
 class Commentary(Scene):
     def construct(self):
-        pass
+        l1 = Line(1 * UP, ORIGIN)
+        l2 = Line(2 * RIGHT, 2 * LEFT)
+        l3 = Line(2 * RIGHT, 2 * RIGHT + 1 * DOWN)
+        l4 = Line(2 * LEFT, 2 * LEFT + 2 * DOWN)
+
+        self.play(ShowCreation(l1))
+        self.play(ShowCreation(l2))
+        self.play(ShowCreation(l3), ShowCreation(l4))
