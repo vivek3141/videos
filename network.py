@@ -19,7 +19,7 @@ class NeuralNetworkMobject(VGroup):
         "include_output_labels": False,
     }
 
-    def __init__(self, neural_network, size, **kwargs):
+    def __init__(self, neural_network, size=0.15, **kwargs):
         VGroup.__init__(self, **kwargs)
         self.layer_sizes = neural_network
         self.neuron_radius = size

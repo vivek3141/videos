@@ -216,7 +216,6 @@ class SoftMax(GraphScene):
 
 
 class LayerToLayer(Scene):
-
     def construct(self):
         nn = NeuralNetworkMobject([5, 1], 0.2)
         nn.scale(2)
@@ -232,3 +231,22 @@ class LayerToLayer(Scene):
         self.play(ShowCreation(nn))
         self.play(ShowCreation(eq))
         self.wait(2)
+
+
+class BackProp(Scene):
+    def construct(self):
+        network = NeuralNetworkMobject([3, 4, 3])
+        network.scale(2)
+
+        back = Arrow(2.5 * UP + 1 * RIGHT, 2.5 * UP + 1 * LEFT, color=RED)
+        text = TextMobject("Backpropagation")
+        text.shift(3 * UP)
+
+        self.play(ShowCreation(network))
+        self.play(ShowCreation(back), ShowCreation(text))
+        self.wait(2)
+
+
+class NeuroEvolution(Scene):
+    def construct(self):
+
