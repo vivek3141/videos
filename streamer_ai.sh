@@ -14,4 +14,5 @@ python3 extract_scene.py streamer_ai.py Commentary
 python3 extract_scene.py streamer_ai.py StreamLabs
 python3 extract_scene.py streamer_ai.py API
 python3 extract_scene.py streamer_ai.py SocketAPI
-
+python3 extract_scene.py streamer_ai.py GTTS
+python3 extract_scene.py streamer_ai.py CGame

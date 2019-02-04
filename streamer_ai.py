@@ -540,3 +540,8 @@ class GTTS(Scene):
         self.play(Write(google), Write(gtts))
         self.play(Write(tmp))
         self.wait(2)
+
+
+class CGame(Scene):
+    def construct(self):
+        pass
