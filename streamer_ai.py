@@ -482,4 +482,54 @@ class API(Scene):
 
 class SocketAPI(Scene):
     def construct(self):
-        pass
+        head = TextMobject("Socket API", color=ORANGE)
+        head.scale(2)
+        head.shift(1 * UP)
+
+        foot = TextMobject("Collection of Socket Commands", color=YELLOW)
+        foot.scale(1.25)
+        foot.shift(1 * DOWN)
+
+        socket = TextMobject("Once a client accepts the connection, a socket is created")
+        socket.shift(3 * DOWN)
+
+        desc = TextMobject("The client gets pinged every time an event occurs")
+        desc.shift(3 * UP)
+
+        brace = Brace(foot, UP)
+
+        client = SVGMobject("files/monitor.svg")
+        server = SVGMobject("files/server.svg")
+
+        server.shift(3.5 * RIGHT)
+        client.shift(3.5 * LEFT)
+
+        arrow1 = Arrow(2.5 * LEFT + 0.5 * UP, 2.5 * RIGHT + 0.5 * UP, color=BLUE)
+        arrow2 = Arrow(2.5 * RIGHT + 0.5 * DOWN, 2.5 * LEFT + 0.5 * DOWN, color=BLUE)
+
+        self.play(Write(head))
+        self.play(Write(foot), Write(brace))
+
+        self.wait(2)
+
+        self.play(Uncreate(head), Uncreate(foot), Uncreate(brace))
+
+        self.play(Write(client), Write(server))
+        self.play(Write(arrow1), Write(arrow2))
+        self.play(Write(socket))
+
+        self.wait(2)
+
+        self.play(Write(desc))
+        self.wait(2)
+
+
+class GTTS(Scene):
+    def construct(self):
+        google = SVGMobject("files/search.svg")
+        google.shift(2 * LEFT)
+
+        gtts = TextMobject("Text to speech")
+        gtts.scale(1.5)
+
+        self.play(Write(google))
