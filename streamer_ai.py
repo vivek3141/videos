@@ -526,10 +526,17 @@ class SocketAPI(Scene):
 
 class GTTS(Scene):
     def construct(self):
-        google = SVGMobject("files/search.svg")
-        google.shift(2 * LEFT)
+        google = SVGMobject("files/search.svg", color=ORANGE)
+        google.shift(3 * LEFT)
 
         gtts = TextMobject("Text to speech")
         gtts.scale(1.5)
+        gtts.shift(1 * RIGHT)
+
+        tmp = TextMobject("/tmp/ = RAM", tex_to_color_map={"/tmp/": YELLOW, "RAM": RED})
+        tmp.scale(1.5)
+        tmp.shift(2 * DOWN)
 
         self.play(Write(google), Write(gtts))
+        self.play(Write(tmp))
+        self.wait(2)
