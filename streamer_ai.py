@@ -442,7 +442,7 @@ class StreamLabs(Scene):
         self.wait(2)
 
 
-class SocketAPI(Scene):
+class API(Scene):
     def construct(self):
         api = TextMobject("API", color=RED)
         full = TextMobject("Application Programming Interface", color=RED)
@@ -453,8 +453,33 @@ class SocketAPI(Scene):
         server = SVGMobject("files/server.svg")
         monitor = SVGMobject("files/monitor.svg")
 
+        server.shift(3.5 * RIGHT)
+        monitor.shift(3.5 * LEFT)
+
+        arrow = Arrow(2.5 * LEFT, 2.5 * RIGHT, color=BLUE)
+
+        mes = TextMobject("API", color=GREEN)
+        mes.scale(1.25)
+        mes.shift(1.5 * LEFT + 0.5 * UP)
+
         self.play(Write(api))
         self.play(Transform(api, full))
         self.play(ApplyMethod(api.shift, 3 * UP))
 
         self.wait(2)
+
+        self.play(Write(monitor), Write(server), Write(arrow))
+        self.play(Write(mes))
+
+        self.play(ApplyMethod(mes.shift, 3 * RIGHT))
+        self.play(ApplyMethod(mes.shift, 3 * LEFT))
+
+        self.play(ApplyMethod(mes.shift, 3 * RIGHT))
+        self.play(ApplyMethod(mes.shift, 3 * LEFT))
+
+        self.wait(2)
+
+
+class SocketAPI(Scene):
+    def construct(self):
+        pass
