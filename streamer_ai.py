@@ -551,5 +551,5 @@ class CGame(Scene):
         for i in range(3):
             self.play(opt.fade_all_but, i)
             self.wait(2)
-        self.play(opt.reset_points)
+        self.play(opt.reset)
         self.wait(2)
