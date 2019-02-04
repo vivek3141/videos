@@ -3,6 +3,6 @@ from manim import *
 
 class Intro(Scene):
     def construct(self):
-        logo = SVGMobject("file/logo.svg")
+        logo = SVGMobject("files/logo_t.svg")
         self.play(Write(logo))
-        self.wait(2)
+        self.wait()
