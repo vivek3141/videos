@@ -553,3 +553,24 @@ class CGame(Scene):
             self.wait(2)
         self.play(opt.reset)
         self.wait(2)
+
+
+class TitleScene(Scene):
+    CONFIG = {
+        "title": "test",
+        "color": RED,
+    }
+
+    def construct(self):
+        title = TextMobject(self.title, color=self.color)
+        title.scale(2)
+
+        self.play(Write(title))
+        self.wait(2)
+
+
+class ANNTitle(TitleScene):
+    CONFIG = {
+        "title": "Artificial Neural Network",
+        "color": RED,
+    }
