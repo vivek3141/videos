@@ -16,3 +16,8 @@ python3 extract_scene.py streamer_ai.py API
 python3 extract_scene.py streamer_ai.py SocketAPI
 python3 extract_scene.py streamer_ai.py GTTS
 python3 extract_scene.py streamer_ai.py CGame
+python3 extract_scene.py streamer_ai.py ANNTitle
+python3 extract_scene.py streamer_ai.py LayerTitle
+python3 extract_scene.py streamer_ai.py TrainingTitle
+python3 extract_scene.py streamer_ai.py OtherTitle
+python3 extract_scene.py streamer_ai.py SocketTitle
