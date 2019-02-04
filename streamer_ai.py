@@ -555,6 +555,7 @@ class CGame(Scene):
         self.wait(2)
 
 
+# Title class to reuse
 class TitleScene(Scene):
     CONFIG = {
         "title": "test",
@@ -573,4 +574,32 @@ class ANNTitle(TitleScene):
     CONFIG = {
         "title": "Artificial Neural Network",
         "color": RED,
+    }
+
+
+class LayerTitle(TitleScene):
+    CONFIG = {
+        "title": "Going from Layer to Layer",
+        "color": ORANGE,
+    }
+
+
+class TrainingTitle(TitleScene):
+    CONFIG = {
+        "title": "Training a Network",
+        "color": YELLOW,
+    }
+
+
+class OtherTitle(TitleScene):
+    CONFIG = {
+        "title": "Other Ways of Learning",
+        "color": GREEN,
+    }
+
+
+class SocketTitle(TitleScene):
+    CONFIG = {
+        "title": "Socket APIs",
+        "color": BLUE,
     }
