@@ -532,4 +532,4 @@ class GTTS(Scene):
         gtts = TextMobject("Text to speech")
         gtts.scale(1.5)
 
-        self.play(Write(google))
+        self.play(Write(google), Write(gtts))
