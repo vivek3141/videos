@@ -533,7 +533,7 @@ class GTTS(Scene):
         gtts.scale(1.5)
         gtts.shift(1 * RIGHT)
 
-        tmp = TextMobject("/tmp/ = RAM", tex_to_color_map={"/tmp/": YELLOW, "RAM": RED})
+        tmp = TextMobject("/tmp = RAM", tex_to_color_map={"/tmp": YELLOW, "RAM": RED})
         tmp.scale(1.5)
         tmp.shift(2 * DOWN)
 
