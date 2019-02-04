@@ -11,7 +11,7 @@ class Intro(Scene):
         rect.next_to(title, DOWN)
         self.play(
             FadeInFromDown(title),
-            ShowCreation(rect)
+            Write(rect)
         )
         self.wait(2)
 
@@ -32,15 +32,15 @@ class InputANN(Scene):
         foot.move_to(2 * DOWN)
         foot.scale(1.5)
 
-        self.play(ShowCreation(mario))
-        self.play(ApplyMethod(mario.shift, 2.5 * LEFT), ShowCreation(a))
-        self.play(ShowCreation(nn))
+        self.play(Write(mario))
+        self.play(ApplyMethod(mario.shift, 2.5 * LEFT), Write(a))
+        self.play(Write(nn))
         self.wait(2)
 
-        self.play(ShowCreation(head))
+        self.play(Write(head))
         self.wait(2)
 
-        self.play(ShowCreation(foot))
+        self.play(Write(foot))
         self.wait(2)
 
 
@@ -75,22 +75,22 @@ class NeuralNetwork(Scene):
         brace = Brace(VGroup(network), DOWN)
         text = brace.get_text("Bias")
 
-        self.play(ShowCreation(network))
+        self.play(Write(network))
         self.wait(2)
 
-        self.play(ShowCreation(neuron_arrow), ShowCreation(neuron_text))
+        self.play(Write(neuron_arrow), Write(neuron_text))
         self.wait(2)
 
-        self.play(ShowCreation(input_arrow), ShowCreation(input_text))
+        self.play(Write(input_arrow), Write(input_text))
         self.wait(2)
 
-        self.play(ShowCreation(output_arrow), ShowCreation(output_text))
+        self.play(Write(output_arrow), Write(output_text))
         self.wait(2)
 
-        self.play(ShowCreation(weight_arrow), ShowCreation(weight_text))
+        self.play(Write(weight_arrow), Write(weight_text))
         self.wait(2)
 
-        self.play(ShowCreation(brace), ShowCreation(text))
+        self.play(Write(brace), Write(text))
         self.wait(2)
 
 
@@ -122,11 +122,11 @@ class Sigmoid(GraphScene):
         brace = Brace(VGroup(func_graph), LEFT)
         b_text = brace.get_tex(r"0 < \sigma (x) < 1")
 
-        self.play(ShowCreation(func_graph))
-        self.play(ShowCreation(graph_lab))
-        self.play(ShowCreation(text))
+        self.play(Write(func_graph))
+        self.play(Write(graph_lab))
+        self.play(Write(text))
 
-        self.play(ShowCreation(brace), ShowCreation(b_text))
+        self.play(Write(brace), Write(b_text))
         self.wait(2)
 
     def sigmoid(self, x):
@@ -157,9 +157,9 @@ class Relu(GraphScene):
         func_graph = self.get_graph(self.relu, self.function_color)
         graph_lab = self.get_graph_label(func_graph, label=r"y = max(x, \alpha x)")
 
-        self.play(ShowCreation(func_graph))
-        self.play(ShowCreation(graph_lab))
-        self.play(ShowCreation(text))
+        self.play(Write(func_graph))
+        self.play(Write(graph_lab))
+        self.play(Write(text))
         self.wait(2)
 
     @staticmethod
@@ -191,9 +191,9 @@ class LeakyRelu(GraphScene):
         func_graph = self.get_graph(self.leaky_relu, self.function_color)
         graph_lab = self.get_graph_label(func_graph, label=r"y = max(x, \alpha x)")
 
-        self.play(ShowCreation(func_graph))
-        self.play(ShowCreation(graph_lab))
-        self.play(ShowCreation(text))
+        self.play(Write(func_graph))
+        self.play(Write(graph_lab))
+        self.play(Write(text))
         self.wait(2)
 
     @staticmethod
@@ -210,8 +210,8 @@ class SoftMax(GraphScene):
         head.scale(2)
         head.move_to(2 * UP)
 
-        self.play(ShowCreation(head))
-        self.play(ShowCreation(equation))
+        self.play(Write(head))
+        self.play(Write(equation))
         self.wait(2)
 
 
@@ -228,8 +228,8 @@ class LayerToLayer(Scene):
         eq.scale(1.5)
         eq.shift(3 * DOWN)
 
-        self.play(ShowCreation(nn))
-        self.play(ShowCreation(eq))
+        self.play(Write(nn))
+        self.play(Write(eq))
         self.wait(2)
 
 
@@ -242,8 +242,8 @@ class BackProp(Scene):
         text = TextMobject("Backpropagation")
         text.shift(3 * UP)
 
-        self.play(ShowCreation(network))
-        self.play(ShowCreation(back), ShowCreation(text))
+        self.play(Write(network))
+        self.play(Write(back), Write(text))
         self.wait(2)
 
 
@@ -324,19 +324,19 @@ class NeuroEvolution(Scene):
             text2.scale(1.5)
             text_group2.add(text2)
 
-        self.play(ShowCreation(one))
+        self.play(Write(one))
         self.play(Transform(one, head))
-        self.play(ShowCreation(survival))
+        self.play(Write(survival))
         self.wait(2)
 
         self.play(ApplyMethod(one.shift, 3 * UP), Transform(survival, head2))
-        self.play(ShowCreation(net_group))
+        self.play(Write(net_group))
         self.wait(2)
 
-        self.play(ShowCreation(text_group))
+        self.play(Write(text_group))
         self.wait(2)
 
-        self.play(ShowCreation(circle1), ShowCreation(circle2))
+        self.play(Write(circle1), Write(circle2))
         self.wait(2)
 
         self.play(Transform(circle1, net_group),
@@ -345,8 +345,8 @@ class NeuroEvolution(Scene):
                   Uncreate(net_group))
         self.wait(2)
 
-        self.play(ShowCreation(text_group2))
-        self.play(ShowCreation(circle3), ShowCreation(circle4))
+        self.play(Write(text_group2))
+        self.play(Write(circle3), Write(circle4))
 
         self.wait(2)
 
@@ -354,7 +354,7 @@ class NeuroEvolution(Scene):
                   Uncreate(text_group2),
                   Uncreate(circle3),
                   Uncreate(circle4),
-                  ShowCreation(rep)
+                  Write(rep)
                   )
         self.wait(2)
 
@@ -386,8 +386,8 @@ class TWEANN(Scene):
         head2.shift(3.5 * UP)
         sub2.shift(2.5 * UP)
 
-        self.play(ShowCreation(head), ShowCreation(sub))
-        self.play(ShowCreation(network1))
+        self.play(Write(head), Write(sub))
+        self.play(Write(network1))
         self.wait()
 
         self.play(Transform(network1, network2))
@@ -422,6 +422,39 @@ class Commentary(Scene):
         l3 = Line(3 * RIGHT, 3 * RIGHT + 1 * DOWN, color=GREEN)
         l4 = Line(3 * LEFT, 3 * LEFT + 1 * DOWN, color=GREEN)
 
-        self.play(ShowCreation(head), ShowCreation(l1), ShowCreation(l2))
-        self.play(ShowCreation(l3), ShowCreation(l4))
-        self.play(ShowCreation(node1), ShowCreation(node2))
+        self.play(Write(head), Write(l1), Write(l2))
+        self.play(Write(l3), Write(l4))
+        self.play(Write(node1), Write(node2))
+        self.wait(2)
+
+
+class StreamLabs(Scene):
+    def construct(self):
+        streamlabs = SVGMobject("files/streamlabs.svg", color=BLUE)
+        api = TextMobject("API", color=BLUE)
+
+        streamlabs.shift(2 * LEFT)
+        api.shift(2 * RIGHT)
+        api.scale(2)
+        streamlabs.scale(2)
+
+        self.play(Write(streamlabs), Write(api))
+        self.wait(2)
+
+
+class SocketAPI(Scene):
+    def construct(self):
+        api = TextMobject("API", color=RED)
+        full = TextMobject("Application Programming Interface", color=RED)
+
+        api.scale(2)
+        full.scale(1.5)
+
+        server = SVGMobject("files/server.svg")
+        monitor = SVGMobject("files/monitor.svg")
+
+        self.play(Write(api))
+        self.play(Transform(api, full))
+        self.play(ApplyMethod(api.shift, 3 * UP))
+
+        self.wait(2)
