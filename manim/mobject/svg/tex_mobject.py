@@ -1,4 +1,3 @@
-
 from manim.constants import *
 
 from manim.mobject.svg.svg_mobject import SVGMobject
@@ -39,7 +38,7 @@ class SingleStringTexMobject(SVGMobject):
 
     def __init__(self, tex_string, **kwargs):
         digest_config(self, kwargs)
-        assert(isinstance(tex_string, str))
+        assert (isinstance(tex_string, str))
         self.tex_string = tex_string
         file_name = tex_to_svg_file(
             self.get_modified_expression(tex_string),
@@ -288,6 +287,10 @@ class BulletedList(TextMobject):
                 other_part.set_fill(opacity=1)
             else:
                 other_part.set_fill(opacity=opacity)
+
+    def reset(self):
+        for other_part in self.submobjects:
+            other_part.set_fill(opacity=1)
 
 
 class TexMobjectFromPresetString(TexMobject):
