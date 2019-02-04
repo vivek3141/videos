@@ -544,4 +544,9 @@ class GTTS(Scene):
 
 class CGame(Scene):
     def construct(self):
-        pass
+        opt = BulletedList("Markov Chains", "Recurrent Neural Networks", "Chossing from list")
+        opt.scale(3)
+
+        self.play(Write(opt))
+        for i in range(3):
+            self.play(opt.fade_all_but, i)
