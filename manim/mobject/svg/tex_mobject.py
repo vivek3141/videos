@@ -266,7 +266,7 @@ class BulletedList(TextMobject):
         line_separated_items = [s + "\\\\" for s in items]
         TextMobject.__init__(self, *line_separated_items, **kwargs)
         for part in self:
-            dot = TexMobject("\\cdot").scale(self.dot_scale_factor)
+            dot = TexMobject("\\cdot", color=BLUE).scale(self.dot_scale_factor)
             dot.next_to(part[0], LEFT, SMALL_BUFF)
             part.add_to_back(dot)
         self.arrange_submobjects(
