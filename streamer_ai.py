@@ -739,15 +739,16 @@ class SocketTitle(TitleScene):
 class GitHub(Scene):
     def construct(self):
         logo = SVGMobject("files/github-logo.svg")
-        logo.shift(1 * LEFT)
+        logo.shift(2 * LEFT)
 
         star = SVGMobject("files/star.svg")
-        star.shift(1 * RIGHT)
+        star.shift(2 * RIGHT)
 
         source = TextMobject("Source Code")
         source.shift(2 * DOWN + 2 * LEFT)
+        source.scale(1.5)
 
-        arrow = Arrow(2 * DOWN + 2 * RIGHT, 3 * DOWN + 2 * RIGHT)
+        arrow = Arrow(1 * DOWN + 2 * RIGHT, 3 * DOWN + 2 * RIGHT, color=RED)
 
         self.play(Write(source), Write(arrow))
         self.play(Write(logo), Write(star))
