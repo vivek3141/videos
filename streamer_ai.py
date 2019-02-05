@@ -536,22 +536,24 @@ class Commentary(Scene):
     def construct(self):
         head = TextMobject("Commentary")
         head.scale(2)
-        head.shift(2 * UP)
 
         node1 = TextMobject("Thanking")
         node1.scale(1.5)
-        node1.shift(3 * LEFT + 3 * DOWN)
+        node1.shift(3 * LEFT + 2 * DOWN)
 
         node2 = TextMobject("Actual Commentary")
         node2.scale(1.5)
-        node2.shift(3 * RIGHT + 3 * DOWN)
+        node2.shift(3 * RIGHT + 2 * DOWN)
 
         l1 = Line(1 * UP, ORIGIN, color=GREEN)
         l2 = Line(3 * RIGHT, 3 * LEFT, color=GREEN)
         l3 = Line(3 * RIGHT, 3 * RIGHT + 1 * DOWN, color=GREEN)
         l4 = Line(3 * LEFT, 3 * LEFT + 1 * DOWN, color=GREEN)
 
-        self.play(Write(head), Write(l1), Write(l2))
+        self.play(Write(head))
+        self.wait(2)
+        self.play(ApplyMethod(head.shift, 2 * UP))
+        self.play(Write(l1), Write(l2))
         self.play(Write(l3), Write(l4))
         self.play(Write(node1), Write(node2))
         self.wait(2)
