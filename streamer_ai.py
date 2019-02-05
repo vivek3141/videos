@@ -734,3 +734,21 @@ class SocketTitle(TitleScene):
         "title": "Socket APIs",
         "color": BLUE,
     }
+
+
+class GitHub(Scene):
+    def construct(self):
+        logo = SVGMobject("files/github-logo.svg")
+        logo.shift(1 * LEFT)
+
+        star = SVGMobject("files/star.svg")
+        star.shift(1 * RIGHT)
+
+        source = TextMobject("Source Code")
+        source.shift(2 * DOWN + 2 * LEFT)
+
+        arrow = Arrow(2 * DOWN + 2 * RIGHT, 3 * DOWN + 2 * RIGHT)
+
+        self.play(Write(source), Write(arrow))
+        self.play(Write(logo), Write(star))
+        self.wait(2)
