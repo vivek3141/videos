@@ -374,7 +374,7 @@ class ExampleThreeD(ThreeDScene):
     }
 
     def construct(self):
-        self.set_camera_position(0, -np.pi / 2)
+        self.set_camera_orientation(0, -np.pi / 2)
         plane = NumberPlane(**self.plane_kwargs)
         plane.main_lines.fade(.9)
         plane.add(plane.get_axis_labels())

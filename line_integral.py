@@ -29,15 +29,27 @@ class LineIntegral(ThreeDScene):
             u_min=-1,
             u_max=1,
             v_min=-1,
-            v_max=1
+            v_max=1,
+            fill_color=RED,
+            checkerboard_colors=[RED, ORANGE]
+
         )
         curve = ParametricFunction(
-            self.c
+            self.c,
+            t_min=-1,
+            t_max=1,
         )
 
         surface.scale(2)
         axes = ThreeDAxes(**t_config)
         axes.scale(2.5)
+
+        point1 = Point(self.c(-1))
+        point2 = Point(self.c(1))
+
+        text = TextMobject("C")
+        text.scale(1.5)
+        text.move_to(curve, 4 * RIGHT + 3 * DOWN)
 
         self.play(Write(integral))
 
@@ -45,12 +57,17 @@ class LineIntegral(ThreeDScene):
         self.play(ApplyMethod(integral.shift, 3 * UP))
 
         self.play(ShowCreation(axes))
-        # self.play(ShowCreation(surface))
-        self.play(ShowCreation(curve))
-        self.play(Uncreate(integral))
+        self.play(ShowCreation(surface))
+        self.play(ShowCreation(curve), Write(text))
+        self.play(Uncreate(integral), Uncreate(text))
         self.move_camera(0.8 * np.pi / 2, -0.45 * np.pi)
 
         self.begin_ambient_camera_rotation()
+        self.wait(6)
+        self.stop_ambient_camera_rotation()
+        self.move_camera(np.pi / 2, np.pi/2)
+        self.wait()
+        self.play(Uncreate(surface))
         self.wait(6)
 
     @staticmethod
@@ -58,13 +75,12 @@ class LineIntegral(ThreeDScene):
         return np.array([
             x,
             y,
-            x * y ** 3 - y * x ** 3
+            0.5 * (math.cos(5*x) + math.sin(5*y))
         ])
 
-    @staticmethod
-    def c(t):
+    def c(self, t):
         return np.array([
             t,
             t ** 3,
-            t + 1
+            self.func(t, t ** 3)[-1]
         ])
