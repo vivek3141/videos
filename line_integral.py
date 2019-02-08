@@ -31,6 +31,9 @@ class LineIntegral(ThreeDScene):
             v_min=-1,
             v_max=1
         )
+        curve = ParametricFunction(
+            self.c
+        )
 
         surface.scale(2)
         axes = ThreeDAxes(**t_config)
@@ -42,8 +45,10 @@ class LineIntegral(ThreeDScene):
         self.play(ApplyMethod(integral.shift, 3 * UP))
 
         self.play(ShowCreation(axes))
-        self.play(ShowCreation(surface))
-        self.set_camera_orientation(0.8 * np.pi / 2, -0.45 * np.pi)
+        # self.play(ShowCreation(surface))
+        self.play(ShowCreation(curve))
+        self.play(Uncreate(integral))
+        self.move_camera(0.8 * np.pi / 2, -0.45 * np.pi)
 
         self.begin_ambient_camera_rotation()
         self.wait(6)
@@ -54,4 +59,12 @@ class LineIntegral(ThreeDScene):
             x,
             y,
             x * y ** 3 - y * x ** 3
+        ])
+
+    @staticmethod
+    def c(t):
+        return np.array([
+            t,
+            t ** 3,
+            t + 1
         ])
