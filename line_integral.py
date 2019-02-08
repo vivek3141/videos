@@ -4,7 +4,7 @@ from manim import *
 class LineIntegral(ThreeDScene):
 
     def construct(self):
-        ThreeDConfig = {
+        t_config = {
             "x_min": -1,
             "x_max": 1,
             "y_min": -1,
@@ -15,8 +15,14 @@ class LineIntegral(ThreeDScene):
             "z_normal": DOWN,
             "num_axis_pieces": 20,
             "light_source": 9 * DOWN + 7 * LEFT + 10 * OUT,
+            "number_line_config": {
+                "include_tip": False,
+            },
         }
-        self.set_camera_orientation(0.8 * np.pi / 2, -0.45 * np.pi)
+
+        integral = TexMobject(r"\int_C f(x,y) ds")
+        integral.scale(2)
+
         surface = ParametricSurface(
             self.func,
             resulution=(16, 24),
@@ -25,10 +31,19 @@ class LineIntegral(ThreeDScene):
             v_min=-1,
             v_max=1
         )
+
         surface.scale(2)
-        self.play(ShowCreation(ThreeDAxes(**ThreeDConfig).scale(3)))
+        axes = ThreeDAxes(**t_config)
+        axes.scale(2.5)
+
+        self.play(Write(integral))
+
+        self.play(ApplyMethod(integral.scale, 0.5))
+        self.play(ApplyMethod(integral.shift, 3 * UP))
+
+        self.play(ShowCreation(axes))
         self.play(ShowCreation(surface))
-        self.wait()
+        self.set_camera_orientation(0.8 * np.pi / 2, -0.45 * np.pi)
 
         self.begin_ambient_camera_rotation()
         self.wait(6)
