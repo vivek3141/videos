@@ -203,11 +203,11 @@ class ArcLength(Scene):
 class ArcExp(Scene):
     def construct(self):
         step1 = TexMobject(r"\Delta s = \sqrt{{\Delta x}^2 + {\Delta y}^2}}")
-        step1 = TexMobject(r"\\Delta s = \sqrt{{\Delta x}^2 + {\Delta y}^2}}")
-        step1 = TexMobject(r"\Delta s = \sqrt{{\Delta x}^2 + {\Delta y}^2}}")
-        step1 = TexMobject(r"\Delta s = \sqrt{{\Delta x}^2 + {\Delta y}^2}}")
+        step2 = TexMobject(r"\sum_{i=1}^{n}{\sqrt{{\Delta x_i}^2 + {\Delta y_i}^2}}}")
+        step3 = TexMobject(r"\Delta s = \sqrt{{\Delta x}^2 + {\Delta y}^2}}")
+        step4 = TexMobject(r"\Delta s = \sqrt{{\Delta x}^2 + {\Delta y}^2}}")
 
-        self.play(ShowCreation(step1))
+        self.play(ShowCreation(step2))
 
 
 class LineIntegralScalar(ThreeDScene):
