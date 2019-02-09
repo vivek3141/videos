@@ -60,9 +60,41 @@ class ScalarField(ThreeDScene):
             },
         }
 
-        axes = ThreeDAxes(**t_config)
+        title = TextMobject("Scalar Fields", color=ORANGE)
+        title.scale(2)
 
+        axes = ThreeDAxes(
+            **t_config
+        )
+        self.move_camera(0.8 * np.pi / 2, -0.45 * np.pi)
+
+        func = ParametricSurface(
+            self.func,
+            resulution=(16, 24),
+            u_min=-1,
+            u_max=1,
+            v_min=-1,
+            v_max=1,
+            fill_color=YELLOW,
+            checkerboard_colors=[YELLOW, ORANGE]
+        )
+
+        func.scale(2)
+        axes.scale(2)
+
+        self.play(Write(title))
+        self.wait()
+
+        self.play(ApplyMethod(title.shift),)
         self.play(ShowCreation(axes))
+
+    def func(self, u, v):
+        return np.array([
+            u,
+            v,
+            u ** 2 + v ** 2,
+        ])
+
 
 class LineIntegralScalar(ThreeDScene):
 
