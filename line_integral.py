@@ -257,7 +257,7 @@ class ArcExp(Scene):
             ApplyMethod(step1.shift, 2 * UP),
             Write(step6),
             Write(equal)
-                  )
+        )
 
         self.wait()
 
@@ -391,3 +391,38 @@ class LineIntegralScalar(ThreeDScene):
             rects.add(rect)
 
         return rects
+
+
+class Example(Scene):
+    def construct(self):
+        axes_config = {"x_min": 0,
+                       "x_max": 3,
+                       "y_min": -1,
+                       "y_max": 6,
+                       "z_axis_config": {},
+                       "z_min": -1,
+                       "z_max": 1,
+                       "z_normal": DOWN,
+                       "num_axis_pieces": 20,
+                       "light_source": 9 * DOWN + 7 * LEFT + 10 * OUT,
+                       "number_line_config": {
+                           "include_tip": False,
+                       },
+                       }
+
+        axes = Axes(**axes_config)
+        curve = ParametricFunction(
+            self.func,
+            t_min=-1,
+            t_max=1
+        )
+        func = VGroup(axes, curve)
+        self.play(ShowCreation(func))
+
+    @staticmethod
+    def func(t):
+        return np.array([
+            3 - 2*t,
+            6 - 7*t,
+            0
+        ])
