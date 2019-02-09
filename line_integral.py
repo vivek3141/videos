@@ -15,19 +15,32 @@ class Intro(Scene):
         int3 = TexMobject(r"\int_C \textbf{P}dx + \textbf{Q}dy")
         int3.scale(1.5)
 
+        uses = BulletedList(
+            "Work",
+            "Center of mass",
+            "Faraday's Law",
+            "Ampere's Law",
+            "..."
+        )
+
         self.play(Write(li))
         self.wait()
         self.play(ApplyMethod(li.shift, 3 * UP))
-        self.wait()
 
         self.play(Write(int1))
         self.wait()
 
-        self.play(Write(int2))
+        self.play(Transform(int1, int2))
         self.wait()
 
-        self.play(Write(int3))
+        self.play(Transform(int1, int3))
         self.wait()
+
+        self.play(Uncreate(int1))
+        self.play(Write(uses))
+
+        self.wait(2)
+
 
 class LineIntegralScalar(ThreeDScene):
 
