@@ -495,7 +495,9 @@ class VectorField(Scene):
         "plane_kwargs": {
             "color": RED_B
         },
-        "point_charge_loc": 0.5 * RIGHT - 1.5 * UP,
+        "color_list": ['#e22b2b', '#e88e10', '#eae600', '#88ea00',
+                       '#00eae2', '#0094ea', "#2700ea", '#bf00ea', '#ea0078'],
+        "prop": 0
     }
 
     def construct(self):
@@ -509,13 +511,27 @@ class VectorField(Scene):
                          for y in np.arange(-5, 5, 1)
                          ])
 
-        self.play(ShowCreation(field))
+        field_color = VGroup(*[self.calc_field_color(x * RIGHT + y * UP)
+                         for x in np.arange(-9, 9, 1)
+                         for y in np.arange(-5, 5, 1)
+                         ])
 
-    def calc_field(self, point):
+        self.play(ShowCreation(field))
+        self.wait(2)
+
+    def calc_field_color(self, point):
         x, y = point[:2]
-        # Rx, Ry = self.point_charge_loc[:2]
-        # r = math.sqrt((x - Rx) ** 2 + (y - Ry) ** 2)
-        # efield = (point - self.point_charge_loc) / r ** 3
-        efield = np.array((-y, x, 0)) / math.sqrt(x ** 2 + y ** 2)  # Try one of these two fields
-        # efield = np.array(( -2*(y%2)+1 , -2*(x%2)+1 , 0 ))/3  #Try one of these two fields
-        return Vector(efield).shift(point)
+        func = np.array([x, y])
+        magnitude = math.sqrt(func[0] ** 2 + func[1] ** 2)
+        func = func / magnitude
+        func = func / 1.5
+        v = int(magnitude / 10 ** self.prop)
+        index = len(self.color_list) - 1 if v > len(self.color_list) - 1 else v
+        c = self.color_list[index]
+        return Vector(func, color=c).shift(point)
+
+    @staticmethod
+    def calc_field(point):
+        x, y = point[:2]
+        func = np.array([x, y])
+        return Vector(func).shift(point)
