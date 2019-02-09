@@ -108,6 +108,48 @@ class Equation(Scene):
         self.wait()
 
 
+class ArcLength(Scene):
+    def construct(self):
+        g_config = {
+            "propagate_style_to_family": True,
+            "three_d": False,
+            "number_line_config": {
+                "color": LIGHT_GREY,
+                "include_tip": True,
+            },
+            "x_axis_config": {},
+            "y_axis_config": {
+                "label_direction": LEFT,
+            },
+            "x_min": 0,
+            "x_max": 2,
+            "y_min": 0,
+            "y_max": 2,
+            "default_num_graph_points": 100,
+        }
+        curve = ParametricFunction(
+            self.func,
+            t_min=0,
+            t_max=2,
+        )
+        axes = Axes(
+            **g_config
+        )
+
+        axes.scale(2)
+        curve.scale(2)
+
+        self.play(ShowCreation(axes), ShowCreation(curve))
+        self.wait(2)
+
+    @staticmethod
+    def func(t):
+        return np.array([
+            t,
+            np.sin(t) * (t ** 2)
+        ])
+
+
 class LineIntegralScalar(ThreeDScene):
 
     def construct(self):
