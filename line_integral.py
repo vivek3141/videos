@@ -3,8 +3,31 @@ from manim import *
 
 class Intro(Scene):
     def construct(self):
-        pass
+        li = TextMobject("Line Integral", color=BLUE)
+        li.scale(2)
 
+        int2 = TexMobject(r"\int_C\overrightarrow{\textbf{F}} \bullet \textbf{d} \overrightarrow{\textbf{r}}")
+        int2.scale(1.5)
+
+        int1 = TexMobject(r"\int_C f(x,y) ds")
+        int1.scale(1.5)
+
+        int3 = TexMobject(r"\int_C \textbf{P}dx + \textbf{Q}dy")
+        int3.scale(1.5)
+
+        self.play(Write(li))
+        self.wait()
+        self.play(ApplyMethod(li.shift, 3 * UP))
+        self.wait()
+
+        self.play(Write(int1))
+        self.wait()
+
+        self.play(Write(int2))
+        self.wait()
+
+        self.play(Write(int3))
+        self.wait()
 
 class LineIntegralScalar(ThreeDScene):
 
