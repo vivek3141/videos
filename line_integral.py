@@ -202,26 +202,63 @@ class ArcLength(Scene):
 
 class ArcExp(Scene):
     def construct(self):
-        step1 = TexMobject(r"\Delta s = \sqrt{{\Delta x}^2 + {\Delta y}^2}}")
+        step1 = TexMobject(r"\Delta s = \sqrt{{\Delta x}^2 + "
+                           r"{\Delta y}^2}}"
+                           )
         step1.scale(1.5)
 
-        step2 = TexMobject(r"\sum_{i=1}^{n}{\sqrt{{\Delta x_i}^2 + {\Delta y_i}^2}}}")
+        step2 = TexMobject(r"\sum_{i=1}^{n}{\sqrt{{\Delta x_i}^2 + "
+                           r"{\Delta y_i}^2}}}"
+                           )
         step2.scale(1.5)
 
-        step3 = TexMobject(r"\lim_{n \rightarrow \infty} \sum_{i=1}^{n}{\sqrt{{\Delta x_i}^2 + {\Delta y_i}^2}}}")
+        step3 = TexMobject(r"\lim_{n \rightarrow \infty} "
+                           r"\sum_{i=1}^{n}{\sqrt{{\Delta x_i}^2 + {\Delta y_i}^2}}}"
+                           )
         step3.scale(1.5)
 
         step4 = TexMobject(
             r"\lim_{n \rightarrow \infty} \sum_{i=1}^{n}{\sqrt{(\frac{\Delta x_i}{\Delta t})^2 +"
-            r"(\frac{\Delta y_i}{\Delta t})^2} \Delta t}}")
+            r"(\frac{\Delta y_i}{\Delta t})^2} \Delta t}}"
+        )
         step4.scale(1.5)
 
         step5 = TexMobject(
             r"\int_a^b {\sqrt{(\frac{dx}{dt})^2 +"
-            r"(\frac{dy}{dt})^2}dt}}")
+            r"(\frac{dy}{dt})^2}dt}}"
+        )
         step5.scale(1.5)
 
-        self.play(ShowCreation(step5))
+        step6 = TexMobject(
+            r"\int_a^b ds"
+        )
+        step6.scale(1.5)
+        step6.shift(2 * DOWN)
+
+        equal = TexMobject(r"=")
+        equal.scale(1.5)
+
+        self.play(Write(step1))
+        self.wait()
+
+        self.play(Transform(step1, step2))
+        self.wait()
+
+        self.play(Transform(step1, step3))
+        self.wait()
+
+        self.play(Transform(step1, step4))
+        self.wait()
+
+        self.play(Transform(step1, step5))
+        self.wait()
+
+        self.play(
+            ApplyMethod(step1.shift, 2 * UP),
+            Write(step6),
+            Write(equal)
+                  )
+
         self.wait()
 
 
