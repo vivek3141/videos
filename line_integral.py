@@ -66,7 +66,6 @@ class ScalarField(ThreeDScene):
         axes = ThreeDAxes(
             **t_config
         )
-        self.move_camera(0.8 * np.pi / 2, -0.45 * np.pi)
 
         func = ParametricSurface(
             self.func,
@@ -85,15 +84,28 @@ class ScalarField(ThreeDScene):
         self.play(Write(title))
         self.wait()
 
-        self.play(ApplyMethod(title.shift),)
-        self.play(ShowCreation(axes))
+        self.play(Uncreate(title))
+        self.move_camera(0.8 * np.pi / 2, -0.45 * np.pi)
 
-    def func(self, u, v):
+        self.play(ShowCreation(axes), ShowCreation(func))
+        self.begin_ambient_camera_rotation()
+        self.wait(30)
+
+    @staticmethod
+    def func(u, v):
         return np.array([
             u,
             v,
             u ** 2 + v ** 2,
         ])
+
+
+class Equation(Scene):
+    def construct(self):
+        eq = TexMobject("f(x,y) = x^2+y^2")
+        eq.scale(2)
+        self.play(Write(eq))
+        self.wait()
 
 
 class LineIntegralScalar(ThreeDScene):
