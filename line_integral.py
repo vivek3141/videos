@@ -127,27 +127,87 @@ class ArcLength(Scene):
             "y_max": 2,
             "default_num_graph_points": 100,
         }
+
         curve = ParametricFunction(
             self.func,
             t_min=0,
             t_max=2,
+            color=BLUE
         )
+
         axes = Axes(
             **g_config
         )
 
-        axes.scale(2)
-        curve.scale(2)
+        heading = TextMobject("Arc Length", color=YELLOW)
+        heading.scale(2)
 
-        self.play(ShowCreation(axes), ShowCreation(curve))
-        self.wait(2)
+        text = TexMobject(r"\langle x(t), y(t) \rangle")
+        text.shift(2.5 * RIGHT + 2 * UP)
+        text.scale(0.5)
+
+        func = VGroup(axes, curve, text)
+        func.scale(2)
+        func.move_to(ORIGIN)
+
+        t1 = Line(0.5 * LEFT + 1 * DOWN, 1 * DOWN + 1.25 * LEFT, color=GREEN)
+        t2 = Line(0.5 * LEFT + 1 * DOWN, 0.5 * LEFT + 3.25 * UP, color=RED)
+
+        t3 = Line(1 * DOWN + 1.25 * LEFT, 0.5 * LEFT + 3.25 * UP, color=YELLOW)
+
+        b1 = Brace(VGroup(t1), DOWN, color=GREEN)
+        dx = b1.get_tex(r"\Delta x")
+
+        b2 = Brace(VGroup(t2), RIGHT, color=RED)
+        dy = b2.get_tex(r"\Delta y")
+
+        b3 = Brace(
+            VGroup(t3),
+            np.array([
+                -0.99388, 0.16, 0
+            ]))
+        d = b3.get_tex(r"\Delta s")
+
+        self.play(Write(heading))
+        self.wait()
+
+        self.play(ApplyMethod(heading.shift, 3.5 * UP))
+
+        self.play(ShowCreation(func))
+        self.wait()
+
+        self.play(ApplyMethod(func.scale, 4), Uncreate(heading))
+        self.wait()
+
+        self.play(ShowCreation(t1), ShowCreation(t2))
+        self.wait()
+
+        self.play(ShowCreation(b1), ShowCreation(dx))
+        self.wait()
+
+        self.play(ShowCreation(b2), ShowCreation(dy))
+        self.wait()
+
+        self.play(ShowCreation(t3), ShowCreation(b3), ShowCreation(d))
+        self.wait()
 
     @staticmethod
     def func(t):
         return np.array([
             t,
-            np.sin(t) * (t ** 2)
+            np.sin(5 * t) * t + 1,
+            0
         ])
+
+
+class ArcExp(Scene):
+    def construct(self):
+        step1 = TexMobject(r"\Delta s = \sqrt{{\Delta x}^2 + {\Delta y}^2}}")
+        step1 = TexMobject(r"\\Delta s = \sqrt{{\Delta x}^2 + {\Delta y}^2}}")
+        step1 = TexMobject(r"\Delta s = \sqrt{{\Delta x}^2 + {\Delta y}^2}}")
+        step1 = TexMobject(r"\Delta s = \sqrt{{\Delta x}^2 + {\Delta y}^2}}")
+
+        self.play(ShowCreation(step1))
 
 
 class LineIntegralScalar(ThreeDScene):
