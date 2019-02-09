@@ -42,6 +42,28 @@ class Intro(Scene):
         self.wait(2)
 
 
+class ScalarField(ThreeDScene):
+    def construct(self):
+        t_config = {
+            "x_min": -1,
+            "x_max": 1,
+            "y_min": -1,
+            "y_max": 1,
+            "z_axis_config": {},
+            "z_min": -1,
+            "z_max": 1,
+            "z_normal": DOWN,
+            "num_axis_pieces": 20,
+            "light_source": 9 * DOWN + 7 * LEFT + 10 * OUT,
+            "number_line_config": {
+                "include_tip": False,
+            },
+        }
+
+        axes = ThreeDAxes(**t_config)
+
+        self.play(ShowCreation(axes))
+
 class LineIntegralScalar(ThreeDScene):
 
     def construct(self):
