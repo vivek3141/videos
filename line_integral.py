@@ -488,3 +488,34 @@ class Example(Scene):
             6 - 7 * t,
             0
         ])
+
+
+class VectorField(Scene):
+    CONFIG = {
+        "plane_kwargs": {
+            "color": RED_B
+        },
+        "point_charge_loc": 0.5 * RIGHT - 1.5 * UP,
+    }
+
+    def construct(self):
+        plane = NumberPlane(**self.plane_kwargs)
+        plane.main_lines.fade(.9)
+        plane.add(plane.get_axis_labels())
+        self.add(plane)
+
+        field = VGroup(*[self.calc_field(x * RIGHT + y * UP)
+                         for x in np.arange(-9, 9, 1)
+                         for y in np.arange(-5, 5, 1)
+                         ])
+
+        self.play(ShowCreation(field))
+
+    def calc_field(self, point):
+        x, y = point[:2]
+        # Rx, Ry = self.point_charge_loc[:2]
+        # r = math.sqrt((x - Rx) ** 2 + (y - Ry) ** 2)
+        # efield = (point - self.point_charge_loc) / r ** 3
+        efield = np.array((-y, x, 0)) / math.sqrt(x ** 2 + y ** 2)  # Try one of these two fields
+        # efield = np.array(( -2*(y%2)+1 , -2*(x%2)+1 , 0 ))/3  #Try one of these two fields
+        return Vector(efield).shift(point)
