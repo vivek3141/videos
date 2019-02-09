@@ -203,11 +203,26 @@ class ArcLength(Scene):
 class ArcExp(Scene):
     def construct(self):
         step1 = TexMobject(r"\Delta s = \sqrt{{\Delta x}^2 + {\Delta y}^2}}")
-        step2 = TexMobject(r"\sum_{i=1}^{n}{\sqrt{{\Delta x_i}^2 + {\Delta y_i}^2}}}")
-        step3 = TexMobject(r"\Delta s = \sqrt{{\Delta x}^2 + {\Delta y}^2}}")
-        step4 = TexMobject(r"\Delta s = \sqrt{{\Delta x}^2 + {\Delta y}^2}}")
+        step1.scale(1.5)
 
-        self.play(ShowCreation(step2))
+        step2 = TexMobject(r"\sum_{i=1}^{n}{\sqrt{{\Delta x_i}^2 + {\Delta y_i}^2}}}")
+        step2.scale(1.5)
+
+        step3 = TexMobject(r"\lim_{n \rightarrow \infty} \sum_{i=1}^{n}{\sqrt{{\Delta x_i}^2 + {\Delta y_i}^2}}}")
+        step3.scale(1.5)
+
+        step4 = TexMobject(
+            r"\lim_{n \rightarrow \infty} \sum_{i=1}^{n}{\sqrt{(\frac{\Delta x_i}{\Delta t})^2 +"
+            r"(\frac{\Delta y_i}{\Delta t})^2} \Delta t}}")
+        step4.scale(1.5)
+
+        step5 = TexMobject(
+            r"\int_a^b {\sqrt{(\frac{dx}{dt})^2 +"
+            r"(\frac{dy}{dt})^2}dt}}")
+        step5.scale(1.5)
+
+        self.play(ShowCreation(step5))
+        self.wait()
 
 
 class LineIntegralScalar(ThreeDScene):
