@@ -413,16 +413,31 @@ class Example(Scene):
         axes = Axes(**axes_config)
         curve = ParametricFunction(
             self.func,
-            t_min=-1,
-            t_max=1
+            t_min=0,
+            t_max=1,
+            color=RED
         )
         func = VGroup(axes, curve)
+        func.move_to(ORIGIN + 2 * RIGHT)
+
+        question = TextMobject(
+            r"Evaluate $\int_C (3x^2 - 2y) ds$ \\where C is the line segment \\from $(3,6)$ to $(1,−1)$.")
+        question.scale(1.5)
+
+        self.play(Write(question))
+        self.wait()
+
+        self.play(ApplyMethod(question.scale, 0.5))
+        self.play(ApplyMethod(question.shift, 3 * UP + 2 * LEFT))
+        self.wait()
+
         self.play(ShowCreation(func))
+        self.wait()
 
     @staticmethod
     def func(t):
         return np.array([
-            3 - 2*t,
-            6 - 7*t,
+            3 - 2 * t,
+            6 - 7 * t,
             0
         ])
