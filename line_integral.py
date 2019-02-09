@@ -504,7 +504,6 @@ class VectorField(Scene):
         plane = NumberPlane(**self.plane_kwargs)
         plane.main_lines.fade(.9)
         plane.add(plane.get_axis_labels())
-        self.add(plane)
 
         field = VGroup(*[self.calc_field(x * RIGHT + y * UP)
                          for x in np.arange(-9, 9, 1)
@@ -512,18 +511,34 @@ class VectorField(Scene):
                          ])
 
         field_color = VGroup(*[self.calc_field_color(x * RIGHT + y * UP)
-                         for x in np.arange(-9, 9, 1)
-                         for y in np.arange(-5, 5, 1)
-                         ])
+                               for x in np.arange(-9, 9, 1)
+                               for y in np.arange(-5, 5, 1)
+                               ])
+
+        head = TextMobject("Vector Field", color=RED)
+        head.scale(2)
+
+        back = BackgroundRectangle(head, fill_opacity=1)
+        heading = VGroup(head, back)
+
+        self.play(Write(heading))
+        self.wait()
+
+        self.play(ApplyMethod(heading.scale, 0.5))
+        self.play(ApplyMethod(heading.shift, 3 * UP))
+        self.wait()
 
         self.play(ShowCreation(field))
+        self.wait(2)
+
+        self.play(Transform(field, field_color))
         self.wait(2)
 
     def calc_field_color(self, point):
         x, y = point[:2]
         func = np.array([x, y])
         magnitude = math.sqrt(func[0] ** 2 + func[1] ** 2)
-        func = func / magnitude
+        func = func / magnitude if magnitude != 0 else np.array([0, 0])
         func = func / 1.5
         v = int(magnitude / 10 ** self.prop)
         index = len(self.color_list) - 1 if v > len(self.color_list) - 1 else v
