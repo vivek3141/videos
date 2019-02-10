@@ -839,3 +839,100 @@ class LineIntegralVector(Scene):
             if self.t >= 3:
                 del self.r
             self.t = self.t + dt
+
+
+class VectorExample(Scene):
+    def construct(self):
+        axes_config = {"x_min": 0,
+                       "x_max": 3,
+                       "y_min": -1,
+                       "y_max": 6,
+                       "z_axis_config": {},
+                       "z_min": -1,
+                       "z_max": 1,
+                       "z_normal": DOWN,
+                       "num_axis_pieces": 20,
+                       "light_source": 9 * DOWN + 7 * LEFT + 10 * OUT,
+                       "number_line_config": {
+                           "include_tip": False,
+                       },
+                       }
+
+        axes = Axes(**axes_config)
+        curve = ParametricFunction(
+            self.func,
+            t_min=0,
+            t_max=1,
+            color=RED
+        )
+        func = VGroup(axes, curve)
+        func.move_to(ORIGIN + 3 * LEFT)
+        func.scale(0.75)
+
+        question = TextMobject(
+            r"Evaluate $\int_C (3x^2 - 2y) ds$ \\where C is the line segment \\from $(3,6)$ to $(1,−1)$.")
+        question.scale(1.5)
+
+        step1 = TexMobject(r"C = \langle 3 - 2t, 6-7t \rangle \ 0 \leq t \leq 1")
+        step1.move_to(2 * RIGHT + 1.5 * UP)
+        step1.scale(0.75)
+
+        step2 = TexMobject(r"\frac{dx}{dt} = -2, \frac{dy}{dt} = -7")
+        step2.move_to(2 * RIGHT + 0.5 * UP)
+        step2.scale(0.75)
+
+        step3 = TexMobject(r"ds = \sqrt{(-2)^2 + (-7)^2} dt = \sqrt{53} \ dt")
+        step3.move_to(2 * RIGHT + 0.5 * DOWN)
+        step3.scale(0.75)
+
+        step4 = TexMobject(r"\int_C (3x^2 - 2y) \ ds")
+        step4.move_to(2 * RIGHT + 1.5 * DOWN)
+        step4.scale(0.75)
+
+        equal = TexMobject("=")
+        equal.move_to(2 * RIGHT + 2 * DOWN)
+        equal.scale(0.5)
+
+        step5 = TexMobject(r"\int_0^1 (3(3 - 2t)^2 - 2(6 - 7t)^2) \sqrt{53} \ dt")
+        step5.move_to(2 * RIGHT + 3 * DOWN)
+        step5.scale(0.75)
+
+        ans = TexMobject(r"8 \sqrt{53}")
+        ans.move_to(2 * RIGHT + 3 * DOWN)
+
+        self.play(Write(question))
+        self.wait()
+
+        self.play(ApplyMethod(question.scale, 0.5))
+        self.play(ApplyMethod(question.shift, 3 * UP + 2 * RIGHT))
+        self.wait()
+
+        self.play(ShowCreation(func))
+        self.wait()
+
+        self.play(Write(step1))
+        self.wait()
+
+        self.play(Write(step2))
+        self.wait()
+
+        self.play(Write(step3))
+        self.wait()
+
+        self.play(Write(step4))
+        self.play(Write(equal))
+        self.wait()
+
+        self.play(Write(step5))
+        self.wait()
+
+        self.play(Transform(step5, ans))
+        self.wait()
+
+    @staticmethod
+    def func(t):
+        return np.array([
+            3 - 2 * t,
+            6 - 7 * t,
+            0
+        ])
