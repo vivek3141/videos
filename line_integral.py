@@ -607,7 +607,30 @@ class VectorField(Scene):
 
 class LineIntegralVector(Scene):
     def construct(self):
-        pass
+        axes_config = {"x_min": -5,
+                       "x_max": 5,
+                       "y_min": -5,
+                       "y_max": 5,
+                       "z_axis_config": {},
+                       "z_min": -1,
+                       "z_max": 1,
+                       "z_normal": DOWN,
+                       "num_axis_pieces": 20,
+                       "light_source": 9 * DOWN + 7 * LEFT + 10 * OUT,
+                       "number_line_config": {
+                           "include_tip": False,
+                       },
+                       }
+        axes = Axes(**axes_config)
+        f = VGroup(
+            *[self.calc_field_color(x * RIGHT + y * UP, lambda x, y: np.array([x, y]), prop=0)
+              for x in np.arange(-5, 5, 1)
+              for y in np.arange(-5, 5, 1)
+              ]
+        )
+
+        field = VGroup(axes, f)
+        self.play(ShowCreation(field))
 
     def calc_field_color(self, point, f, prop=0.0):
         x, y = point[:2]
