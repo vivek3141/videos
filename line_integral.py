@@ -627,6 +627,20 @@ class LineIntegralVector(Scene):
                            "include_tip": False,
                        },
                        }
+        r_config = {"x_min": -3,
+                    "x_max": 3,
+                    "y_min": 0,
+                    "y_max": 0.01,
+                    "z_axis_config": {},
+                    "z_min": -1,
+                    "z_max": 1,
+                    "z_normal": DOWN,
+                    "num_axis_pieces": 20,
+                    "light_source": 9 * DOWN + 7 * LEFT + 10 * OUT,
+                    "number_line_config": {
+                        "include_tip": False,
+                    },
+                    }
 
         axes = Axes(**axes_config)
         f = VGroup(
@@ -652,10 +666,25 @@ class LineIntegralVector(Scene):
         )
         label = TextMobject("C")
         label.shift(2 * LEFT)
+        label.scale(2)
 
         curve = VGroup(label, c)
         curve.scale(0.5)
 
+        r_axes = Axes(**r_config)
+        c2 = ParametricFunction(
+            self.line_evaluated,
+            t_min=-3,
+            t_max=3,
+            color=RED
+        )
+        func = VGroup(r_axes)
+        func.shift(3 * DOWN + 2 * LEFT)
+
+        c_o = 2.5 * DOWN + 2 * RIGHT
+        circle = Circle(color=WHITE)
+        circle.move_to(c_o)
+        """
         self.play(Write(integral))
 
         self.play(ApplyMethod(integral.scale, 0.5))
@@ -665,7 +694,16 @@ class LineIntegralVector(Scene):
         self.play(ShowCreation(field))
         self.wait()
 
-        self.play(ShowCreation(curve))
+        self.play(Write(curve))
+        self.wait()
+
+        self.play(Uncreate(integral), ApplyMethod(field.shift, 1 * UP), ApplyMethod(curve.shift, 1 * UP))
+        self.wait()
+"""
+        self.play(ShowCreation(func))
+        self.wait()
+
+        self.play(Write(circle))
         self.wait()
 
     def calc_field_color(self, point, f, prop=0.0):
@@ -684,5 +722,16 @@ class LineIntegralVector(Scene):
         return np.array([
             2 * np.arctan(t),
             t,
+            0
+        ])
+
+    @staticmethod
+    def line_evaluated(x):
+        r_derivative = np.array([2 / (1 + x ** 2), 1])
+        f_r = np.array([x, 2 * np.arctan(x)])
+
+        return np.array([
+            x,
+            0.25 * np.dot(f_r, r_derivative),
             0
         ])
