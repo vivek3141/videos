@@ -606,6 +606,12 @@ class VectorField(Scene):
 
 
 class LineIntegralVector(Scene):
+    CONFIG = {
+        "color_list": ['#e22b2b', '#e88e10', '#eae600', '#88ea00',
+                       '#00eae2', '#0094ea', "#2700ea", '#bf00ea', '#ea0078'],
+        "prop": 0
+    }
+
     def construct(self):
         axes_config = {"x_min": -5,
                        "x_max": 5,
@@ -621,16 +627,46 @@ class LineIntegralVector(Scene):
                            "include_tip": False,
                        },
                        }
+
         axes = Axes(**axes_config)
         f = VGroup(
-            *[self.calc_field_color(x * RIGHT + y * UP, lambda x, y: np.array([x, y]), prop=0)
+            *[self.calc_field_color(x * RIGHT + y * UP, lambda x, y: np.array([y, x]), prop=0)
               for x in np.arange(-5, 5, 1)
               for y in np.arange(-5, 5, 1)
               ]
         )
 
         field = VGroup(axes, f)
+        field.scale(0.6)
+
+        eq = TexMobject(r"\int_C\overrightarrow{\textbf{F}} \bullet \textbf{d} \overrightarrow{\textbf{r}}")
+        eq.scale(1.5)
+
+        eq_back = BackgroundRectangle(eq, fill_opacity=1)
+        integral = VGroup(eq_back, eq)
+
+        c = ParametricFunction(
+            self.func,
+            t_min=-3,
+            t_max=3
+        )
+        label = TextMobject("C")
+        label.shift(2 * LEFT)
+
+        curve = VGroup(label, c)
+        curve.scale(0.5)
+
+        self.play(Write(integral))
+
+        self.play(ApplyMethod(integral.scale, 0.5))
+        self.play(ApplyMethod(integral.shift, 3 * UP))
+
+        self.bring_to_back(field)
         self.play(ShowCreation(field))
+        self.wait()
+
+        self.play(ShowCreation(curve))
+        self.wait()
 
     def calc_field_color(self, point, f, prop=0.0):
         x, y = point[:2]
@@ -642,3 +678,11 @@ class LineIntegralVector(Scene):
         index = len(self.color_list) - 1 if v > len(self.color_list) - 1 else v
         c = self.color_list[index]
         return Vector(func, color=c).shift(point)
+
+    @staticmethod
+    def func(t):
+        return np.array([
+            2 * np.arctan(t),
+            t,
+            0
+        ])
