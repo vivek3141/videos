@@ -649,6 +649,14 @@ class LineIntegralVector(Scene):
               for y in np.arange(-5, 5, 1)
               ]
         )
+        f2 = VGroup(
+            *[self.calc_field_color(x * RIGHT + y * UP, lambda x, y: np.array([y, x]), prop=0, opacity=0.5)
+              for x in np.arange(-5, 5, 1)
+              for y in np.arange(-5, 5, 1)
+              ]
+        )
+        f2.scale(0.6)
+        f2.shift(1 * UP)
 
         field = VGroup(axes, f)
         field.scale(0.6)
@@ -688,16 +696,13 @@ class LineIntegralVector(Scene):
 
         v = self.r_prime(-3) * 0.6
         v = Vector(v)
-        v.shift((self.func(-3)[0] * 0.6 - 0.05) * RIGHT + (-3 * 0.6 + 1) * UP)
+        v.move_to((self.func(-3)[0] * 0.6 - 0.05) * RIGHT + (-3 * 0.6 + 1) * UP)
 
         r_label = TexMobject(r"\overrightarrow{r}")
-        r_label.move_to(v, 3 * LEFT)
+        r_label.move_to(v)
+        r_label.shift(0.5 * LEFT)
 
         r = VGroup(r_label, v)
-
-
-        for t in np.arange(-3, 3, 0.01):
-            pass
 
         self.play(Write(integral))
 
@@ -714,7 +719,7 @@ class LineIntegralVector(Scene):
         self.play(Uncreate(integral), ApplyMethod(field.shift, 1 * UP), ApplyMethod(curve.shift, 1 * UP))
         self.wait()
 
-        self.play(ApplyMethod(field.set_fill, opacity=0.5))
+        self.play(Transform(f, f2))
         self.play(Write(r))
         self.wait()
 
@@ -723,6 +728,10 @@ class LineIntegralVector(Scene):
 
         # self.play(Write(circle))
         # self.wait()
+        self.r = r
+        self.t = -3
+        self.always_continually_update = True
+        self.wait(10)
 
     def calc_field_color(self, point, f, prop=0.0, opacity=None):
         x, y = point[:2]
@@ -761,3 +770,14 @@ class LineIntegralVector(Scene):
     def r_prime(x):
         r_d = np.array([2 / (1 + x ** 2), 1])
         return r_d
+
+    def continual_update(self, *args, **kwargs):
+        Scene.continual_update(self, *args, **kwargs)
+        if hasattr(self, "r"):
+            dt = self.frame_duration
+            t = self.t
+            v = self.r_prime(t) * 0.6
+            self.r.move_to((self.func(t)[0] * 0.6 - (v[0] / 2)) * RIGHT + (t * 0.6 + 1 - (v[1] / 2)) * UP)
+            self.t = self.t + dt
+            if self.t >= 3:
+                del self.r
