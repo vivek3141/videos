@@ -777,7 +777,8 @@ class LineIntegralVector(Scene):
             dt = self.frame_duration
             t = self.t
             v = self.r_prime(t) * 0.6
-            self.r.move_to((self.func(t)[0] * 0.6 - (v[0] / 2)) * RIGHT + (t * 0.6 + 1 - (v[1] / 2)) * UP)
+            point = (self.func(t + dt) - self.func(t)) * RIGHT + dt * UP
+            self.r.shift(point)
             self.t = self.t + dt
             if self.t >= 3:
                 del self.r
