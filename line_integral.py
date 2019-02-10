@@ -723,11 +723,11 @@ class LineIntegralVector(Scene):
         self.play(Write(r))
         self.wait()
 
-        # self.play(ShowCreation(func))
-        # self.wait()
+        self.play(ShowCreation(func))
+        self.wait()
 
-        # self.play(Write(circle))
-        # self.wait()
+        self.play(Write(circle))
+        self.wait()
 
         self.r = r
         self.r_ = v
@@ -780,14 +780,13 @@ class LineIntegralVector(Scene):
             dt = self.frame_duration
 
             t = self.t
-            dv = (self.r_prime(t + dt) - self.r_prime(t)) * 0.6
-
             d_point = (self.func(t + dt) - self.func(t)) * 0.6 * RIGHT + ((dt * 0.6) * UP)
 
             self.r.shift(d_point)
-
             self.r_.put_start_and_end_on(self.r_.get_start(), (self.r_prime(t) * 0.6) + self.r_.get_start())
             self.t = self.t + dt
+
+            self.add(Line(3 * DOWN + 4 * LEFT, (3 - self.line_evaluated(t)[1]) * DOWN + (2 - dt) * LEFT))
 
             if self.t >= 3:
                 del self.r
