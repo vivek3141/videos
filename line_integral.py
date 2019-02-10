@@ -681,7 +681,7 @@ class LineIntegralVector(Scene):
         func = VGroup(r_axes)
         func.shift(3 * DOWN + 2 * LEFT)
 
-        c_o = 2.5 * DOWN + 2 * RIGHT
+        c_o = 2.5 * DOWN + 3 * RIGHT
         circle = Circle(color=WHITE)
         circle.move_to(c_o)
         """
