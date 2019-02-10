@@ -521,6 +521,15 @@ class VectorField(Scene):
         back = BackgroundRectangle(head, fill_opacity=1)
         heading = VGroup(back, head)
 
+        eq = TexMobject(r"\overrightarrow{\textbf{F}}(x, y) = \langle x, y \rangle", color=WHITE)
+        eq.scale(2)
+
+        eq_back = BackgroundRectangle(eq, fill_opacity=1)
+        equation = VGroup(eq_back, eq)
+
+        equation.scale(0.75)
+        equation.shift(3 * DOWN)
+
         self.play(Write(heading))
         self.wait()
 
@@ -535,6 +544,9 @@ class VectorField(Scene):
         self.wait(2)
 
         self.play(Transform(field, field_color))
+        self.wait(2)
+
+        self.play(Write(equation))
         self.wait(2)
 
     def calc_field_color(self, point):
