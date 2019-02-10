@@ -519,15 +519,18 @@ class VectorField(Scene):
         head.scale(2)
 
         back = BackgroundRectangle(head, fill_opacity=1)
-        heading = VGroup(head, back)
+        heading = VGroup(back, head)
 
         self.play(Write(heading))
         self.wait()
 
-        self.play(ApplyMethod(heading.scale, 0.5))
         self.play(ApplyMethod(heading.shift, 3 * UP))
         self.wait()
 
+        self.bring_to_back(plane)
+        self.play(ShowCreation(plane))
+
+        self.bring_to_back(field)
         self.play(ShowCreation(field))
         self.wait(2)
 
