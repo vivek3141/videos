@@ -734,6 +734,9 @@ class LineIntegralVector(Scene):
 
         r = VGroup(r_label, v)
 
+        s1 = TexMobject(r"\int_C \overrightarrow{\textbf{F}} \bullet \textbf{d} \overrightarrow{r}")
+        s2 = TexMobject(r"\int_C \overrightarrow{\textbf{F}} ( \overrightarrow{r} (t) ) \bullet \overrightarrow{r}'(t)")
+
         self.play(Write(integral))
 
         self.play(ApplyMethod(integral.scale, 0.5))
@@ -767,6 +770,25 @@ class LineIntegralVector(Scene):
         self.always_continually_update = True
 
         self.wait(10)
+
+        self.play(
+            Uncreate(dot),
+            Uncreate(self.v2),
+            Uncreate(self.fr),
+            Uncreate(l1),
+            Uncreate(l2),
+            Uncreate(func),
+            Uncreate(r),
+            Uncreate(field),
+            Uncreate(curve),
+            Uncreate(circle)
+        )
+
+        self.play(Write(s1))
+        self.wait()
+
+        self.play(Transform(s1, s2))
+        self.wait()
 
     def calc_field_color(self, point, f, prop=0.0, opacity=None):
         x, y = point[:2]
@@ -845,7 +867,7 @@ class VectorExample(Scene):
     def construct(self):
         axes_config = {"x_min": 0,
                        "x_max": 3,
-                       "y_min": -1,
+                       "y_min": 0,
                        "y_max": 6,
                        "z_axis_config": {},
                        "z_min": -1,
@@ -870,24 +892,28 @@ class VectorExample(Scene):
         func.scale(0.75)
 
         question = TextMobject(
-            r"Evaluate $\int_C (\overrightarrow{\textbf{F}}) \bullet \texfbf{d} \overrightarrow{r}$ "
-            r"\\where C is the line segment \\from $(3,7)$ to $(0,12)$ and \\ \overrightarrow{\textbf{F}}"
-            r"=\langle y^2, 3x-6y \rangle.")
+            r"Evaluate $\int_C \overrightarrow{\textbf{F}} \bullet \textbf{d} \overrightarrow{r}$ "
+            r"\\where C is the line segment \\from $(3,7)$ to $(0,12)$ and \\ $\overrightarrow{\textbf{F}}$"
+            r"= $\langle y^2, 3x-6y \rangle$.")
         question.scale(1.5)
 
-        step1 = TexMobject(r"C = \langle 3 - 2t, 6-7t \rangle \ 0 \leq t \leq 1")
+        step1 = TexMobject(r"C = \langle 3 - 3t, 7 + 5t \rangle \ 0 \leq t \leq 1")
         step1.move_to(2 * RIGHT + 1.5 * UP)
         step1.scale(0.75)
 
-        step2 = TexMobject(r"\frac{dx}{dt} = -2, \frac{dy}{dt} = -7")
+        step2 = TexMobject(
+            r"\overrightarrow{\textbf{F}} ( \overrightarrow{r} (t) ) = \langle (7 + 5t)^2, -33 -39t \rangle")
         step2.move_to(2 * RIGHT + 0.5 * UP)
         step2.scale(0.75)
 
-        step3 = TexMobject(r"ds = \sqrt{(-2)^2 + (-7)^2} dt = \sqrt{53} \ dt")
+        step3 = TexMobject(r"\overrightarrow{r}'(t) = \langle -3, 5 \rangle")
         step3.move_to(2 * RIGHT + 0.5 * DOWN)
         step3.scale(0.75)
 
-        step4 = TexMobject(r"\int_C (3x^2 - 2y) \ ds")
+        step4 = TexMobject(
+            r"\int_C \overrightarrow{\textbf{F}} \bullet \textbf{d} "
+            r"\overrightarrow{r} = \int_C \overrightarrow{\textbf{F}} ( \overrightarrow{r} (t) )"
+            r"\bullet \overrightarrow{r}'(t)")
         step4.move_to(2 * RIGHT + 1.5 * DOWN)
         step4.scale(0.75)
 
@@ -935,6 +961,6 @@ class VectorExample(Scene):
     def func(t):
         return np.array([
             3 - 3 * t,
-            7 + 5 * t,
+            3.5 + 2.5 * t,
             0
         ])
