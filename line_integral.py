@@ -698,6 +698,32 @@ class LineIntegralVector(Scene):
         v = Vector(v)
         v.move_to((self.func(-3)[0] * 0.6) * RIGHT + ((-3 * 0.6) + 1.29) * UP)
 
+        self.v2 = self.r_prime(-3) * 0.25
+        self.v2 = Vector(self.v2, color=RED)
+        self.v2.shift(c_o)
+
+        self.fr = self.f_r(-3) * 0.25
+        self.fr = Vector(self.fr, color=GREEN)
+        self.fr.shift(c_o)
+
+        label_fr = TexMobject(r"= \overrightarrow{\textbf{F}} ( \overrightarrow{r} (t) )").scale(0.75)
+        label_r = TexMobject(r"= \overrightarrow{r}'(t)").scale(0.75)
+
+        arrow1 = Vector([0, 1], color=GREEN)
+        arrow2 = Vector([0, 1], color=RED)
+
+        arrow1.shift(2 * UP + 4 * RIGHT)
+        arrow2.shift(4 * RIGHT)
+
+        label_fr.move_to(arrow1)
+        label_fr.shift(2 * LEFT)
+
+        label_r.move_to(arrow2)
+        label_r.shift(2 * LEFT)
+
+        l1 = VGroup(arrow1, label_fr)
+        l2 = VGroup(arrow2, label_r)
+
         r_label = TexMobject(r"\overrightarrow{r}'(t)")
         r_label.move_to(v)
         r_label.shift(1 * LEFT)
@@ -726,7 +752,7 @@ class LineIntegralVector(Scene):
         self.play(ShowCreation(func))
         self.wait()
 
-        self.play(Write(circle))
+        self.play(Write(circle), Write(self.v2), Write(self.fr), Write(l1), Write(l2))
         self.wait()
 
         self.r = r
@@ -758,6 +784,14 @@ class LineIntegralVector(Scene):
             0
         ])
 
+    def f_r(self, t):
+        r = self.func(t)
+        return np.array([
+            r[1],
+            r[0],
+            0
+        ])
+
     @staticmethod
     def line_evaluated(x):
         r_derivative = np.array([2 / (1 + x ** 2), 1])
@@ -784,9 +818,18 @@ class LineIntegralVector(Scene):
 
             self.r.shift(d_point)
             self.r_.put_start_and_end_on(self.r_.get_start(), (self.r_prime(t) * 0.6) + self.r_.get_start())
-            self.t = self.t + dt
 
-            self.add(Line(3 * DOWN + 4 * LEFT, (3 - self.line_evaluated(t)[1]) * DOWN + (2 - dt) * LEFT))
+            self.fr.put_start_and_end_on(self.fr.get_start(), (self.f_r(t) * 0.25) + self.fr.get_start())
+            self.v2.put_start_and_end_on(self.v2.get_start(), (self.func(t) * 0.25) + self.v2.get_start())
+
+            self.add(
+                Line(
+                    (3 - self.line_evaluated(t)[1]) * DOWN + (2 - t) * LEFT,
+                    (3 - self.line_evaluated(t + dt)[1]) * DOWN + (2 - t - dt) * LEFT,
+                    color=RED
+                )
+            )
 
             if self.t >= 3:
                 del self.r
+            self.t = self.t + dt
