@@ -696,11 +696,11 @@ class LineIntegralVector(Scene):
 
         v = self.r_prime(-3) * 0.6
         v = Vector(v)
-        v.move_to((self.func(-3)[0] * 0.6 - 0.05) * RIGHT + (-3 * 0.6 + 1) * UP)
+        v.move_to((self.func(-3)[0] * 0.6) * RIGHT + ((-3 * 0.6) + 1.29) * UP)
 
-        r_label = TexMobject(r"\overrightarrow{r}")
+        r_label = TexMobject(r"\overrightarrow{r}'(t)")
         r_label.move_to(v)
-        r_label.shift(0.5 * LEFT)
+        r_label.shift(1 * LEFT)
 
         r = VGroup(r_label, v)
 
@@ -728,9 +728,12 @@ class LineIntegralVector(Scene):
 
         # self.play(Write(circle))
         # self.wait()
+
         self.r = r
+        self.r_ = v
         self.t = -3
         self.always_continually_update = True
+
         self.wait(10)
 
     def calc_field_color(self, point, f, prop=0.0, opacity=None):
@@ -768,17 +771,23 @@ class LineIntegralVector(Scene):
 
     @staticmethod
     def r_prime(x):
-        r_d = np.array([2 / (1 + x ** 2), 1])
+        r_d = np.array([2 / (1 + x ** 2), 1, 0])
         return r_d
 
     def continual_update(self, *args, **kwargs):
         Scene.continual_update(self, *args, **kwargs)
         if hasattr(self, "r"):
             dt = self.frame_duration
+
             t = self.t
-            v = self.r_prime(t) * 0.6
-            point = (self.func(t + dt) - self.func(t)) * RIGHT + dt * UP
-            self.r.shift(point)
+            dv = (self.r_prime(t + dt) - self.r_prime(t)) * 0.6
+
+            d_point = (self.func(t + dt) - self.func(t)) * 0.6 * RIGHT + ((dt * 0.6) * UP)
+
+            self.r.shift(d_point)
+
+            self.r_.put_start_and_end_on(self.r_.get_start(), (self.r_prime(t) * 0.6) + self.r_.get_start())
             self.t = self.t + dt
+
             if self.t >= 3:
                 del self.r
