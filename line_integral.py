@@ -505,12 +505,15 @@ class VectorField(Scene):
         plane.main_lines.fade(.9)
         plane.add(plane.get_axis_labels())
 
+        f1 = lambda x, y: np.array([x, y])
+        f2 = lambda x, y: np.array([math.cos(x), math.sin(y)])
+
         field = VGroup(*[self.calc_field(x * RIGHT + y * UP)
                          for x in np.arange(-9, 9, 1)
                          for y in np.arange(-5, 5, 1)
                          ])
 
-        field_color = VGroup(*[self.calc_field_color(x * RIGHT + y * UP)
+        field_color = VGroup(*[self.calc_field_color(x * RIGHT + y * UP, f1)
                                for x in np.arange(-9, 9, 1)
                                for y in np.arange(-5, 5, 1)
                                ])
@@ -549,9 +552,9 @@ class VectorField(Scene):
         self.play(Write(equation))
         self.wait(2)
 
-    def calc_field_color(self, point):
+    def calc_field_color(self, point, f):
         x, y = point[:2]
-        func = np.array([x, y])
+        func = f(x, y)
         magnitude = math.sqrt(func[0] ** 2 + func[1] ** 2)
         func = func / magnitude if magnitude != 0 else np.array([0, 0])
         func = func / 1.5
