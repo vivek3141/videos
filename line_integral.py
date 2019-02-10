@@ -507,6 +507,7 @@ class VectorField(Scene):
 
         f1 = lambda x, y: np.array([x, y])
         f2 = lambda x, y: np.array([math.cos(x), math.sin(y)])
+        f3 = lambda x, y: np.array([y, x])
 
         field = VGroup(*[self.calc_field(x * RIGHT + y * UP)
                          for x in np.arange(-9, 9, 1)
@@ -518,10 +519,15 @@ class VectorField(Scene):
                                for y in np.arange(-5, 5, 1)
                                ])
 
-        field2 = VGroup(*[self.calc_field_color(x * RIGHT + y * UP, f2)
-                               for x in np.arange(-9, 9, 1)
-                               for y in np.arange(-5, 5, 1)
-                               ])
+        field2 = VGroup(*[self.calc_field_color(x * RIGHT + y * UP, f2, prop=0)
+                          for x in np.arange(-9, 9, 1)
+                          for y in np.arange(-5, 5, 1)
+                          ])
+
+        field3 = VGroup(*[self.calc_field_color(x * RIGHT + y * UP, f3, prop=0)
+                          for x in np.arange(-9, 9, 1)
+                          for y in np.arange(-5, 5, 1)
+                          ])
 
         head = TextMobject("Vector Field", color=RED)
         head.scale(2)
@@ -538,14 +544,23 @@ class VectorField(Scene):
         equation.scale(0.75)
         equation.shift(3 * DOWN)
 
-        eq = TexMobject(r"\overrightarrow{\textbf{F}}(x, y) = \langle cos(x), sin(y) \rangle", color=WHITE)
-        eq.scale(2)
+        eq2 = TexMobject(r"\overrightarrow{\textbf{F}}(x, y) = \langle cos(x), sin(y) \rangle", color=WHITE)
+        eq2.scale(2)
 
-        eq_back = BackgroundRectangle(eq, fill_opacity=1)
-        equation = VGroup(eq_back, eq)
+        eq_back2 = BackgroundRectangle(eq2, fill_opacity=1)
+        equation2 = VGroup(eq_back2, eq2)
 
-        equation.scale(0.75)
-        equation.shift(3 * DOWN)
+        equation2.scale(0.75)
+        equation2.shift(3 * DOWN)
+
+        eq3 = TexMobject(r"\overrightarrow{\textbf{F}}(x, y) = \langle y, x \rangle", color=WHITE)
+        eq3.scale(2)
+
+        eq_back3 = BackgroundRectangle(eq3, fill_opacity=1)
+        equation3 = VGroup(eq_back3, eq3)
+
+        equation3.scale(0.75)
+        equation3.shift(3 * DOWN)
 
         self.play(Write(heading))
         self.wait()
@@ -558,24 +573,27 @@ class VectorField(Scene):
 
         self.bring_to_back(field)
         self.play(ShowCreation(field))
-        self.wait(2)
+        self.wait()
 
         self.play(Transform(field, field_color))
-        self.wait(2)
+        self.wait()
 
         self.play(Write(equation))
-        self.wait(2)
+        self.wait()
 
         self.play(Transform(equation, equation2), Transform(field, field2))
-        self.wait(2)
+        self.wait()
 
-    def calc_field_color(self, point, f):
+        self.play(Transform(equation, equation3), Transform(field, field3))
+        self.wait()
+
+    def calc_field_color(self, point, f, prop=0.0):
         x, y = point[:2]
         func = f(x, y)
         magnitude = math.sqrt(func[0] ** 2 + func[1] ** 2)
         func = func / magnitude if magnitude != 0 else np.array([0, 0])
         func = func / 1.5
-        v = int(magnitude / 10 ** self.prop)
+        v = int(magnitude / 10 ** prop)
         index = len(self.color_list) - 1 if v > len(self.color_list) - 1 else v
         c = self.color_list[index]
         return Vector(func, color=c).shift(point)
@@ -585,3 +603,19 @@ class VectorField(Scene):
         x, y = point[:2]
         func = np.array([x, y])
         return Vector(func).shift(point)
+
+
+class LineIntegralVector(Scene):
+    def construct(self):
+        pass
+
+    def calc_field_color(self, point, f, prop=0.0):
+        x, y = point[:2]
+        func = f(x, y)
+        magnitude = math.sqrt(func[0] ** 2 + func[1] ** 2)
+        func = func / magnitude if magnitude != 0 else np.array([0, 0])
+        func = func / 1.5
+        v = int(magnitude / 10 ** prop)
+        index = len(self.color_list) - 1 if v > len(self.color_list) - 1 else v
+        c = self.color_list[index]
+        return Vector(func, color=c).shift(point)
