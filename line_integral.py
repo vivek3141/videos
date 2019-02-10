@@ -662,14 +662,15 @@ class LineIntegralVector(Scene):
         c = ParametricFunction(
             self.func,
             t_min=-3,
-            t_max=3
+            t_max=3,
         )
+        c.set_stroke(opacity=0.75)
         label = TextMobject("C")
         label.shift(2 * LEFT)
         label.scale(2)
 
         curve = VGroup(label, c)
-        curve.scale(0.5)
+        curve.scale(0.6)
 
         r_axes = Axes(**r_config)
         c2 = ParametricFunction(
@@ -685,16 +686,19 @@ class LineIntegralVector(Scene):
         circle = Circle(color=WHITE)
         circle.move_to(c_o)
 
-        r = Vector(self.r_prime(-3))
-        r.move_to((self.func(-3)[0] * 0.6 * RIGHT) + (-3 * 0.6 * UP))
+        v = self.r_prime(-3) * 0.6
+        v = Vector(v)
+        v.shift((self.func(-3)[0] * 0.6 - 0.05) * RIGHT + (-3 * 0.6 + 1) * UP)
 
-        self.add(curve)
-        self.add(field)
-        self.add(r)
-        self.wait(3)
+        r_label = TexMobject(r"\overrightarrow{r}")
+        r_label.move_to(v, 3 * LEFT)
+
+        r = VGroup(r_label, v)
+
+
         for t in np.arange(-3, 3, 0.01):
             pass
-            """
+
         self.play(Write(integral))
 
         self.play(ApplyMethod(integral.scale, 0.5))
@@ -709,14 +713,18 @@ class LineIntegralVector(Scene):
 
         self.play(Uncreate(integral), ApplyMethod(field.shift, 1 * UP), ApplyMethod(curve.shift, 1 * UP))
         self.wait()
-    """
-        #self.play(ShowCreation(func))
-        #self.wait()
 
-        #self.play(Write(circle))
-        #self.wait()
+        self.play(ApplyMethod(field.set_fill, opacity=0.5))
+        self.play(Write(r))
+        self.wait()
 
-    def calc_field_color(self, point, f, prop=0.0):
+        # self.play(ShowCreation(func))
+        # self.wait()
+
+        # self.play(Write(circle))
+        # self.wait()
+
+    def calc_field_color(self, point, f, prop=0.0, opacity=None):
         x, y = point[:2]
         func = f(x, y)
         magnitude = math.sqrt(func[0] ** 2 + func[1] ** 2)
@@ -725,7 +733,10 @@ class LineIntegralVector(Scene):
         v = int(magnitude / 10 ** prop)
         index = len(self.color_list) - 1 if v > len(self.color_list) - 1 else v
         c = self.color_list[index]
-        return Vector(func, color=c).shift(point)
+        v = Vector(func, color=c).shift(point)
+        if opacity:
+            v.set_fill(opacity=opacity)
+        return v
 
     @staticmethod
     def func(t):
