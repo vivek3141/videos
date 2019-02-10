@@ -948,7 +948,7 @@ class VectorExample(Scene):
         step5.move_to(2 * RIGHT + 3 * DOWN)
         step5.scale(0.75)
 
-        ans = TexMobject(r"8 \sqrt{53}")
+        ans = TexMobject(r"-539.5")
         ans.move_to(2 * RIGHT + 3 * DOWN)
 
         self.play(Write(question))
@@ -982,10 +982,9 @@ class VectorExample(Scene):
         self.wait()
 
         self.play(Transform(step5, ans))
-        self.wait() \
- \
-        @staticmethod
+        self.wait()
 
+    @staticmethod
     def func(t):
         return np.array([
             3 - 3 * t,
