@@ -684,27 +684,37 @@ class LineIntegralVector(Scene):
         c_o = 2.5 * DOWN + 3 * RIGHT
         circle = Circle(color=WHITE)
         circle.move_to(c_o)
-        """
-        self.play(Write(integral))
 
-        self.play(ApplyMethod(integral.scale, 0.5))
-        self.play(ApplyMethod(integral.shift, 3 * UP))
+        r = Vector(self.r_prime(-3))
+        r.move_to(self.func(-3)[0] * 0.6 * RIGHT + -3 * 0.6 * UP)
 
-        self.bring_to_back(field)
-        self.play(ShowCreation(field))
-        self.wait()
+        self.add(curve)
+        self.add(field)
+        self.add(r)
+        self.wait(3)
+        for t in np.arange(-3, 3, 0.01):
+            pass
+            """
+            self.play(Write(integral))
+    
+            self.play(ApplyMethod(integral.scale, 0.5))
+            self.play(ApplyMethod(integral.shift, 3 * UP))
+    
+            self.bring_to_back(field)
+            self.play(ShowCreation(field))
+            self.wait()
+    
+            self.play(Write(curve))
+            self.wait()
+    
+            self.play(Uncreate(integral), ApplyMethod(field.shift, 1 * UP), ApplyMethod(curve.shift, 1 * UP))
+            self.wait()
+    """
+        #self.play(ShowCreation(func))
+        #self.wait()
 
-        self.play(Write(curve))
-        self.wait()
-
-        self.play(Uncreate(integral), ApplyMethod(field.shift, 1 * UP), ApplyMethod(curve.shift, 1 * UP))
-        self.wait()
-"""
-        self.play(ShowCreation(func))
-        self.wait()
-
-        self.play(Write(circle))
-        self.wait()
+        #self.play(Write(circle))
+        #self.wait()
 
     def calc_field_color(self, point, f, prop=0.0):
         x, y = point[:2]
@@ -735,3 +745,8 @@ class LineIntegralVector(Scene):
             0.25 * np.dot(f_r, r_derivative),
             0
         ])
+
+    @staticmethod
+    def r_prime(x):
+        r_d = np.array([2 / (1 + x ** 2), 1])
+        return r_d
