@@ -686,7 +686,7 @@ class LineIntegralVector(Scene):
         circle.move_to(c_o)
 
         r = Vector(self.r_prime(-3))
-        r.move_to(self.func(-3)[0] * 0.6 * RIGHT + -3 * 0.6 * UP)
+        r.move_to((self.func(-3)[0] * 0.6 * RIGHT) + (-3 * 0.6 * UP))
 
         self.add(curve)
         self.add(field)
@@ -695,20 +695,20 @@ class LineIntegralVector(Scene):
         for t in np.arange(-3, 3, 0.01):
             pass
             """
-            self.play(Write(integral))
-    
-            self.play(ApplyMethod(integral.scale, 0.5))
-            self.play(ApplyMethod(integral.shift, 3 * UP))
-    
-            self.bring_to_back(field)
-            self.play(ShowCreation(field))
-            self.wait()
-    
-            self.play(Write(curve))
-            self.wait()
-    
-            self.play(Uncreate(integral), ApplyMethod(field.shift, 1 * UP), ApplyMethod(curve.shift, 1 * UP))
-            self.wait()
+        self.play(Write(integral))
+
+        self.play(ApplyMethod(integral.scale, 0.5))
+        self.play(ApplyMethod(integral.shift, 3 * UP))
+
+        self.bring_to_back(field)
+        self.play(ShowCreation(field))
+        self.wait()
+
+        self.play(Write(curve))
+        self.wait()
+
+        self.play(Uncreate(integral), ApplyMethod(field.shift, 1 * UP), ApplyMethod(curve.shift, 1 * UP))
+        self.wait()
     """
         #self.play(ShowCreation(func))
         #self.wait()
