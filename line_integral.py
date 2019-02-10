@@ -735,7 +735,11 @@ class LineIntegralVector(Scene):
         r = VGroup(r_label, v)
 
         s1 = TexMobject(r"\int_C \overrightarrow{\textbf{F}} \bullet \textbf{d} \overrightarrow{r}")
-        s2 = TexMobject(r"\int_C \overrightarrow{\textbf{F}} ( \overrightarrow{r} (t) ) \bullet \overrightarrow{r}'(t)")
+        s2 = TexMobject(
+            r"\int_a^b \overrightarrow{\textbf{F}} ( \overrightarrow{r} (t) ) \bullet \overrightarrow{r}'(t)")
+
+        self.f = VGroup()
+        self.a = VGroup()
 
         self.play(Write(integral))
 
@@ -781,7 +785,9 @@ class LineIntegralVector(Scene):
             Uncreate(r),
             Uncreate(field),
             Uncreate(curve),
-            Uncreate(circle)
+            Uncreate(circle),
+            Uncreate(self.f),
+            Uncreate(self.a)
         )
 
         self.play(Write(s1))
@@ -850,12 +856,25 @@ class LineIntegralVector(Scene):
             self.fr.put_start_and_end_on(self.fr.get_start(), (self.f_r(t) * 0.25) + self.fr.get_start())
             self.v2.put_start_and_end_on(self.v2.get_start(), (self.func(t) * 0.25) + self.v2.get_start())
 
+            l2 = Line(
+                (3 - self.line_evaluated(t)[1]) * DOWN + (2 - t) * LEFT,
+                3 * DOWN + (2 - t) * LEFT,
+                color=YELLOW
+            )
+            self.a.add(l2)
             self.add(
-                Line(
-                    (3 - self.line_evaluated(t)[1]) * DOWN + (2 - t) * LEFT,
-                    (3 - self.line_evaluated(t + dt)[1]) * DOWN + (2 - t - dt) * LEFT,
-                    color=RED
-                )
+                l2
+            )
+
+            l1 = Line(
+                (3 - self.line_evaluated(t)[1]) * DOWN + (2 - t) * LEFT,
+                (3 - self.line_evaluated(t + dt)[1]) * DOWN + (2 - t - dt) * LEFT,
+                color=RED,
+                stroke_width=8
+            )
+            self.f.add(l1)
+            self.add(
+                l1
             )
 
             if self.t >= 3:
@@ -912,16 +931,20 @@ class VectorExample(Scene):
 
         step4 = TexMobject(
             r"\int_C \overrightarrow{\textbf{F}} \bullet \textbf{d} "
-            r"\overrightarrow{r} = \int_C \overrightarrow{\textbf{F}} ( \overrightarrow{r} (t) )"
-            r"\bullet \overrightarrow{r}'(t)")
+            r"\overrightarrow{r}")
         step4.move_to(2 * RIGHT + 1.5 * DOWN)
         step4.scale(0.75)
+
+        step42 = TexMobject(r"\int_0^1 \overrightarrow{\textbf{F}} ( \overrightarrow{r} (t) )"
+                            r"\bullet \overrightarrow{r}'(t)")
+        step42.move_to(2 * RIGHT + 1.5 * DOWN)
+        step42.scale(0.75)
 
         equal = TexMobject("=")
         equal.move_to(2 * RIGHT + 2 * DOWN)
         equal.scale(0.5)
 
-        step5 = TexMobject(r"\int_0^1 (3(3 - 2t)^2 - 2(6 - 7t)^2) \sqrt{53} \ dt")
+        step5 = TexMobject(r"\int_0^1 −3(7+5t)^2−5(33+39t) \ dt")
         step5.move_to(2 * RIGHT + 3 * DOWN)
         step5.scale(0.75)
 
@@ -948,16 +971,21 @@ class VectorExample(Scene):
         self.wait()
 
         self.play(Write(step4))
-        self.play(Write(equal))
         self.wait()
+
+        self.play(Transform(step4, step42))
+        self.wait()
+
+        self.play(Write(equal))
 
         self.play(Write(step5))
         self.wait()
 
         self.play(Transform(step5, ans))
-        self.wait()
+        self.wait() \
+ \
+        @staticmethod
 
-    @staticmethod
     def func(t):
         return np.array([
             3 - 3 * t,
