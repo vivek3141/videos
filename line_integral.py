@@ -518,6 +518,11 @@ class VectorField(Scene):
                                for y in np.arange(-5, 5, 1)
                                ])
 
+        field2 = VGroup(*[self.calc_field_color(x * RIGHT + y * UP, f2)
+                               for x in np.arange(-9, 9, 1)
+                               for y in np.arange(-5, 5, 1)
+                               ])
+
         head = TextMobject("Vector Field", color=RED)
         head.scale(2)
 
@@ -525,6 +530,15 @@ class VectorField(Scene):
         heading = VGroup(back, head)
 
         eq = TexMobject(r"\overrightarrow{\textbf{F}}(x, y) = \langle x, y \rangle", color=WHITE)
+        eq.scale(2)
+
+        eq_back = BackgroundRectangle(eq, fill_opacity=1)
+        equation = VGroup(eq_back, eq)
+
+        equation.scale(0.75)
+        equation.shift(3 * DOWN)
+
+        eq = TexMobject(r"\overrightarrow{\textbf{F}}(x, y) = \langle cos(x), sin(y) \rangle", color=WHITE)
         eq.scale(2)
 
         eq_back = BackgroundRectangle(eq, fill_opacity=1)
@@ -550,6 +564,9 @@ class VectorField(Scene):
         self.wait(2)
 
         self.play(Write(equation))
+        self.wait(2)
+
+        self.play(Transform(equation, equation2), Transform(field, field2))
         self.wait(2)
 
     def calc_field_color(self, point, f):
