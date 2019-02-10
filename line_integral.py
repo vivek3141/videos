@@ -991,3 +991,11 @@ class VectorExample(Scene):
             3.5 + 2.5 * t,
             0
         ])
+
+
+class Outro(Scene):
+    def construct(self):
+        text = TextMobject("Thanks for Watching").scale(2)
+        text.move_to(3 * UP)
+        self.play(Write(text))
+        self.wait(10)
