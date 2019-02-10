@@ -716,13 +716,17 @@ class LineIntegralVector(Scene):
         arrow2.shift(4 * RIGHT)
 
         label_fr.move_to(arrow1)
-        label_fr.shift(2 * LEFT)
+        label_fr.shift(1.25 * RIGHT)
 
         label_r.move_to(arrow2)
-        label_r.shift(2 * LEFT)
+        label_r.shift(1 * RIGHT)
 
         l1 = VGroup(arrow1, label_fr)
         l2 = VGroup(arrow2, label_r)
+
+        dot = TexMobject(r"\overrightarrow{\textbf{F}} ( \overrightarrow{r} (t) ) \bullet \overrightarrow{r}'(t)")
+        dot.scale(0.75)
+        dot.shift(3.5 * DOWN)
 
         r_label = TexMobject(r"\overrightarrow{r}'(t)")
         r_label.move_to(v)
@@ -754,6 +758,8 @@ class LineIntegralVector(Scene):
 
         self.play(Write(circle), Write(self.v2), Write(self.fr), Write(l1), Write(l2))
         self.wait()
+
+        self.play(Write(dot))
 
         self.r = r
         self.r_ = v
