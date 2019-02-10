@@ -8,3 +8,4 @@ python3 extract_scene.py line_integral.py LineIntegralScalar
 python3 extract_scene.py line_integral.py Example
 python3 extract_scene.py line_integral.py VectorField
 python3 extract_scene.py line_integral.py LineIntegralVector
+python3 extract_scene.py line_integral.py VectorExample

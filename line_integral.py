@@ -870,7 +870,9 @@ class VectorExample(Scene):
         func.scale(0.75)
 
         question = TextMobject(
-            r"Evaluate $\int_C (3x^2 - 2y) ds$ \\where C is the line segment \\from $(3,6)$ to $(1,−1)$.")
+            r"Evaluate $\int_C (\overrightarrow{\textbf{F}}) \bullet \texfbf{d} \overrightarrow{r}$ "
+            r"\\where C is the line segment \\from $(3,7)$ to $(0,12)$ and \\ \overrightarrow{\textbf{F}}"
+            r"=\langle y^2, 3x-6y \rangle.")
         question.scale(1.5)
 
         step1 = TexMobject(r"C = \langle 3 - 2t, 6-7t \rangle \ 0 \leq t \leq 1")
@@ -932,7 +934,7 @@ class VectorExample(Scene):
     @staticmethod
     def func(t):
         return np.array([
-            3 - 2 * t,
-            6 - 7 * t,
+            3 - 3 * t,
+            7 + 5 * t,
             0
         ])
