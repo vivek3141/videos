@@ -993,6 +993,17 @@ class VectorExample(Scene):
         ])
 
 
+class Ending(Scene):
+    def construct(self):
+        rect1 = ScreenRectangle(height=4)
+        rect2 = ScreenRectangle(height=4)
+
+        rect1.shift(3 * LEFT)
+        rect2.shift(3 * RIGHT)
+
+        self.play(Write(rect1), Write(rect2))
+
+
 class Outro(Scene):
     def construct(self):
         text = TextMobject("Thanks for Watching").scale(2)

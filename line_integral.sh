@@ -9,3 +9,5 @@ python3 extract_scene.py line_integral.py Example
 python3 extract_scene.py line_integral.py VectorField
 python3 extract_scene.py line_integral.py LineIntegralVector
 python3 extract_scene.py line_integral.py VectorExample
+python3 extract_scene.py line_integral.py Outro
+python3 extract_scene.py line_integral.py Ending
