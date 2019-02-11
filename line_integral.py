@@ -1,6 +1,23 @@
 from manim import *
 
 
+class Positron(Circle):
+    CONFIG = {
+        "radius": 0.2,
+        "stroke_width": 3,
+        "color": RED,
+        "fill_color": RED,
+        "fill_opacity": 0.5,
+    }
+
+    def __init__(self, **kwargs):
+        Circle.__init__(self, **kwargs)
+        plus = TexMobject("+")
+        plus.scale(0.7)
+        plus.move_to(self)
+        self.add(plus)
+
+
 class Intro(Scene):
     def construct(self):
         li = TextMobject("Line Integral", color=BLUE)
@@ -1022,7 +1039,17 @@ class Ending(Scene):
 
 class Charge(Scene):
     def construct(self):
-        pass
+        charge1 = Positron()
+        charge2 = Positron()
+
+        charge1.shift(2 * LEFT)
+        charge2.shift(2 * RIGHT)
+
+        work = TextMobject(r"Work = $\int_C \overrightarrow{\textbf{F}} \bullet \textbf{d}\overrightarrow{\textbf{r}}")
+        work.shift(2 * UP)
+
+        self.play(Write(charge1), Write(charge2))
+        self.play(Write(work))
 
 
 class Outro(Scene):
