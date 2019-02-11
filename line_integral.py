@@ -859,7 +859,8 @@ class LineIntegralVector(Scene):
             l2 = Line(
                 (3 - self.line_evaluated(t)[1]) * DOWN + (2 - t) * LEFT,
                 3 * DOWN + (2 - t) * LEFT,
-                color=YELLOW
+                color=YELLOW,
+                stroke_width=dt
             )
             self.a.add(l2)
             self.add(
