@@ -995,14 +995,33 @@ class VectorExample(Scene):
 
 class Ending(Scene):
     def construct(self):
-        rect1 = ScreenRectangle(height=4)
-        rect2 = ScreenRectangle(height=4)
+        rect1 = ScreenRectangle(height=3)
+        rect2 = ScreenRectangle(height=3)
+
+        title1 = TextMobject("Scalar Field")
+        title2 = TextMobject("Vector Field")
+
+        title1.scale(1.5)
+        title2.scale(1.5)
 
         rect1.shift(3 * LEFT)
         rect2.shift(3 * RIGHT)
 
-        self.play(Write(rect1), Write(rect2))
+        title1.shift(3 * LEFT + 3 * UP)
+        title2.shift(3 * RIGHT + 3 * UP)
 
+        self.play(
+            Write(rect1),
+            Write(rect2),
+            Write(title1),
+            Write(title2)
+        )
+        self.wait()
+
+
+class Charge(Scene):
+    def construct(self):
+        pass
 
 class Outro(Scene):
     def construct(self):
