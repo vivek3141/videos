@@ -1024,6 +1024,7 @@ class Charge(Scene):
     def construct(self):
         pass
 
+
 class Outro(Scene):
     def construct(self):
         text = TextMobject("Thanks for Watching").scale(2)
