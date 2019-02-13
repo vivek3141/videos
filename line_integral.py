@@ -1045,11 +1045,13 @@ class Charge(Scene):
         charge1.shift(2 * LEFT)
         charge2.shift(2 * RIGHT)
 
-        work = TextMobject(r"Work = $\int_C \overrightarrow{\textbf{F}} \bullet \textbf{d}\overrightarrow{\textbf{r}}")
+        work = TextMobject(r"Work = $\int_C \overrightarrow{\textbf{F}} \bullet \textbf{d}\overrightarrow{\textbf{r}}$")
         work.shift(2 * UP)
 
         self.play(Write(charge1), Write(charge2))
         self.play(Write(work))
+
+        self.wait()
 
 
 class Outro(Scene):
