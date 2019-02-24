@@ -50,8 +50,9 @@ class QLearning(Scene):
             Line(3 * UP + -4 * RIGHT, 3 * DOWN + -4 * RIGHT, color=RED, stroke_width=8),
             Line(3 * UP + 4 * RIGHT, 3 * DOWN + 4 * RIGHT, color=RED, stroke_width=8),
             Line(3 * UP - 4 * RIGHT, 3 * UP + 4 * RIGHT, color=RED, stroke_width=8),
-            Line(-3 * UP - 4 * RIGHT, -3 * UP + 4 * RIGHT, color=RED, stroke_width=8)
-
+            Line(-3 * UP - 4 * RIGHT, -3 * UP + 4 * RIGHT, color=RED, stroke_width=8),
+            Line(3 * UP + -4 * RIGHT, 3 * DOWN + -4 * RIGHT, color=RED, stroke_width=8),
+            Line((3 - (12 / 5)) * DOWN + -2 * RIGHT, 3 * DOWN + -2 * RIGHT, color=RED, stroke_width=8)
         )
 
         self.play(Write(rows))
