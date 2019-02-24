@@ -39,15 +39,19 @@ class QLearning(Scene):
         rows = VGroup(*[
             Line(i * UP - 4 * RIGHT, i * UP + 4 * RIGHT) for i in np.arange(-3, 4, 6 / 5)
         ])
-        rows.set_fill(opacity=0.5)
+        rows.set_fill(opacity=0.25)
 
         columns = VGroup(*[
             Line(3 * UP + i * RIGHT, 3 * DOWN + i * RIGHT) for i in range(-4, 6, 2)
         ])
-        columns.set_fill(opacity=0.5)
+        columns.set_fill(opacity=0.25)
 
         borders = VGroup(
-            Line(3 * UP + -4 * RIGHT, 3 * DOWN + -4 * RIGHT, color=RED, stroke_width=8)
+            Line(3 * UP + -4 * RIGHT, 3 * DOWN + -4 * RIGHT, color=RED, stroke_width=8),
+            Line(3 * UP + 4 * RIGHT, 3 * DOWN + 4 * RIGHT, color=RED, stroke_width=8),
+            Line(3 * UP - 4 * RIGHT, 3 * UP + 4 * RIGHT, color=RED, stroke_width=8),
+            Line(-3 * UP - 4 * RIGHT, -3 * UP + 4 * RIGHT, color=RED, stroke_width=8)
+
         )
 
         self.play(Write(rows))
