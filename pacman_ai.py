@@ -16,11 +16,14 @@ class QLearning(Scene):
 
     def construct(self):
         env = gym.make("Taxi-v2")
+
         self.q = np.zeros([env.observation_space.n, env.action_space.n])
         self.env = env
-        rows = VGroup(*[
+
+        columns = VGroup(*[
             Line(3 * UP + i * RIGHT, 3 * DOWN + i * RIGHT) for i in range(-4, 6, 2)
         ])
+        columns.set_fill(opacity=0.5)
 
         r = TextMobject("R")
         r.shift(3 * LEFT + (3-(6/10)) * UP)
@@ -38,9 +41,14 @@ class QLearning(Scene):
         y.shift(1 * RIGHT + (3 - (6 / 10)) * DOWN)
         y.scale(1.5)
 
-        columns = VGroup(*[
+        rows = VGroup(*[
             Line(i * UP - 4 * RIGHT, i * UP + 4 * RIGHT) for i in np.arange(-3, 4, 6/5)
         ])
+        rows.set_fill(opacity=0.5)
+
+        borders = VGroup(
+            Line()
+        )
 
         self.play(Write(rows))
         self.play(Write(columns))
