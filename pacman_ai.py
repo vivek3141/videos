@@ -19,6 +19,7 @@ class QLearning(Scene):
 
         self.q = np.zeros([env.observation_space.n, env.action_space.n])
         self.env = env
+        self.continual = False
 
         r = TextMobject("R")
         r.shift(3 * LEFT + (3 - (6 / 10)) * UP)
@@ -46,13 +47,18 @@ class QLearning(Scene):
         ])
         columns.set_fill(opacity=0.25)
 
+        rr = np.arange(-3, 4, 6 / 5)
+        cc = range(-4, 6, 2)
+
         borders = VGroup(
             Line(3 * UP + -4 * RIGHT, 3 * DOWN + -4 * RIGHT, color=RED, stroke_width=8),
             Line(3 * UP + 4 * RIGHT, 3 * DOWN + 4 * RIGHT, color=RED, stroke_width=8),
             Line(3 * UP - 4 * RIGHT, 3 * UP + 4 * RIGHT, color=RED, stroke_width=8),
             Line(-3 * UP - 4 * RIGHT, -3 * UP + 4 * RIGHT, color=RED, stroke_width=8),
             Line(3 * UP + -4 * RIGHT, 3 * DOWN + -4 * RIGHT, color=RED, stroke_width=8),
-            Line((3 - (12 / 5)) * DOWN + -2 * RIGHT, 3 * DOWN + -2 * RIGHT, color=RED, stroke_width=8)
+            Line((3 - (12 / 5)) * DOWN + -2 * RIGHT, 3 * DOWN + -2 * RIGHT, color=RED, stroke_width=8),
+            Line((3 - (12 / 5)) * DOWN + 2 * RIGHT, 3 * DOWN + 2 * RIGHT, color=RED, stroke_width=8),
+            Line(3 * UP + 0 * RIGHT, (3 - 6/5) * UP + 0 * RIGHT, color=RED, stroke_width=8)
         )
 
         self.play(Write(rows))
@@ -65,7 +71,8 @@ class QLearning(Scene):
         self.wait()
 
     def continual_update(self, dt):
-        pass
+        if self.continual:
+            pass
 
     def train(self, num_episodes=2000, learning_rate=0.618, gamma=1, to_print=True, interval=50, to_render=True):
         if to_print:
