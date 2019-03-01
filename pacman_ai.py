@@ -50,6 +50,8 @@ class QLearning(Scene):
         rr = np.arange(-3, 4, 6 / 5)
         cc = range(-4, 6, 2)
 
+        taxi = Rectangle(color=YELLOW)
+
         borders = VGroup(
             Line(3 * UP + -4 * RIGHT, 3 * DOWN + -4 * RIGHT, color=RED, stroke_width=8),
             Line(3 * UP + 4 * RIGHT, 3 * DOWN + 4 * RIGHT, color=RED, stroke_width=8),
@@ -58,7 +60,7 @@ class QLearning(Scene):
             Line(3 * UP + -4 * RIGHT, 3 * DOWN + -4 * RIGHT, color=RED, stroke_width=8),
             Line((3 - (12 / 5)) * DOWN + -2 * RIGHT, 3 * DOWN + -2 * RIGHT, color=RED, stroke_width=8),
             Line((3 - (12 / 5)) * DOWN + 2 * RIGHT, 3 * DOWN + 2 * RIGHT, color=RED, stroke_width=8),
-            Line(3 * UP + 0 * RIGHT, (3 - 6/5) * UP + 0 * RIGHT, color=RED, stroke_width=8)
+            Line(3 * UP + 0 * RIGHT, (3 - 6 / 5) * UP + 0 * RIGHT, color=RED, stroke_width=8)
         )
 
         self.play(Write(rows))
@@ -132,3 +134,19 @@ class QLearning(Scene):
         out.append(i)
         assert 0 <= i < 5
         return reversed(out)
+
+
+class QTable(Scene):
+    def construct(self):
+        table = Rectangle(height=5, width=5)
+
+        b1 = Brace(table, LEFT)
+        text = b1.get_text("State")
+
+        b2 = Brace(table, UP)
+        text2 = b2.get_text("Action")
+
+        self.play(Write(table))
+        self.play(Write(b1), Write(b2), Write(text), Write(text2))
+
+        self.wait()
