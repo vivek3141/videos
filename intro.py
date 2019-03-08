@@ -38,6 +38,14 @@ class ElectricField(ThreeDScene):
         line5 = Line(2 * DOWN + 2 * RIGHT, 2 * DOWN + 0.5 * RIGHT, stroke_width=8)
         line6 = Line(2 * DOWN + 0.5 * RIGHT, 3 * DOWN + 0.5 * RIGHT, stroke_width=8)
 
+        line02 = Line(3 * DOWN + 0.5 * LEFT, 2 * DOWN + 0.5 * LEFT, stroke_width=8)
+        line12 = Line(2 * DOWN + 0.5 * LEFT, 2 * DOWN + 2 * LEFT, stroke_width=8)
+        line32 = Line(2 * UP + 2 * LEFT, 2 * UP + 2 * RIGHT, stroke_width=8)
+        line42 = Line(2 * UP + 2 * RIGHT, 2 * DOWN + 2 * RIGHT, stroke_width=8)
+        line22 = Line(2 * DOWN + 2 * LEFT, 2 * UP + 2 * LEFT, stroke_width=8)
+        line52 = Line(2 * DOWN + 2 * RIGHT, 2 * DOWN + 0.5 * RIGHT, stroke_width=8)
+        line62 = Line(2 * DOWN + 0.5 * RIGHT, 3 * DOWN + 0.5 * RIGHT, stroke_width=8)
+
         line00 = Line(3 * DOWN + 0.5 * LEFT, 2 * DOWN + 0.5 * LEFT, stroke_opacity=OPACITY)
         line10 = Line(2 * DOWN + 0.5 * LEFT, 2 * DOWN + 2 * LEFT, stroke_opacity=OPACITY)
         line30 = Line(2 * UP + 2 * LEFT, 2 * UP + 2 * RIGHT, stroke_opacity=OPACITY)
@@ -61,7 +69,7 @@ class ElectricField(ThreeDScene):
         head3.scale(1.25)
         head3.shift(3 * UP)
 
-        head2 = TextMobject("Find the direction of magnetic field at A, B, C, D  \\ only using this current", color=GREEN)
+        head2 = TextMobject("Find the direction of magnetic field at A, B, C, D\\\\only using this current", color=GREEN)
         head2.scale(1.25)
         head2.shift(3 * DOWN)
 
@@ -100,12 +108,13 @@ class ElectricField(ThreeDScene):
         self.wait()
 
         self.play(
-            Transform(line0, line0),
-            Transform(line1, line1),
-            Transform(line2, line2),
-            Transform(line4, line4),
-            Transform(line5, line5),
-            Transform(line6, line6),
+            Transform(line0, line00),
+            Transform(line1, line10),
+            Transform(line2, line20),
+            Transform(line3, line32),
+            Transform(line4, line40),
+            Transform(line5, line50),
+            Transform(line6, line60),
         )
         self.wait()
 
@@ -114,7 +123,7 @@ class ElectricField(ThreeDScene):
             Transform(line1, line10),
             Transform(line2, line20),
             Transform(line3, line30),
-            Transform(line4, line4),
+            Transform(line4, line42),
             Transform(line5, line50),
             Transform(line6, line60),
         )
@@ -126,7 +135,7 @@ class ElectricField(ThreeDScene):
             Transform(line2, line20),
             Transform(line3, line30),
             Transform(line4, line40),
-            Transform(line5, line5),
+            Transform(line5, line52),
             Transform(line6, line60),
         )
         self.wait()
@@ -138,6 +147,6 @@ class ElectricField(ThreeDScene):
             Transform(line3, line30),
             Transform(line4, line40),
             Transform(line5, line50),
-            Transform(line6, line6),
+            Transform(line6, line62),
         )
         self.wait()
