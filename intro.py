@@ -28,6 +28,7 @@ class ElectricField(ThreeDScene):
             Transform(line5, line5),
             Transform(line6, line6),
         )"""
+
     def construct(self):
         OPACITY = 0.1
         line0 = Line(3 * DOWN + 0.5 * LEFT, 2 * DOWN + 0.5 * LEFT, stroke_width=8)
@@ -69,7 +70,8 @@ class ElectricField(ThreeDScene):
         head3.scale(1.25)
         head3.shift(3 * UP)
 
-        head2 = TextMobject("Find the direction of magnetic field at A, B, C, D\\\\only using this current", color=GREEN)
+        head2 = TextMobject("Find the direction of magnetic field at A, B, C, D\\\\only using this current",
+                            color=GREEN)
         head2.scale(1.25)
         head2.shift(3 * DOWN)
 
@@ -150,3 +152,20 @@ class ElectricField(ThreeDScene):
             Transform(line6, line62),
         )
         self.wait()
+
+
+class Test(Scene):
+    def construct(self):
+        sin1 = ParametricFunction(lambda t: np.array([t, np.sin(t), 0]), t_min=0, t_max=6 * PI, color=GREEN)
+        sin1.shift(7 * LEFT)
+
+        sin2 = ParametricFunction(lambda t: np.array([t, -np.sin(t), 0]), t_min=0, t_max=6 * PI, color=GREEN)
+        sin2.shift(7 * LEFT)
+
+        sin11 = ParametricFunction(lambda t: np.array([t, np.sin(t), 0]), t_min=0, t_max=6 * PI, color=GREEN)
+        sin11.shift(7 * LEFT)
+
+        self.play(Write(sin1))
+        for i in range(5):
+            self.play(Transform(sin1, sin2))
+            self.play(Transform(sin1, sin11))
