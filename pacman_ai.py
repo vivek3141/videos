@@ -1,6 +1,5 @@
 from manim import *
 import gym
-import numpy as np
 
 
 class Intro(Scene):
@@ -10,8 +9,9 @@ class Intro(Scene):
 
 class QTitle(Scene):
     def constrcut(self):
-        title = TextMobject("Q-Learning", color=BLUE)
+        title = TextMobject("Q Learning", color=BLUE)
         title.scale(2)
+
         self.play(Write(title))
         self.wait()
 
