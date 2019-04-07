@@ -21,7 +21,11 @@ class MDP(Scene):
         mdp = TextMobject("Markov Descision Process", color=RED)
         mdp.scale(1.5)
 
+        b1 = TextMobject("State")
         
+        b2 = TextMobject("Action")
+
+        b3 = TextMobject("Reward")
 
         self.play(Write(mdp))
         self.wait()
