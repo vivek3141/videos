@@ -21,6 +21,9 @@ class MDP(Scene):
         mdp = TextMobject("Markov Descision Process", color=RED)
         mdp.scale(1.5)
 
+        im = ImageMobject("./files/pacman.jpg")
+        im.shift(3 * RIGHT)
+
         b1 = TextMobject("State")
         
         b2 = TextMobject("Action")
@@ -32,6 +35,9 @@ class MDP(Scene):
 
         self.play(ApplyMethod(mdp.shift, 2.5 * UP))
         self.wait()
+        
+        self.play(Write(b1))
+        self.play(Write(im))
 
 
 
