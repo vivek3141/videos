@@ -3,6 +3,11 @@ import gym
 import numpy as np
 
 
+class Intro(Scene):
+    def construct(self):
+        pass
+
+
 class QLearning(Scene):
     MAP = [
         "+---------+",
@@ -15,6 +20,9 @@ class QLearning(Scene):
     ]
 
     def construct(self):
+        title = TextMobject("Q-Learning", color=BLUE)
+        title.scale(2)
+
         env = gym.make("Taxi-v2")
 
         self.q = np.zeros([env.observation_space.n, env.action_space.n])
@@ -63,6 +71,10 @@ class QLearning(Scene):
             Line(3 * UP + 0 * RIGHT, (3 - 6 / 5) * UP + 0 * RIGHT, color=RED, stroke_width=8)
         )
 
+        self.play(Write(title))
+        self.wait()
+
+        
         self.play(Write(rows))
         self.play(Write(columns))
         self.play(Write(borders))
