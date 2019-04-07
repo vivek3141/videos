@@ -8,14 +8,20 @@ class Intro(Scene):
 
 
 class QTitle(Scene):
-    def constrcut(self):
-        title = TextMobject("Q Learning", color=BLUE)
+    def construct(self):
+        title = TextMobject("Q-Learning", color=BLUE)
         title.scale(2)
+
+        mdp = TextMobject("Markov Descision Process", color=RED)
+        mdp.scale(1.5)
 
         self.play(Write(title))
         self.wait()
 
-        self.play(Uncreate(title))
+        self.remove(title)
+        self.wait()
+
+        self.play(Write(mdp))
         self.wait()
 
 
