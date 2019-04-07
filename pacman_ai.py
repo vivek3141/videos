@@ -8,7 +8,18 @@ class Intro(Scene):
         pass
 
 
-class QLearning(Scene):
+class QTitle(Scene):
+    def constrcut(self):
+        title = TextMobject("Q-Learning", color=BLUE)
+        title.scale(2)
+        self.play(Write(title))
+        self.wait()
+
+        self.play(Uncreate(title))
+        self.wait()
+
+
+class Taxi(Scene):
     MAP = [
         "+---------+",
         "|R: | : :G|",
@@ -20,8 +31,6 @@ class QLearning(Scene):
     ]
 
     def construct(self):
-        title = TextMobject("Q-Learning", color=BLUE)
-        title.scale(2)
 
         env = gym.make("Taxi-v2")
 
@@ -61,20 +70,24 @@ class QLearning(Scene):
         taxi = Rectangle(color=YELLOW)
 
         borders = VGroup(
-            Line(3 * UP + -4 * RIGHT, 3 * DOWN + -4 * RIGHT, color=RED, stroke_width=8),
-            Line(3 * UP + 4 * RIGHT, 3 * DOWN + 4 * RIGHT, color=RED, stroke_width=8),
-            Line(3 * UP - 4 * RIGHT, 3 * UP + 4 * RIGHT, color=RED, stroke_width=8),
-            Line(-3 * UP - 4 * RIGHT, -3 * UP + 4 * RIGHT, color=RED, stroke_width=8),
-            Line(3 * UP + -4 * RIGHT, 3 * DOWN + -4 * RIGHT, color=RED, stroke_width=8),
-            Line((3 - (12 / 5)) * DOWN + -2 * RIGHT, 3 * DOWN + -2 * RIGHT, color=RED, stroke_width=8),
-            Line((3 - (12 / 5)) * DOWN + 2 * RIGHT, 3 * DOWN + 2 * RIGHT, color=RED, stroke_width=8),
-            Line(3 * UP + 0 * RIGHT, (3 - 6 / 5) * UP + 0 * RIGHT, color=RED, stroke_width=8)
+            Line(3 * UP + -4 * RIGHT, 3 * DOWN + -
+                 4 * RIGHT, color=RED, stroke_width=8),
+            Line(3 * UP + 4 * RIGHT, 3 * DOWN + 4 *
+                 RIGHT, color=RED, stroke_width=8),
+            Line(3 * UP - 4 * RIGHT, 3 * UP + 4 *
+                 RIGHT, color=RED, stroke_width=8),
+            Line(-3 * UP - 4 * RIGHT, -3 * UP + 4 *
+                 RIGHT, color=RED, stroke_width=8),
+            Line(3 * UP + -4 * RIGHT, 3 * DOWN + -
+                 4 * RIGHT, color=RED, stroke_width=8),
+            Line((3 - (12 / 5)) * DOWN + -2 * RIGHT, 3 *
+                 DOWN + -2 * RIGHT, color=RED, stroke_width=8),
+            Line((3 - (12 / 5)) * DOWN + 2 * RIGHT, 3 *
+                 DOWN + 2 * RIGHT, color=RED, stroke_width=8),
+            Line(3 * UP + 0 * RIGHT, (3 - 6 / 5) * UP +
+                 0 * RIGHT, color=RED, stroke_width=8)
         )
 
-        self.play(Write(title))
-        self.wait()
-
-        
         self.play(Write(rows))
         self.play(Write(columns))
         self.play(Write(borders))
@@ -104,7 +117,8 @@ class QLearning(Scene):
 
                 # Q[s_t, a_t] = a * (r + gamma * max(Q[s_t+1, a_t])) -> Q Learning formula
                 # https://en.wikipedia.org/wiki/Q-learning
-                self.q[s, action] = learning_rate * (reward + gamma * np.max(self.q[state]))
+                self.q[s, action] = learning_rate * \
+                    (reward + gamma * np.max(self.q[state]))
 
                 s = state
                 total_reward += reward
@@ -125,7 +139,8 @@ class QLearning(Scene):
             state = self.env.reset()
 
             while not done:
-                state, reward, done, info = self.env.step(np.argmax(self.q[state]))
+                state, reward, done, info = self.env.step(
+                    np.argmax(self.q[state]))
                 total_reward += reward
 
                 if to_render:
