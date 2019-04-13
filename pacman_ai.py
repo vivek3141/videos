@@ -21,30 +21,34 @@ class MDP(Scene):
         mdp = TextMobject("Markov Descision Process", color=RED)
         mdp.scale(1.5)
 
-        im = ImageMobject("./files/pacman.jpg")
-        im.shift(3 * RIGHT)
+        #im = ImageMobject("./files/pacman.jpg")
+        #im.shift(3 * RIGHT)
 
         b1 = TextMobject("State")
         b1.scale(2)
-        b1.shift(2 * LEFT)
-        
+        b1.shift(2 * LEFT + 2 * UP)
+
         b2 = TextMobject("Action")
         b2.scale(2)
         b2.shift(2 * LEFT)
 
         b3 = TextMobject("Reward")
         b3.scale(2)
-        b3.shift(2 * LEFT)
+        b3.shift(2 * LEFT + 2 * DOWN)
 
         self.play(Write(mdp))
         self.wait()
 
         self.play(ApplyMethod(mdp.shift, 2.5 * UP))
         self.wait()
-        
-        self.play(Write(b1))
-        self.play(ShowCreation(im))
 
+        self.play(Write(b1))
+        self.wait()
+
+        self.play(Write(b2))
+        self.wait()
+
+        self.play(Write(b3))
 
 
 class Taxi(Scene):
