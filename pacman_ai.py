@@ -25,16 +25,16 @@ class MDP(Scene):
         #im.shift(3 * RIGHT)
 
         b1 = TextMobject("State")
-        b1.scale(2)
-        b1.shift(2 * LEFT + 2 * UP)
+        b1.scale(1.5)
+        b1.shift(2 * LEFT + 1.5 * UP)
 
         b2 = TextMobject("Action")
-        b2.scale(2)
-        b2.shift(2 * LEFT)
+        b2.scale(1.5)
+        b2.shift(2 * LEFT + 0.5 * DOWN)
 
         b3 = TextMobject("Reward")
-        b3.scale(2)
-        b3.shift(2 * LEFT + 2 * DOWN)
+        b3.scale(1.5)
+        b3.shift(2 * LEFT + 2.5 * DOWN)
 
         self.play(Write(mdp))
         self.wait()
@@ -49,6 +49,7 @@ class MDP(Scene):
         self.wait()
 
         self.play(Write(b3))
+        self.wait()
 
 
 class Taxi(Scene):
