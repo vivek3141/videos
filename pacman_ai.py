@@ -158,16 +158,18 @@ class QUpdate(Scene):
         texts = ["Learning Rate", "Reward", "Discount Rate",
                  "Maximum expected future reward"]
 
-        def get_brace(obj, text):
+
+        def get_brace(obj, text, scale=0.5):
             brace = Brace(obj)
             t = brace.get_text(text)
+            t.scale(scale)
             return [brace, t]
-    
+
         braces = VGroup(
             *get_brace(equation[0], "New Q Value"),
             *get_brace(equation[2], "Current Q Value"),
             *[
-                *get_brace(i, n) for n, i in zip(texts, equation[4:])
+                get_brace(i, n) for n, i in zip(texts, equation[4:])
             ]
         )
 
