@@ -38,26 +38,6 @@ class QTable(Scene):
         self.play(Write(title))
 
 
-class QLearning(Scene):
-    def construct(self):
-        flow = BulletedList(
-            "Initialize Q Table",
-            "Choose an action a",
-            "Perform an action",
-            "Measure Reward",
-            "Update Q",
-            "GOTO 1"
-            )
-
-        self.play(Write(flow))
-        self.wait()
-
-        for i in range(0, 6):
-            self.play(flow.fade_all_but(i))
-            self.wait()
-        
-
-
 class MDP(Scene):
     def construct(self):
         mdp = TextMobject("Markov Descision Process", color=RED)
@@ -92,6 +72,25 @@ class MDP(Scene):
 
         self.play(Write(b3))
         self.wait()
+
+
+class QLearning(Scene):
+    def construct(self):
+        flow = BulletedList(
+            "Initialize Q Table",
+            "Choose an action a",
+            "Perform an action",
+            "Measure Reward",
+            "Update Q",
+            "GOTO 1"
+        )
+
+        self.play(Write(flow))
+        self.wait()
+
+        for i in range(0, 6):
+            self.play(ApplyMethod(flow.fade_all_but, i))
+            self.wait()
 
 
 class Taxi(Scene):
