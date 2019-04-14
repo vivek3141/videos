@@ -342,3 +342,19 @@ class DQL(Scene):
 
         self.play(Write(t2), Write(rect))
         self.wait()
+
+
+class TwoStuff(Scene):
+    def construct(self):
+        sc1 = ScreenRectangle(height=3)
+        sc1.shift(3 * LEFT)
+
+        sc2 = ScreenRectangle(height=3)
+        sc2.shift(3 * RIGHT)
+
+        title = TextMobject("Applying NEAT", color=BLUE)
+        title.scale(1.5)
+        title.shift(2.5 * UP)
+
+        self.play(Write(sc1), Write(sc2), Write(title))
+        self.wait()
