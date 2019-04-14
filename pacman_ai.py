@@ -107,17 +107,28 @@ class Initialize(Scene):
             ]
         )
 
-        table1.shift(2 * LEFT)
+        table1.shift(2.5 * LEFT)
 
         title1 = TextMobject("Option 1", color=YELLOW)
         title1.scale(1.5)
-        title1.shift(2.5 * UP + 2 * LEFT)
+        title1.shift(2.5 * UP + 2.5 * LEFT)
 
         title2 = TextMobject("Option 2", color=RED)
         title2.scale(1.5)
-        title2.shift(2.5 * UP + 2 * RIGHT)
+        title2.shift(2.5 * UP + 2.5 * RIGHT)
 
-        colc = TextMobject(r"from collections import Counter \\ q_table=Counter()")
+        colc = VGroup(
+            TextMobject("from collections import Counter", tex_to_color_map={
+                "from": PURPLE,
+                "import": PURPLE
+            }).shift(0.5 * UP),
+            TextMobject("qtable = Counter()", tex_to_color_map={
+                "Counter": BLUE,
+                "=": PURPLE
+            }).shift(0.5 * DOWN)
+        )
+        colc.scale(0.75)
+        colc.shift(2.5 * RIGHT)
 
         self.play(
             Write(table1),
@@ -126,9 +137,11 @@ class Initialize(Scene):
         self.wait()
 
         self.play(
-            Write(title2)
+            Write(title2),
             Write(colc)
         )
+
+        self.wait()
 
 
 class Taxi(Scene):
