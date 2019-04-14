@@ -117,6 +117,8 @@ class Initialize(Scene):
         title2.scale(1.5)
         title2.shift(2.5 * UP + 2 * RIGHT)
 
+        colc = TextMobject(r"from collections import Counter \\ q_table=Counter()")
+
         self.play(
             Write(table1),
             Write(title1)
@@ -125,6 +127,7 @@ class Initialize(Scene):
 
         self.play(
             Write(title2)
+            Write(colc)
         )
 
 
