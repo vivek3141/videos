@@ -101,11 +101,31 @@ class Initialize(Scene):
             Line(0.5 * LEFT + 1.5 * UP, 0.5 * LEFT + 1.5 * DOWN),
             Line(1.5 * LEFT + 0.5 * UP, 1.5 * RIGHT + 0.5 * UP),
             Line(1.5 * LEFT + 0.5 * DOWN, 1.5 * RIGHT + 0.5 * DOWN),
-            TextMobject("0").shift(1 * UP + 1 * RIGHT)
+            *[
+                TextMobject("0").shift(z * UP + i * RIGHT) for i in range(-1, 2)
+                for z in range(-1, 2)
+            ]
         )
 
-        self.play(Write(table1))
+        table1.shift(2 * LEFT)
+
+        title1 = TextMobject("Option 1", color=YELLOW)
+        title1.scale(1.5)
+        title1.shift(2.5 * UP + 2 * LEFT)
+
+        title2 = TextMobject("Option 2", color=RED)
+        title2.scale(1.5)
+        title2.shift(2.5 * UP + 2 * RIGHT)
+
+        self.play(
+            Write(table1),
+            Write(title1)
+        )
         self.wait()
+
+        self.play(
+            Write(title2)
+        )
 
 
 class Taxi(Scene):
