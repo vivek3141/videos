@@ -328,4 +328,17 @@ class DQL(Scene):
         title = TextMobject("Deep Q Learning", color=GREEN)
         title.scale(2)
 
+        t2 = TextMobject("Live Streamer AI")
+        t2.scale(1.5)
+        t2.shift(3 * UP)
+
+        rect = ScreenRectangle(height=5)
+
         self.play(Write(title))
+        self.wait()
+
+        self.play(Uncreate(title))
+        self.wait()
+
+        self.play(Write(t2), Write(rect))
+        self.wait()
