@@ -96,10 +96,16 @@ class QLearning(Scene):
 class Initialize(Scene):
     def construct(self):
         table1 = VGroup(
-            Rectangle(height=3, width=3)
+            Rectangle(height=3, width=3),
+            Line(0.5 * RIGHT + 1.5 * UP, 0.5 * RIGHT + 1.5 * DOWN),
+            Line(0.5 * LEFT + 1.5 * UP, 0.5 * LEFT + 1.5 * DOWN),
+            Line(1.5 * LEFT + 0.5 * UP, 1.5 * RIGHT + 0.5 * UP),
+            Line(1.5 * LEFT + 0.5 * DOWN, 1.5 * RIGHT + 0.5 * DOWN),
+            #Line(1 * RIGHT + 1.5 * UP, 1 * RIGHT + 1.5 * DOWN),
         )
 
         self.play(Write(table1))
+        self.wait()
 
 
 class Taxi(Scene):
