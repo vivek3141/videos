@@ -93,6 +93,15 @@ class QLearning(Scene):
             self.wait()
 
 
+class Initialize(Scene):
+    def construct(self):
+        table1 = VGroup(
+            Rectangle(height=3, width=3)
+        )
+
+        self.play(Write(table1))
+
+
 class Taxi(Scene):
     MAP = [
         "+---------+",
