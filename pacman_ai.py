@@ -49,6 +49,14 @@ class QLearning(Scene):
             "GOTO 1"
             )
 
+        self.play(Write(flow))
+        self.wait()
+
+        for i in range(0, 6):
+            self.play(flow.fade_all_but(i))
+            self.wait()
+        
+
 
 class MDP(Scene):
     def construct(self):
