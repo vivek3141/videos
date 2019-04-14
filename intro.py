@@ -31,29 +31,44 @@ class ElectricField(ThreeDScene):
 
     def construct(self):
         OPACITY = 0.1
-        line0 = Line(3 * DOWN + 0.5 * LEFT, 2 * DOWN + 0.5 * LEFT, stroke_width=8)
-        line1 = Line(2 * DOWN + 0.5 * LEFT, 2 * DOWN + 2 * LEFT, stroke_width=8)
+        line0 = Line(3 * DOWN + 0.5 * LEFT, 2 *
+                     DOWN + 0.5 * LEFT, stroke_width=8)
+        line1 = Line(2 * DOWN + 0.5 * LEFT, 2 *
+                     DOWN + 2 * LEFT, stroke_width=8)
         line3 = Line(2 * UP + 2 * LEFT, 2 * UP + 2 * RIGHT, stroke_width=8)
         line4 = Line(2 * UP + 2 * RIGHT, 2 * DOWN + 2 * RIGHT, stroke_width=8)
         line2 = Line(2 * DOWN + 2 * LEFT, 2 * UP + 2 * LEFT, stroke_width=8)
-        line5 = Line(2 * DOWN + 2 * RIGHT, 2 * DOWN + 0.5 * RIGHT, stroke_width=8)
-        line6 = Line(2 * DOWN + 0.5 * RIGHT, 3 * DOWN + 0.5 * RIGHT, stroke_width=8)
+        line5 = Line(2 * DOWN + 2 * RIGHT, 2 * DOWN +
+                     0.5 * RIGHT, stroke_width=8)
+        line6 = Line(2 * DOWN + 0.5 * RIGHT, 3 *
+                     DOWN + 0.5 * RIGHT, stroke_width=8)
 
-        line02 = Line(3 * DOWN + 0.5 * LEFT, 2 * DOWN + 0.5 * LEFT, stroke_width=8)
-        line12 = Line(2 * DOWN + 0.5 * LEFT, 2 * DOWN + 2 * LEFT, stroke_width=8)
+        line02 = Line(3 * DOWN + 0.5 * LEFT, 2 *
+                      DOWN + 0.5 * LEFT, stroke_width=8)
+        line12 = Line(2 * DOWN + 0.5 * LEFT, 2 *
+                      DOWN + 2 * LEFT, stroke_width=8)
         line32 = Line(2 * UP + 2 * LEFT, 2 * UP + 2 * RIGHT, stroke_width=8)
         line42 = Line(2 * UP + 2 * RIGHT, 2 * DOWN + 2 * RIGHT, stroke_width=8)
         line22 = Line(2 * DOWN + 2 * LEFT, 2 * UP + 2 * LEFT, stroke_width=8)
-        line52 = Line(2 * DOWN + 2 * RIGHT, 2 * DOWN + 0.5 * RIGHT, stroke_width=8)
-        line62 = Line(2 * DOWN + 0.5 * RIGHT, 3 * DOWN + 0.5 * RIGHT, stroke_width=8)
+        line52 = Line(2 * DOWN + 2 * RIGHT, 2 * DOWN +
+                      0.5 * RIGHT, stroke_width=8)
+        line62 = Line(2 * DOWN + 0.5 * RIGHT, 3 *
+                      DOWN + 0.5 * RIGHT, stroke_width=8)
 
-        line00 = Line(3 * DOWN + 0.5 * LEFT, 2 * DOWN + 0.5 * LEFT, stroke_opacity=OPACITY)
-        line10 = Line(2 * DOWN + 0.5 * LEFT, 2 * DOWN + 2 * LEFT, stroke_opacity=OPACITY)
-        line30 = Line(2 * UP + 2 * LEFT, 2 * UP + 2 * RIGHT, stroke_opacity=OPACITY)
-        line40 = Line(2 * UP + 2 * RIGHT, 2 * DOWN + 2 * RIGHT, stroke_opacity=OPACITY)
-        line20 = Line(2 * DOWN + 2 * LEFT, 2 * UP + 2 * LEFT, stroke_opacity=OPACITY)
-        line50 = Line(2 * DOWN + 2 * RIGHT, 2 * DOWN + 0.5 * RIGHT, stroke_opacity=OPACITY)
-        line60 = Line(2 * DOWN + 0.5 * RIGHT, 3 * DOWN + 0.5 * RIGHT, stroke_opacity=OPACITY)
+        line00 = Line(3 * DOWN + 0.5 * LEFT, 2 * DOWN +
+                      0.5 * LEFT, stroke_opacity=OPACITY)
+        line10 = Line(2 * DOWN + 0.5 * LEFT, 2 * DOWN +
+                      2 * LEFT, stroke_opacity=OPACITY)
+        line30 = Line(2 * UP + 2 * LEFT, 2 * UP + 2 *
+                      RIGHT, stroke_opacity=OPACITY)
+        line40 = Line(2 * UP + 2 * RIGHT, 2 * DOWN +
+                      2 * RIGHT, stroke_opacity=OPACITY)
+        line20 = Line(2 * DOWN + 2 * LEFT, 2 * UP +
+                      2 * LEFT, stroke_opacity=OPACITY)
+        line50 = Line(2 * DOWN + 2 * RIGHT, 2 * DOWN +
+                      0.5 * RIGHT, stroke_opacity=OPACITY)
+        line60 = Line(2 * DOWN + 0.5 * RIGHT, 3 * DOWN +
+                      0.5 * RIGHT, stroke_opacity=OPACITY)
 
         arrow = Arrow(ORIGIN, 1 * UP, color=RED)
         arrow.move_to(line2, 1 * LEFT)
@@ -156,13 +171,16 @@ class ElectricField(ThreeDScene):
 
 class Test(Scene):
     def construct(self):
-        sin1 = ParametricFunction(lambda t: np.array([t, np.sin(t), 0]), t_min=0, t_max=6 * PI, color=GREEN)
+        sin1 = ParametricFunction(lambda t: np.array(
+            [t, np.sin(t), 0]), t_min=0, t_max=6 * PI, color=GREEN)
         sin1.shift(7 * LEFT)
 
-        sin2 = ParametricFunction(lambda t: np.array([t, -np.sin(t), 0]), t_min=0, t_max=6 * PI, color=GREEN)
+        sin2 = ParametricFunction(lambda t: np.array(
+            [t, -np.sin(t), 0]), t_min=0, t_max=6 * PI, color=GREEN)
         sin2.shift(7 * LEFT)
 
-        sin11 = ParametricFunction(lambda t: np.array([t, np.sin(t), 0]), t_min=0, t_max=6 * PI, color=GREEN)
+        sin11 = ParametricFunction(lambda t: np.array(
+            [t, np.sin(t), 0]), t_min=0, t_max=6 * PI, color=GREEN)
         sin11.shift(7 * LEFT)
 
         self.play(Write(sin1))

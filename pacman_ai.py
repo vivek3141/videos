@@ -16,6 +16,28 @@ class QTitle(Scene):
         self.wait()
 
 
+class QTable(Scene):
+    def construct(self):
+        table = Rectangle(height=3.5, width=3.5)
+
+        b1 = Brace(table, LEFT)
+        text = b1.get_text("State")
+
+        b2 = Brace(table, UP)
+        text2 = b2.get_text("Action")
+
+        title = TextMobject("Q-Table", color=RED)
+        title.scale(2)
+        title.shift(2.5 * DOWN)
+
+        self.play(Write(table))
+        self.play(Write(b1), Write(b2), Write(text), Write(text2))
+
+        self.wait()
+
+        self.play(Write(title))
+
+
 class MDP(Scene):
     def construct(self):
         mdp = TextMobject("Markov Descision Process", color=RED)
@@ -194,25 +216,3 @@ class Taxi(Scene):
         out.append(i)
         assert 0 <= i < 5
         return reversed(out)
-
-
-class QTable(Scene):
-    def construct(self):
-        table = Rectangle(height=3.5, width=3.5)
-
-        b1 = Brace(table, LEFT)
-        text = b1.get_text("State")
-
-        b2 = Brace(table, UP)
-        text2 = b2.get_text("Action")
-
-        title = TextMobject("Q-Table", color=RED)
-        title.scale(2)
-        title.shift(2.5 * DOWN)
-
-        self.play(Write(table))
-        self.play(Write(b1), Write(b2), Write(text), Write(text2))
-
-        self.wait()
-
-        self.play(Write(title))
