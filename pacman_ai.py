@@ -144,6 +144,12 @@ class Initialize(Scene):
         self.wait()
 
 
+class QUpdate(Scene):
+    def construct(self):
+        equation = TexMobject(
+            r"\text{New}Q(s,a) = Q(s,a) + \alpha[R(s,a) + \gamma\text{max}Q'(s',a')-Q(s,a)]")
+
+
 class Taxi(Scene):
     MAP = [
         "+---------+",
