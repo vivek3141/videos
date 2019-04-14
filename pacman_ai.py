@@ -147,7 +147,35 @@ class Initialize(Scene):
 class QUpdate(Scene):
     def construct(self):
         equation = TexMobject(
-            r"\text{New}Q(s,a) = Q(s,a) + \alpha[R(s,a) + \gamma\text{max}Q'(s',a')-Q(s,a)]")
+            r"\text{New}Q(s,a)", r" = ", r"Q(s,a)", r" + ", r"\alpha", r"[R(s,a)", r" + \gamma\text{max}Q'(s',a')-Q(s,a)]")
+
+        li = equation.break_up_tex_strings([
+            r"\text{New}Q(s,a)",
+            r"Q(s,a)",
+            r"\alpha[R(s,a)",
+            r"\gamma\text{max}Q'(s',a')-Q(s,a)"
+        ])
+        texts = ["Learning Rate", "Reward", "Discount Rate",
+                 "Maximum expected future reward"]
+
+        def get_brace(obj, text):
+            brace = Brace(obj)
+            t = brace.get_text(text)
+            return [brace, t]
+    
+        braces = VGroup(
+            *get_brace(equation[0], "New Q Value"),
+            *get_brace(equation[2], "Current Q Value"),
+            *[
+                *get_brace(i, n) for n, i in zip(texts, equation[4:])
+            ]
+        )
+
+        self.play(Write(equation))
+        self.wait()
+
+        self.play(Write(braces))
+        self.wait()
 
 
 class Taxi(Scene):
