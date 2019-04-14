@@ -38,6 +38,18 @@ class QTable(Scene):
         self.play(Write(title))
 
 
+class QLearning(Scene):
+    def construct(self):
+        flow = BulletedList(
+            "Initialize Q Table",
+            "Choose an action a",
+            "Perform an action",
+            "Measure Reward",
+            "Update Q",
+            "GOTO 1"
+            )
+
+
 class MDP(Scene):
     def construct(self):
         mdp = TextMobject("Markov Descision Process", color=RED)
