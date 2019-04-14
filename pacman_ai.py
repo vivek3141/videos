@@ -147,7 +147,7 @@ class Initialize(Scene):
 class QUpdate(Scene):
     def construct(self):
         equation = TexMobject(
-            r"\text{New}Q(s,a)", r" = ", r"Q(s,a)", r" + ", r"\alpha", r"[R(s,a)", r" + \gamma\text{max}Q'(s',a')-Q(s,a)]")
+            r"\text{New}Q(s,a)", r" = ", r"Q(s,a)", r" + ", r"\alpha", r"[R(s,a)", r" + \gamma", r"\text{max}Q'(s',a')-Q(s,a)]")
 
         li = equation.break_up_tex_strings([
             r"\text{New}Q(s,a)",
