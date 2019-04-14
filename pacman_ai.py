@@ -158,7 +158,6 @@ class QUpdate(Scene):
         texts = ["Learning Rate", "Reward", "Discount Rate",
                  "Maximum expected future reward"]
 
-
         def get_brace(obj, text, scale=0.5):
             brace = Brace(obj)
             t = brace.get_text(text)
@@ -322,3 +321,11 @@ class Taxi(Scene):
         out.append(i)
         assert 0 <= i < 5
         return reversed(out)
+
+
+class DQL(Scene):
+    def construct(self):
+        title = TextMobject("Deep Q Learning", color=GREEN)
+        title.scale(2)
+
+        self.play(Write(title))
