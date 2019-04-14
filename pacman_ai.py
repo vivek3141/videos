@@ -101,7 +101,7 @@ class Initialize(Scene):
             Line(0.5 * LEFT + 1.5 * UP, 0.5 * LEFT + 1.5 * DOWN),
             Line(1.5 * LEFT + 0.5 * UP, 1.5 * RIGHT + 0.5 * UP),
             Line(1.5 * LEFT + 0.5 * DOWN, 1.5 * RIGHT + 0.5 * DOWN),
-            #Line(1 * RIGHT + 1.5 * UP, 1 * RIGHT + 1.5 * DOWN),
+            TextMobject("0").shift(1 * UP + 1 * RIGHT)
         )
 
         self.play(Write(table1))
