@@ -6,14 +6,34 @@ class Intro(Scene):
         pass
 
 
+class MinimaxTitle(Scene):
+    def construct(self):
+        title = TextMobject("Minimax", color=GREEN)
+        title.scale(2)
+        self.play(Write(title))
+        self.wait()
+
+
 class Minimax(Scene):
     def construct(self):
         tree = TreeMobject((1, 2, 4))
         tree.rotate(PI/2, axis=IN)
         tree.add_labels(-1, ["3", "5", "2", "9"])
         tree.scale(2)
-        
+        tree.add_branch_labels(["R", "L"])
+
+        max1 = TextMobject("Maximizer")
+        max1.scale(1)
+        max1.shift(2 * LEFT + 1.5 * UP)
+
+        min1 = TextMobject("Minimizer")
+        min1.scale(1)
+        min1.shift(2 * LEFT + 1.5 * DOWN)
+
         self.play(Write(tree))
+        self.wait()
+
+        self.play(Write(max1), Write(min1))
         self.wait()
 
 
@@ -142,12 +162,12 @@ class TreeMobject(VGroup):
             self.output_labels.add(label)
         self.add(self.output_labels)
 
-    def add_weight_labels(self):
+    def add_branch_labels(self, labels, move=(RIGHT, LEFT)):
         weight_group = VGroup()
 
-        for n, i in enumerate(self.layers[0].neurons):
-            edge = self.get_edge(i, self.layers[-1][0])
-            text = TexMobject(f"w_{n + 1}", color=RED)
-            text.move_to(edge)
+        for n, i in enumerate(self.layers[1].neurons):
+            edge = self.get_edge(i, self.layers[0].neurons[0])
+            text = TextMobject(labels[n], color=RED)
+            text.move_to(edge, move[n] * 2)
             weight_group.add(text)
         self.add(weight_group)
