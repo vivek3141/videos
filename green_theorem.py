@@ -60,12 +60,12 @@ class GreenTheoremVisual(Scene):
         field = VGroup(axes, f)
         field.scale(0.6)
 
-        eq = TexMobject(r"\int_C\overrightarrow{\textbf{F}} \bullet \textbf{d} \overrightarrow{\textbf{r}}")
+       """  eq = TexMobject(r"\int_C\overrightarrow{\textbf{F}} \bullet \textbf{d} \overrightarrow{\textbf{r}}")
         eq.scale(1.5)
 
         eq_back = BackgroundRectangle(eq, fill_opacity=1)
         integral = VGroup(eq_back, eq)
-
+ """
         c = ParametricFunction(
             self.func,
             t_min=-3,
@@ -140,11 +140,11 @@ class GreenTheoremVisual(Scene):
         self.f = VGroup()
         self.a = VGroup()
 
-        self.play(Write(integral))
+        """ self.play(Write(integral))
 
         self.play(ApplyMethod(integral.scale, 0.5))
         self.play(ApplyMethod(integral.shift, 3 * UP))
-
+ """
         self.bring_to_back(field)
         self.play(ShowCreation(field))
         self.wait()
@@ -152,8 +152,8 @@ class GreenTheoremVisual(Scene):
         self.play(Write(curve))
         self.wait()
 
-        self.play(Uncreate(integral), ApplyMethod(field.shift, 1 * UP), ApplyMethod(curve.shift, 1 * UP))
-        self.wait()
+      """   self.play(Uncreate(integral), ApplyMethod(field.shift, 1 * UP), ApplyMethod(curve.shift, 1 * UP))
+        self.wait() """
 
         self.play(Transform(f, f2))
         self.play(Write(r))
