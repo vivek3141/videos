@@ -56,8 +56,8 @@ class GreenTheoremVisual(Scene):
 
         c = ParametricFunction(
             self.func,
-            t_min=-3,
-            t_max=3,
+            t_min=-math.sqrt(3),
+            t_max=math.sqrt(3),
         )
         c.set_stroke(opacity=0.75)
         label = TextMobject("C")
@@ -66,16 +66,6 @@ class GreenTheoremVisual(Scene):
 
         curve = VGroup(label, c)
         curve.scale(0.6)
-
-        r_axes = Axes(**r_config)
-        c2 = ParametricFunction(
-            self.line_evaluated,
-            t_min=-3,
-            t_max=3,
-            color=RED
-        )
-        func = VGroup(r_axes)
-        func.shift(3 * DOWN + 2 * LEFT)
 
         self.play(ShowCreation(field))
         self.wait()
@@ -100,7 +90,7 @@ class GreenTheoremVisual(Scene):
     @staticmethod
     def func(t):
         return np.array([
-            2 * np.arctan(t),
-            t,
+            1 - t**2,
+            t**3 - 3*t,
             0
         ])
