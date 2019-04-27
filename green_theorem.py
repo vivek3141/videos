@@ -77,24 +77,10 @@ class GreenTheoremVisual(Scene):
         func = VGroup(r_axes)
         func.shift(3 * DOWN + 2 * LEFT)
 
-        
-        self.f = VGroup()
-        self.a = VGroup()
-
-        """ self.play(Write(integral))
-
-        self.play(ApplyMethod(integral.scale, 0.5))
-        self.play(ApplyMethod(integral.shift, 3 * UP))
- """
         self.play(ShowCreation(field))
         self.wait()
 
         self.play(Write(curve))
-        self.wait()
-
-        """   self.play(Uncreate(integral), ApplyMethod(field.shift, 1 * UP), ApplyMethod(curve.shift, 1 * UP))
-        self.wait() """
-
         self.wait()
 
     def calc_field_color(self, point, f, prop=0.0, opacity=None):
@@ -118,67 +104,3 @@ class GreenTheoremVisual(Scene):
             t,
             0
         ])
-
-    def f_r(self, t):
-        r = self.func(t)
-        return np.array([
-            r[1],
-            r[0],
-            0
-        ])
-
-    @staticmethod
-    def line_evaluated(x):
-        r_derivative = np.array([2 / (1 + x ** 2), 1])
-        f_r = np.array([x, 2 * np.arctan(x)])
-
-        return np.array([
-            x,
-            0.25 * np.dot(f_r, r_derivative),
-            0
-        ])
-
-    @staticmethod
-    def r_prime(x):
-        r_d = np.array([2 / (1 + x ** 2), 1, 0])
-        return r_d
-
-    def continual_update(self, *args, **kwargs):
-        Scene.continual_update(self, *args, **kwargs)
-        if hasattr(self, "r"):
-            dt = self.frame_duration
-
-            t = self.t
-            d_point = (self.func(t + dt) - self.func(t)) * 0.6 * RIGHT + ((dt * 0.6) * UP)
-
-            self.r.shift(d_point)
-            self.r_.put_start_and_end_on(self.r_.get_start(), (self.r_prime(t) * 0.6) + self.r_.get_start())
-
-            self.fr.put_start_and_end_on(self.fr.get_start(), (self.f_r(t) * 0.25) + self.fr.get_start())
-            self.v2.put_start_and_end_on(self.v2.get_start(), (self.func(t) * 0.25) + self.v2.get_start())
-
-            l2 = Line(
-                (3 - self.line_evaluated(t)[1]) * DOWN + (2 - t) * LEFT,
-                3 * DOWN + (2 - t) * LEFT,
-                color=YELLOW,
-                stroke_width=dt
-            )
-            self.a.add(l2)
-            self.add(
-                l2
-            )
-
-            l1 = Line(
-                (3 - self.line_evaluated(t)[1]) * DOWN + (2 - t) * LEFT,
-                (3 - self.line_evaluated(t + dt)[1]) * DOWN + (2 - t - dt) * LEFT,
-                color=RED,
-                stroke_width=8
-            )
-            self.f.add(l1)
-            self.add(
-                l1
-            )
-
-            if self.t >= 3:
-                del self.r
-            self.t = self.t + dt
