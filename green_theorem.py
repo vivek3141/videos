@@ -61,7 +61,7 @@ class GreenTheoremVisual(Scene):
         )
         c.set_stroke(opacity=0.75)
         label = TextMobject("C")
-        label.shift(2 * LEFT)
+        label.shift(3 * LEFT)
         label.scale(2)
 
         curve = VGroup(label, c)
