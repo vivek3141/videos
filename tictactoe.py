@@ -18,7 +18,7 @@ class Minimax(Scene):
     def construct(self):
         tree = TreeMobject((1, 2, 4))
         tree.rotate(PI/2, axis=IN)
-        tree.add_labels(-1, ["3", "5", "2", "9"])
+        tree.add_labels(-1, ["9", "2", "5", "3"])
         tree.scale(2)
         tree.add_branch_labels(["R", "L"])
 
