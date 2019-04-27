@@ -14,10 +14,10 @@ class GreenTheoremVisual(Scene):
     }
 
     def construct(self):
-        axes_config = {"x_min": -3,
-                       "x_max": 3,
-                       "y_min": -3,
-                       "y_max": 3,
+        axes_config = {"x_min": -5,
+                       "x_max": 5,
+                       "y_min": -5,
+                       "y_max": 5,
                        "z_axis_config": {},
                        "z_min": -1,
                        "z_max": 1,
@@ -32,12 +32,13 @@ class GreenTheoremVisual(Scene):
         axes = Axes(**axes_config)
         f = VGroup(
             *[self.calc_field_color(x * RIGHT + y * UP, self.vect, prop=0)
-              for x in np.arange(-3, 3, 0.5)
-              for y in np.arange(-3, 3, 0.5)
+              for x in np.arange(-5, 5, 1)
+              for y in np.arange(-5, 5, 1)
               ]
         )
 
         field = VGroup(axes, f)
+        field.scale(0.6)
 
         c = ParametricFunction(
             self.func,
@@ -82,7 +83,7 @@ class GreenTheoremVisual(Scene):
     @staticmethod
     def vect(x, y):
         return np.array([
-            x*math.cos(y)+y*math.sin(x),
-            math.sin(y)*x+math.cos(y),
+            y,
+            x,
             0
         ])
