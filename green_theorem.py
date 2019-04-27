@@ -1,8 +1,10 @@
 from manim import *
 
+
 class Diagram(Scene):
     def construct(self):
         pass
+
 
 class GreenTheoremVisual(Scene):
     CONFIG = {
@@ -48,24 +50,10 @@ class GreenTheoremVisual(Scene):
               for y in np.arange(-5, 5, 1)
               ]
         )
-        f2 = VGroup(
-            *[self.calc_field_color(x * RIGHT + y * UP, lambda x, y: np.array([y, x]), prop=0, opacity=0.5)
-              for x in np.arange(-5, 5, 1)
-              for y in np.arange(-5, 5, 1)
-              ]
-        )
-        f2.scale(0.6)
-        f2.shift(1 * UP)
 
         field = VGroup(axes, f)
         field.scale(0.6)
 
-       """  eq = TexMobject(r"\int_C\overrightarrow{\textbf{F}} \bullet \textbf{d} \overrightarrow{\textbf{r}}")
-        eq.scale(1.5)
-
-        eq_back = BackgroundRectangle(eq, fill_opacity=1)
-        integral = VGroup(eq_back, eq)
- """
         c = ParametricFunction(
             self.func,
             t_min=-3,
@@ -89,54 +77,7 @@ class GreenTheoremVisual(Scene):
         func = VGroup(r_axes)
         func.shift(3 * DOWN + 2 * LEFT)
 
-        c_o = 2.5 * DOWN + 3 * RIGHT
-        circle = Circle(color=WHITE)
-        circle.move_to(c_o)
-
-        v = self.r_prime(-3) * 0.6
-        v = Vector(v)
-        v.move_to((self.func(-3)[0] * 0.6) * RIGHT + ((-3 * 0.6) + 1.29) * UP)
-
-        self.v2 = self.r_prime(-3) * 0.25
-        self.v2 = Vector(self.v2, color=RED)
-        self.v2.shift(c_o)
-
-        self.fr = self.f_r(-3) * 0.25
-        self.fr = Vector(self.fr, color=GREEN)
-        self.fr.shift(c_o)
-
-        label_fr = TexMobject(r"= \overrightarrow{\textbf{F}} ( \overrightarrow{r} (t) )").scale(0.75)
-        label_r = TexMobject(r"= \overrightarrow{r}'(t)").scale(0.75)
-
-        arrow1 = Vector([0, 1], color=GREEN)
-        arrow2 = Vector([0, 1], color=RED)
-
-        arrow1.shift(2 * UP + 4 * RIGHT)
-        arrow2.shift(4 * RIGHT)
-
-        label_fr.move_to(arrow1)
-        label_fr.shift(1.25 * RIGHT)
-
-        label_r.move_to(arrow2)
-        label_r.shift(1 * RIGHT)
-
-        l1 = VGroup(arrow1, label_fr)
-        l2 = VGroup(arrow2, label_r)
-
-        dot = TexMobject(r"\overrightarrow{\textbf{F}} ( \overrightarrow{r} (t) ) \bullet \overrightarrow{r}'(t)")
-        dot.scale(0.75)
-        dot.shift(3.5 * DOWN)
-
-        r_label = TexMobject(r"\overrightarrow{r}'(t)")
-        r_label.move_to(v)
-        r_label.shift(1 * LEFT)
-
-        r = VGroup(r_label, v)
-
-        s1 = TexMobject(r"\int_C \overrightarrow{\textbf{F}} \bullet \textbf{d} \overrightarrow{r}")
-        s2 = TexMobject(
-            r"\int_a^b \overrightarrow{\textbf{F}} ( \overrightarrow{r} (t) ) \bullet \overrightarrow{r}'(t)")
-
+        
         self.f = VGroup()
         self.a = VGroup()
 
@@ -145,54 +86,15 @@ class GreenTheoremVisual(Scene):
         self.play(ApplyMethod(integral.scale, 0.5))
         self.play(ApplyMethod(integral.shift, 3 * UP))
  """
-        self.bring_to_back(field)
         self.play(ShowCreation(field))
         self.wait()
 
         self.play(Write(curve))
         self.wait()
 
-      """   self.play(Uncreate(integral), ApplyMethod(field.shift, 1 * UP), ApplyMethod(curve.shift, 1 * UP))
+        """   self.play(Uncreate(integral), ApplyMethod(field.shift, 1 * UP), ApplyMethod(curve.shift, 1 * UP))
         self.wait() """
 
-        self.play(Transform(f, f2))
-        self.play(Write(r))
-        self.wait()
-
-        self.play(ShowCreation(func))
-        self.wait()
-
-        self.play(Write(circle), Write(self.v2), Write(self.fr), Write(l1), Write(l2))
-        self.wait()
-
-        self.play(Write(dot))
-
-        self.r = r
-        self.r_ = v
-        self.t = -3
-        self.always_continually_update = True
-
-        self.wait(10)
-
-        self.play(
-            Uncreate(dot),
-            Uncreate(self.v2),
-            Uncreate(self.fr),
-            Uncreate(l1),
-            Uncreate(l2),
-            Uncreate(func),
-            Uncreate(r),
-            Uncreate(field),
-            Uncreate(curve),
-            Uncreate(circle),
-            Uncreate(self.f),
-            Uncreate(self.a)
-        )
-
-        self.play(Write(s1))
-        self.wait()
-
-        self.play(Transform(s1, s2))
         self.wait()
 
     def calc_field_color(self, point, f, prop=0.0, opacity=None):
