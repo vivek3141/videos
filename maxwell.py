@@ -172,3 +172,11 @@ class EMWave(ContinualAnimationGroup):
             self.mobject.apply_matrix(self.matrix_transform)
         self.mobject.shift(self.start_point)
 
+
+class TestWave(ThreeDScene):
+    def construct(self):
+        wave = EMWave()
+        self.move_camera(0.8 * np.pi / 2, -0.45 * np.pi)
+
+        self.add(wave)
+        self.wait(10)
