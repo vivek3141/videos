@@ -200,6 +200,17 @@ class Charge(Circle):
 
 class ACWave(ThreeDScene):
     def construct(self):
-        c1 = Charge()
-        self.play(Write(c1))
+        pos = VGroup()
+        neg = VGroup()
+
+        for i in range(3):
+            charge = Charge()
+            charge.shift(i * UP)
+            pos.add(charge)
+
+            charge = Charge(sign="-", color=BLUE, fill_color=BLUE)
+            charge.shift(i * DOWN)
+            neg.add(charge)
+
+        self.play(Write(pos), Write(neg))
         self.wait()
