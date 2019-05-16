@@ -241,7 +241,7 @@ class ACWave(ThreeDScene):
 
         self.play(Write(gen))
         self.play(Write(self.pos), Write(self.neg))
-        self.add(EMWave(frequency=0.5))
+        self.add(EMWave(frequency=1/1.5))
 
         self.move_camera(0.4 * np.pi / 2, -PI/2)
 
