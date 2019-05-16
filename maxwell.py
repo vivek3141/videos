@@ -89,7 +89,7 @@ class OscillatingVectorComponents(ContinualAnimationGroup):
 class EMWave(ContinualAnimationGroup):
     CONFIG = {
         "wave_number": 1,
-        "frequency": 0.25,
+        "frequency": 0.5,
         "n_vectors": 40,
         "propogation_direction": RIGHT,
         "start_point": FRAME_X_RADIUS*LEFT + DOWN + OUT,
@@ -206,7 +206,7 @@ class ACWave(ThreeDScene):
         self.pos = VGroup()
         self.neg = VGroup()
         self.update = False
-        shift = 3 * LEFT
+        shift = 6 * LEFT
 
         for i in range(1, 4):
             charge = Charge()
@@ -241,10 +241,12 @@ class ACWave(ThreeDScene):
 
         self.play(Write(gen))
         self.play(Write(self.pos), Write(self.neg))
-        self.wait()
         self.add(EMWave())
 
-        for i in range(4):
+        self.move_camera(0, PI/2)
+        self.wait()
+
+        for i in range(0):
             self._update()
 
     def continual_update(self, *args, **kwargs):
@@ -254,6 +256,6 @@ class ACWave(ThreeDScene):
     
     def _update(self):
         self.play(Transform(self.pos, self.neg2), Transform(self.neg, self.pos2))
-        self.wait(0.25)
+        self.wait(0.5)
         self.play(Transform(self.pos, self.pos3), Transform(self.neg, self.neg3))
-        self.wait(0.25)
+        self.wait(0.5)
