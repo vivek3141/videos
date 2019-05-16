@@ -180,3 +180,26 @@ class TestWave(ThreeDScene):
 
         self.add(wave)
         self.wait(10)
+
+class Charge(Circle):
+    CONFIG = {
+        "radius": 0.2,
+        "stroke_width": 3,
+        "color": RED,
+        "fill_color": RED,
+        "fill_opacity": 0.5,
+        "sign": "+"
+    }
+
+    def __init__(self, **kwargs):
+        Circle.__init__(self, **kwargs)
+        plus = TexMobject(self.sign)
+        plus.scale(0.7)
+        plus.move_to(self)
+        self.add(plus)
+
+class ACWave(ThreeDScene):
+    def construct(self):
+        c1 = Charge()
+        self.play(Write(c1))
+        self.wait()
