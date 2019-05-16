@@ -1,4 +1,5 @@
 from manim import *
+import time
 
 
 E_COLOR = BLUE
@@ -181,6 +182,7 @@ class TestWave(ThreeDScene):
         self.add(wave)
         self.wait(10)
 
+
 class Charge(Circle):
     CONFIG = {
         "radius": 0.2,
@@ -198,19 +200,60 @@ class Charge(Circle):
         plus.move_to(self)
         self.add(plus)
 
+
 class ACWave(ThreeDScene):
     def construct(self):
-        pos = VGroup()
-        neg = VGroup()
+        self.pos = VGroup()
+        self.neg = VGroup()
+        self.update = False
+        shift = 3 * LEFT
 
-        for i in range(3):
+        for i in range(1, 4):
             charge = Charge()
-            charge.shift(i * UP)
-            pos.add(charge)
+            charge.shift(i * UP + 0.5 * RIGHT)
+            self.pos.add(charge)
 
             charge = Charge(sign="-", color=BLUE, fill_color=BLUE)
-            charge.shift(i * DOWN)
-            neg.add(charge)
+            charge.shift(i * DOWN + 0.5 * RIGHT)
+            self.neg.add(charge)
 
-        self.play(Write(pos), Write(neg))
+        gen = VGroup()
+        rect = Rectangle(height=1, width=1, color=GREEN)
+        rect2 = Rectangle(height=0.35, width=0.75, color=RED)
+        gen.add(rect)
+        gen.add(rect2)
+        gen.add(TextMobject("120V").scale(0.5))
+        gen.add(Line(0.5 * UP, 3 * UP))
+        gen.add(Line(0.5 * DOWN, 3 * DOWN))
+
+        gen.shift(shift)
+        self.neg.shift(shift)
+        self.pos.shift(shift)
+
+        self.neg2 = self.neg.copy()
+        self.neg2.shift(4 * UP)
+
+        self.pos2 = self.pos.copy()
+        self.pos2.shift(4 * DOWN)
+
+        self.neg3 = self.neg.copy()
+        self.pos3 = self.pos.copy()
+
+        self.play(Write(gen))
+        self.play(Write(self.pos), Write(self.neg))
         self.wait()
+        self.add(EMWave())
+
+        for i in range(4):
+            self._update()
+
+    def continual_update(self, *args, **kwargs):
+        Scene.continual_update(self, *args, **kwargs)
+        if self.update:
+            pass
+    
+    def _update(self):
+        self.play(Transform(self.pos, self.neg2), Transform(self.neg, self.pos2))
+        self.wait(0.25)
+        self.play(Transform(self.pos, self.pos3), Transform(self.neg, self.neg3))
+        self.wait(0.25)
