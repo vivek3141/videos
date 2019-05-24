@@ -1,9 +1,0 @@
-argparse
-colour==0.1.5
-numpy
-Pillow
-progressbar
-scipy
-tqdm
-opencv-python
-pycairo
