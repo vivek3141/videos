@@ -75,10 +75,28 @@ class GreenTheoremVisual(Scene):
         curve = VGroup(label, c)
 
         eq = TexMobject(
+            r"\int_C \vec{\text{F}} \bullet \text{d}\vec{\text{r}}")
+        back = BackgroundRectangle(eq, color=BLACK, fill_opacity=1)
+        eq0 = VGroup(back, eq)
+        eq0.shift(3 * UP)
+
+        eq = TexMobject(
+            r"\int_C \vec{\text{F}} \bullet \text{d}\vec{\text{r}} = \int_{C_1} \vec{\text{F}} \bullet \text{d}\vec{\text{r}} + \int_{C_2} \vec{\text{F}} \bullet \text{d}\vec{\text{r}}")
+        back = BackgroundRectangle(eq, color=BLACK, fill_opacity=1)
+        eq1 = VGroup(back, eq)
+        eq1.shift(3 * UP)
+
+        eq = TexMobject(
+            r"\int_{C_r} \vec{\text{F}} \bullet \text{d}\vec{\text{r}} = \nabla \times \vec{\text{F}} \|r\|")
+        back = BackgroundRectangle(eq, color=BLACK, fill_opacity=1)
+        eq2 = VGroup(back, eq)
+        eq2.shift(3 * UP)
+
+        eq = TexMobject(
             r"\int_C \vec{\text{F}} \bullet \text{d}\vec{\text{r}} = \iint_D \nabla \times \vec{\text{F}} \ \text{dA}")
         back = BackgroundRectangle(eq, color=BLACK, fill_opacity=1)
-        equ = VGroup(back, eq)
-        equ.shift(3 * UP)
+        eqf = VGroup(back, eq)
+        eqf.shift(3 * UP)
 
         self.play(ShowCreation(field))
         self.wait()
@@ -92,7 +110,10 @@ class GreenTheoremVisual(Scene):
         #self.play(Write(surface))
         #self.wait()
 
-        self.play(Write(equ))
+        self.play(Write(eq0))
+        self.wait()
+
+        self.play(Transform(eq0, eq1))
         self.wait()
 
     def calc_field_color(self, point, f, prop=0.0, opacity=None):
