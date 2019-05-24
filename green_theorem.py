@@ -188,6 +188,15 @@ class GreenTheoremVisual(Scene):
         eqf = VGroup(back, eq)
         eqf.shift(3 * UP)
 
+        div = TexMobject(r"\iint_S \vec{\text{F}} \bullet \text{d}\vec{\text{S}}= \iiint_V \vec{\nabla} \bullet \text{d}\vec{\text{V}}
+                         ")
+
+        table1 = VGroup()
+
+        table2 = VGroup()
+
+        table3 = VGroup()
+
         self.play(ShowCreation(field))
         self.wait()
 
@@ -197,8 +206,8 @@ class GreenTheoremVisual(Scene):
         self.play(Transform(field, field2))
         self.wait()
 
-        #self.play(Write(surface))
-        #self.wait()
+        # self.play(Write(surface))
+        # self.wait()
 
         self.play(Write(eq0))
         self.wait()

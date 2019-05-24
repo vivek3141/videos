@@ -20,3 +20,5 @@ primes.py
 /media_dir.txt
 Videos/
 videos/
+media/
+*.mp4
