@@ -61,6 +61,17 @@ class GreenTheoremVisual(Scene):
         label.shift(3 * LEFT)
         label.scale(2)
 
+        surface = ParametricSurface(
+            self.surface,
+            u_min=-2,
+            u_max=2,
+            v_min=-1,
+            v_max=1,
+            fill_color=BLUE,
+            checkerboard_colors= [BLUE, BLUE],
+            stroke_color=BLUE
+            ).set_fill(opacity=0.5)
+
         curve = VGroup(label, c)
 
         self.play(ShowCreation(field))
@@ -70,6 +81,9 @@ class GreenTheoremVisual(Scene):
         self.wait()
 
         self.play(Transform(field, field2))
+        self.wait()
+
+        self.play(Write(surface))
         self.wait()
 
     def calc_field_color(self, point, f, prop=0.0, opacity=None):
@@ -91,6 +105,14 @@ class GreenTheoremVisual(Scene):
         return np.array([
             1 - 2*t**2 + 2,
             t**3 - 4*t,
+            0
+        ])
+    
+    @staticmethod
+    def surface(t, v):
+        return np.array([
+            1 - 2*t**2 + 2,
+            v*(t**3 - 4*t),
             0
         ])
 
