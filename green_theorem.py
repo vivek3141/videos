@@ -87,7 +87,7 @@ class GreenTheoremVisual(Scene):
         eq1.shift(3 * UP)
 
         eq = TexMobject(
-            r"\int_{C_r} \vec{\text{F}} \bullet \text{d}\vec{\text{r}} = \nabla \times \vec{\text{F}} \|r\|")
+            r"\int_{C_r} \vec{\text{F}} \bullet \text{d}\vec{\text{r}} = \nabla \times \vec{\text{F}} |r|")
         back = BackgroundRectangle(eq, color=BLACK, fill_opacity=1)
         eq2 = VGroup(back, eq)
         eq2.shift(3 * UP)
