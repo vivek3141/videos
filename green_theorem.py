@@ -38,12 +38,23 @@ class GreenTheoremVisual(Scene):
         )
 
         field = VGroup(axes, f)
-        field.scale(0.6)
+        #field.scale(0.6)
+
+        axes2 = Axes(**axes_config)
+        f2 = VGroup(
+            *[self.calc_field_color(x * RIGHT + y * UP, self.vect, prop=0).set_fill(opacity=0.5)
+              for x in np.arange(-5, 5, 1)
+              for y in np.arange(-5, 5, 1)
+              ]
+        )
+
+        field2 = VGroup(axes, f2)
+        #field2.scale(0.6)
 
         c = ParametricFunction(
             self.func,
-            t_min=-math.sqrt(3),
-            t_max=math.sqrt(3),
+            t_min=-2,
+            t_max=2,
         )
         c.set_stroke(opacity=0.75)
         label = TextMobject("C")
@@ -56,6 +67,9 @@ class GreenTheoremVisual(Scene):
         self.wait()
 
         self.play(Write(curve))
+        self.wait()
+
+        self.play(Transform(field, field2))
         self.wait()
 
     def calc_field_color(self, point, f, prop=0.0, opacity=None):
@@ -75,8 +89,8 @@ class GreenTheoremVisual(Scene):
     @staticmethod
     def func(t):
         return np.array([
-            1 - t**2,
-            t**3 - 3*t,
+            1 - 2*t**2 + 2,
+            t**3 - 4*t,
             0
         ])
 
