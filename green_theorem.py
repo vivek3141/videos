@@ -38,7 +38,7 @@ class GreenTheoremVisual(Scene):
         )
 
         field = VGroup(axes, f)
-        #field.scale(0.6)
+        # field.scale(0.6)
 
         axes2 = Axes(**axes_config)
         f2 = VGroup(
@@ -49,7 +49,7 @@ class GreenTheoremVisual(Scene):
         )
 
         field2 = VGroup(axes, f2)
-        #field2.scale(0.6)
+        # field2.scale(0.6)
 
         c = ParametricFunction(
             self.func,
@@ -68,11 +68,16 @@ class GreenTheoremVisual(Scene):
             v_min=-1,
             v_max=1,
             fill_color=BLUE,
-            checkerboard_colors= [BLUE, BLUE],
+            checkerboard_colors=[BLUE, BLUE],
             stroke_color=BLUE
-            ).set_fill(opacity=0.5)
+        ).set_fill(opacity=0.5)
 
         curve = VGroup(label, c)
+
+        eq = TexMobject(
+            r"\int_C \vec{\text{F}} \bullet \text{d}\vec{\text{r}} = \iint_D \nabla \times \vec{\text{F}} \ \text{dA}")
+        back = BackgroundRectangle(eq, color=BLACK)
+        equ = VGroup(eq, back)
 
         self.play(ShowCreation(field))
         self.wait()
@@ -107,7 +112,7 @@ class GreenTheoremVisual(Scene):
             t**3 - 4*t,
             0
         ])
-    
+
     @staticmethod
     def surface(t, v):
         return np.array([
