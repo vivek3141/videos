@@ -116,6 +116,12 @@ class GreenTheoremVisual(Scene):
         self.play(Transform(eq0, eq1))
         self.wait()
 
+        self.play(Transform(eq0, eq2))
+        self.wait()
+
+        self.play(Transform(eq0, eqf))
+        self.wait()
+
     def calc_field_color(self, point, f, prop=0.0, opacity=None):
         x, y = point[:2]
         func = f(x, y)
