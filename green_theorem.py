@@ -76,8 +76,9 @@ class GreenTheoremVisual(Scene):
 
         eq = TexMobject(
             r"\int_C \vec{\text{F}} \bullet \text{d}\vec{\text{r}} = \iint_D \nabla \times \vec{\text{F}} \ \text{dA}")
-        back = BackgroundRectangle(eq, color=BLACK)
-        equ = VGroup(eq, back)
+        back = BackgroundRectangle(eq, color=BLACK, fill_opacity=1)
+        equ = VGroup(back, eq)
+        equ.shift(3 * UP)
 
         self.play(ShowCreation(field))
         self.wait()
@@ -88,7 +89,10 @@ class GreenTheoremVisual(Scene):
         self.play(Transform(field, field2))
         self.wait()
 
-        self.play(Write(surface))
+        #self.play(Write(surface))
+        #self.wait()
+
+        self.play(Write(equ))
         self.wait()
 
     def calc_field_color(self, point, f, prop=0.0, opacity=None):
