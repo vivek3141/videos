@@ -91,6 +91,7 @@ from PIL import Image
 from colour import Color
 
 
+
 class Diagram(Scene):
     def construct(self):
         pass
@@ -188,14 +189,14 @@ class GreenTheoremVisual(Scene):
         eqf = VGroup(back, eq)
         eqf.shift(3 * UP)
 
-        div = TexMobject(r"\iint_S \vec{\text{F}} \bullet \text{d}\vec{\text{S}}= \iiint_V \vec{\nabla} \bullet \text{d}\vec{\text{V}}
-                         ")
+       # div = TexMobject(r"\iint_S \vec{\text{F}} \bullet \text{d}\vec{\text{S}}= \iiint_V \vec{\nabla} \bullet \text{d}\vec{\text{V}}
+       #                  ")
 
-        table1 = VGroup()
+        table1 = VGroup([])
 
-        table2 = VGroup()
+        table2 = VGroup([])
 
-        table3 = VGroup()
+        table3 = VGroup([])
 
         self.play(ShowCreation(field))
         self.wait()
