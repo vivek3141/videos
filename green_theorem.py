@@ -211,9 +211,9 @@ class GreenTheoremVisual(Scene):
 
         self.play(Transform(field, field2))
         self.wait()
-
-        # self.play(Write(surface))
-        # self.wait()
+        """
+        self.play(Write(surface))
+        self.wait()
 
         self.play(Write(eq0))
         self.wait()
@@ -226,6 +226,7 @@ class GreenTheoremVisual(Scene):
 
         self.play(Transform(eq0, eqf))
         self.wait()
+        """
 
         self.play(Write(table1))
         self.wait()
