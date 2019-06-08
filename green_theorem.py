@@ -194,9 +194,29 @@ class GreenTheoremVisual(Scene):
         t1 = [1.225]
         t2 = [0.75, 1.5]
         t3 = [i for i in np.arange(0, 2, 0.25)]
-        table1 = VGroup(
+        c1 = VGroup(
             *[Line(-self.func(t)[1]*UP, self.func(t)[1] *
                    UP, color=RED, stroke_width=DEFAULT_STROKE_WIDTH*2).shift(self.func(t)[0]*RIGHT) for t in t1],
+            ParametricFunction(
+                self.func,
+                t_min=1.22,
+                t_max=2,
+                color=RED,
+                stroke_width=DEFAULT_STROKE_WIDTH*2
+            )
+
+        )
+        c2 = VGroup(
+            *[Line(-self.func(t)[1]*UP, self.func(t)[1] *
+                   UP, color=GREEN, stroke_width=DEFAULT_STROKE_WIDTH*2).shift(self.func(t)[0]*RIGHT) for t in t1],
+            ParametricFunction(
+                self.func,
+                t_min=-2,
+                t_max=-1.22,
+                color=GREEN,
+                stroke_width=DEFAULT_STROKE_WIDTH*2
+            )
+
         )
 
         table2 = VGroup()
@@ -211,14 +231,14 @@ class GreenTheoremVisual(Scene):
 
         self.play(Transform(field, field2))
         self.wait()
-
+        """
         self.play(Write(surface))
         self.wait()
 
         self.play(Write(eq0))
         self.wait()
 
-        self.play(Transform(eq0, eq1), Write(table1))
+        self.play(Transform(eq0, eq1))
         # self.wait())
         self.wait()
 
@@ -226,6 +246,12 @@ class GreenTheoremVisual(Scene):
         self.wait()
 
         self.play(Transform(eq0, eqf))
+        self.wait()
+        """
+        self.play(Write(c1))
+        self.wait()
+
+        self.play(Write(c2))
         self.wait()
 
     def calc_field_color(self, point, f, prop=0.0, opacity=None):
