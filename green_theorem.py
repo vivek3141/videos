@@ -205,14 +205,14 @@ class Setup(Scene):
         if opacity:
             v.set_fill(opacity=opacity)
         return v
-     @staticmethod
+
+    @staticmethod
     def vect(x, y):
         return np.array([
             y,
             x,
             0
         ])
-
 
 
 class GreenTheoremVisual(Scene):
