@@ -196,7 +196,7 @@ class GreenTheoremVisual(Scene):
         t3 = [i for i in np.arange(0, 2, 0.25)]
         table1 = VGroup(
             *[Line(-self.func(t)[1]*UP, self.func(t)[1] *
-                   UP, color=RED, stroke_width=DEFAULT_STROKE_WIDTH*3).shift(self.func(t)[0]*RIGHT) for t in t1],
+                   UP, color=RED, stroke_width=DEFAULT_STROKE_WIDTH*2).shift(self.func(t)[0]*RIGHT) for t in t1],
         )
 
         table2 = VGroup()
