@@ -151,6 +151,18 @@ class Setup(Scene):
         )
 
         field = VGroup(axes, f)
+        # field.scale(0.6)
+
+        axes2 = Axes(**axes_config)
+        f2 = VGroup(
+            *[self.calc_field_color(x * RIGHT + y * UP, self.vect, prop=0).set_fill(opacity=0.5)
+              for x in np.arange(-5, 5, 1)
+              for y in np.arange(-5, 5, 1)
+              ]
+        )
+
+        field2 = VGroup(axes, f2)
+        # field2.scale(0.6)
 
         c = ParametricFunction(
             self.func,
@@ -162,7 +174,7 @@ class Setup(Scene):
         label.shift(3 * LEFT)
         label.scale(2)
 
-        s = ParametricSurface(
+        surface = ParametricSurface(
             self.surface,
             u_min=-2,
             u_max=2,
@@ -214,6 +226,22 @@ class Setup(Scene):
             0
         ])
 
+    @staticmethod
+    def func(t):
+        return np.array([
+            1 - 2*t**2 + 2,
+            t**3 - 4*t,
+            0
+        ])
+
+    @staticmethod
+    def surface(t, v):
+        return np.array([
+            1 - 2*t**2 + 2,
+            v*(t**3 - 4*t),
+            0
+        ])
+
 
 class GreenTheoremVisual(Scene):
     CONFIG = {
@@ -247,6 +275,18 @@ class GreenTheoremVisual(Scene):
         )
 
         field = VGroup(axes, f)
+        # field.scale(0.6)
+
+        axes2 = Axes(**axes_config)
+        f2 = VGroup(
+            *[self.calc_field_color(x * RIGHT + y * UP, self.vect, prop=0).set_fill(opacity=0.5)
+              for x in np.arange(-5, 5, 1)
+              for y in np.arange(-5, 5, 1)
+              ]
+        )
+
+        field2 = VGroup(axes, f2)
+        # field2.scale(0.6)
 
         c = ParametricFunction(
             self.func,
