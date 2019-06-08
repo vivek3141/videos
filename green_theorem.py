@@ -91,6 +91,30 @@ from PIL import Image
 from colour import Color
 
 
+class Intro(Scene):
+    def construct(self):
+        eq = TexMobject(
+            r"\int_C \vec{\text{F}} \bullet \text{d}\vec{\text{r}} = \iint_D \nabla \times \vec{\text{F}} \ \text{dA}")
+        eq.scale(1.5)
+        
+        title = TextMobject("Line Integral")
+        title.scale(1.5)
+        title.to_edge(UP)
+        rect = ScreenRectangle(height=6)
+        rect.next_to(title, DOWN)
+
+        self.play(Write(eq))
+        self.wait()
+
+        self.play(ApplyMethod(eq.shift, 3 * UP))
+        self.wait()
+        
+        self.play(
+            FadeInFromDown(title),
+            Write(rect)
+        )
+
+
 class Diagram(Scene):
     def construct(self):
         pass
@@ -132,7 +156,7 @@ class GreenTheoremVisual(Scene):
 
         axes2 = Axes(**axes_config)
         f2 = VGroup(
-            *[self.calc_field_color(x * RIGHT + y * UP, self.vect, prop=0).set_fill(opacity=0.5)
+            *[self.calc_field_color(x * RIGHT + y * UP, self.vect, prop=0).set_fill(opacity=0.3)
               for x in np.arange(-5, 5, 1)
               for y in np.arange(-5, 5, 1)
               ]
@@ -210,7 +234,9 @@ class GreenTheoremVisual(Scene):
                 t_max=-1.22,
                 color=RED,
                 stroke_width=DEFAULT_STROKE_WIDTH*2
-            )
+            ),
+            TexMobject(r"\text{C}_1", color=RED).shift(
+                2 * LEFT + 1.5 * UP).scale(1.5)
 
         )
         c2 = VGroup(
@@ -223,7 +249,9 @@ class GreenTheoremVisual(Scene):
                 t_max=1.22,
                 color=GREEN,
                 stroke_width=DEFAULT_STROKE_WIDTH*2
-            )
+            ),
+            TexMobject(r"\text{C}_2", color=GREEN).shift(
+                2 * RIGHT + 1.5 * UP).scale(1.5)
         )
 
         table2 = VGroup()
