@@ -203,20 +203,27 @@ class GreenTheoremVisual(Scene):
                 t_max=2,
                 color=RED,
                 stroke_width=DEFAULT_STROKE_WIDTH*2
+            ),
+            ParametricFunction(
+                self.func,
+                t_min=-2,
+                t_max=-1.22,
+                color=RED,
+                stroke_width=DEFAULT_STROKE_WIDTH*2
             )
 
         )
         c2 = VGroup(
             *[Line(-self.func(t)[1]*UP, self.func(t)[1] *
                    UP, color=GREEN, stroke_width=DEFAULT_STROKE_WIDTH*2).shift(self.func(t)[0]*RIGHT) for t in t1],
+
             ParametricFunction(
                 self.func,
-                t_min=-2,
-                t_max=-1.22,
+                t_min=-1.22,
+                t_max=1.22,
                 color=GREEN,
                 stroke_width=DEFAULT_STROKE_WIDTH*2
             )
-
         )
 
         table2 = VGroup()
