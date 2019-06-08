@@ -174,7 +174,7 @@ class Setup(Scene):
         label.shift(3 * LEFT)
         label.scale(2)
 
-        surface = ParametricSurface(
+        s = ParametricSurface(
             self.surface,
             u_min=-2,
             u_max=2,
@@ -241,6 +241,15 @@ class Setup(Scene):
             v*(t**3 - 4*t),
             0
         ])
+
+
+class GreenEquation(Scene):
+    def construct(self):
+        eq = TexMobject(
+            r"\int_C \vec{\text{F}} \bullet \text{d}\vec{\text{r}} = \iint_D \nabla \times \vec{\text{F}} \ \text{dA}")
+        eq.scale(1.5)
+        self.play(Write(eq))
+        self.wait()
 
 
 class GreenTheoremVisual(Scene):
