@@ -377,16 +377,18 @@ class CurlEquation(Scene):
         ddel = TexMobject(r"\nabla = \begin{bmatrix} \
                 \frac{\partial}{\partial x} \\ \
                 \frac{\partial}{\partial y} \
-                \end{bmatrix}")
+                \end{bmatrix}", tex_to_color_map={r"\nabla": RED})
         ddel.scale(1.5)
 
-        curl = TexMobject(r"\text{curl}\textbf{F} = \nabla \times \vec{\text{F}}")
+        curl = TexMobject(
+            r"\text{curl}\textbf{F} = \nabla \times \vec{\text{F}}", 
+                tex_to_color_map={"F": YELLOW, r"\nabla":RED})
         curl.scale(1.5)
         curl.shift(1.5 * DOWN)
 
         self.play(Write(ddel))
         self.wait()
-        
+
         self.play(ApplyMethod(ddel.shift, 1.5 * UP))
         self.play(Write(curl))
         self.wait()
