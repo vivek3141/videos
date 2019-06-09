@@ -282,8 +282,8 @@ class CurlDemo(Scene):
               for y in np.arange(-5, 5, 1)
               ]
         )
-
-        field1 = VGroup(axes, f1)
+        c = Circle(fill_color=RED, fill_opacity=0.25, color=WHITE, radius=1)
+        field1 = VGroup(axes, f1, c)
         field1.scale(0.6)
 
         axes = Axes(**axes_config)
@@ -294,32 +294,30 @@ class CurlDemo(Scene):
               ]
         )
 
-        field2 = VGroup(axes, f2)
+        c = Circle(fill_color=RED, fill_opacity=0.25, color=WHITE, radius=1)
+        field2 = VGroup(axes, f2, c)
         field2.scale(0.6)
 
-        text1 = TexMobject(r"\text{curl}\textbf{F} > 0", tex_to_color_map={">": YELLOW})
+        text1 = TexMobject(r"\text{curl}\textbf{F} > 0",
+                           tex_to_color_map={">": YELLOW})
         text1.shift(3 * UP)
 
-        text2 = TexMobject(r"\text{curl}\textbf{F} < 0", tex_to_color_map={"<": YELLOW})
+        text2 = TexMobject(r"\text{curl}\textbf{F} < 0",
+                           tex_to_color_map={"<": YELLOW})
         text2.shift(3 * UP)
-
-        c = Circle(fill_color=RED, fill_opacity=0.25, color=WHITE, radius=0.5)
 
         self.play(Write(field1))
         self.wait()
 
-        self.play(Write(c))
+        #self.play(Write(c))
         self.play(Write(text1))
         self.wait()
 
-        self.play(Transform(field1, field2))
+        self.play(
+            Transform(field1, field2),
+            Transform(text1, text2)
+        )
         self.wait()
-
-        self.play(Transform(text1, text2))
-        self.wait()
-        
-
-
 
     def calc_field_color(self, point, f, prop=0.0, opacity=None):
         x, y = point[:2]
@@ -341,7 +339,7 @@ class CurlDemo(Scene):
             -y,
             x
         ])
-    
+
     @staticmethod
     def field2(x, y):
         return np.array([
