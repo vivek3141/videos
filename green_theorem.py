@@ -252,6 +252,38 @@ class GreenEquation(Scene):
         self.wait()
 
 
+class CurlDemo(Scene):
+    CONFIG = {
+        "color_list": ['#e22b2b', '#e88e10', '#eae600', '#88ea00',
+                       '#00eae2', '#0094ea', "#2700ea", '#bf00ea', '#ea0078'],
+        "prop": 0
+    }
+
+    def construct(self):
+        pass
+
+    def calc_field_color(self, point, f, prop=0.0, opacity=None):
+        x, y = point[:2]
+        func = f(x, y)
+        magnitude = math.sqrt(func[0] ** 2 + func[1] ** 2)
+        func = func / magnitude if magnitude != 0 else np.array([0, 0])
+        func = func / 1.5
+        v = int(magnitude / 10 ** prop)
+        index = len(self.color_list) - 1 if v > len(self.color_list) - 1 else v
+        c = self.color_list[index]
+        v = Vector(func, color=c).shift(point)
+        if opacity:
+            v.set_fill(opacity=opacity)
+        return v
+
+    @staticmethod
+    def field1(x, y):
+        return np.array([
+            -y,
+            x
+        ])
+
+
 class GreenTheoremVisual(Scene):
     CONFIG = {
         "color_list": ['#e22b2b', '#e88e10', '#eae600', '#88ea00',
