@@ -533,11 +533,12 @@ class GreenTheoremVisual(Scene):
         for t in np.arange(0, 2, 0.05):
             y = self.func(t)[1]
             x = self.func(t)[0]
-            roots = [i for i in np.roots([1, 0, -4, -xval]) if 2 >= i >= -2]
+            roots = [i for i in np.roots([1, 0, -4, -x]) if 2 >= i.real >= -2 and i.imag == 0]
 
             l1 = Line(-y*UP, y * UP, color=RED).shift(x*RIGHT)
-            l2 = Line(self.func(roots[0])[
-                      0]*UP, self.func(roots[1])[0] * UP, color=RED).shift(y*UP)
+            if len(roots) >= 2:
+                l2 = Line(self.func(roots[0])[
+                      0]*RIGHT, self.func(roots[1])[0] * RIGHT, color=RED).shift(y*UP)
 
             table2.add(l1, l2)
 
