@@ -260,7 +260,34 @@ class CurlDemo(Scene):
     }
 
     def construct(self):
-        pass
+        axes_config = {"x_min": -5,
+                       "x_max": 5,
+                       "y_min": -5,
+                       "y_max": 5,
+                       "z_axis_config": {},
+                       "z_min": -1,
+                       "z_max": 1,
+                       "z_normal": DOWN,
+                       "num_axis_pieces": 20,
+                       "light_source": 9 * DOWN + 7 * LEFT + 10 * OUT,
+                       "number_line_config": {
+                           "include_tip": False,
+                       },
+                       }
+
+        axes = Axes(**axes_config)
+        f1 = VGroup(
+            *[self.calc_field_color(x * RIGHT + y * UP, self.field1, prop=0)
+              for x in np.arange(-5, 5, 1)
+              for y in np.arange(-5, 5, 1)
+              ]
+        )
+
+        self.play(Write(axes))
+        self.play(Write(f1))
+        self.wait()
+
+
 
     def calc_field_color(self, point, f, prop=0.0, opacity=None):
         x, y = point[:2]
