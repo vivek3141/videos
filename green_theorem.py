@@ -286,17 +286,38 @@ class CurlDemo(Scene):
         field1 = VGroup(axes, f1)
         field1.scale(0.6)
 
-        text = TexMobject(r"\text{curl}\textbf{F} > 0")
-        text.shift(3 * UP)
+        axes = Axes(**axes_config)
+        f2 = VGroup(
+            *[self.calc_field_color(x * RIGHT + y * UP, self.field2, prop=0)
+              for x in np.arange(-5, 5, 1)
+              for y in np.arange(-5, 5, 1)
+              ]
+        )
+
+        field2 = VGroup(axes, f2)
+        field2.scale(0.6)
+
+        text1 = TexMobject(r"\text{curl}\textbf{F} > 0", tex_to_color_map={">": YELLOW})
+        text1.shift(3 * UP)
+
+        text2 = TexMobject(r"\text{curl}\textbf{F} < 0", tex_to_color_map={"<": YELLOW})
+        text2.shift(3 * UP)
 
         c = Circle(fill_color=RED, fill_opacity=0.25, color=WHITE, radius=0.5)
 
-        #self.play(Write(field1))
-        #self.wait()
+        self.play(Write(field1))
+        self.wait()
 
         self.play(Write(c))
-        self.play(Write(text))
+        self.play(Write(text1))
         self.wait()
+
+        self.play(Transform(field1, field2))
+        self.wait()
+
+        self.play(Transform(text1, text2))
+        self.wait()
+        
 
 
 
@@ -322,10 +343,10 @@ class CurlDemo(Scene):
         ])
     
     @staticmethod
-    def field1(x, y):
+    def field2(x, y):
         return np.array([
-            -y,
-            x
+            y,
+            -x
         ])
 
 
