@@ -309,7 +309,7 @@ class CurlDemo(Scene):
         self.play(Write(field1))
         self.wait()
 
-        #self.play(Write(c))
+        # self.play(Write(c))
         self.play(Write(text1))
         self.wait()
 
@@ -345,6 +345,13 @@ class CurlDemo(Scene):
         return np.array([
             y,
             -x
+        ])
+
+    @staticmethod
+    def field3(x, y):
+        return np.array([
+            max(0.5, 10*y),
+            0
         ])
 
 
