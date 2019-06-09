@@ -286,7 +286,16 @@ class CurlDemo(Scene):
         field1 = VGroup(axes, f1)
         field1.scale(0.6)
 
-        self.play(Write(field1))
+        text = TexMobject(r"\text{curl}\textbf{F} > 0")
+        text.shift(3 * UP)
+
+        c = Circle(fill_color=RED, fill_opacity=0.25, color=WHITE, radius=0.5)
+
+        #self.play(Write(field1))
+        #self.wait()
+
+        self.play(Write(c))
+        self.play(Write(text))
         self.wait()
 
 
@@ -305,6 +314,13 @@ class CurlDemo(Scene):
             v.set_fill(opacity=opacity)
         return v
 
+    @staticmethod
+    def field1(x, y):
+        return np.array([
+            -y,
+            x
+        ])
+    
     @staticmethod
     def field1(x, y):
         return np.array([
