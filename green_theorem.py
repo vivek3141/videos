@@ -372,6 +372,26 @@ class CurlDemo(Scene):
         ])
 
 
+class CurlEquation(Scene):
+    def construct(self):
+        ddel = TexMobject(r"\nabla = \begin{bmatrix} \
+                \frac{\partial}{\partial x} \\ \
+                \frac{\partial}{\partial y} \
+                \end{bmatrix}")
+        ddel.scale(1.5)
+
+        curl = TexMobject(r"\text{curl}\textbf{F} = \nabla \times \vec{\text{F}}")
+        curl.scale(1.5)
+        curl.shift(1.5 * DOWN)
+
+        self.play(Write(ddel))
+        self.wait()
+        
+        self.play(ApplyMethod(ddel.shift, 1.5 * UP))
+        self.play(Write(curl))
+        self.wait()
+
+
 class GreenTheoremVisual(Scene):
     CONFIG = {
         "color_list": ['#e22b2b', '#e88e10', '#eae600', '#88ea00',
