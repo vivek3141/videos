@@ -283,8 +283,10 @@ class CurlDemo(Scene):
               ]
         )
 
-        self.play(Write(axes))
-        self.play(Write(f1))
+        field1 = VGroup(axes, f1)
+        field1.scale(0.6)
+
+        self.play(Write(field1))
         self.wait()
 
 
