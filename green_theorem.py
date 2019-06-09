@@ -491,8 +491,7 @@ class GreenTheoremVisual(Scene):
        #
        #                 ")
         t1 = [1.225]
-        t2 = [0.75, 1.5]
-        t3 = [i for i in np.arange(0, 2, 0.25)]
+
         c1 = VGroup(
             *[Line(-self.func(t)[1]*UP, self.func(t)[1] *
                    UP, color=RED, stroke_width=DEFAULT_STROKE_WIDTH*2).shift(self.func(t)[0]*RIGHT) for t in t1],
@@ -531,15 +530,24 @@ class GreenTheoremVisual(Scene):
 
         table2 = VGroup()
 
-        table3 = VGroup()
+        for t in range(0, 2, 0.05):
+            y = self.func(t)[1]
+            x = self.func(t)[0]
+            roots = [i for i in np.roots([1, 0, -4, -xval]) if 2= > i = > -2]
 
-        self.play(ShowCreation(field))
-        self.wait()
+            l1 = Line(-y*UP, y * UP, color=RED).shift(x*RIGHT)
+            l2 = Line(self.func(roots[0])[
+                      0]*UP, self.func(roots[1])[0] * UP, color=RED).shift(y*UP)
+
+            table2.add(l1, l2)
+
+        # self.play(ShowCreation(field))
+        # self.wait()
 
         self.play(Write(curve))
         self.wait()
 
-        self.play(Transform(field, field2))
+        """self.play(Transform(field, field2))
         self.wait()
         
         #self.play(Write(surface))
@@ -555,6 +563,9 @@ class GreenTheoremVisual(Scene):
         self.wait()
 
         self.play(Uncreate(eq0), Write(eq1))
+        self.wait()"""
+
+        self.play(Write(table2))
         self.wait()
 
     def calc_field_color(self, point, f, prop=0.0, opacity=None):
