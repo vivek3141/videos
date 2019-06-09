@@ -540,27 +540,20 @@ class GreenTheoremVisual(Scene):
 
         self.play(Transform(field, field2))
         self.wait()
-        """
-        self.play(Write(surface))
-        self.wait()
+        
+        #self.play(Write(surface))
+        #self.wait()
 
         self.play(Write(eq0))
         self.wait()
 
-        self.play(Transform(eq0, eq1))
-        # self.wait())
-        self.wait()
-
-        self.play(Transform(eq0, eq2))
-        self.wait()
-
-        self.play(Transform(eq0, eqf))
-        self.wait()
-        """
         self.play(Write(c1))
         self.wait()
 
         self.play(Write(c2))
+        self.wait()
+
+        self.play(Transform(eq0, eq1))
         self.wait()
 
     def calc_field_color(self, point, f, prop=0.0, opacity=None):
@@ -636,7 +629,7 @@ class FTC(GraphScene):
 
         self.play(
             DrawBorderThenFill(
-                rect_lists[-1],
+                rect,
                 run_time=2,
                 rate_func=smooth,
                 lag_ratio=0.5,
