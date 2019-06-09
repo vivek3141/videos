@@ -538,7 +538,7 @@ class GreenTheoremVisual(Scene):
             l1 = Line(-y*UP, y * UP, color=RED).shift(x*RIGHT)
             if len(roots) >= 2:
                 l2 = Line(self.func(roots[0])[
-                      0]*RIGHT, self.func(roots[1])[0] * RIGHT, color=RED).shift(y*UP)
+                      0]*RIGHT, self.func(roots[1])[0] * RIGHT, color=RED).shift(self.func(roots[0])[1]*UP)
 
             table2.add(l1, l2)
 
