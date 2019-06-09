@@ -530,10 +530,10 @@ class GreenTheoremVisual(Scene):
 
         table2 = VGroup()
 
-        for t in range(0, 2, 0.05):
+        for t in np.arange(0, 2, 0.05):
             y = self.func(t)[1]
             x = self.func(t)[0]
-            roots = [i for i in np.roots([1, 0, -4, -xval]) if 2= > i = > -2]
+            roots = [i for i in np.roots([1, 0, -4, -xval]) if 2 >= i >= -2]
 
             l1 = Line(-y*UP, y * UP, color=RED).shift(x*RIGHT)
             l2 = Line(self.func(roots[0])[
