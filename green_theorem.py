@@ -381,8 +381,8 @@ class CurlEquation(Scene):
         ddel.scale(1.5)
 
         curl = TexMobject(
-            r"\text{curl}\textbf{F} = \nabla \times \vec{\text{F}}", 
-                tex_to_color_map={"F": YELLOW, r"\nabla":RED})
+            r"\text{curl}\textbf{F} = \nabla \times \vec{\text{F}}",
+            tex_to_color_map={"F": YELLOW, r"\nabla": RED})
         curl.scale(1.5)
         curl.shift(1.5 * DOWN)
 
@@ -600,3 +600,78 @@ class GreenTheoremVisual(Scene):
             x,
             0
         ])
+
+
+class FTC(Scene):
+    CONFIG = {
+        "x_max": 4,
+        "x_labeled_nums": list(range(-1, 5)),
+        "y_min": 0,
+        "y_max": 2,
+        "y_tick_frequency": 2.5,
+        "y_labeled_nums": list(range(5, 20, 5)),
+        "n_rect_iterations": 2,
+        "default_right_x": 3,
+        "func": lambda x: 0.1*math.pow(x-2, 2) + 1,
+    }
+
+    def construct(self):
+        ftc = TexMobject(r"\int_a^b f'(x) \ dx = f(b) - f(a)")
+        ftc.shift(3 * UP)
+
+        self.play(Write(ftc))
+        self.wait()
+
+        self.setup_axes()
+        self.show_graph()
+        self.show_area()
+
+    def show_graph(self):
+        graph = self.get_graph(self.func)
+        self.play(ShowCreation(graph))
+        self.wait()
+
+        self.graph = graph
+
+    def show_area(self):
+        dx_list = [0.25/(2**n) for n in range(self.n_rect_iterations)]
+        rect_lists = [
+            self.get_riemann_rectangles(
+                self.graph,
+                x_min=1,
+                x_max=self.default_right_x,
+                dx=dx,
+                stroke_width=4*dx,
+            )
+            for dx in dx_list
+        ]
+        rects = rect_lists[0]
+        foreground_mobjects = [self.axes, self.graph]
+
+        self.play(
+            DrawBorderThenFill(
+                rect_lists[-1],
+                run_time=2,
+                rate_func=smooth,
+                lag_ratio=0.5,
+            ),
+            *list(map(Animation, foreground_mobjects))
+        )
+        self.wait()
+
+
+class AreaUnderParabola(GraphScene):
+
+    """for new_rects in rect_lists[1:]:
+        self.play(
+            Transform(
+                rects, new_rects,
+                lag_ratio=0.5,
+            ),
+            *list(map(Animation, foreground_mobjects))
+        )
+    self.wait()
+
+    self.rects = rects
+    self.dx = dx_list[-1]
+    self.foreground_mobjects = foreground_mobjects"""
