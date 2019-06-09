@@ -542,13 +542,13 @@ class GreenTheoremVisual(Scene):
 
             table2.add(l1, l2)
 
-        # self.play(ShowCreation(field))
-        # self.wait()
+        self.play(ShowCreation(field))
+        self.wait()
 
         self.play(Write(curve))
         self.wait()
 
-        """self.play(Transform(field, field2))
+        self.play(Transform(field, field2))
         self.wait()
         
         #self.play(Write(surface))
@@ -564,9 +564,12 @@ class GreenTheoremVisual(Scene):
         self.wait()
 
         self.play(Uncreate(eq0), Write(eq1))
-        self.wait()"""
+        self.wait()
 
         self.play(Write(table2))
+        self.wait()
+
+        self.play(Uncreate(eq1), Write(eq2))
         self.wait()
 
     def calc_field_color(self, point, f, prop=0.0, opacity=None):
