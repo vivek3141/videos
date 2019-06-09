@@ -256,7 +256,7 @@ class CurlDemo(Scene):
     CONFIG = {
         "color_list": ['#e22b2b', '#e88e10', '#eae600', '#88ea00',
                        '#00eae2', '#0094ea', "#2700ea", '#bf00ea', '#ea0078'],
-        "prop": 0
+        "prop": 0.1
     }
 
     def construct(self):
@@ -367,7 +367,7 @@ class CurlDemo(Scene):
     @staticmethod
     def field3(x, y):
         return np.array([
-            max(0.5, 10*y),
+            max(0.1, y),
             0
         ])
 
