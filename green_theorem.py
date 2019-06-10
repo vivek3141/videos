@@ -703,6 +703,7 @@ class Example(Scene):
         )
 
         C = VGroup(c1, c2, c3, c4, axes)
+        C.shift(2 * LEFT + 1 * DOWN)
 
         # self.play(Write(f))
         # self.wait()
