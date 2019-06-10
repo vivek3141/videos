@@ -662,33 +662,42 @@ class FTC(GraphScene):
 
 class Example(Scene):
     def construct(self):
-        f = TexMobject(r"\text{F} = \langle 6y-9x, -yx + x^3 \rangle")
-
-        C = VGroup(
-            ParamtericFunction(
-                lambda t: np.array([t, 3-t]),
-                t_min=-1,
-                t_max=1,
-            ),
-            ParametricFunction(
-                lambda t: np.array([t, -1]),
-                t_min=-1,
-                t_max=1
-            ),
-            ParametricFunction(
-                lambda t: np.array([-1, t]),
-                t_min=-1,
-                t_max=4
-            ),
-            ParametricFunction(
-                lambda t: np.array([1, t]),
-                t_min=-1,
-                t_max=2
-            )
+        f = TexMobject(
+            r"\text{F} = \langle 6y-9x, -yx + x^3 \rangle"
+        )
+        c1 = ParametricFunction(
+            lambda t: np.array([t, 3-t, 0]),
+            t_min=-1,
+            t_max=1,
+            color=RED
+        )
+        c2 = ParametricFunction(
+            lambda t: np.array([t, -1, 0]),
+            t_min=-1,
+            t_max=1,
+            color=RED
+        )
+        c3 = ParametricFunction(
+            lambda t: np.array([-1, t, 0]),
+            t_min=-1,
+            t_max=4,
+            color=RED
+        )
+        c4 = ParametricFunction(
+            lambda t: np.array([1, t, 0]),
+            t_min=-1,
+            t_max=2,
+            color=RED
         )
 
-        #self.play(Write(f))
-        #self.wait()
+        axes = Axes(
+            
+        )
+
+        C = VGroup(c1, c2, c3, c4)
+
+        # self.play(Write(f))
+        # self.wait()
 
         self.play(Write(C))
         self.wait()
