@@ -691,13 +691,18 @@ class Example(Scene):
         )
 
         axes = Axes(
-            x_min=-1,
-            x_max=1,
-            y_min=-1,
-            y_max=4,
+            x_min=-2,
+            x_max=2,
+            y_min=-2,
+            y_max=5,
+            number_line_config={
+                "color": LIGHT_GREY,
+                "include_tip": False,
+                "exclude_zero_from_default_numbers": True,
+            }
         )
 
-        C = VGroup(c1, c2, c3, c4)
+        C = VGroup(c1, c2, c3, c4, axes)
 
         # self.play(Write(f))
         # self.wait()
