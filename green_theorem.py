@@ -662,9 +662,6 @@ class FTC(GraphScene):
 
 class Example(Scene):
     def construct(self):
-        f = TexMobject(
-            r"\text{F} = \langle 6y-9x, -yx + x^3 \rangle"
-        )
         c1 = ParametricFunction(
             lambda t: np.array([t, 3-t, 0]),
             t_min=-1,
@@ -694,7 +691,7 @@ class Example(Scene):
             x_min=-2,
             x_max=2,
             y_min=-2,
-            y_max=5,
+            y_max=4,
             number_line_config={
                 "color": LIGHT_GREY,
                 "include_tip": False,
@@ -703,10 +700,25 @@ class Example(Scene):
         )
 
         C = VGroup(c1, c2, c3, c4, axes)
-        C.shift(2 * LEFT + 1 * DOWN)
+        C.shift(3 * LEFT + 1 * DOWN)
 
-        # self.play(Write(f))
-        # self.wait()
+        f = TexMobject(
+            r"\text{F} = \langle 6y-9x, -yx + x^3 \rangle",
+            tex_to_color_map={"F":YELLOW}
+        )
+        f.shift(2.5 * RIGHT + 2 * UP)
+
+        green = TexMobject(
+            r"\int_C \vec{\text{F}} \bullet \text{d}\vec{\text{r}} = \iint_D \nabla \times \vec{\text{F}} \ \text{dA}",
+            tex_to_color_map={"F":YELLOW, r"\nabla":RED, "D":BLUE, "C":GREEN}
+        )
+        green.shift(2.5 * RIGHT + 1 * UP)
+
+        self.play(Write(f))
+        self.wait()
 
         self.play(Write(C))
+        self.wait()
+
+        self.play(Write(green))
         self.wait()
