@@ -735,7 +735,7 @@ class Example(Scene):
             r"= \frac{-218}{3}",
             tex_to_color_map={"=": YELLOW}
         )
-        step3.shift(2.5 * RIGHT = 2.5 * DOWN)
+        step3.shift(2.5 * RIGHT + 2.5 * DOWN)
 
         self.play(Write(f))
         self.wait()
