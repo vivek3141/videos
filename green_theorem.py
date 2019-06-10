@@ -691,7 +691,10 @@ class Example(Scene):
         )
 
         axes = Axes(
-            
+            x_min=-1,
+            x_max=1,
+            y_min=-1,
+            y_max=4,
         )
 
         C = VGroup(c1, c2, c3, c4)
