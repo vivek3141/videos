@@ -704,24 +704,27 @@ class Example(Scene):
 
         f = TexMobject(
             r"\text{F} = \langle 6y-9x, -yx + x^3 \rangle",
-            tex_to_color_map={r"\text{F}":YELLOW}
+            tex_to_color_map={r"\text{F}": YELLOW}
         )
-        f.shift(2.5 * RIGHT + 2 * UP)
+        f.shift(2.5 * RIGHT + 3.5 * UP)
 
         green = TexMobject(
             r"\int_C \vec{\text{F}} \bullet \text{d}\vec{\text{r}} = \iint_D \nabla \times \vec{\text{F}} \ \text{dA}",
-            tex_to_color_map={"F":YELLOW, r"\nabla":RED, "D":BLUE, "C":GREEN}
+            tex_to_color_map={"F": YELLOW,
+                              r"\nabla": RED, "D": BLUE, "C": GREEN}
         )
         green.shift(2.5 * RIGHT + 0.5 * UP)
 
         step1 = TexMobject(
             r"\nabla \times \vec{\text{F}} = x-9",
-            tex_to_color_map={"F":YELLOW, r"\nabla":RED}
+            tex_to_color_map={"F": YELLOW, r"\nabla": RED}
         )
+        step1.shift(2.5 * RIGHT + 2 * UP)
 
         step2a = TexMobject(
             r"\iint_D \nabla \times \vec{\text{F}} \ \text{dA}",
-            tex_to_color_map={"F":YELLOW, r"\nabla":RED, "D":BLUE, "C":GREEN}
+            tex_to_color_map={"F": YELLOW,
+                              r"\nabla": RED, "D": BLUE, "C": GREEN}
         )
         step2a.shift(2.5 * RIGHT + 1 * DOWN)
 
@@ -746,9 +749,12 @@ class Example(Scene):
         self.play(Write(green))
         self.wait()
 
+        self.play(Write(step1))
+        self.wait()
+
         self.play(Write(step2a))
         self.wait()
-        
+
         self.play(Transform(step2a, step2b))
         self.wait()
 
