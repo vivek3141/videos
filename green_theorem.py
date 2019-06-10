@@ -476,7 +476,7 @@ class GreenTheoremVisual(Scene):
         eq1.shift(3 * D)
 
         eq = TexMobject(
-            r"\int_{C_r} \vec{\text{F}} \bullet \text{d}\vec{\text{r}} = \nabla \times \vec{\text{F}} |r|")
+            r"\int_{C_r} \vec{\text{F}} \bullet \text{d}\vec{\text{r}} \approx \nabla \times \vec{\text{F}} |r|")
         back = BackgroundRectangle(eq, color=BLACK, fill_opacity=1)
         eq2 = VGroup(back, eq)
         eq2.shift(3 * D)
@@ -533,12 +533,13 @@ class GreenTheoremVisual(Scene):
         for t in np.arange(0, 2, 0.05):
             y = self.func(t)[1]
             x = self.func(t)[0]
-            roots = [i for i in np.roots([1, 0, -4, -x]) if 2 >= i.real >= -2 and i.imag == 0]
+            roots = [i for i in np.roots(
+                [1, 0, -4, -x]) if 2 >= i.real >= -2 and i.imag == 0]
 
             l1 = Line(-y*UP, y * UP, color=RED).shift(x*RIGHT)
             if len(roots) >= 2:
                 l2 = Line(self.func(roots[0])[
-                      0]*RIGHT, self.func(roots[1])[0] * RIGHT, color=RED).shift(self.func(roots[0])[1]*UP)
+                    0]*RIGHT, self.func(roots[1])[0] * RIGHT, color=RED).shift(self.func(roots[0])[1]*UP)
 
             table2.add(l1, l2)
 
@@ -550,9 +551,6 @@ class GreenTheoremVisual(Scene):
 
         self.play(Transform(field, field2))
         self.wait()
-        
-        #self.play(Write(surface))
-        #self.wait()
 
         self.play(Write(eq0))
         self.wait()
@@ -570,6 +568,12 @@ class GreenTheoremVisual(Scene):
         self.wait()
 
         self.play(Write(eq2))
+        self.wait()
+
+        self.play(Uncreate(table2), Uncreate(eq2), Write(surface))
+        self.wait()
+
+        self.play(Write(eqf))
         self.wait()
 
     def calc_field_color(self, point, f, prop=0.0, opacity=None):
@@ -653,4 +657,11 @@ class FTC(GraphScene):
             *list(map(Animation, foreground_mobjects))
         )
 
+        self.wait()
+
+
+class Example(Scene):
+    def construct(self):
+        f = TexMobject(r"\text{F} = \langle 6y-9x, -yx + x^3 \rangle")
+        self.play(Write(f))
         self.wait()
