@@ -706,7 +706,7 @@ class Example(Scene):
             r"\text{F} = \langle 6y-9x, -yx + x^3 \rangle",
             tex_to_color_map={r"\text{F}": YELLOW}
         )
-        f.shift(2.5 * RIGHT + 3.5 * UP)
+        f.shift(2.5 * RIGHT + 3 * UP)
 
         green = TexMobject(
             r"\int_C \vec{\text{F}} \bullet \text{d}\vec{\text{r}} = \iint_D \nabla \times \vec{\text{F}} \ \text{dA}",
@@ -746,10 +746,10 @@ class Example(Scene):
         self.play(Write(C))
         self.wait()
 
-        self.play(Write(green))
+        self.play(Write(step1))
         self.wait()
 
-        self.play(Write(step1))
+        self.play(Write(green))
         self.wait()
 
         self.play(Write(step2a))
