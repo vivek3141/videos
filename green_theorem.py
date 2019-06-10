@@ -712,7 +712,7 @@ class Example(Scene):
             r"\int_C \vec{\text{F}} \bullet \text{d}\vec{\text{r}} = \iint_D \nabla \times \vec{\text{F}} \ \text{dA}",
             tex_to_color_map={"F":YELLOW, r"\nabla":RED, "D":BLUE, "C":GREEN}
         )
-        green.shift(2.5 * RIGHT + 1 * UP)
+        green.shift(2.5 * RIGHT + 0.5 * UP)
 
         step1 = TexMobject(
             r"\nabla \times \vec{\text{F}} = x-9",
@@ -723,13 +723,19 @@ class Example(Scene):
             r"\iint_D \nabla \times \vec{\text{F}} \ \text{dA}",
             tex_to_color_map={"F":YELLOW, r"\nabla":RED, "D":BLUE, "C":GREEN}
         )
-        step2a.shift(2.5 * RIGHT)
+        step2a.shift(2.5 * RIGHT + 1 * DOWN)
 
         step2b = TexMobject(
-            r"\int_{-1}^{1} \int_{-1}^{3-x} \nabla x-9 \ \text{dy} \ \text{dx}",
+            r"\int_{-1}^{1} \int_{-1}^{3-x} x-9 \ \text{dy} \ \text{dx}",
             tex_to_color_map={}
         )
-        step2b.shift(2.5 * RIGHT)
+        step2b.shift(2.5 * RIGHT + 1 * DOWN)
+
+        step3 = TexMobject(
+            r"= \frac{-218}{3}",
+            tex_to_color_map={"=": YELLOW}
+        )
+        step3.shift(2.5 * RIGHT = 2.5 * DOWN)
 
         self.play(Write(f))
         self.wait()
@@ -744,4 +750,7 @@ class Example(Scene):
         self.wait()
         
         self.play(Transform(step2a, step2b))
+        self.wait()
+
+        self.play(Write(step3))
         self.wait()
