@@ -663,5 +663,32 @@ class FTC(GraphScene):
 class Example(Scene):
     def construct(self):
         f = TexMobject(r"\text{F} = \langle 6y-9x, -yx + x^3 \rangle")
-        self.play(Write(f))
+
+        C = VGroup(
+            ParamtericFunction(
+                lambda t: np.array([t, 3-t]),
+                t_min=-1,
+                t_max=1,
+            ),
+            ParametricFunction(
+                lambda t: np.array([t, -1]),
+                t_min=-1,
+                t_max=1
+            ),
+            ParametricFunction(
+                lambda t: np.array([-1, t]),
+                t_min=-1,
+                t_max=4
+            ),
+            ParametricFunction(
+                lambda t: np.array([1, t]),
+                t_min=-1,
+                t_max=2
+            )
+        )
+
+        #self.play(Write(f))
+        #self.wait()
+
+        self.play(Write(C))
         self.wait()
