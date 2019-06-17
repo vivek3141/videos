@@ -2,9 +2,14 @@ from manimlib.imports import *
 
 
 class Intro(Scene):
+    CONFIG = {"default_riemann_start_color": BLUE,
+              "default_riemann_end_color": GREEN,
+              "area_opacity": 0.8,
+              "num_rects": 50, }
+
     def construct(self):
         f = ParametricFunction(
-            function=self.func
+            function=self.func,
             t_min=-3,
             t_max=3,
             color=BLUE
@@ -21,6 +26,10 @@ class Intro(Scene):
                 "exclude_zero_from_default_numbers": True,
             }
         )
+
+        rect = self.get_riemann_sums(self.func)
+        rect.scale(1.95)
+        rect.shift(2.4 * DOWN)
 
         func = VGroup(axes, f)
         func.scale(2)
@@ -40,56 +49,19 @@ class Intro(Scene):
         self.play(Write(eq1))
         self.wait()
 
-    def get_riemann_rectangles(
-        self,
-        graph,
-        x_min=None,
-        x_max=None,
-        dx=0.1,
-        input_sample_type="left",
-        stroke_width=1,
-        stroke_color=BLACK,
-        fill_opacity=1,
-        start_color=None,
-        end_color=None,
-        show_signed_area=True,
-        width_scale_factor=1.001
-    ):
-        x_min = x_min if x_min is not None else self.x_min
-        x_max = x_max if x_max is not None else self.x_max
-        if start_color is None:
-            start_color = self.default_riemann_start_color
-        if end_color is None:
-            end_color = self.default_riemann_end_color
-        rectangles = VGroup()
-        x_range = np.arange(x_min, x_max, dx)
-        colors = color_gradient([start_color, end_color], len(x_range))
-        for x, color in zip(x_range, colors):
-            if input_sample_type == "left":
-                sample_input = x
-            elif input_sample_type == "right":
-                sample_input = x + dx
-            elif input_sample_type == "center":
-                sample_input = x + 0.5 * dx
-            else:
-                raise Exception("Invalid input sample type")
-            graph_point = self.input_to_graph_point(sample_input, graph)
-            points = VGroup(*list(map(VectorizedPoint, [
-                self.coords_to_point(x, 0),
-                self.coords_to_point(x + width_scale_factor * dx, 0),
-                graph_point
-            ])))
+        self.play(Write(rect), Transform(eq1, eq2))
+        self.wait()
 
-            rect = Rectangle()
-            rect.replace(points, stretch=True)
-            if graph_point[1] < self.graph_origin[1] and show_signed_area:
-                fill_color = invert_color(color)
-            else:
-                fill_color = color
-            rect.set_fill(fill_color, opacity=fill_opacity)
-            rect.set_stroke(stroke_color, width=stroke_width)
-            rectangles.add(rect)
-        return rectangles
+    @staticmethod
+    def get_riemann_sums(func, dx=0.01, x=(-3, 3), color=RED):
+        rects = VGroup()
+        for i in np.arange(x[0], x[1], dx):
+            h = func(i)[1]
+            rect = Rectangle(height=h, width=dx, color=color, stroke_opacity=0.3, fill_opacity=0.3)
+            rect.shift(i * RIGHT + (h / 2) * UP)
+            rects.add(rect)
+
+        return rects
 
     def func(self, t):
         return np.array([t, np.exp(-t**2), 0])
