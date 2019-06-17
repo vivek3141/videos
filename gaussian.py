@@ -13,12 +13,17 @@ class Intro(Scene):
             x_min=-3,
             x_max=3,
             y_min=0,
-            y_max=2
+            y_max=2,
+            number_line_config={
+                "color": LIGHT_GREY,
+                "include_tip": False,
+                "exclude_zero_from_default_numbers": True,
+            }
         )
         func = VGroup(axes, f)
         func.scale(2)
 
-        eq = TexMobject(r"\int_{-\infty}^{\infty} e^{-x^2} \ dx = \sqrt{pi}")
+        eq = TexMobject(r"\int_{-\infty}^{\infty} e^{-x^2} \ dx = \sqrt{\pi}")
         eq.scale(1.5)
         eq.shift(3 * UP)
 
