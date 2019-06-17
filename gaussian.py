@@ -22,6 +22,7 @@ class Intro(Scene):
         )
         func = VGroup(axes, f)
         func.scale(2)
+        func.shift(2 * DOWN)
 
         eq = TexMobject(r"\int_{-\infty}^{\infty} e^{-x^2} \ dx = \sqrt{\pi}")
         eq.scale(1.5)
