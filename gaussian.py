@@ -15,7 +15,7 @@ class Intro(Scene):
             y_min=0,
             y_max=2
         )
-        func = VGroup(f, axes)
+        func = VGroup(axes, f)
 
         self.play(Write(func))
 
