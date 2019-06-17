@@ -4,13 +4,16 @@ from manimlib.imports import *
 class Intro(Scene):
     def construct(self):
         f = ParametricFunction(
-            function=lambda t: np.array([t, np.exp(-t**2), 0])
+            function=lambda t: np.array([t, np.exp(-t**2), 0]),
+            t_min=-3,
+            t_max=3,
+            color=BLUE
         )
         axes = Axes(
             x_min=-3,
             x_max=3,
             y_min=0,
-            y_max=1.5
+            y_max=2
         )
         func = VGroup(f, axes)
 
