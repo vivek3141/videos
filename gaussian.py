@@ -16,8 +16,15 @@ class Intro(Scene):
             y_max=2
         )
         func = VGroup(axes, f)
+        func.scale(2)
+
+        eq = TexMobject(r"\int_{-\infty}^{\infty} e^{-x^2} \ dx = \sqrt{pi}")
+        eq.scale(1.5)
+        eq.shift(3 * UP)
 
         self.play(Write(func))
+        self.wait()
+        self.play(Write(eq))
 
 
 class GaussianVisual(ThreeDScene):
