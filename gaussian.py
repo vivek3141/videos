@@ -25,6 +25,7 @@ class Intro(Scene):
         self.play(Write(func))
         self.wait()
         self.play(Write(eq))
+        self.wait()
 
 
 class GaussianVisual(ThreeDScene):
