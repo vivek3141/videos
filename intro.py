@@ -216,8 +216,8 @@ class BannerE(Scene):
         axes = Axes(**axes_config)
         f = VGroup(
             *[self.calc_field_color(x * RIGHT + y * UP, lambda x, y: np.array([y, x]), prop=0)
-              for x in np.arange(-5, 5, 1)
-              for y in np.arange(-5, 5, 1)
+              for x in np.arange(-5, 6, 1)
+              for y in np.arange(-5, 6, 1)
               ]
         )
 
@@ -236,7 +236,7 @@ class BannerE(Scene):
         curve = VGroup(label, c)
 
         everything = VGroup(field, curve)
-        everything.scale(0.8)
+        everything.scale(0.7)
 
         self.play(Write(everything))
         self.wait()
@@ -286,3 +286,48 @@ class BannerE(Scene):
     def r_prime(x):
         r_d = np.array([2 / (1 + x ** 2), 1, 0])
         return r_d
+
+class FTC(GraphScene):
+    CONFIG = {
+        "x_max": 4,
+        "x_labeled_nums": list(range(-1, 5)),
+        "y_min": 0,
+        "y_max": 2,
+        "y_tick_frequency": 2.5,
+        "y_labeled_nums": list(range(5, 20, 5)),
+        "n_rect_iterations": 1,
+        "default_right_x": 3,
+        "func": lambda x: 0.1*math.pow(x-2, 2) + 1,
+    }
+
+    def construct(self):
+        ftc = TexMobject(r"\int_a^b f'(x) \ dx = f(b) - f(a)")
+        ftc.shift(3 * UP)
+
+        self.play(Write(ftc))
+        self.setup_axes()
+        graph = self.get_graph(self.func)
+        self.play(ShowCreation(graph))
+
+        self.graph = graph
+        dx = 0.2
+        rect = self.get_riemann_rectangles(
+            self.graph,
+            x_min=0,
+            x_max=self.default_right_x,
+            dx=dx,
+            stroke_width=4*dx,
+        )
+        foreground_mobjects = [self.axes, self.graph]
+
+        self.play(
+            DrawBorderThenFill(
+                rect,
+                run_time=2,
+                rate_func=smooth,
+                lag_ratio=0.5,
+            ),
+            *list(map(Animation, foreground_mobjects))
+        )
+
+        self.wait()
