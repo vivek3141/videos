@@ -331,3 +331,12 @@ class FTC(GraphScene):
         )
 
         self.wait()
+
+
+class TypeT(Scene):
+    def construct(self):
+        text1 = TextMobject("Animated").scale(2).shift(2 * UP)
+        text2 = TextMobject(r"$\int$ath and CS").scale(2).shift(2 * DOWN)
+
+        self.play(Write(text1),Write(text2))
+
