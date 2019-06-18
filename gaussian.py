@@ -85,6 +85,7 @@ class GaussianVisual(ThreeDScene):
                 "exclude_zero_from_default_numbers": True,
             }
         )
+        Sphere
 
         surface = VGroup(axes, s)
         surface.scale(2)
@@ -98,4 +99,18 @@ class GaussianVisual(ThreeDScene):
             u,
             v,
             np.exp(-(u**2 + v**2))
+        ])
+
+    def func1(self, u, v):
+        return np.array([
+            u,
+            math.sqrt(1-u**2),
+            v
+        ])
+
+    def func2(self, u, v):
+        return np.array([
+            u,
+            -math.sqrt(1-u**2),
+            v
         ])
