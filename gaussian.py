@@ -57,7 +57,8 @@ class Intro(Scene):
         rects = VGroup()
         for i in np.arange(x[0], x[1], dx):
             h = func(i)[1]
-            rect = Rectangle(height=h, width=dx, color=color, stroke_opacity=0.3, fill_opacity=0.3)
+            rect = Rectangle(height=h, width=dx, color=color,
+                             stroke_opacity=0.3, fill_opacity=0.3)
             rect.shift(i * RIGHT + (h / 2) * UP)
             rects.add(rect)
 
@@ -69,14 +70,25 @@ class Intro(Scene):
 
 class GaussianVisual(ThreeDScene):
     def construct(self):
-        surface = ParametricSurface(
+        s = ParametricSurface(
             self.func,
             u_min=-2,
             u_max=2,
             v_min=-2,
             v_max=2
-        ).scale(2)
-        
+        )
+
+        axes = ThreeDAxes(
+            number_line_config={
+                "color": LIGHT_GREY,
+                "include_tip": False,
+                "exclude_zero_from_default_numbers": True,
+            }
+        )
+
+        surface = VGroup(axes, s)
+        surface.scale(2)
+
         self.move_camera(0.8 * np.pi / 2, -0.45 * np.pi)
         self.play(Write(surface))
         self.wait()
