@@ -85,7 +85,32 @@ class GaussianVisual(ThreeDScene):
                 "exclude_zero_from_default_numbers": True,
             }
         )
-        Sphere
+
+        conf = {"fill_color": ORANGE,
+                "fill_opacity": 1.0,
+                "checkerboard_colors": [ORANGE, ORANGE],
+                "stroke_color": ORANGE,
+                "stroke_width": 0, }
+
+        const = self.func(0, 1)[2]
+        cyln = VGroup(
+            ParametricSurface(
+                self.func1,
+                u_min=-1,
+                u_max=1,
+                v_min=0,
+                v_max=const,
+                **conf
+            ),
+            ParametricSurface(
+                self.func2,
+                u_min=-1,
+                u_max=1,
+                v_min=0,
+                v_max=const,
+                **conf
+            )
+        )
 
         surface = VGroup(axes, s)
         surface.scale(2)
@@ -93,6 +118,11 @@ class GaussianVisual(ThreeDScene):
         self.move_camera(0.8 * np.pi / 2, -0.45 * np.pi)
         self.play(Write(surface))
         self.wait()
+
+        self.play(Write(cyln))
+        self.wait()
+
+        
 
     def func(self, u, v):
         return np.array([
