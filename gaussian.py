@@ -84,7 +84,7 @@ class GaussianVisual(ThreeDScene):
                 "include_tip": False,
                 "exclude_zero_from_default_numbers": True,
             }
-        ).scale(2)
+        )
 
         conf = {"fill_color": ORANGE,
                 "fill_opacity": 1.0,
@@ -92,37 +92,27 @@ class GaussianVisual(ThreeDScene):
                 "stroke_color": RED,
                 "stroke_width": 0.5, }
 
-        const = 2
-        cyln = VGroup(
-            ParametricSurface(
-                self.func1,
-                u_min=-1,
-                u_max=1,
-                v_min=0,
-                v_max=const,
-                #**conf
-            ),
-            ParametricSurface(
-                self.func2,
-                u_min=-1,
-                u_max=1,
-                v_min=0,
-                v_max=const,
-                #**conf
-            )
-        )
+        const = self.func(0, 1)[-1]
+        cyln = ParametricSurface(
+            self.cyln,
+            u_min=0,
+            u_max=2*PI,
+            v_min=0,
+            v_max=const,
+            **conf
+        ).scale(2)
 
         surface = VGroup(axes, s)
         surface.scale(2)
 
         self.move_camera(0.8 * np.pi / 2, -0.45 * np.pi)
-        #self.play(Write(surface))
-        #self.wait()
-
-        self.play(Write(cyln), Write(axes))
+        self.play(Write(surface))
         self.wait()
 
-        
+        surface.set_style(fill_opacity=0.25,
+                          stroke_opacity=0.25)
+        self.play(Write(cyln))
+        self.wait()
 
     def func(self, u, v):
         return np.array([
@@ -131,16 +121,9 @@ class GaussianVisual(ThreeDScene):
             np.exp(-(u**2 + v**2))
         ])
 
-    def func1(self, u, v):
+    def cyln(self, u, v):
         return np.array([
-            u,
-            math.sqrt(1-u**2),
-            v
-        ])
-
-    def func2(self, u, v):
-        return np.array([
-            u,
-            -math.sqrt(1-u**2),
+            np.cos(u),
+            np.sin(u),
             v
         ])
