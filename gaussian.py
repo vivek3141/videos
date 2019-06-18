@@ -109,10 +109,16 @@ class GaussianVisual(ThreeDScene):
         self.play(Write(surface))
         self.wait()
 
-        surface.set_style(fill_opacity=0.25,
-                          stroke_opacity=0.25)
+        # self.begin_ambient_camera_rotation()
+        # self.wait(5)
+
+        s.set_style(fill_opacity=0.25,
+                    stroke_opacity=0.25)
         self.play(Write(cyln))
         self.wait()
+
+        # self.begin_ambient_camera_rotation()
+        # self.wait(5)
 
     def func(self, u, v):
         return np.array([
