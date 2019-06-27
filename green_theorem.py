@@ -91,7 +91,6 @@ from PIL import Image
 from colour import Color
 
 
-
 class Diagram(Scene):
     def construct(self):
         pass
@@ -190,13 +189,19 @@ class GreenTheoremVisual(Scene):
         eqf.shift(3 * UP)
 
        # div = TexMobject(r"\iint_S \vec{\text{F}} \bullet \text{d}\vec{\text{S}}= \iiint_V \vec{\nabla} \bullet \text{d}\vec{\text{V}}
-       #                  ")
+       #
+       #                 ")
+        t1 = [1.225]
+        t2 = [0.75, 1.5]
+        t3 = [i for i in np.arange(0, 2, 0.25)]
+        table1 = VGroup(
+            *[Line(-self.func(t)[1]*UP, self.func(t)[1] *
+                   UP, color=RED, stroke_width=DEFAULT_STROKE_WIDTH*3).shift(self.func(t)[0]*RIGHT) for t in t1],
+        )
 
-        table1 = VGroup([])
+        table2 = VGroup()
 
-        table2 = VGroup([])
-
-        table3 = VGroup([])
+        table3 = VGroup()
 
         self.play(ShowCreation(field))
         self.wait()
@@ -220,6 +225,9 @@ class GreenTheoremVisual(Scene):
         self.wait()
 
         self.play(Transform(eq0, eqf))
+        self.wait()
+
+        self.play(Write(table1))
         self.wait()
 
     def calc_field_color(self, point, f, prop=0.0, opacity=None):
