@@ -68,6 +68,11 @@ class Intro(Scene):
         return np.array([t, np.exp(-t**2), 0])
 
 
+class DefiniteIntegral(Scene):
+    def construct(self):
+        pass
+
+
 class GaussianVisual(ThreeDScene):
     def construct(self):
         s = ParametricSurface(
