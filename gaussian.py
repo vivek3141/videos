@@ -122,13 +122,33 @@ class DefiniteIntegral(Scene):
 class Nonelem(Scene):
     def construct(self):
         eq = TexMobject(r"\int e^{-x^2} dx")
-        eq.scale(1.5)
+        eq.scale(2)
 
         brace = Brace(eq)
-        text = brace.get_text("Nonelementary")
+        text2 = brace.get_text("Nonelementary")
+        text1 = brace.get_text("???")
 
         self.play(Write(eq))
-        self.play(Write(brace))
+        self.play(Write(brace), Write(text1))
+        self.play(Transform(text1, text2))
+        self.wait()
+
+
+class Gaussian(Scene):
+    def construct(self):
+        func = TexMobject(r"f(x,y) = e^{-(x^2+y^2)}")
+        func.shift(3 * UP)
+        func.scale(1.5)
+
+        eq1 = TexMobject(r"I = \int_{-\infty}^{\infty} e^{-x^2} dx")
+        #eq1.shift()
+        eq1.scale(1.5)
+
+        self.play(Write(func))
+        self.wait()
+
+        self.play(Write(eq1))
+
 
 
 
