@@ -145,7 +145,7 @@ class Gaussian(Scene):
         eq1.shift(ORIGIN)
         eq1.scale(2)
 
-        eq2 = TexMobject(r"\iint_{\rm I\!R ^ 2} e^{-(x^2 + y^2)} \ dy dx")
+        eq2 = TexMobject(r"\iint_{\Bbb R ^ 2} e^{-(x^2 + y^2)} \ dy dx")
         eq2.shift(ORIGIN)
         eq2.scale(2)
 
@@ -173,9 +173,14 @@ class Gaussian(Scene):
         eq6.scale(2)
 
         eq7 = TexMobject(
-            r"\iint_{\rm I\!R ^ 2} e^{-(x^2 + y^2)} \ dy dx = I^2", tex_to_color_map={"I": YELLOW})
+            r"\iint_{\Bbb R^2} e^{-(x^2 + y^2)} \ dy dx = I^2", tex_to_color_map={"I": YELLOW})
         eq7.shift(ORIGIN)
         eq7.scale(2)
+
+        eq8 = TexMobject(
+            r"I = \sqrt{\iint_{\Bbb R^2} e^{-(x^2 + y^2)} \ dy dx}", tex_to_color_map={"I": YELLOW})
+        eq8.shift(ORIGIN)
+        eq8.scale(2)
 
         br1 = Brace(eq6[0])
         t1 = br1.get_text("I").scale(2)
@@ -218,6 +223,12 @@ class Gaussian(Scene):
         self.wait()
 
         self.play(Write(b1), Write(b2))
+        self.wait()
+
+        self.play(Uncreate(b1), Uncreate(b2), Transform(eq2, eq7))
+        self.wait()
+
+        self.play(Transform(eq2, eq8))
         self.wait()
 
 
