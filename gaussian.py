@@ -71,7 +71,7 @@ class Intro(Scene):
 class DefiniteIntegral(Scene):
     def construct(self):
         graph = ParametricFunction(
-            function=lambda t: np.array([t, t ^ 2])
+            function=lambda t: np.array([t, t ** 2]),
             t_min=-1,
             t_max=2,
             color=RED
