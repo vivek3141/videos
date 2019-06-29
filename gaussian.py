@@ -163,9 +163,22 @@ class Gaussian(Scene):
         circ.shift(0.5 * LEFT)
 
         eq5 = TexMobject(
-            r"\int_{-\infty}^{\infty}e^{-x^2}\int_{-\infty}^{\infty}  \bullet e^{-y^2}  \ dy dx")
+            r"\int_{-\infty}^{\infty}e^{-x^2}\int_{-\infty}^{\infty} e^{-y^2}  \ dy dx")
         eq5.shift(ORIGIN)
         eq5.scale(2)
+
+        eq6 = TexMobject(
+            r"\int_{-\infty}^{\infty}e^{-x^2} \ dx", r"\int_{-\infty}^{\infty} e^{-y^2}  \ dy")
+        eq6.shift(ORIGIN)
+        eq6.scale(2)
+
+        br1 = Brace(eq6[0])
+        t1 = br1.get_text("I", tex_to_color_map={"I": YELLOW})
+        b1 = VGroup(br1, t1)
+
+        br2 = Brace(eq6[1])
+        t2 = br1.get_text("I", tex_to_color_map={"I": YELLOW})
+        b2 = VGroup(br2, t2)
 
         self.play(Write(func))
         self.wait()
@@ -192,6 +205,9 @@ class Gaussian(Scene):
 
         self.play(Uncreate(circ))
         self.play(Transform(eq2, eq5))
+        self.wait()
+
+        self.play(Write(b1), Write(b2))
         self.wait()
 
 
