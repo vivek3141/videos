@@ -71,19 +71,19 @@ class Intro(Scene):
 class DefiniteIntegral(Scene):
     def construct(self):
         graph = ParametricFunction(
-            function=lambda t: np.array([t, t ** 2]),
+            function=lambda t: np.array([t, t ** 2 , 0]),
             t_min=-1,
             t_max=2,
             color=RED
         )
         axes = Axes(
             x_min=-1,
-            x_max=2,
+            x_max=3,
             y_min=0,
-            y_max=2
+            y_max=4
         )
         func = VGroup(graph, axes)
-        func.shift(1.5 * LEFT)
+        func.shift(3 * LEFT + 1 * DOWN)
 
         eq1 = TexMobject(r"\int_1^2 x^2 dx")
         eq1.shift(1.5 * RIGHT + 3 * UP)
