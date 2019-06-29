@@ -70,7 +70,36 @@ class Intro(Scene):
 
 class DefiniteIntegral(Scene):
     def construct(self):
-        pass
+        graph = ParametricFunction(
+            function=lambda t: np.array([t, t ^ 2])
+            t_min=-1,
+            t_max=2,
+            color=RED
+        )
+        axes = Axes(
+            x_min=-1,
+            x_max=2,
+            y_min=0,
+            y_max=2
+        )
+        func = VGroup(graph, axes)
+
+        eq1 = TexMobject(r"\int_1^2 x^2 dx")
+        eq1.shift()
+
+        eq2 = TexMobject(r"= \frac{x^3}{3} \Big|_1^2")
+        eq2.shift()
+
+        eq3 = TexMobject(r"= \frac{2^3}{3} - \frac{1^3}{3}")
+        eq3.shift()
+
+        eq4 = TexMobject(r"= \frac{7}{3}")
+        eq4.shift()
+
+        self.play(Write(eq1), Write(func))
+        self.play(Write(eq2))
+        self.play(Write(eq3))
+        self.play(Write(eq4))
 
 
 class GaussianVisual(ThreeDScene):
