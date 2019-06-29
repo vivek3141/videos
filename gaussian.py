@@ -83,18 +83,19 @@ class DefiniteIntegral(Scene):
             y_max=2
         )
         func = VGroup(graph, axes)
+        func.shift(1.5 * LEFT)
 
         eq1 = TexMobject(r"\int_1^2 x^2 dx")
-        eq1.shift()
+        eq1.shift(1.5 * RIGHT + 3 * UP)
 
         eq2 = TexMobject(r"= \frac{x^3}{3} \Big|_1^2")
-        eq2.shift()
+        eq2.shift(1.5 * RIGHT + 1.5 * UP)
 
         eq3 = TexMobject(r"= \frac{2^3}{3} - \frac{1^3}{3}")
-        eq3.shift()
+        eq3.shift(1.5 * RIGHT + 1.5 * DOWN)
 
         eq4 = TexMobject(r"= \frac{7}{3}")
-        eq4.shift()
+        eq4.shift(1.5 * RIGHT + 3 * DOWN)
 
         self.play(Write(eq1), Write(func))
         self.play(Write(eq2))
