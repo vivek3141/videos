@@ -121,7 +121,15 @@ class DefiniteIntegral(Scene):
 
 class Nonelem(Scene):
     def construct(self):
-        pass
+        eq = TexMobject(r"\int e^{-x^2} dx")
+        eq.scale(1.5)
+
+        brace = Brace(eq)
+        text = brace.get_text("Nonelementary")
+
+        self.play(Write(eq))
+        self.play(Write(brace))
+
 
 
 class GaussianVisual(ThreeDScene):
