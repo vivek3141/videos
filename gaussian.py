@@ -172,12 +172,19 @@ class Gaussian(Scene):
         eq6.shift(ORIGIN)
         eq6.scale(2)
 
+        eq7 = TexMobject(
+            r"\iint_{\rm I\!R ^ 2} e^{-(x^2 + y^2)} \ dy dx = I^2", tex_to_color_map={"I": YELLOW})
+        eq7.shift(ORIGIN)
+        eq7.scale(2)
+
         br1 = Brace(eq6[0])
-        t1 = br1.get_text("I", tex_to_color_map={"I": YELLOW})
+        t1 = br1.get_text("I").scale(2)
+        t1.set_color(YELLOW)
         b1 = VGroup(br1, t1)
 
         br2 = Brace(eq6[1])
-        t2 = br1.get_text("I", tex_to_color_map={"I": YELLOW})
+        t2 = br2.get_text("I").scale(2)
+        t2.set_color(YELLOW)
         b2 = VGroup(br2, t2)
 
         self.play(Write(func))
@@ -205,6 +212,9 @@ class Gaussian(Scene):
 
         self.play(Uncreate(circ))
         self.play(Transform(eq2, eq5))
+        self.wait()
+
+        self.play(Transform(eq2, eq6))
         self.wait()
 
         self.play(Write(b1), Write(b2))
