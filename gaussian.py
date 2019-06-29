@@ -71,7 +71,7 @@ class Intro(Scene):
 class DefiniteIntegral(Scene):
     def construct(self):
         graph = ParametricFunction(
-            function=lambda t: np.array([t, t ** 2 , 0]),
+            function=lambda t: np.array([t, t ** 2, 0]),
             t_min=-1,
             t_max=2,
             color=RED
@@ -82,17 +82,19 @@ class DefiniteIntegral(Scene):
             y_min=0,
             y_max=4
         )
-        func = VGroup(graph, axes)
-        func.shift(3 * LEFT + 1 * DOWN)
+
+        rects = self.get_riemann_sums(lambda t: np.array([t, t ** 2, 0]))
+        func = VGroup(graph, axes, rects)
+        func.shift(3.5 * LEFT + 2 * DOWN)
 
         eq1 = TexMobject(r"\int_1^2 x^2 dx")
         eq1.shift(1.5 * RIGHT + 3 * UP)
 
         eq2 = TexMobject(r"= \frac{x^3}{3} \Big|_1^2")
-        eq2.shift(1.5 * RIGHT + 1.5 * UP)
+        eq2.shift(1.5 * RIGHT + 1 * UP)
 
         eq3 = TexMobject(r"= \frac{2^3}{3} - \frac{1^3}{3}")
-        eq3.shift(1.5 * RIGHT + 1.5 * DOWN)
+        eq3.shift(1.5 * RIGHT + 1 * DOWN)
 
         eq4 = TexMobject(r"= \frac{7}{3}")
         eq4.shift(1.5 * RIGHT + 3 * DOWN)
@@ -101,6 +103,25 @@ class DefiniteIntegral(Scene):
         self.play(Write(eq2))
         self.play(Write(eq3))
         self.play(Write(eq4))
+
+        self.wait()
+
+    @staticmethod
+    def get_riemann_sums(func, dx=0.01, x=(1, 2), color=GREEN):
+        rects = VGroup()
+        for i in np.arange(x[0], x[1], dx):
+            h = func(i)[1]
+            rect = Rectangle(height=h-dx, width=dx, color=color,
+                             stroke_opacity=0.3, fill_opacity=0.3)
+            rect.shift(i * RIGHT + (h / 2) * UP)
+            rects.add(rect)
+
+        return rects
+
+
+class Nonelem(Scene):
+    def construct(self):
+        pass
 
 
 class GaussianVisual(ThreeDScene):
