@@ -136,20 +136,63 @@ class Nonelem(Scene):
 
 class Gaussian(Scene):
     def construct(self):
-        func = TexMobject(r"f(x,y) = e^{-(x^2+y^2)}")
+        func = TexMobject(r"f(x,y) = e^{-(x^2+y^2)}", tex_to_color_map={})
         func.shift(3 * UP)
         func.scale(1.5)
 
-        eq1 = TexMobject(r"I = \int_{-\infty}^{\infty} e^{-x^2} dx")
-        #eq1.shift()
-        eq1.scale(1.5)
+        eq1 = TexMobject(
+            r"I = \int_{-\infty}^{\infty} e^{-x^2} dx", tex_to_color_map={"I": YELLOW})
+        eq1.shift(ORIGIN)
+        eq1.scale(2)
+
+        eq2 = TexMobject(r"\iint_{\rm I\!R ^ 2} e^{-(x^2 + y^2)} \ dy dx")
+        eq2.shift(ORIGIN)
+        eq2.scale(2)
+
+        eq3 = TexMobject(
+            r"\int_{-\infty}^{\infty}\int_{-\infty}^{\infty} e^{-(x^2 + y^2)}  \ dy dx")
+        eq3.shift(ORIGIN)
+        eq3.scale(2)
+
+        eq4 = TexMobject(
+            r"\int_{-\infty}^{\infty}\int_{-\infty}^{\infty} e^{-x^2} \bullet e^{-y^2}  \ dy dx")
+        eq4.shift(ORIGIN)
+        eq4.scale(2)
+
+        circ = Circle(color=RED, radius=1.2)
+        circ.shift(0.5 * LEFT)
+
+        eq5 = TexMobject(
+            r"\int_{-\infty}^{\infty}e^{-x^2}\int_{-\infty}^{\infty}  \bullet e^{-y^2}  \ dy dx")
+        eq5.shift(ORIGIN)
+        eq5.scale(2)
 
         self.play(Write(func))
         self.wait()
 
         self.play(Write(eq1))
+        self.wait()
 
+        self.play(ApplyMethod(eq1.scale, 0.5))
+        self.play(ApplyMethod(eq1.shift, 4 * LEFT + 3 * UP),
+                  ApplyMethod(func.shift, 2 * RIGHT))
+        self.wait()
 
+        self.play(Write(eq2))
+        self.wait()
+
+        self.play(Transform(eq2, eq3))
+        self.wait()
+
+        self.play(Transform(eq2, eq4))
+        self.wait()
+
+        self.play(Write(circ))
+        self.wait()
+
+        self.play(Uncreate(circ))
+        self.play(Transform(eq2, eq5))
+        self.wait()
 
 
 class GaussianVisual(ThreeDScene):
