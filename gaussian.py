@@ -315,15 +315,14 @@ class GaussianVisual(ThreeDScene):
 
         r = Rectangle(color=RED, fill_color=RED, fill_opacity=1)
 
-        b1 = Brace(rect, UP)
+        b1 = Brace(r, UP)
         t1 = b1.get_tex(r"2\pi r")
 
-        b2 = Brace(rect, LEFT)
+        b2 = Brace(r, LEFT)
         t2 = b2.get_tex(r"e^{-r^2}")
 
         rect = VGroup(r, b1, t1, b2, t2)
         rect.rotate(np.pi / 2, axis=X_AXIS)
-
 
         # self.play(Write(surface))
         # self.wait()
