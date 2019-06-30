@@ -313,7 +313,14 @@ class GaussianVisual(ThreeDScene):
 
         self.move_camera(0.8 * np.pi / 2, -0.45 * np.pi)
 
-        rect = Rectangle(color=RED, fill_color=RED, fill_opacity=1)
+        rect = VGroup(Rectangle(stroke_color=RED, fill_color=RED_A, fill_opacity=1))
+        
+        for i in np.arange(0,1,0.1):
+            rec = Rectangle(stroke_color=RED, fill_color=RED_A, fill_opacity=1).shift(i * OUT)
+            #rec.rotate(np.pi / 2, axis=X_AXIS)
+            rect.add(rec)
+
+        #rect = Rectangle(color=RED, fill_color=RED, fill_opacity=1)
 
         b1 = Brace(rect, UP)
         t1 = b1.get_tex(r"2\pi r")
@@ -342,6 +349,10 @@ class GaussianVisual(ThreeDScene):
         #self.play(Transform(cyln, rect))
         
         self.play(Write(rec))
+        self.wait()
+
+        self.move_camera(np.pi / 2, -np.pi / 2 + 0.5)
+
         self.wait()
 
 
