@@ -314,6 +314,7 @@ class GaussianVisual(ThreeDScene):
         self.move_camera(0.8 * np.pi / 2, -0.45 * np.pi)
 
         rect = Rectangle(color=RED, fill_color=RED, fill_opacity=1)
+        rect.rotate(np.pi / 2, axis=X_AXIS)
 
         # self.play(Write(surface))
         # self.wait()
@@ -323,13 +324,14 @@ class GaussianVisual(ThreeDScene):
 
         # s.set_style(fill_opacity=0.25,
         # stroke_opacity=0.25)
-        self.play(Write(cyln))
-        self.wait()
+        # self.play(Write(cyln))
+        # self.wait()
 
         # self.begin_ambient_camera_rotation()
         # self.wait(5)
-
-        self.play(Transform(cyln, rect))
+        self.move_camera(np.pi / 2, -np.pi / 2)
+        #self.play(Transform(cyln, rect))
+        self.play(Write(rect))
         self.wait()
 
     def func(self, u, v):
