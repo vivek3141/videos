@@ -331,22 +331,22 @@ class GaussianVisual(ThreeDScene):
         rec = VGroup(rect, b1, t1, b2, t2)
         rec.rotate(np.pi / 2, axis=X_AXIS)
 
-        # self.play(Write(surface))
-        # self.wait()
+        self.play(Write(surface))
+        self.wait()
 
-        # self.begin_ambient_camera_rotation()
-        # self.wait(5)
+        self.begin_ambient_camera_rotation()
+        self.wait(5)
 
-        # s.set_style(fill_opacity=0.25,
-        # stroke_opacity=0.25)
-        # self.play(Write(cyln))
-        # self.wait()
+        s.set_style(fill_opacity=0.25,
+        stroke_opacity=0.25)
+        self.play(Write(cyln))
+        self.wait()
 
-        # self.begin_ambient_camera_rotation()
-        # self.wait(5)
+        self.begin_ambient_camera_rotation()
+        self.wait(5)
         self.move_camera(np.pi / 2, -np.pi / 2)
 
-        #self.play(Transform(cyln, rect))
+        self.play(Transform(cyln, rect), Uncreate(surface))
         
         self.play(Write(rec))
         self.wait()
