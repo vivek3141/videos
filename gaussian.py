@@ -232,6 +232,45 @@ class Gaussian(Scene):
         self.wait()
 
 
+class ThreeFunc(ThreeDScene):
+    def construct(self):
+        s = ParametricSurface(
+            self.func,
+            u_min=-2,
+            u_max=2,
+            v_min=-2,
+            v_max=2
+        )
+
+        axes = ThreeDAxes(
+            number_line_config={
+                "color": LIGHT_GREY,
+                "include_tip": False,
+                "exclude_zero_from_default_numbers": True,
+            }
+        )
+
+        conf = {"fill_color": ORANGE,
+                "fill_opacity": 1.0,
+                "checkerboard_colors": [ORANGE, RED],
+                "stroke_color": RED,
+                "stroke_width": 0.5, }
+
+        self.move_camera(0.8 * np.pi / 2, -0.45 * np.pi)
+        self.play(Write(surface))
+        self.wait()
+
+        self.begin_ambient_camera_rotation()
+        self.wait(5)
+
+    def func(self, u, v):
+        return np.array([
+            u,
+            v,
+            np.exp(-(u**2 + v**2))
+        ])
+
+
 class GaussianVisual(ThreeDScene):
     def construct(self):
         s = ParametricSurface(
