@@ -264,7 +264,7 @@ class ThreeFunc(ThreeDScene):
         self.wait()
 
         self.begin_ambient_camera_rotation()
-        self.wait(5)
+        self.wait(15)
 
     def func(self, u, v):
         return np.array([
@@ -312,19 +312,25 @@ class GaussianVisual(ThreeDScene):
         surface.scale(2)
 
         self.move_camera(0.8 * np.pi / 2, -0.45 * np.pi)
-        self.play(Write(surface))
-        self.wait()
+
+        rect = Rectangle(color=RED, fill_color=RED, fill_opacity=1)
+
+        # self.play(Write(surface))
+        # self.wait()
 
         # self.begin_ambient_camera_rotation()
         # self.wait(5)
 
-        s.set_style(fill_opacity=0.25,
-                    stroke_opacity=0.25)
+        # s.set_style(fill_opacity=0.25,
+        # stroke_opacity=0.25)
         self.play(Write(cyln))
         self.wait()
 
         # self.begin_ambient_camera_rotation()
         # self.wait(5)
+
+        self.play(Transform(cyln, rect))
+        self.wait()
 
     def func(self, u, v):
         return np.array([
