@@ -313,16 +313,17 @@ class GaussianVisual(ThreeDScene):
 
         self.move_camera(0.8 * np.pi / 2, -0.45 * np.pi)
 
-        r = Rectangle(color=RED, fill_color=RED, fill_opacity=1)
+        rect = Rectangle(color=RED, fill_color=RED, fill_opacity=1)
 
-        b1 = Brace(r, UP)
+        b1 = Brace(rect, UP)
         t1 = b1.get_tex(r"2\pi r")
 
-        b2 = Brace(r, LEFT)
+        b2 = Brace(rect, LEFT)
         t2 = b2.get_tex(r"e^{-r^2}")
 
-        rect = VGroup(r, b1, t1, b2, t2)
+        labels = VGroup(b1, t1, b2, t2)
         rect.rotate(np.pi / 2, axis=X_AXIS)
+        labels.rotate(np.pi / 2, axis=X_AXIS)
 
         # self.play(Write(surface))
         # self.wait()
@@ -340,6 +341,9 @@ class GaussianVisual(ThreeDScene):
         self.move_camera(np.pi / 2, -np.pi / 2)
         #self.play(Transform(cyln, rect))
         self.play(Write(rect))
+        self.wait()
+
+        self.play(Write(lables))
         self.wait()
 
     def func(self, u, v):
