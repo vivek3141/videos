@@ -478,7 +478,20 @@ class GaussianVisual(GaussianScene):
         surface_ghost = self.get_ghost_surface(surface)
         surface_ghost.set_stroke(width=0)
         axes = self.get_axes()
-        cylinder = self.get_cylinder()
+        conf = {"fill_color": ORANGE,
+                "fill_opacity": 1.0,
+                "checkerboard_colors": [ORANGE, RED],
+                "stroke_color": RED,
+                "stroke_width": 0.5, }
+
+        const = self.func(0, 1)[-1]
+        cylinder = Cylinder(
+            u_min=0,
+            u_max=2*PI,
+            v_min=0,
+            v_max=const,
+            **conf
+        )
         cylinder.set_fill(opacity=0.75)
         radius = cylinder.get_width() / 2
 
