@@ -462,7 +462,7 @@ class GaussianScene(SpecialThreeDScene):
 
 class GaussianVisual(GaussianScene):
     def func(self, u, v):
-        return 2*np.array([
+        return np.array([
             u,
             v,
             np.exp(-(u**2 + v**2))
@@ -474,9 +474,8 @@ class GaussianVisual(GaussianScene):
             u_max=3,
             v_min=-3,
             v_max=3
-        )
-        surface_ghost = self.get_ghost_surface(surface)
-        surface_ghost.set_stroke(width=0)
+        ).scale(2)
+
         axes = self.get_axes()
         conf = {"fill_color": ORANGE,
                 "fill_opacity": 1.0,
@@ -492,10 +491,10 @@ class GaussianVisual(GaussianScene):
             v_max=const,
             **conf
         ).scale(2)
-        cylinder.set_fill(opacity=0.75)
+
         radius = cylinder.get_width() / 2
 
-        self.add(axes, surface_ghost, surface)
+        self.add(axes, surface)
         self.wait()
         self.begin_ambient_camera_rotation()
         self.move_camera(
@@ -503,6 +502,7 @@ class GaussianVisual(GaussianScene):
             run_time=2,
         )
         #self.wait(2)
+        surface.set_fill(opacity=0.75)
         self.play(
             Write(cylinder),
             run_time=3
