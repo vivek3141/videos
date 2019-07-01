@@ -491,7 +491,7 @@ class GaussianVisual(GaussianScene):
             v_min=0,
             v_max=const,
             **conf
-        )
+        ).scale(2)
         cylinder.set_fill(opacity=0.75)
         radius = cylinder.get_width() / 2
 
