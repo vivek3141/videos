@@ -1,6 +1,44 @@
 from manimlib.imports import *
 
 
+class Cylinder(Sphere):
+
+    def func(self, u, v):
+        return np.array([
+            np.cos(v),
+            np.sin(v),
+            np.cos(u)
+        ])
+
+
+class UnwrappedCylinder(Cylinder):
+    def func(self, u, v):
+        return np.array([
+            v - PI,
+            -self.radius,
+            np.cos(u)
+        ])
+
+
+class ParametricDisc(Sphere):
+    CONFIG = {
+        "u_min": 0,
+        "u_max": 1,
+        "stroke_width": 0,
+        "checkerboard_colors": [BLUE_D],
+    }
+
+    def func(self, u, v):
+        return np.array([
+            u * np.cos(v),
+            u * np.sin(v),
+            0,
+        ])
+
+
+
+
+
 class Intro(Scene):
     CONFIG = {"default_riemann_start_color": BLUE,
               "default_riemann_end_color": GREEN,
@@ -274,7 +312,7 @@ class ThreeFunc(ThreeDScene):
         ])
 
 
-class GaussianVisual(ThreeDScene):
+class GaussianVisualOld(ThreeDScene):
     def construct(self):
         s = ParametricSurface(
             self.func,
@@ -313,10 +351,12 @@ class GaussianVisual(ThreeDScene):
 
         self.move_camera(0.8 * np.pi / 2, -0.45 * np.pi)
 
-        rect = VGroup(Rectangle(stroke_color=RED, fill_color=RED_A, fill_opacity=1))
-        
-        for i in np.arange(0,1,0.1):
-            rec = Rectangle(stroke_color=RED, fill_color=RED_A, fill_opacity=1).shift(i * OUT)
+        rect = VGroup(Rectangle(stroke_color=RED,
+                                fill_color=RED_A, fill_opacity=1))
+
+        for i in np.arange(0, 1, 0.1):
+            rec = Rectangle(stroke_color=RED, fill_color=RED_A,
+                            fill_opacity=1).shift(i * OUT)
             #rec.rotate(np.pi / 2, axis=X_AXIS)
             rect.add(rec)
 
@@ -338,7 +378,7 @@ class GaussianVisual(ThreeDScene):
         self.wait(5)
 
         s.set_style(fill_opacity=0.25,
-        stroke_opacity=0.25)
+                    stroke_opacity=0.25)
         self.play(Write(cyln))
         self.wait()
 
@@ -347,14 +387,13 @@ class GaussianVisual(ThreeDScene):
         self.move_camera(np.pi / 2, -np.pi / 2)
 
         self.play(Transform(cyln, rect), Uncreate(surface))
-        
+
         self.play(Write(rec))
         self.wait()
 
         self.move_camera(np.pi / 2, -np.pi / 2 + 0.5)
 
         self.wait()
-
 
     def func(self, u, v):
         return np.array([
@@ -369,3 +408,166 @@ class GaussianVisual(ThreeDScene):
             np.sin(u),
             v
         ])
+
+
+class GaussianScene(SpecialThreeDScene):
+    CONFIG = {
+        "cap_config": {
+            "stroke_width": 1,
+            "stroke_color": WHITE,
+            "fill_color": BLUE_D,
+            "fill_opacity": 1,
+        }
+    }
+
+    def get_cylinder(self, **kwargs):
+        config = merge_dicts_recursively(self.sphere_config, kwargs)
+        return Cylinder(**config)
+
+    def get_cylinder_caps(self):
+        R = self.sphere_config["radius"]
+        caps = VGroup(*[
+            Circle(
+                radius=R,
+                **self.cap_config,
+            ).shift(R * vect)
+            for vect in [IN, OUT]
+        ])
+        caps.set_shade_in_3d(True)
+        return caps
+
+    def get_unwrapped_cylinder(self):
+        return UnwrappedCylinder(**self.sphere_config)
+
+    def get_xy_plane(self):
+        pass
+
+    def get_ghost_surface(self, surface):
+        result = surface.copy()
+        result.set_fill(BLUE_E, opacity=0.5)
+        result.set_stroke(WHITE, width=0.5, opacity=0.5)
+        return result
+
+    def project_point(self, point):
+        radius = self.sphere_config["radius"]
+        result = np.array(point)
+        result[:2] = normalize(result[:2]) * radius
+        return result
+
+    def project_mobject(self, mobject):
+        return mobject.apply_function(self.project_point)
+    
+    
+
+
+class GaussianVisual(GaussianScene):
+    def func(self, u, v):
+        return np.array([
+            u,
+            v,
+            np.exp(-(u**2 + v**2))
+        ])
+    def construct(self):
+        surface = ParametricSurface(
+            self.func,
+            u_min=-2,
+            u_max=2,
+            v_min=-2,
+            v_max=2
+        )
+        surface_ghost = self.get_ghost_surface(surface)
+        surface_ghost.set_stroke(width=0)
+        axes = self.get_axes()
+        cylinder = self.get_cylinder()
+        cylinder.set_fill(opacity=0.75)
+        radius = cylinder.get_width() / 2
+
+        self.add(axes, sphere_ghost, surface)
+        self.wait()
+""" self.begin_ambient_camera_rotation()
+        self.move_camera(
+            **self.default_angled_camera_position,
+            run_time=2,
+        )
+        self.wait(2)
+        self.play(
+            ReplacementTransform(sphere, cylinder),
+            run_time=3
+        )
+        self.wait(3)
+
+        # Get rid of caps
+        caps = self.get_cylinder_caps()
+        caps[1].set_shade_in_3d(False)
+        label = TextMobject("Label")
+        label.scale(1.5)
+        label.stretch(0.8, 0)
+        label.rotate(90 * DEGREES, RIGHT)
+        label.rotate(90 * DEGREES, OUT)
+        label.shift(np.log(radius + SMALL_BUFF) * RIGHT)
+        label.apply_complex_function(np.exp)
+        label.rotate(90 * DEGREES, IN, about_point=ORIGIN)
+        label.shift(OUT)
+        label.set_background_stroke(width=0)
+
+        self.play(FadeIn(caps))
+        self.wait()
+        self.play(
+            caps.space_out_submobjects, 2,
+            caps.fade, 1,
+            remover=True
+        )
+        self.play(Write(label))
+        self.wait(2)
+        self.play(FadeOut(label))
+
+        # Unwrap
+        unwrapped_cylinder = self.get_unwrapped_cylinder()
+        unwrapped_cylinder.set_fill(opacity=0.75)
+        self.play(
+            ReplacementTransform(cylinder, unwrapped_cylinder),
+            run_time=3
+        )
+        self.stop_ambient_camera_rotation()
+        self.move_camera(
+            phi=90 * DEGREES,
+            theta=-90 * DEGREES,
+        )
+
+        # Show dimensions
+        stroke_width = 5
+        top_line = Line(
+            PI * radius * LEFT + radius * OUT,
+            PI * radius * RIGHT + radius * OUT,
+            color=YELLOW,
+            stroke_width=stroke_width,
+        )
+        side_line = Line(
+            PI * radius * LEFT + radius * OUT,
+            PI * radius * LEFT + radius * IN,
+            color=RED,
+            stroke_width=stroke_width,
+        )
+        lines = VGroup(top_line, side_line)
+        lines.shift(radius * DOWN)
+        two_pi_R = TexMobject("2\\pi R")
+        two_R = TexMobject("2R")
+        texs = VGroup(two_pi_R, two_R)
+        for tex in texs:
+            tex.scale(1.5)
+            tex.rotate(90 * DEGREES, RIGHT)
+        two_pi_R.next_to(top_line, OUT)
+        two_R.next_to(side_line, RIGHT)
+
+        self.play(
+            ShowCreation(top_line),
+            FadeInFrom(two_pi_R, IN)
+        )
+        self.wait()
+        self.play(
+            ShowCreation(side_line),
+            FadeInFrom(two_R, RIGHT)
+        )
+        self.wait()"""
+    
+    
