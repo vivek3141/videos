@@ -566,4 +566,8 @@ class GaussianVisual(GaussianScene):
 
 class Volume(Scene):
     def construct(self):
-        pass
+        eq1 = TextMobject(r"Total Volume: $$\int_{0}^{\infty} 2\pi re^-r^2 dr")
+        eq1.scale(2)
+        
+        self.play(Write(eq1))
+        self.wait()
