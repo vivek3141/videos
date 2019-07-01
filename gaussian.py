@@ -528,7 +528,7 @@ class GaussianVisual(GaussianScene):
         # Show dimensions
         stroke_width = 5
         radius = 1.785
-        r=1.35
+        r = 1.35
         top_line = Line(
             PI * radius * LEFT + r * OUT,
             PI * radius * RIGHT + r * OUT,
@@ -544,7 +544,7 @@ class GaussianVisual(GaussianScene):
         lines = VGroup(top_line, side_line)
         lines.shift(radius * DOWN)
         two_pi_R = TexMobject(r"2\pi r")
-        two_R = TexMobject(r"e^-{r^2}")
+        two_R = TexMobject(r"e^{-r^2}")
         texs = VGroup(two_pi_R, two_R)
         for tex in texs:
             tex.scale(1.5)
@@ -562,3 +562,8 @@ class GaussianVisual(GaussianScene):
             FadeInFrom(two_R, RIGHT)
         )
         self.wait()
+
+
+class Volume(Scene):
+    def construct(self):
+        pass
