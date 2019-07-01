@@ -523,27 +523,28 @@ class GaussianVisual(GaussianScene):
             phi=90 * DEGREES,
             theta=-90 * DEGREES,
         )
-        self.play(ApplyMethod(cylinder.scale, 2.25))
+        self.play(ApplyMethod(cylinder.scale, 2.5))
 
         # Show dimensions
         stroke_width = 5
-        radius = 0.75 * 2.25
+        radius = 1.785
+        r=1.35
         top_line = Line(
-            PI * radius * LEFT + radius * OUT,
-            PI * radius * RIGHT + radius * OUT,
+            PI * radius * LEFT + r * OUT,
+            PI * radius * RIGHT + r * OUT,
             color=YELLOW,
             stroke_width=stroke_width,
         )
         side_line = Line(
-            PI * radius * LEFT + radius * OUT,
-            PI * radius * LEFT + radius * IN,
-            color=RED,
+            PI * radius * LEFT + r * OUT,
+            PI * radius * LEFT + 0.45 * IN,
+            color=GREEN,
             stroke_width=stroke_width,
         )
         lines = VGroup(top_line, side_line)
         lines.shift(radius * DOWN)
-        two_pi_R = TexMobject("2\\pi R")
-        two_R = TexMobject("2R")
+        two_pi_R = TexMobject(r"2\pi r")
+        two_R = TexMobject(r"e^-{r^2}")
         texs = VGroup(two_pi_R, two_R)
         for tex in texs:
             tex.scale(1.5)
