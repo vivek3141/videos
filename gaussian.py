@@ -511,35 +511,9 @@ class GaussianVisual(GaussianScene):
 
         self.wait(3)
 
-        # Get rid of caps
-        caps = self.get_cylinder_caps()
-        caps[1].set_shade_in_3d(False)
-        label = TextMobject("Label")
-        label.scale(1.5)
-        label.stretch(0.8, 0)
-        label.rotate(90 * DEGREES, RIGHT)
-        label.rotate(90 * DEGREES, OUT)
-        label.shift(np.log(radius + SMALL_BUFF) * RIGHT)
-        label.apply_complex_function(np.exp)
-        label.rotate(90 * DEGREES, IN, about_point=ORIGIN)
-        label.shift(OUT)
-        label.set_background_stroke(width=0)
-
-        self.play(FadeIn(caps))
-        self.wait()
-        self.play(
-            caps.space_out_submobjects, 2,
-            caps.fade, 1,
-            remover=True
-        )
-        self.play(Write(label))
-        self.wait(2)
-        self.play(FadeOut(label))
-
-        # Unwrap
         unwrapped_cylinder = UnwrappedCylinder(radius=0.75, **conf)
         unwrapped_cylinder.set_fill(opacity=0.75)
-        self.play(Uncreate(surface))
+        self.play(Uncreate(surface), Uncreate(axes))
         self.play(
             ReplacementTransform(cylinder, unwrapped_cylinder),
             run_time=3
@@ -549,11 +523,11 @@ class GaussianVisual(GaussianScene):
             phi=90 * DEGREES,
             theta=-90 * DEGREES,
         )
+        self.play(ApplyMethod(cylinder.scale, 2.25))
 
-
-"""
         # Show dimensions
         stroke_width = 5
+        radius = 0.75 * 2.25
         top_line = Line(
             PI * radius * LEFT + radius * OUT,
             PI * radius * RIGHT + radius * OUT,
@@ -586,4 +560,4 @@ class GaussianVisual(GaussianScene):
             ShowCreation(side_line),
             FadeInFrom(two_R, RIGHT)
         )
-        self.wait()"""
+        self.wait()
