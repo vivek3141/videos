@@ -566,8 +566,13 @@ class GaussianVisual(GaussianScene):
 
 class Volume(Scene):
     def construct(self):
-        eq1 = TextMobject(r"Total Volume: $$\int_{0}^{\infty} 2\pi re^-r^2 dr")
+        head = TextMobject("Total Volume:")
+        head.scale(1.5)
+        head.shift(1 * UP)
+
+        eq1 = TexMobject(r"\int_{0}^{\infty} 2 \pi  r \ e^{- r ^ 2} dr", tex_to_color_map={"dr":YELLOW, "e":RED, r"\infty":GREEN})
         eq1.scale(2)
+        eq1.shift(1 * DOWN)
         
-        self.play(Write(eq1))
+        self.play(Write(eq1), Write(head))
         self.wait()
