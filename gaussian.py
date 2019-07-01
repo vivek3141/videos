@@ -36,9 +36,6 @@ class ParametricDisc(Sphere):
         ])
 
 
-
-
-
 class Intro(Scene):
     CONFIG = {"default_riemann_start_color": BLUE,
               "default_riemann_end_color": GREEN,
@@ -456,8 +453,6 @@ class GaussianScene(SpecialThreeDScene):
 
     def project_mobject(self, mobject):
         return mobject.apply_function(self.project_point)
-    
-    
 
 
 class GaussianVisual(GaussianScene):
@@ -467,16 +462,21 @@ class GaussianVisual(GaussianScene):
             v,
             np.exp(-(u**2 + v**2))
         ])
+
     def construct(self):
-        surface = ParametricSurface(
+        s = ParametricSurface(
             self.func,
             u_min=-3,
             u_max=3,
             v_min=-3,
             v_max=3
-        ).scale(2)
+        )
 
         axes = self.get_axes()
+
+        surface = VGroup(surface, s)
+        surface.scale(2)
+
         conf = {"fill_color": ORANGE,
                 "fill_opacity": 1.0,
                 "checkerboard_colors": [ORANGE, RED],
@@ -501,12 +501,14 @@ class GaussianVisual(GaussianScene):
             **self.default_angled_camera_position,
             run_time=2,
         )
-        #self.wait(2)
+        # self.wait(2)
         surface.set_fill(opacity=0.75)
         self.play(
             Write(cylinder),
             run_time=3
         )
+
+
 """        self.wait(3)
 
         # Get rid of caps
@@ -582,5 +584,3 @@ class GaussianVisual(GaussianScene):
             FadeInFrom(two_R, RIGHT)
         )
         self.wait()"""
-    
-    
