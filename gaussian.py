@@ -5,9 +5,9 @@ class Cylinder(Sphere):
 
     def func(self, u, v):
         return np.array([
-            np.cos(v),
-            np.sin(v),
-            np.cos(u)
+            np.cos(u),
+            np.sin(u),
+            v
         ])
 
 
@@ -16,7 +16,7 @@ class UnwrappedCylinder(Cylinder):
         return np.array([
             v - PI,
             -self.radius,
-            np.cos(u)
+            np.abs(np.cos(u))
         ])
 
 
@@ -462,7 +462,7 @@ class GaussianScene(SpecialThreeDScene):
 
 class GaussianVisual(GaussianScene):
     def func(self, u, v):
-        return np.array([
+        return 2*np.array([
             u,
             v,
             np.exp(-(u**2 + v**2))
@@ -470,10 +470,10 @@ class GaussianVisual(GaussianScene):
     def construct(self):
         surface = ParametricSurface(
             self.func,
-            u_min=-2,
-            u_max=2,
-            v_min=-2,
-            v_max=2
+            u_min=-3,
+            u_max=3,
+            v_min=-3,
+            v_max=3
         )
         surface_ghost = self.get_ghost_surface(surface)
         surface_ghost.set_stroke(width=0)
@@ -482,19 +482,19 @@ class GaussianVisual(GaussianScene):
         cylinder.set_fill(opacity=0.75)
         radius = cylinder.get_width() / 2
 
-        self.add(axes, sphere_ghost, surface)
+        self.add(axes, surface_ghost, surface)
         self.wait()
-""" self.begin_ambient_camera_rotation()
+        self.begin_ambient_camera_rotation()
         self.move_camera(
             **self.default_angled_camera_position,
             run_time=2,
         )
-        self.wait(2)
+        #self.wait(2)
         self.play(
-            ReplacementTransform(sphere, cylinder),
+            Write(cylinder),
             run_time=3
         )
-        self.wait(3)
+"""        self.wait(3)
 
         # Get rid of caps
         caps = self.get_cylinder_caps()
