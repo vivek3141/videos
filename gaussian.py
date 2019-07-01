@@ -383,7 +383,7 @@ class GaussianVisualOld(ThreeDScene):
         self.wait(5)
         self.move_camera(np.pi / 2, -np.pi / 2)
 
-        self.play(Transform(cyln, rect), Uncreate(surface))
+        self.play(ReplacementTransform(cyln, rect), Uncreate(surface))
 
         self.play(Write(rec))
         self.wait()
@@ -464,7 +464,7 @@ class GaussianVisual(GaussianScene):
         ])
 
     def construct(self):
-        s = ParametricSurface(
+        surface = ParametricSurface(
             self.func,
             u_min=-3,
             u_max=3,
@@ -474,7 +474,7 @@ class GaussianVisual(GaussianScene):
 
         axes = self.get_axes()
 
-        surface = VGroup(surface, s)
+        #surface = VGroup(axes, s)
         surface.scale(2)
 
         conf = {"fill_color": ORANGE,
@@ -483,12 +483,13 @@ class GaussianVisual(GaussianScene):
                 "stroke_color": RED,
                 "stroke_width": 0.5, }
 
-        const = self.func(0, 1)[-1]
+        const = self.func(0.75, 0)[-1]
         cylinder = Cylinder(
             u_min=0,
             u_max=2*PI,
             v_min=0,
             v_max=const,
+            radius=0.75,
             **conf
         ).scale(2)
 
@@ -508,8 +509,7 @@ class GaussianVisual(GaussianScene):
             run_time=3
         )
 
-
-"""        self.wait(3)
+        self.wait(3)
 
         # Get rid of caps
         caps = self.get_cylinder_caps()
@@ -537,8 +537,9 @@ class GaussianVisual(GaussianScene):
         self.play(FadeOut(label))
 
         # Unwrap
-        unwrapped_cylinder = self.get_unwrapped_cylinder()
+        unwrapped_cylinder = UnwrappedCylinder(radius=0.75, **conf)
         unwrapped_cylinder.set_fill(opacity=0.75)
+        self.play(Uncreate(surface))
         self.play(
             ReplacementTransform(cylinder, unwrapped_cylinder),
             run_time=3
@@ -549,6 +550,8 @@ class GaussianVisual(GaussianScene):
             theta=-90 * DEGREES,
         )
 
+
+"""
         # Show dimensions
         stroke_width = 5
         top_line = Line(
