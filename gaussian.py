@@ -617,3 +617,7 @@ class Volume(Scene):
         self.wait()
 
         self.play(Write(eq5))
+
+        self.wait()
+        self.play(Uncreate(eq1), Uncreate(sub), Uncreate(eq4))
+        self.play(ReplacementTransform(eq5, eq6))
