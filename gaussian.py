@@ -570,8 +570,22 @@ class Volume(Scene):
         head.scale(1.5)
         head.shift(2 * UP)
 
-        eq1 = TexMobject(r"\int_{0}^{\infty} 2 \pi  r \ e^{-r^2} d r \\", tex_to_color_map={"e":RED, r"{0}^{\infty}":GREEN,"r":YELLOW})
+        eq1 = TexMobject(r"\int_{0}^{\infty}2\pi r e^{-r^2} dr", tex_to_color_map={"e":RED, r"{0}^{\infty}":GREEN,"r":YELLOW})
         eq1.scale(2)
+
+        rect = Rectangle(height=3, width=3, color=RED)
+        rect.shift(5 * RIGHT + 2 * UP)
+
+        text1 = TexMobject(r"u=r^2")
+        text1.shift(5 * RIGHT + 2.5 * UP)
+
+        text2 = TexMobject(r"du = 2r \ dr")
+        text2.shift(5 * RIGHT + 1.5 * UP)
+
+        sub = VGroup(rect, text1, text2)
         
         self.play(Write(eq1), Write(head))
+        self.wait()
+
+        self.play(Uncreate(head), Write(sub))
         self.wait()
