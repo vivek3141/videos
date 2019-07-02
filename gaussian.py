@@ -568,11 +568,10 @@ class Volume(Scene):
     def construct(self):
         head = TextMobject("Total Volume:")
         head.scale(1.5)
-        head.shift(1 * UP)
+        head.shift(2 * UP)
 
-        eq1 = TexMobject(r"\int_{0}^{\infty} 2 \pi  r \ e^{- r ^ 2} dr", tex_to_color_map={"dr":YELLOW, "e":RED, r"\infty":GREEN})
+        eq1 = TexMobject(r"\int_{0}^{\infty} 2 \pi  r \ e^{-r^2} d r \\", tex_to_color_map={"e":RED, r"{0}^{\infty}":GREEN,"r":YELLOW})
         eq1.scale(2)
-        eq1.shift(1 * DOWN)
         
         self.play(Write(eq1), Write(head))
         self.wait()
