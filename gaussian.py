@@ -20,22 +20,6 @@ class UnwrappedCylinder(Cylinder):
         ])
 
 
-class ParametricDisc(Sphere):
-    CONFIG = {
-        "u_min": 0,
-        "u_max": 1,
-        "stroke_width": 0,
-        "checkerboard_colors": [BLUE_D],
-    }
-
-    def func(self, u, v):
-        return np.array([
-            u * np.cos(v),
-            u * np.sin(v),
-            0,
-        ])
-
-
 class Intro(Scene):
     CONFIG = {"default_riemann_start_color": BLUE,
               "default_riemann_end_color": GREEN,
@@ -570,24 +554,36 @@ class Volume(Scene):
         head.scale(1.5)
         head.shift(2 * UP)
 
-        eq1 = TexMobject(r"\int_{0}^{\infty}2\pi r e^{-r^2} dr", tex_to_color_map={"e":RED, r"{0}^{\infty}":GREEN,"r":YELLOW})
+        eq1 = TexMobject(r"\int_{0}^{\infty}2\pi r e^{-r^2} dr",
+                         tex_to_color_map={"e": RED, r"{0}^{\infty}": GREEN, "r": YELLOW})
         eq1.scale(2)
 
-        eq2 = TexMobject(r"\int_{0}^{\infty}\pi e^{-u} du", tex_to_color_map={"e":RED, r"{0}^{\infty}":GREEN,"u":YELLOW})
+        eq2 = TexMobject(r"\int_{0}^{\infty}\pi e^{-u} du", tex_to_color_map={
+                         "e": RED, r"{0}^{\infty}": GREEN, "u": YELLOW})
         eq2.scale(2)
 
-        eq3 = TexMobject(r"\pi \int_{0}^{\infty} e^{-u} du", tex_to_color_map={"e":RED, r"{0}^{\infty}":GREEN,"u":YELLOW})
+        eq3 = TexMobject(r"\pi \int_{0}^{\infty} e^{-u} du", tex_to_color_map={
+                         "e": RED, r"{0}^{\infty}": GREEN, "u": YELLOW})
         eq3.scale(2)
 
-        eq4 = TexMobject(r"= \pi \Big(-e^{-u} \Big|_{0}^{\infty}\Big)", tex_to_color_map={"e":RED, r"{0}^{\infty}":GREEN,"u":YELLOW})
+        eq4 = TexMobject(r"= \pi \Big(-e^{-u} \Big|_{0}^{\infty}\Big)", tex_to_color_map={
+                         "e": RED, r"{0}^{\infty}": GREEN, "u": YELLOW})
         eq4.scale(2)
 
         eq5 = TexMobject(r"= \pi")
         eq5.scale(2)
         eq5.shift(2.5 * DOWN)
 
-        eq6 = TexMobject(r"Volume = I^2 = \pi", tex_to_color_map={"I":YELLOW})
+        eq6 = TexMobject(r"\text{Volume} = I^2 = \pi",
+                         tex_to_color_map={"I": YELLOW})
         eq6.scale(2)
+
+        eq7 = TexMobject(r"I = \sqrt{\pi}", tex_to_color_map={"I": YELLOW})
+        eq7.scale(2)
+
+        eq8 = TexMobject(
+            r"\int_{-\infty}^{\infty} e^{-x^2} \ dx = \sqrt{\pi}", tex_to_color_map={"I": YELLOW})
+        eq8.scale(2)
 
         rect = Rectangle(height=2, width=3, color=RED)
         rect.shift(5 * RIGHT + 2.5 * UP)
@@ -599,7 +595,7 @@ class Volume(Scene):
         text2.shift(5 * RIGHT + 2 * UP)
 
         sub = VGroup(rect, text1, text2)
-        
+
         self.play(Write(eq1), Write(head))
         self.wait()
 
@@ -617,7 +613,17 @@ class Volume(Scene):
         self.wait()
 
         self.play(Write(eq5))
-
         self.wait()
+
         self.play(Uncreate(eq1), Uncreate(sub), Uncreate(eq4))
-        self.play(ReplacementTransform(eq5, eq6))
+        self.play(ApplyMethod(eq5.shift, 2.5 * UP))
+        self.wait()
+
+        self.play(Transform(eq5, eq6))
+        self.wait()
+
+        self.play(Transform(eq5, eq7))
+        self.wait()
+
+        self.play(Transform(eq5, eq8))
+        self.wait()
