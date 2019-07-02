@@ -576,6 +576,19 @@ class Volume(Scene):
         eq2 = TexMobject(r"\int_{0}^{\infty}\pi e^{-u} du", tex_to_color_map={"e":RED, r"{0}^{\infty}":GREEN,"u":YELLOW})
         eq2.scale(2)
 
+        eq3 = TexMobject(r"\pi \int_{0}^{\infty} e^{-u} du", tex_to_color_map={"e":RED, r"{0}^{\infty}":GREEN,"u":YELLOW})
+        eq3.scale(2)
+
+        eq4 = TexMobject(r"= \pi \Big(-e^{-u} \Big|_{0}^{\infty}\Big)", tex_to_color_map={"e":RED, r"{0}^{\infty}":GREEN,"u":YELLOW})
+        eq4.scale(2)
+
+        eq5 = TexMobject(r"= \pi")
+        eq5.scale(2)
+        eq5.shift(2.5 * DOWN)
+
+        eq6 = TexMobject(r"Volume = I^2 = \pi", tex_to_color_map={"I":YELLOW})
+        eq6.scale(2)
+
         rect = Rectangle(height=2, width=3, color=RED)
         rect.shift(5 * RIGHT + 2.5 * UP)
 
@@ -595,3 +608,12 @@ class Volume(Scene):
 
         self.play(Transform(eq1, eq2))
         self.wait()
+
+        self.play(Transform(eq1, eq3))
+        self.wait()
+
+        self.play(ApplyMethod(eq1.shift, 2.5 * UP))
+        self.play(Write(eq4))
+        self.wait()
+
+        self.play(Write(eq5))
