@@ -627,3 +627,62 @@ class Volume(Scene):
 
         self.play(Transform(eq5, eq8))
         self.wait()
+
+
+class Erf(Scene):
+    def construct(self):
+        f = ParametricFunction(
+            function=lambda t: np.array([t, math.erf(t), 0]),
+            t_min=-3,
+            t_max=3,
+            color=GREEN
+        )
+
+        axes = Axes(
+            x_min=-3,
+            x_max=3,
+            y_min=-1,
+            y_max=1,
+            number_line_config={
+                "color": LIGHT_GREY,
+                "include_tip": False,
+                "exclude_zero_from_default_numbers": True,
+            }
+        )
+
+        func = VGroup(axes, f)
+        func.scale(2)
+        func.shift(1.25 * DOWN)
+
+        eq1 = TexMobject(
+            r"\text{erf}(x) = \frac{1}{\sqrt{\pi}} \int_{-x}^{x} e^{-t^2} dt")
+        eq1.scale(1.5)
+        eq1.shift(3 * UP)
+
+        self.play(Write(func))
+        self.wait()
+
+        self.play(Write(eq1))
+        self.wait()
+
+
+class Eq(Scene):
+    def construct(self):
+        eq = TexMobject("f(x,y) = e^{-(x^2+y^2)}").scale(2)
+        self.play(Write(eq))
+        self.wait()
+
+
+class ShellVolume(Scene):
+    def construct(self):
+        eq = TexMobject(r"\text{Volume} = 2 \pi r \cdot e^{-r^2} \cdot \text{dr}",
+                        tex_to_color_map={"2 \pi r": YELLOW, "e^{-r^2}": GREEN}).scale(2)
+        self.play(Write(eq))
+        self.wait()
+
+
+class Gauss(Scene):
+    def construct(self):
+        eq = TextMobject(r"Carl Friedrich Gauss").scale(1.5).shift(2.5 * DOWN)
+        self.play(Write(eq))
+        self.wait()
