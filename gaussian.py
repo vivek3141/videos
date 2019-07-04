@@ -21,11 +21,6 @@ class UnwrappedCylinder(Cylinder):
 
 
 class Intro(Scene):
-    CONFIG = {"default_riemann_start_color": BLUE,
-              "default_riemann_end_color": GREEN,
-              "area_opacity": 0.8,
-              "num_rects": 50, }
-
     def construct(self):
         f = ParametricFunction(
             function=self.func,
@@ -711,10 +706,8 @@ class Thumb(Scene):
         )
 
         rect = self.get_riemann_sums(self.func)
-        rect.scale(1.95)
-        rect.shift(2.4 * DOWN)
 
-        func = VGroup(axes, f)
+        func = VGroup(axes, f, rect)
         func.scale(2)
 
         self.play(Write(func))
