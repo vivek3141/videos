@@ -109,8 +109,19 @@ class MultipleDeriv(Scene):
             )
         title2.shift(3 * UP)
 
+        eq = TexMobject(r"\frac{d^nf}{dx^n}", r"\left (\frac{d}{dx} ... \frac{d}{dx}\right )", r"f")
+        eq.scale(1.5)
+
+        b = Brace(eq2[1])
+        t = b.get_text("n times").scale(1.5)
+
+        eq1 = VGroup(eq, b, t)
+
         self.play(Write(title))
         self.wait()
 
         self.play(Transform(title, title2))
+        self.wait()
+
+        self.play(Write(eq1))
         self.wait()
