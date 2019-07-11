@@ -26,7 +26,8 @@ class Intro(Scene):
             }
         )
 
-        line = Line(ORIGIN + 0.01 * UP, 1 * RIGHT + 0.01 * UP, stroke_width=DEFAULT_STROKE_WIDTH*1.25, color=RED)
+        line = Line(ORIGIN + 0.01 * UP, 1 * RIGHT + 0.01 * UP,
+                    stroke_width=DEFAULT_STROKE_WIDTH*1.25, color=RED)
         line.shift(1.3125 * UP)
 
         fun = VGroup(f, axes)
@@ -59,3 +60,38 @@ class Intro(Scene):
             t**4 - 2*t**3 + t + 1,
             0
         ])
+
+
+class NDeriv(Scene):
+    def construct(self):
+        eq1 = TexMobject(r"\frac{d^nf}{dx^n}")
+        eq1.scale(2)
+
+        eq2 = TexMobject(r"\left (\frac{d}{dx} ... \frac{d}{dx}\right )", "f")
+        eq2.scale(2)
+
+        b = Brace(eq2[0])
+        t = b.get_text("n times").scale(1.5)
+
+        t1 = TextMobject("Only for positive integers",
+                         tex_to_color_map={"integers": YELLOW})
+        t1.scale(1.5)
+        t1.shift(3 * UP)
+
+        self.play(Write(eq1))
+        self.wait()
+
+        self.play(Transform(eq1, eq2), Write(b), Write(t))
+        self.wait()
+
+        self.play(Write(t1))
+        self.wait()
+
+
+class FracConfus(Scene):
+    def construct(self):
+        eq = TexMobject(r"\frac{d^{\frac{1}{2}}f}{dx^{{\frac{1}{2}}}} =  \ ?")
+        eq.scale(3)
+
+        self.play(Write(eq))
+        self.wait()
