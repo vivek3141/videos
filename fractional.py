@@ -99,17 +99,18 @@ class FracConfus(Scene):
 
 class MultipleDeriv(Scene):
     def construct(self):
-        title = TexMobject(r"\text{What does } \frac{d^nf}{dx^n} \text{ mean?}", 
-            tex_to_color_map={r"\frac{d^nf}{dx^n}": YELLOW}
-            )
+        title = TexMobject(r"\text{What does } \frac{d^nf}{dx^n} \text{ mean?}",
+                           tex_to_color_map={r"\frac{d^nf}{dx^n}": YELLOW}
+                           )
         title.scale(2)
 
-        title2 = TexMobject(r"\text{What does } \frac{d^nf}{dx^n} \text{ mean?}", 
-            tex_to_color_map={r"\frac{d^nf}{dx^n}": YELLOW}
-            )
+        title2 = TexMobject(r"\text{What does } \frac{d^nf}{dx^n} \text{ mean?}",
+                            tex_to_color_map={r"\frac{d^nf}{dx^n}": YELLOW}
+                            )
         title2.shift(3 * UP)
 
-        eq = TexMobject(r"\frac{d^nf}{dx^n}=", r"\left (\frac{d}{dx} ... \frac{d}{dx}\right )", r"f")
+        eq = TexMobject(
+            r"\frac{d^nf}{dx^n}=", r"\left (\frac{d}{dx} ... \frac{d}{dx}\right )", r"f")
         eq.scale(1.5)
 
         b = Brace(eq[1])
@@ -120,7 +121,7 @@ class MultipleDeriv(Scene):
         f1 = ParametricFunction(
             lambda t: np.array([t, t**2, 0]),
             t_min=0,
-            t_max=2,
+            t_max=math.sqrt(2),
             color=RED,
             stroke_width=1.25*DEFAULT_STROKE_WIDTH
         )
@@ -136,6 +137,25 @@ class MultipleDeriv(Scene):
 
         func1 = VGroup(f1, a1)
 
+        f2 = ParametricFunction(
+            lambda t: np.array([t, 2*t, 0]),
+            t_min=0,
+            t_max=1,
+            color=BLUE,
+            stroke_width=1.25*DEFAULT_STROKE_WIDTH
+        )
+        a2 = Axes(
+            x_min=0,
+            x_max=2,
+            y_min=0,
+            y_max=2,
+            number_line_config={
+                "include_tip": False,
+            }
+        )
+
+        func2 = VGroup(f2, a2)
+
         self.play(Write(title))
         self.wait()
 
@@ -147,4 +167,7 @@ class MultipleDeriv(Scene):
 
         self.play(Uncreate(eq1))
         self.play(Write(func1))
+        self.wait()
+
+        self.play(Write(func2))
         self.wait()
