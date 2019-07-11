@@ -136,6 +136,8 @@ class MultipleDeriv(Scene):
         )
 
         func1 = VGroup(f1, a1)
+        func1.scale(1.5)
+        func1.shift(4 * LEFT + 1 * DOWN)
 
         f2 = ParametricFunction(
             lambda t: np.array([t, 2*t, 0]),
@@ -155,6 +157,8 @@ class MultipleDeriv(Scene):
         )
 
         func2 = VGroup(f2, a2)
+        func2.scale(1.5)
+        func2.shift(4 * RIGHT + 1 * DOWN)
 
         self.play(Write(title))
         self.wait()
