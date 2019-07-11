@@ -9,6 +9,13 @@ class Intro(Scene):
             t_max=1.75,
             color=GREEN
         )
+        curve = ParametricFunction(
+            self.func,
+            t_min=0.1,
+            t_max=0.9,
+            color=RED,
+            stroke_width=1.25*DEFAULT_STROKE_WIDTH
+        )
         axes = Axes(
             x_min=0,
             x_max=2,
@@ -19,25 +26,30 @@ class Intro(Scene):
             }
         )
 
-        func = VGroup(axes, f)
+        line = Line(ORIGIN + 0.01 * UP, 1 * RIGHT + 0.01 * UP, stroke_width=DEFAULT_STROKE_WIDTH*1.25, color=RED)
+        line.shift(1.3125 * UP)
+
+        fun = VGroup(f, axes)
+
+        func = VGroup(fun, line, curve)
         func.scale(2.5)
-        func.shift(2 * LEFT)
+        func.shift(2 * LEFT + 1 * DOWN)
 
         eq1 = TexMobject(r"\frac{dy}{dx}")
-        eq1.scale(1.5)
-        eq1.shift(2 * RIGHT)
+        eq1.scale(2)
+        eq1.shift(4 * RIGHT)
 
         eq2 = TexMobject(r"\frac{d^2y}{dx^2}")
-        eq2.scale(1.5)
-        eq2.shift(2 * RIGHT)
+        eq2.scale(2)
+        eq2.shift(4 * RIGHT)
 
-        self.play(Write(func))
+        self.play(Write(fun))
         self.wait()
 
-        self.play(Write(eq1))
+        self.play(Write(eq1), Write(line))
         self.wait()
 
-        self.play(Transform(eq1, eq2))
+        self.play(Transform(eq1, eq2), Transform(line, curve))
         self.wait()
 
     @staticmethod
