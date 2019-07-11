@@ -137,7 +137,7 @@ class MultipleDeriv(Scene):
 
         func1 = VGroup(f1, a1)
         func1.scale(1.5)
-        func1.shift(4 * LEFT + 1 * DOWN)
+        func1.shift(4.5 * LEFT + 1 * DOWN)
 
         f2 = ParametricFunction(
             lambda t: np.array([t, 2*t, 0]),
@@ -158,7 +158,15 @@ class MultipleDeriv(Scene):
 
         func2 = VGroup(f2, a2)
         func2.scale(1.5)
-        func2.shift(4 * RIGHT + 1 * DOWN)
+        func2.shift(3 * RIGHT + 1 * DOWN)
+
+        a = Arrow(1 * LEFT, 1 * RIGHT, color=GREEN)
+        a.scale(1.5)
+
+        t = TexMobject(r"\frac{d}{dx}")
+        t.shift(1 * UP)
+
+        arr = VGroup(a, t)
 
         self.play(Write(title))
         self.wait()
@@ -173,5 +181,6 @@ class MultipleDeriv(Scene):
         self.play(Write(func1))
         self.wait()
 
-        self.play(Write(func2))
+        self.play(Write(arr))
+        self.play(TransformFromCopy(func1, func2))
         self.wait()
