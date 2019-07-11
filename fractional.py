@@ -109,13 +109,32 @@ class MultipleDeriv(Scene):
             )
         title2.shift(3 * UP)
 
-        eq = TexMobject(r"\frac{d^nf}{dx^n}", r"\left (\frac{d}{dx} ... \frac{d}{dx}\right )", r"f")
+        eq = TexMobject(r"\frac{d^nf}{dx^n}=", r"\left (\frac{d}{dx} ... \frac{d}{dx}\right )", r"f")
         eq.scale(1.5)
 
-        b = Brace(eq2[1])
+        b = Brace(eq[1])
         t = b.get_text("n times").scale(1.5)
 
         eq1 = VGroup(eq, b, t)
+
+        f1 = ParametricFunction(
+            lambda t: np.array([t, t**2, 0]),
+            t_min=0,
+            t_max=2,
+            color=RED,
+            stroke_width=1.25*DEFAULT_STROKE_WIDTH
+        )
+        a1 = Axes(
+            x_min=0,
+            x_max=2,
+            y_min=0,
+            y_max=2,
+            number_line_config={
+                "include_tip": False,
+            }
+        )
+
+        func1 = VGroup(f1, a1)
 
         self.play(Write(title))
         self.wait()
@@ -124,4 +143,8 @@ class MultipleDeriv(Scene):
         self.wait()
 
         self.play(Write(eq1))
+        self.wait()
+
+        self.play(Uncreate(eq1))
+        self.play(Write(func1))
         self.wait()
