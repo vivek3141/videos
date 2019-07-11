@@ -6,14 +6,14 @@ class Intro(Scene):
         f = ParametricFunction(
             self.func,
             t_min=0,
-            t_max=1,
+            t_max=2,
             color=GREEN
         )
         axes = Axes(
-            x_min=-1,
-            x_max=3,
+            x_min=0,
+            x_max=2,
             y_min=0,
-            y_max=4,
+            y_max=2,
             number_line_config={
                 "include_tip": False,
             }
