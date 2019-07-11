@@ -95,3 +95,22 @@ class FracConfus(Scene):
 
         self.play(Write(eq))
         self.wait()
+
+
+class MultipleDeriv(Scene):
+    def construct(self):
+        title = TexMobject(r"\text{What does } \frac{d^nf}{dx^n} \text{ mean?}", 
+            tex_to_color_map={r"\frac{d^nf}{dx^n}": YELLOW}
+            )
+        title.scale(2)
+
+        title2 = TexMobject(r"\text{What does } \frac{d^nf}{dx^n} \text{ mean?}", 
+            tex_to_color_map={r"\frac{d^nf}{dx^n}": YELLOW}
+            )
+        title2.shift(3 * UP)
+
+        self.play(Write(title))
+        self.wait()
+
+        self.play(Transform(title, title2))
+        self.wait()
