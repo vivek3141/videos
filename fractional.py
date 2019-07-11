@@ -4,7 +4,7 @@ from manimlib.imports import *
 class Intro(Scene):
     def construct(self):
         f = ParametricFunction(
-            func,
+            self.func,
             t_min=0,
             t_max=1,
             color=GREEN
@@ -22,6 +22,7 @@ class Intro(Scene):
         func = VGroup(axes, f)
         self.play(Write(func))
 
+    @staticmethod
     def func(t):
         return np.array([
             t,
