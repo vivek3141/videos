@@ -297,26 +297,32 @@ class CauchyFormula(Scene):
         title.shift(2.5 * UP)
 
         eq = TexMobject(
-            r"I^n f(x) = \frac{1}{(n-1)!} \int_{a}^{x} (x-t)^{n-1} f(t) dt")
+            r"I^{\alpha} f(x) = \frac{1}{(\alpha-1)!} \int_{a}^{x} (x-t)^{\alpha-1} f(u) d u", 
+                tex_to_color_map={r"\int":WHITE, r"x": BLUE, "u": YELLOW, r"\alpha":RED, r"{a}^{x}":GREEN})
         eq.scale(1.5)
-
+        """
         eq1 = TexMobject(
             r"I^n f(x) = \frac{1}{(n-1)!} \int_{a}^{x} (x-t)^{n-1} f(t) dt")
         eq1.shift(3 * UP)
 
+        eq2 = TexMobject(
+            r"I^n f(x) = \frac{1}{(n-1)!} \int_{a}^{x} (x-t)^{n-1} f(t) dt")
+        eq2.scale(1.5)"""
+
         t1 = TexMobject(r"n=2")
-        r1 = Rectangle(height=2, width=4, color=RED)
+        r1 = Rectangle(height=1, width=2, color=RED)
         t = VGroup(t1, r1)
+        t.shift(4 * RIGHT + 1.5 * UP)
 
         self.play(
             Write(title),
             Write(eq)
         )
         self.wait()
-
+"""
         self.play(
             Uncreate(title),
             Transform(eq, eq1)
         )
         self.play(Write(t))
-        self.wait()
+        self.wait()"""
