@@ -300,14 +300,14 @@ class CauchyFormula(Scene):
             r"I^n f(x) = \frac{1}{(n-1)!} \int_{a}^{x} (x-t)^{n-1} f(t) dt", 
                 )
         eq.scale(1.5)
-        """
+
         eq1 = TexMobject(
             r"I^n f(x) = \frac{1}{(n-1)!} \int_{a}^{x} (x-t)^{n-1} f(t) dt")
         eq1.shift(3 * UP)
 
         eq2 = TexMobject(
             r"I^n f(x) = \frac{1}{(n-1)!} \int_{a}^{x} (x-t)^{n-1} f(t) dt")
-        eq2.scale(1.5)"""
+        eq2.scale(1.5)
 
         t1 = TexMobject(r"n=2")
         r1 = Rectangle(height=1, width=2, color=RED)
@@ -319,10 +319,10 @@ class CauchyFormula(Scene):
             Write(eq)
         )
         self.wait()
-"""
+
         self.play(
             Uncreate(title),
             Transform(eq, eq1)
         )
         self.play(Write(t))
-        self.wait()"""
+        self.wait()
