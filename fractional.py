@@ -30,7 +30,7 @@ class Intro(Scene):
                     stroke_width=DEFAULT_STROKE_WIDTH*1.25, color=RED)
         line.shift(1.3125 * UP)
 
-        fun = VGroup(f, axes)
+        fun = VGroup(axes, f)
 
         func = VGroup(fun, line, curve)
         func.scale(2.5)
@@ -135,7 +135,7 @@ class MultipleDeriv(Scene):
             }
         )
 
-        func1 = VGroup(f1, a1)
+        func1 = VGroup(a1, f1)
         func1.scale(1.5)
         func1.shift(4.5 * LEFT + 1 * DOWN)
 
@@ -156,7 +156,7 @@ class MultipleDeriv(Scene):
             }
         )
 
-        func2 = VGroup(f2, a2)
+        func2 = VGroup(a2, f2)
         func2.scale(1.5)
         func2.shift(3 * RIGHT + 1 * DOWN)
 
@@ -188,22 +188,22 @@ class MultipleDeriv(Scene):
 
 class MultipleInt(Scene):
     def construct(self):
-        c = 20
+        a = 20
 
         eq1 = TexMobject(r"If(x) = \int_0^x f(t) dt",
                          )
-        eq1.scale(1.5)
-        eq1.shift(3 * UP)
+        eq1.scale(1.25)
+        eq1.shift(2.5 * UP)
 
         eq2 = TexMobject(
             r"(I^3f)(x)=\int_0^x\left[\int_0^t \left(\int_0^s f(u)\,du\right)\, ds \right]\,dt")
-        eq2.scale(1.5)
-        eq2.shift(3 * UP)
+        eq2.scale(1.25)
+        eq2.shift(2.5 * UP)
 
         f1 = ParametricFunction(
             lambda t: np.array([t, a*t**2, 0]),
-            t_min=-1,
-            t_max=1,
+            t_min=-0.205,
+            t_max=0.205,
             color=RED,
             stroke_width=1.25*DEFAULT_STROKE_WIDTH
         )
@@ -217,14 +217,14 @@ class MultipleInt(Scene):
             }
         )
 
-        func1 = VGroup(f1, a1)
+        func1 = VGroup(a1, f1)
         func1.scale(1.5)
         func1.shift(3 * LEFT + 1 * DOWN)
 
         f2 = ParametricFunction(
             lambda t: np.array([t, a*t**3 / 3, 0]),
-            t_min=-1,
-            t_max=1,
+            t_min=-0.5,
+            t_max=0.5,
             color=BLUE,
             stroke_width=1.25*DEFAULT_STROKE_WIDTH
         )
@@ -238,7 +238,7 @@ class MultipleInt(Scene):
             }
         )
 
-        func2 = VGroup(f2, a2)
+        func2 = VGroup(a2, f2)
         func2.scale(1.5)
         func2.shift(3 * RIGHT + 1 * DOWN)
 
@@ -249,8 +249,16 @@ class MultipleInt(Scene):
             color=YELLOW,
             stroke_width=1.25*DEFAULT_STROKE_WIDTH
         )
-
-        func3 = VGroup(f3, a2)
+        a3 = Axes(
+            x_min=-1,
+            x_max=1,
+            y_min=-1,
+            y_max=1,
+            number_line_config={
+                "include_tip": False,
+            }
+        )
+        func3 = VGroup(a3, f3)
         func3.scale(1.5)
         func3.shift(3 * RIGHT + 1 * DOWN)
 
@@ -274,5 +282,41 @@ class MultipleInt(Scene):
 
         self.play(Transform(eq1, eq2),
                   Uncreate(func2), Transform(t, t2),
-                  TransformFromCopy(func1, func3))
+                  )
+        self.wait()
+
+        self.play(TransformFromCopy(func1, func3))
+        self.wait()
+
+
+class CauchyFormula(Scene):
+    def construct(self):
+        title = TextMobject(
+            "Cauchy's formula for repeated integration", color=GREEN)
+        title.scale(1.25)
+        title.shift(2.5 * UP)
+
+        eq = TexMobject(
+            r"I^n f(x) = \frac{1}{(n-1)!} \int_{a}^{x} (x-t)^{n-1} f(t) dt")
+        eq.scale(1.5)
+
+        eq1 = TexMobject(
+            r"I^n f(x) = \frac{1}{(n-1)!} \int_{a}^{x} (x-t)^{n-1} f(t) dt")
+        eq1.shift(3 * UP)
+
+        t1 = TexMobject(r"n=2")
+        r1 = Rectangle(height=2, width=4, color=RED)
+        t = VGroup(t1, r1)
+
+        self.play(
+            Write(title),
+            Write(eq)
+        )
+        self.wait()
+
+        self.play(
+            Uncreate(title),
+            Transform(eq, eq1)
+        )
+        self.play(Write(t))
         self.wait()
