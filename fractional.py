@@ -188,16 +188,22 @@ class MultipleDeriv(Scene):
 
 class MultipleInt(Scene):
     def construct(self):
+        c = 20
 
+        eq1 = TexMobject(r"If(x) = \int_0^x f(t) dt",
+                         )
+        eq1.scale(1.5)
+        eq1.shift(3 * UP)
 
-        title = TexMobject(r"If(x) = \int_0^x f(t) dt",
-                            )
-        title.shift(3 * UP)
+        eq2 = TexMobject(
+            r"(I^3f)(x)=\int_0^x\left[\int_0^t \left(\int_0^s f(u)\,du\right)\, ds \right]\,dt")
+        eq2.scale(1.5)
+        eq2.shift(3 * UP)
 
         f1 = ParametricFunction(
-            lambda t: np.array([t, 0.5*t**2, 0]),
-            t_min=0,
-            t_max=math.sqrt(2),
+            lambda t: np.array([t, t**2, 0]),
+            t_min=-1,
+            t_max=1,
             color=RED,
             stroke_width=1.25*DEFAULT_STROKE_WIDTH
         )
@@ -213,11 +219,11 @@ class MultipleInt(Scene):
 
         func1 = VGroup(f1, a1)
         func1.scale(1.5)
-        func1.shift(4.5 * LEFT + 1 * DOWN)
+        func1.shift(3 * LEFT + 1 * DOWN)
 
         f2 = ParametricFunction(
-            lambda t: np.array([t, 0.5*t**3 / 3, 0]),
-            t_min=0,
+            lambda t: np.array([t, t**3 / 3, 0]),
+            t_min=-1,
             t_max=1,
             color=BLUE,
             stroke_width=1.25*DEFAULT_STROKE_WIDTH
@@ -236,15 +242,15 @@ class MultipleInt(Scene):
         func2.scale(1.5)
         func2.shift(3 * RIGHT + 1 * DOWN)
 
-        a = Arrow(1 * LEFT, 1 * RIGHT, color=GREEN)
-        a.scale(1.5)
+        a = Arrow(0.5 * LEFT, 0.5 * RIGHT, color=GREEN).scale(1.5)
+        a.shift(1 * DOWN)
 
-        t = TexMobject(r"\frac{d}{dx}")
-        t.shift(1 * UP)
+        t = TexMobject(r"\int")
+        t2 = TexMobject(r"\iiint")
 
         arr = VGroup(a, t)
 
-        self.play(Write(title))
+        self.play(Write(eq1))
         self.wait()
 
         self.play(Write(func1))
@@ -252,4 +258,8 @@ class MultipleInt(Scene):
 
         self.play(Write(arr))
         self.play(TransformFromCopy(func1, func2))
+        self.wait()
+
+        self.play(Transform(eq1, eq2),
+                  Uncreate(func2), Transform(t, t2))
         self.wait()
