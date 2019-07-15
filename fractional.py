@@ -201,7 +201,7 @@ class MultipleInt(Scene):
         eq2.shift(3 * UP)
 
         f1 = ParametricFunction(
-            lambda t: np.array([t, t**2, 0]),
+            lambda t: np.array([t, a*t**2, 0]),
             t_min=-1,
             t_max=1,
             color=RED,
@@ -222,7 +222,7 @@ class MultipleInt(Scene):
         func1.shift(3 * LEFT + 1 * DOWN)
 
         f2 = ParametricFunction(
-            lambda t: np.array([t, t**3 / 3, 0]),
+            lambda t: np.array([t, a*t**3 / 3, 0]),
             t_min=-1,
             t_max=1,
             color=BLUE,
@@ -241,6 +241,18 @@ class MultipleInt(Scene):
         func2 = VGroup(f2, a2)
         func2.scale(1.5)
         func2.shift(3 * RIGHT + 1 * DOWN)
+
+        f3 = ParametricFunction(
+            lambda t: np.array([t, a*t**5 / (5*4*3), 0]),
+            t_min=-1,
+            t_max=1,
+            color=YELLOW,
+            stroke_width=1.25*DEFAULT_STROKE_WIDTH
+        )
+
+        func3 = VGroup(f3, a2)
+        func3.scale(1.5)
+        func3.shift(3 * RIGHT + 1 * DOWN)
 
         a = Arrow(0.5 * LEFT, 0.5 * RIGHT, color=GREEN).scale(1.5)
         a.shift(1 * DOWN)
@@ -261,5 +273,6 @@ class MultipleInt(Scene):
         self.wait()
 
         self.play(Transform(eq1, eq2),
-                  Uncreate(func2), Transform(t, t2))
+                  Uncreate(func2), Transform(t, t2),
+                  TransformFromCopy(func1, func3))
         self.wait()
