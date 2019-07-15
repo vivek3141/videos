@@ -184,3 +184,72 @@ class MultipleDeriv(Scene):
         self.play(Write(arr))
         self.play(TransformFromCopy(func1, func2))
         self.wait()
+
+
+class MultipleInt(Scene):
+    def construct(self):
+
+
+        title = TexMobject(r"If(x) = \int_0^x f(t) dt",
+                            )
+        title.shift(3 * UP)
+
+        f1 = ParametricFunction(
+            lambda t: np.array([t, 0.5*t**2, 0]),
+            t_min=0,
+            t_max=math.sqrt(2),
+            color=RED,
+            stroke_width=1.25*DEFAULT_STROKE_WIDTH
+        )
+        a1 = Axes(
+            x_min=-1,
+            x_max=1,
+            y_min=-1,
+            y_max=1,
+            number_line_config={
+                "include_tip": False,
+            }
+        )
+
+        func1 = VGroup(f1, a1)
+        func1.scale(1.5)
+        func1.shift(4.5 * LEFT + 1 * DOWN)
+
+        f2 = ParametricFunction(
+            lambda t: np.array([t, 0.5*t**3 / 3, 0]),
+            t_min=0,
+            t_max=1,
+            color=BLUE,
+            stroke_width=1.25*DEFAULT_STROKE_WIDTH
+        )
+        a2 = Axes(
+            x_min=-1,
+            x_max=1,
+            y_min=-1,
+            y_max=1,
+            number_line_config={
+                "include_tip": False,
+            }
+        )
+
+        func2 = VGroup(f2, a2)
+        func2.scale(1.5)
+        func2.shift(3 * RIGHT + 1 * DOWN)
+
+        a = Arrow(1 * LEFT, 1 * RIGHT, color=GREEN)
+        a.scale(1.5)
+
+        t = TexMobject(r"\frac{d}{dx}")
+        t.shift(1 * UP)
+
+        arr = VGroup(a, t)
+
+        self.play(Write(title))
+        self.wait()
+
+        self.play(Write(func1))
+        self.wait()
+
+        self.play(Write(arr))
+        self.play(TransformFromCopy(func1, func2))
+        self.wait()
