@@ -297,7 +297,7 @@ class CauchyFormula(Scene):
         title.shift(2.5 * UP)
 
         eq = TexMobject(
-            r"I^{\alpha} f(x) = \frac{1}{(\alpha-1)!} \int_{a}^{x} (x-t)^{\alpha-1} f(u) d u", 
+            r"I^n f(x) = \frac{1}{(n-1)!} \int_{a}^{x} (x-t)^{n-1} f(t) dt", 
                 )
         eq.scale(1.5)
         """
