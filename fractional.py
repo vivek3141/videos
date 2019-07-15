@@ -298,7 +298,7 @@ class CauchyFormula(Scene):
 
         eq = TexMobject(
             r"I^{\alpha} f(x) = \frac{1}{(\alpha-1)!} \int_{a}^{x} (x-t)^{\alpha-1} f(u) d u", 
-                tex_to_color_map={r"\int":WHITE, r"x": BLUE, "u": YELLOW, r"\alpha":RED, r"{a}^{x}":GREEN})
+                )
         eq.scale(1.5)
         """
         eq1 = TexMobject(
