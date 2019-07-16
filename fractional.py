@@ -326,7 +326,7 @@ class CauchyFormula(Scene):
         eq6.scale(1.5)
 
         eq7 = TexMobject(
-            r"g(x) = g(x) - 0")
+            r"g(x) = g(x) - g(0)")
         eq7.scale(1.5)
 
         eq8 = TexMobject(
@@ -336,6 +336,8 @@ class CauchyFormula(Scene):
         eq9 = TexMobject(
             r"g(x) = I^2f(x)")
         eq9.scale(1.5)
+
+        r = Rectangle(height=2, width=5, color=YELLOW, stroke_width=2 * DEFAULT_STROKE_WIDTH)
 
         t1 = TexMobject(r"n=2")
         r1 = Rectangle(height=1, width=2, color=RED)
@@ -387,4 +389,7 @@ class CauchyFormula(Scene):
         self.wait()
 
         self.play(Transform(eq7, eq9))
+        self.wait()
+
+        self.play(Write(r))
         self.wait()
