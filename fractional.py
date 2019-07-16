@@ -306,7 +306,19 @@ class CauchyFormula(Scene):
         eq1.shift(3 * UP)
 
         eq2 = TexMobject(
-            r"I^n f(x) = \frac{1}{(n-1)!} \int_{a}^{x} (x-t)^{n-1} f(t) dt")
+            r"g(x) = \int_0^x (x-t) f(t) dt")
+        eq2.scale(1.5)
+
+        eq2 = TexMobject(
+            r"g(x) = \int_0^x (x-t) f(t) dt")
+        eq2.scale(1.5)
+
+        eq2 = TexMobject(
+            r"g(x) = \int_0^x (x-t) f(t) dt")
+        eq2.scale(1.5)
+
+        eq2 = TexMobject(
+            r"g(x) = \int_0^x (x-t) f(t) dt")
         eq2.scale(1.5)
 
         t1 = TexMobject(r"n=2")
