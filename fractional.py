@@ -309,17 +309,17 @@ class CauchyFormula(Scene):
             r"g(x) = \int_0^x (x-t) f(t) dt")
         eq2.scale(1.5)
 
-        eq2 = TexMobject(
-            r"g(x) = \int_0^x (x-t) f(t) dt")
-        eq2.scale(1.5)
+        eq3 = TexMobject(
+            r"g(x) = x\int_0^x f(t)\,dt - \int_0^x tf(t)\, dt")
+        eq3.scale(1.5)
 
-        eq2 = TexMobject(
+        eq4 = TexMobject(
             r"g(x) = \int_0^x (x-t) f(t) dt")
-        eq2.scale(1.5)
+        eq4.scale(1.5)
 
-        eq2 = TexMobject(
+        eq5 = TexMobject(
             r"g(x) = \int_0^x (x-t) f(t) dt")
-        eq2.scale(1.5)
+        eq5.scale(1.5)
 
         t1 = TexMobject(r"n=2")
         r1 = Rectangle(height=1, width=2, color=RED)
@@ -337,4 +337,7 @@ class CauchyFormula(Scene):
             Transform(eq, eq1)
         )
         self.play(Write(t))
+        self.wait()
+
+        self.play(Write(eq2))
         self.wait()
