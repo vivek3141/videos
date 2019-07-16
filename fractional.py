@@ -297,13 +297,13 @@ class CauchyFormula(Scene):
         title.shift(2.5 * UP)
 
         eq = TexMobject(
-            r"I^n f(x) = \frac{1}{(n-1)!} \int_{a}^{x} (x-t)^{n-1} f(t) dt", 
-                )
+            r"I^n f(x) = \frac{1}{(n-1)!} \int_{a}^{x} (x-t)^{n-1} f(t) dt",
+        )
         eq.scale(1.5)
 
         eq1 = TexMobject(
             r"I^n f(x) = \frac{1}{(n-1)!} \int_{a}^{x} (x-t)^{n-1} f(t) dt")
-        eq1.shift(3 * UP)
+        eq1.shift(2.5 * UP + 1.5 * LEFT)
 
         eq2 = TexMobject(
             r"g(x) = \int_0^x (x-t) f(t) dt")
@@ -340,13 +340,13 @@ class CauchyFormula(Scene):
         t1 = TexMobject(r"n=2")
         r1 = Rectangle(height=1, width=2, color=RED)
         t = VGroup(t1, r1)
-        t.shift(5 * RIGHT + 1.5 * UP)
+        t.shift(5 * RIGHT + 2.5 * UP)
 
         t2 = TexMobject(r"n=2").shift(0.5 * UP)
         t3 = TexMobject(r"g(0) = 0").shift(0.5 * DOWN)
         r2 = Rectangle(height=2, width=2, color=RED)
         tt = VGroup(t3, r2, t2)
-        tt.shift(5 * RIGHT + 1.5 * UP)
+        tt.shift(5 * RIGHT + 2.5 * UP)
 
         self.play(
             Write(title),
@@ -376,9 +376,15 @@ class CauchyFormula(Scene):
         self.play(Transform(eq2, eq6))
         self.wait()
 
-
         self.play(ApplyMethod(eq2.shift, 3 * DOWN))
         self.play(
-            Transform(t, tt)
+            Transform(t, tt),
+            Write(eq7)
         )
+        self.wait()
+
+        self.play(Transform(eq7, eq8))
+        self.wait()
+
+        self.play(Transform(eq7, eq9))
         self.wait()
