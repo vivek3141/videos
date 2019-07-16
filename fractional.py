@@ -314,17 +314,39 @@ class CauchyFormula(Scene):
         eq3.scale(1.5)
 
         eq4 = TexMobject(
-            r"g(x) = \int_0^x (x-t) f(t) dt")
+            r"g'(x) = \left[\int_0^x f(t)\,dt +xf(x)\right]- xf(x)")
         eq4.scale(1.5)
 
         eq5 = TexMobject(
-            r"g(x) = \int_0^x (x-t) f(t) dt")
+            r"g'(x) = \int_0^x f(t)\,dt")
         eq5.scale(1.5)
+
+        eq6 = TexMobject(
+            r"g'(x) = If(x)")
+        eq6.scale(1.5)
+
+        eq7 = TexMobject(
+            r"g(x) = g(x) - 0")
+        eq7.scale(1.5)
+
+        eq8 = TexMobject(
+            r"g(x) = \int_0^x g'(t)\,dt")
+        eq8.scale(1.5)
+
+        eq9 = TexMobject(
+            r"g(x) = I^2f(x)")
+        eq9.scale(1.5)
 
         t1 = TexMobject(r"n=2")
         r1 = Rectangle(height=1, width=2, color=RED)
         t = VGroup(t1, r1)
-        t.shift(4 * RIGHT + 1.5 * UP)
+        t.shift(5 * RIGHT + 1.5 * UP)
+
+        t2 = TexMobject(r"n=2").shift(0.5 * UP)
+        t3 = TexMobject(r"g(0) = 0").shift(0.5 * DOWN)
+        r2 = Rectangle(height=2, width=2, color=RED)
+        tt = VGroup(t3, r2, t2)
+        tt.shift(5 * RIGHT + 1.5 * UP)
 
         self.play(
             Write(title),
@@ -340,4 +362,23 @@ class CauchyFormula(Scene):
         self.wait()
 
         self.play(Write(eq2))
+        self.wait()
+
+        self.play(Transform(eq2, eq3))
+        self.wait()
+
+        self.play(Transform(eq2, eq4))
+        self.wait()
+
+        self.play(Transform(eq2, eq5))
+        self.wait()
+
+        self.play(Transform(eq2, eq6))
+        self.wait()
+
+
+        self.play(ApplyMethod(eq2.shift, 3 * DOWN))
+        self.play(
+            Transform(t, tt)
+        )
         self.wait()
