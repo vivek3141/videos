@@ -430,7 +430,9 @@ class Challenge(Scene):
 class GammaFunc(Scene):
     CONFIG = {
         "g_color": RED,
-        "g_width": DEFAULT_STROKE_WIDTH*1.25
+        "g_width": DEFAULT_STROKE_WIDTH*1.25,
+        "p_color": YELLOW,
+        "p_width": DEFAULT_STROKE_WIDTH*1.25
     }
 
     def construct(self):
@@ -487,18 +489,29 @@ class GammaFunc(Scene):
             }
         )
 
+        p1 = Circle(radius=self.p_width, color=self.p_color).shift(
+            1 * RIGHT + 1 * UP)
+        p2 = Circle(radius=self.p_width, color=self.p_color).shift(
+            2 * RIGHT + 1 * UP)
+        p3 = Circle(radius=self.p_width, color=self.p_color).shift(
+            3 * RIGHT + 2 * UP)
+        p = VGroup(p1, p2, p3)
+
         rect = Rectangle(height=8, width=10.5, stroke_width=self.g_width)
         gfunc = VGroup(a1, f1, f2, f3, f4, f5, f6, rect)
+        g = VGroup(p, gfunc)
 
-        gfunc.scale(0.8)
-        gfunc.shift(0.7 * DOWN)
+        g.scale(0.8)
+        g.shift(0.7 * DOWN)
 
         title = TexMobject(r"\text{Gamma Function }\Gamma (x)", color=GREEN)
         title.scale(1.5)
-        title.shift(3.5 * UP)
+        title.shift(3 * UP)
 
         self.play(Write(gfunc), Write(title))
         self.wait()
+
+        self.play(Write(p))
 
     @staticmethod
     def func(t):
