@@ -432,7 +432,7 @@ class GammaFunc(Scene):
         "g_color": RED,
         "g_width": DEFAULT_STROKE_WIDTH*1.25,
         "p_color": YELLOW,
-        "p_width": DEFAULT_STROKE_WIDTH*1.25
+        "p_width": 0.1
     }
 
     def construct(self):
@@ -489,11 +489,11 @@ class GammaFunc(Scene):
             }
         )
 
-        p1 = Circle(radius=self.p_width, color=self.p_color).shift(
+        p1 = Circle(radius=self.p_width, color=self.p_color, fill_opacity=1).shift(
             1 * RIGHT + 1 * UP)
-        p2 = Circle(radius=self.p_width, color=self.p_color).shift(
+        p2 = Circle(radius=self.p_width, color=self.p_color, fill_opacity=1).shift(
             2 * RIGHT + 1 * UP)
-        p3 = Circle(radius=self.p_width, color=self.p_color).shift(
+        p3 = Circle(radius=self.p_width, color=self.p_color, fill_opacity=1).shift(
             3 * RIGHT + 2 * UP)
         p = VGroup(p1, p2, p3)
 
