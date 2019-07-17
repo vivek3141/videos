@@ -558,7 +558,7 @@ class GammaFunc(Scene):
         ], dtype=float)
 
 
-class CauchyFormula(Scene):
+class FractionalIntegral(Scene):
     def construct(self):
         title = TextMobject(
             "Fractional Integrals", color=YELLOW)
@@ -572,11 +572,19 @@ class CauchyFormula(Scene):
 
         eq2 = TexMobject(
             r"I^n f(x) = \frac{1}{\Gamma(n-1)} \int_{a}^{x} (x-t)^{n-1} f(t) dt",
-            tex_to_color_map={r"\Gamma": BLUE}
+            tex_to_color_map={r"\Gamma(n-1)": BLUE}
         )
         eq2.scale(1.5)
+
+        eq3 = TexMobject(r"\text{for } n \in \mathbb{C}, \text{Re}(n) > 0")
+        eq3.shift(2 * DOWN)
+        eq3.scale(1.5)
 
         self.play(Write(eq1))
         self.wait()
 
         self.play(Write(title), Transform(eq1, eq2))
+        self.wait()
+
+        self.play(Write(eq3))
+        self.wait()
