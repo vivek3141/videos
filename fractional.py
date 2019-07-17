@@ -508,10 +508,35 @@ class GammaFunc(Scene):
         title.scale(1.5)
         title.shift(3 * UP)
 
+        title2 = TexMobject(r"Challenge 2", color=GREEN)
+        title2.scale(1.5)
+        title2.shift(3 * UP)
+
+        eq1 = TexMobject(r"\text{Show that}")
+        eq2 = TexMobject(
+            r"\Gamma(x) = \int_0^{\infty} e^{-t}t^{z-1} dt")
+        eq2.scale(1.5)
+        eq3 = TexMobject(r"\text{for } n \in \mathbb{N}")
+
+        hint1 = TexMobject(r"\text{Hint: Use Binomial Theorem}")
+        hint2 = TexMobject(
+            r"(x+y)^n = \sum_{k=0}^{k=n} \left ( ^n_k \right ) x^{n-k}y^k")
+        hint1.shift(1 * DOWN)
+        hint2.shift(2.5 * DOWN)
+
+        eq1.shift(2 * UP)
+        eq2.shift(2 * LEFT)
+        eq3.shift(0 * DOWN)
+
         self.play(Write(gfunc), Write(title))
         self.wait()
 
         self.play(Write(p))
+        self.wait()
+
+        self.play(ApplyMethod(gfunc.scale, 0.4), Uncreate(p))
+        self.play(ApplyMethod(gfunc.shift, 0.7 * UP + 4 * RIGHT))
+        self.play(Write(eq2))
         self.wait()
 
     @staticmethod
