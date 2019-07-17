@@ -394,3 +394,19 @@ class CauchyFormula(Scene):
 
         self.play(Write(r))
         self.wait()
+
+class Challenge(Scene):
+    def construct(self):
+        title = TextMobject("Challenge", color=GREEN)
+        title.scale(2)
+        title.shift(3 * UP)
+
+        eq1 = TexMobject(r"\text{Prove}",r"I^n f(x) = \frac{1}{(n-1)!} \int_{a}^{x} (x-t)^{n-1} f(t) dt", 
+            r"\text{for n \in \mathbb{N}}")
+        eq1.shift(1 * UP)
+        
+
+        self.add(title)
+        self.add(eq1)
+        self.wait()
+
