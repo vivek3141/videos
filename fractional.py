@@ -407,8 +407,12 @@ class Challenge(Scene):
             r"I^n f(x) = \frac{1}{(n-1)!} \int_{a}^{x} (x-t)^{n-1} f(t) dt")
         eq3 = TexMobject(r"\text{for } n \in \mathbb{N}")
 
-        
-        
+        hint1 = TexMobject(r"\text{Hint: Use Binomial Theorem}")
+        hint2 = TexMobject(
+            r"(x+y)^n = \sum_{k=0}^{k=n} \left ( ^n_k \right ) x^{n-k}y^k")
+        hint1.shift(3 * DOWN)
+        hint2.shift(4 * DOWN)
+
         eq1.shift(1.5 * UP)
         eq2.shift(0 * UP)
         eq3.shift(1.5 * DOWN)
