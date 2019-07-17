@@ -512,6 +512,7 @@ class GammaFunc(Scene):
         self.wait()
 
         self.play(Write(p))
+        self.wait()
 
     @staticmethod
     def func(t):
