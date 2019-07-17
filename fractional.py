@@ -424,3 +424,28 @@ class Challenge(Scene):
         self.add(hint1)
         self.add(hint2)
         self.wait()
+
+
+class GammaFunc(Scene):
+    def construct(self):
+        f1 = ParametricFunction(
+            lambda t: np.array([t, math.gamma(t), 0]),
+            t_min=-5,
+            t_max=5,
+            color=RED,
+            stroke_width=1.25*DEFAULT_STROKE_WIDTH
+        )
+        a1 = Axes(
+            x_min=-5,
+            x_max=5,
+            y_min=-5,
+            y_max=5,
+            number_line_config={
+                "include_tip": False,
+            }
+        )
+
+        gfunc = VGroup(a1, f1)
+
+        self.play(Write(gfunc))
+        self.wait()
