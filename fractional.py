@@ -436,14 +436,14 @@ class GammaFunc(Scene):
     def construct(self):
         f1 = ParametricFunction(
             self.func,
-            t_min=-5,
-            t_max=-3.99,
+            t_min=-4.99,
+            t_max=-4.01,
             color=self.g_color,
             stroke_width=self.g_width
         )
         f2 = ParametricFunction(
             self.func,
-            t_min=-4.01,
+            t_min=-3.99,
             t_max=-3.01,
             color=self.g_color,
             stroke_width=self.g_width
@@ -469,13 +469,7 @@ class GammaFunc(Scene):
             color=self.g_color,
             stroke_width=self.g_width
         )
-        f6 = ParametricFunction(
-            self.func,
-            t_min=-5,
-            t_max=5,
-            color=self.g_color,
-            stroke_width=self.g_width
-        )
+        
         a1 = Axes(
             x_min=-5,
             x_max=5,
@@ -486,7 +480,7 @@ class GammaFunc(Scene):
             }
         )
 
-        gfunc = VGroup(a1, f1, f2, f3, f4, f5, f6)
+        gfunc = VGroup(a1, f1, f2, f3, f4, f5)
 
         self.play(Write(gfunc))
         self.wait()
@@ -496,7 +490,7 @@ class GammaFunc(Scene):
         val = float(scipy.special.gamma(t))
        # if not np.isfinite(val):
        #     val = 5
-        if val > 0:
+        if val < 0:
             val = np.maximum(val, -5)
         elif val > 0:
             val = np.minimum(val, 5)
