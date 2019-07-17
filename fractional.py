@@ -337,7 +337,8 @@ class CauchyFormula(Scene):
             r"g(x) = I^2f(x)")
         eq9.scale(1.5)
 
-        r = Rectangle(height=2, width=5, color=YELLOW, stroke_width=2 * DEFAULT_STROKE_WIDTH)
+        r = Rectangle(height=2, width=5, color=YELLOW,
+                      stroke_width=2 * DEFAULT_STROKE_WIDTH)
 
         t1 = TexMobject(r"n=2")
         r1 = Rectangle(height=1, width=2, color=RED)
