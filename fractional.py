@@ -487,9 +487,16 @@ class GammaFunc(Scene):
             }
         )
 
-        gfunc = VGroup(a1, f1, f2, f3, f4, f5, f6)
+        rect = Rectangle(height=8, width=10)
+        gfunc = VGroup(a1, f1, f2, f3, f4, f5, f6, rect)
 
-        self.play(Write(gfunc))
+        gfunc.scale(0.75)
+
+        title = Title("Gamma Function $$\\Gamma (x) $$")
+        
+
+
+        self.play(Write(gfunc), Write(title))
         self.wait()
 
     @staticmethod
