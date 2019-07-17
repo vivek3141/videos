@@ -1,4 +1,5 @@
 from manimlib.imports import *
+import scipy.special
 
 
 class Intro(Scene):
@@ -427,13 +428,53 @@ class Challenge(Scene):
 
 
 class GammaFunc(Scene):
+    CONFIG = {
+        "g_color": RED,
+        "g_width": DEFAULT_STROKE_WIDTH*1.25
+    }
+
     def construct(self):
         f1 = ParametricFunction(
-            lambda t: np.array([t, math.gamma(t), 0]),
+            self.func,
+            t_min=-5,
+            t_max=-3.99,
+            color=self.g_color,
+            stroke_width=self.g_width
+        )
+        f2 = ParametricFunction(
+            self.func,
+            t_min=-4.01,
+            t_max=-3.01,
+            color=self.g_color,
+            stroke_width=self.g_width
+        )
+        f3 = ParametricFunction(
+            self.func,
+            t_min=-2.99,
+            t_max=-1.01,
+            color=self.g_color,
+            stroke_width=self.g_width
+        )
+        f4 = ParametricFunction(
+            self.func,
+            t_min=-0.99,
+            t_max=-0.01,
+            color=self.g_color,
+            stroke_width=self.g_width
+        )
+        f5 = ParametricFunction(
+            self.func,
+            t_min=0.01,
+            t_max=4,
+            color=self.g_color,
+            stroke_width=self.g_width
+        )
+        f6 = ParametricFunction(
+            self.func,
             t_min=-5,
             t_max=5,
-            color=RED,
-            stroke_width=1.25*DEFAULT_STROKE_WIDTH
+            color=self.g_color,
+            stroke_width=self.g_width
         )
         a1 = Axes(
             x_min=-5,
@@ -445,7 +486,25 @@ class GammaFunc(Scene):
             }
         )
 
-        gfunc = VGroup(a1, f1)
+        gfunc = VGroup(a1, f1, f2, f3, f4, f5, f6)
 
         self.play(Write(gfunc))
         self.wait()
+
+    @staticmethod
+    def func(t):
+        val = float(scipy.special.gamma(t))
+       # if not np.isfinite(val):
+       #     val = 5
+        if val > 0:
+            val = np.maximum(val, -5)
+        elif val > 0:
+            val = np.minimum(val, 5)
+        else:
+            val = 0
+        return np.array([
+            t,
+            val,
+            0,
+
+        ], dtype=float)
