@@ -490,9 +490,11 @@ class GammaFunc(Scene):
         rect = Rectangle(height=8, width=10)
         gfunc = VGroup(a1, f1, f2, f3, f4, f5, f6, rect)
 
-        gfunc.scale(0.75)
+        #gfunc.scale(0.75)
 
-        title = Title("Gamma Function $$\\Gamma (x) $$")
+        title = TexMobject(r"\text{Gamma Function }\Gamma (x)", color=GREEN)
+        title.scale(1.5)
+        title.shift(4 * UP)
         
 
 
