@@ -400,9 +400,9 @@ class Challenge(Scene):
     def construct(self):
         title = TextMobject("Challenge", color=GREEN)
         title.scale(2)
-        title.shift(3 * UP)
+        title.shift(3.5 * UP)
 
-        eq1 = TexMobject(r"\text{Prove}")
+        eq1 = TexMobject(r"\text{Show that}")
         eq2 = TexMobject(
             r"I^n f(x) = \frac{1}{(n-1)!} \int_{a}^{x} (x-t)^{n-1} f(t) dt")
         eq3 = TexMobject(r"\text{for } n \in \mathbb{N}")
@@ -410,15 +410,17 @@ class Challenge(Scene):
         hint1 = TexMobject(r"\text{Hint: Use Binomial Theorem}")
         hint2 = TexMobject(
             r"(x+y)^n = \sum_{k=0}^{k=n} \left ( ^n_k \right ) x^{n-k}y^k")
-        hint1.shift(3 * DOWN)
-        hint2.shift(4 * DOWN)
+        hint1.shift(1 * DOWN)
+        hint2.shift(2.5 * DOWN)
 
-        eq1.shift(1.5 * UP)
-        eq2.shift(0 * UP)
-        eq3.shift(1.5 * DOWN)
+        eq1.shift(2 * UP)
+        eq2.shift(1 * UP)
+        eq3.shift(0 * DOWN)
 
         self.add(title)
         self.add(eq1)
         self.add(eq2)
         self.add(eq3)
+        self.add(hint1)
+        self.add(hint2)
         self.wait()
