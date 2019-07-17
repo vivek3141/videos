@@ -451,6 +451,13 @@ class GammaFunc(Scene):
         f3 = ParametricFunction(
             self.func,
             t_min=-2.99,
+            t_max=-2.01,
+            color=self.g_color,
+            stroke_width=self.g_width
+        )
+        f6 = ParametricFunction(
+            self.func,
+            t_min=-1.99,
             t_max=-1.01,
             color=self.g_color,
             stroke_width=self.g_width
@@ -480,7 +487,7 @@ class GammaFunc(Scene):
             }
         )
 
-        gfunc = VGroup(a1, f1, f2, f3, f4, f5)
+        gfunc = VGroup(a1, f1, f2, f3, f4, f5, f6)
 
         self.play(Write(gfunc))
         self.wait()
