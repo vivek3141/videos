@@ -476,27 +476,26 @@ class GammaFunc(Scene):
             color=self.g_color,
             stroke_width=self.g_width
         )
-        
+
         a1 = Axes(
             x_min=-5,
             x_max=5,
-            y_min=-5,
-            y_max=5,
+            y_min=-4,
+            y_max=4,
             number_line_config={
                 "include_tip": False,
             }
         )
 
-        rect = Rectangle(height=8, width=10)
+        rect = Rectangle(height=8, width=10.5, stroke_width=self.g_width)
         gfunc = VGroup(a1, f1, f2, f3, f4, f5, f6, rect)
 
-        #gfunc.scale(0.75)
+        gfunc.scale(0.8)
+        gfunc.shift(0.7 * DOWN)
 
         title = TexMobject(r"\text{Gamma Function }\Gamma (x)", color=GREEN)
         title.scale(1.5)
-        title.shift(4 * UP)
-        
-
+        title.shift(3.5 * UP)
 
         self.play(Write(gfunc), Write(title))
         self.wait()
@@ -504,12 +503,10 @@ class GammaFunc(Scene):
     @staticmethod
     def func(t):
         val = float(scipy.special.gamma(t))
-       # if not np.isfinite(val):
-       #     val = 5
         if val < 0:
-            val = np.maximum(val, -5)
+            val = np.maximum(val, -4)
         elif val > 0:
-            val = np.minimum(val, 5)
+            val = np.minimum(val, 4)
         else:
             val = 0
         return np.array([
