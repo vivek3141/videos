@@ -1,5 +1,6 @@
 from manimlib.imports import *
 import scipy.special
+import differint.differint as df
 
 
 class Intro(Scene):
@@ -596,11 +597,11 @@ class DifferIntegral(Scene):
         "g_width": DEFAULT_STROKE_WIDTH*1,
     }
 
-    def contruct(self):
+    def construct(self):
         f1 = ParametricFunction(
             lambda t: np.array([t, 0.5*t**2, 0]),
             t_min=0,
-            t_max=mat.sqrt(3),
+            t_max=math.sqrt(6),
             color=PINK,
             stroke_width=self.g_width
         )
@@ -613,16 +614,38 @@ class DifferIntegral(Scene):
         )
 
         a1 = Axes(
-            x_min=-5,
+            x_min=0,
             x_max=5,
-            y_min=-4,
-            y_max=4,
+            y_min=0,
+            y_max=3,
             number_line_config={
                 "include_tip": False,
             }
         )
 
         fs = VGroup(a1, f1, f2)
+        fs.scale(1.5)
+        fs.shift(1.5 * DOWN + 2.5 * LEFT)
 
         self.play(Write(fs))
         self.wait()
+
+    @staticmethod
+    def get_differint(func, n):
+        if n > 0:
+            pass
+        if n < 0:
+            pass
+        else:
+            return func
+
+    @staticmethod
+    def _func(t):
+        return t
+
+    def func(self, t):
+        return np.array([
+            t,
+            self._func(t),
+            0
+        ])
