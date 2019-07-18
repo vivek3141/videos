@@ -593,9 +593,7 @@ class FractionalIntegral(Scene):
 class DifferIntegral(Scene):
     CONFIG = {
         "g_color": RED,
-        "g_width": DEFAULT_STROKE_WIDTH*1.25,
-        "p_color": YELLOW,
-        "p_width": 0.1
+        "g_width": DEFAULT_STROKE_WIDTH*1,
     }
 
     def contruct(self):
@@ -603,14 +601,14 @@ class DifferIntegral(Scene):
             lambda t: np.array([t, 0.5*t**2, 0]),
             t_min=0,
             t_max=mat.sqrt(3),
-            color=self.g_color,
+            color=PINK,
             stroke_width=self.g_width
         )
         f2 = ParametricFunction(
             lambda t: np.array([t, 1, 0]),
             t_min=0,
             t_max=5,
-            color=self.g_color,
+            color=RED,
             stroke_width=self.g_width
         )
 
@@ -623,3 +621,8 @@ class DifferIntegral(Scene):
                 "include_tip": False,
             }
         )
+
+        fs = VGroup(a1, f1, f2)
+
+        self.play(Write(fs))
+        self.wait()
