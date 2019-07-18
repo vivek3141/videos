@@ -588,3 +588,38 @@ class FractionalIntegral(Scene):
 
         self.play(Write(eq3))
         self.wait()
+
+
+class DifferIntegral(Scene):
+    CONFIG = {
+        "g_color": RED,
+        "g_width": DEFAULT_STROKE_WIDTH*1.25,
+        "p_color": YELLOW,
+        "p_width": 0.1
+    }
+
+    def contruct(self):
+        f1 = ParametricFunction(
+            lambda t: np.array([t, 0.5*t**2, 0]),
+            t_min=0,
+            t_max=mat.sqrt(3),
+            color=self.g_color,
+            stroke_width=self.g_width
+        )
+        f2 = ParametricFunction(
+            lambda t: np.array([t, 1, 0]),
+            t_min=0,
+            t_max=5,
+            color=self.g_color,
+            stroke_width=self.g_width
+        )
+
+        a1 = Axes(
+            x_min=-5,
+            x_max=5,
+            y_min=-4,
+            y_max=4,
+            number_line_config={
+                "include_tip": False,
+            }
+        )
