@@ -686,9 +686,11 @@ class DifferIntegral(Scene):
             0
         ])
 
-    def update_frame(self, *args, **kwargs):
-        Scene.update_frame(self, *args, **kwargs)
+    def continual_update(self, *args, **kwargs):
+        Scene.continual_update(self, *args, **kwargs)
+        
         if hasattr(self, "update"):
+            print("uwu")
             f = ParametricFunction(
                 lambda t: np.array(
                     [t, float(differint(lambda x: x, t, math.sin(self.t))), 0]),
@@ -700,5 +702,4 @@ class DifferIntegral(Scene):
             f.scale(1.5)
             f.shift(1.5 * DOWN + 2.5 * LEFT)
             self.t += 0.1
-            self.f.put_start_and_end_on(
-                self.f.get_start(), f+self.f.get_start())
+            self.f = f

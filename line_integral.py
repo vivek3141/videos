@@ -1,4 +1,4 @@
-from manim import *
+from manimlib.imports import *
 
 
 class Positron(Circle):
@@ -791,7 +791,7 @@ class LineIntegralVector(Scene):
         self.always_continually_update = True
 
         self.wait(10)
-
+        
         self.play(
             Uncreate(dot),
             Uncreate(self.v2),
@@ -869,7 +869,6 @@ class LineIntegralVector(Scene):
 
             self.r.shift(d_point)
             self.r_.put_start_and_end_on(self.r_.get_start(), (self.r_prime(t) * 0.6) + self.r_.get_start())
-
             self.fr.put_start_and_end_on(self.fr.get_start(), (self.f_r(t) * 0.25) + self.fr.get_start())
             self.v2.put_start_and_end_on(self.v2.get_start(), (self.func(t) * 0.25) + self.v2.get_start())
 
