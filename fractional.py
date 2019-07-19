@@ -593,6 +593,11 @@ class FractionalIntegral(Scene):
         self.wait()
 
 
+class FracProperty(Scene):
+    def construct(self):
+        pass
+
+
 class DifferIntegral(Scene):
     CONFIG = {
         "g_color": RED,
@@ -656,27 +661,16 @@ class DifferIntegral(Scene):
         legend = VGroup(line1, line2, line3, t1, t2, t3, rect).scale(0.5)
         legend.shift(2.5 * UP + 5 * RIGHT)
 
-        self.t = 0
-
         self.play(Write(fs))
         self.play(Write(legend))
         self.wait()
 
-        self.play(Write(f))
+        self.play(ShowCreation(f))
         self.wait()
 
-        f.add_updater(self.f_update)
-
-        self.wait(5)
-
-    @staticmethod
-    def get_differint(func, n):
-        if n > 0:
-            pass
-        if n < 0:
-            pass
-        else:
-            return func
+        self.play(UpdateFromAlphaFunc(f, self.f_update),
+                  rate_func=there_and_back, run_time=4)
+        self.wait()
 
     @staticmethod
     def _func(t):
@@ -690,17 +684,18 @@ class DifferIntegral(Scene):
         ])
 
     def f_update(self, ff, dt):
+        alpha = interpolate(-1, 1, dt)
         f = ParametricFunction(
             lambda t: np.array(
-                [t, self.dint(t, 0.5), 0]),
+                [t, self.dint(t, alpha), 0]),
             t_min=0,
             t_max=3,
             color=GREEN,
             stroke_width=self.g_width
         )
-        f.scale(1.5)
+        # f.scale(1.5)
         f.shift(1.5 * DOWN + 2.5 * LEFT)
-        self.t += dt
+        ff.become(f)
 
     def dint(self, x, a, k=1):
         return (scipy.special.gamma(k+1)/scipy.special.gamma(k-a+1)) * (x**(k-a))
