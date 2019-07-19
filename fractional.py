@@ -622,11 +622,6 @@ class DifferIntegral(Scene):
                 "include_tip": False,
             }
         )
-
-        fs = VGroup(a1, f1, f2)
-        fs.scale(1.5)
-        fs.shift(1.5 * DOWN + 2.5 * LEFT)
-
         f = ParametricFunction(
             lambda t: np.array([t, t, 0]),
             t_min=0,
@@ -634,8 +629,12 @@ class DifferIntegral(Scene):
             color=GREEN,
             stroke_width=self.g_width
         )
-        f.scale(1.5)
-        f.shift(1.5 * DOWN + 2.5 * LEFT)
+        # f.scale(1.5)
+        #f.shift(1.5 * DOWN + 2.5 * LEFT)
+
+        fs = VGroup(a1, f1, f2, f)
+        fs.scale(1.5)
+        fs.shift(1.5 * DOWN + 2.5 * LEFT)
 
         line1 = Line(1 * LEFT, 0 * RIGHT, color=PINK,
                      stroke_width=self.g_width).shift(1 * UP + 1.5 * LEFT)
@@ -654,9 +653,16 @@ class DifferIntegral(Scene):
         legend = VGroup(line1, line2, line3, t1, t2, t3, rect).scale(0.5)
         legend.shift(2.5 * UP + 5 * RIGHT)
 
+        self.t = 0
+
         self.play(Write(fs))
         self.play(Write(legend))
         self.wait()
+
+        self.play(Write(f))
+        self.wait()
+
+        self.update = True
 
     @staticmethod
     def get_differint(func, n):
@@ -677,3 +683,12 @@ class DifferIntegral(Scene):
             self._func(t),
             0
         ])
+
+    def update_frame(self, *args, **kwargs):
+        Scene.update_frame(self, *args, **kwargs)
+        if hasattr(self, "update"):
+            dt = self.frame_duration
+
+            DF = df.RL(0.5, f)
+            v.put_start_and_end_on(v.get_start(), field_vect+v.get_start())
+
