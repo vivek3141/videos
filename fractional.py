@@ -1,6 +1,8 @@
 from manimlib.imports import *
 import scipy.special
 from mpmath import differint
+from sympy import Float
+import mpmath as mp
 
 
 class Intro(Scene):
@@ -689,10 +691,10 @@ class DifferIntegral(Scene):
             0
         ])
 
-    def f_update(self, ff):
+    def f_update(self, ff, dt):
         f = ParametricFunction(
             lambda t: np.array(
-                [t, float(differint(lambda x: x, t, math.sin(self.t))), 0]),
+                [t, float(mp.mpf(differint(lambda x: x, mp.mpf(t), 0.5))), 0]),
             t_min=0,
             t_max=3,
             color=GREEN,
@@ -700,5 +702,21 @@ class DifferIntegral(Scene):
         )
         f.scale(1.5)
         f.shift(1.5 * DOWN + 2.5 * LEFT)
-        self.t += 0.1
+        self.t += dt
         return f
+
+
+class Test(Scene):
+    def construct(self):
+        f = ParametricFunction(
+            lambda t: np.array(
+                [t, dint(t,0.5), 0]),
+            t_min=0,
+            t_max=3,
+            color=GREEN
+        )
+        self.add(f)
+        self.wait()
+
+    def dint(self, x, a, k=1):
+        return (scipy.special.gamma(k+1)/scipy.special.gamma(k-a+1)) * (x**(k-a))
