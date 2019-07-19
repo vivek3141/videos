@@ -598,16 +598,8 @@ class FracProperty(Scene):
         pass
 
 
-class DifferIntegral(GraphScene):
+class DifferIntegralOLD(Scene):
     CONFIG = {
-        "y_max": 3,
-        "y_min": 0,
-        "x_max": 4,
-        "x_min": 0,
-        "y_tick_frequency": 5,
-        "axes_color": BLUE,
-        "x_axis_label": "$t$",
-        "y_axis_label": "$f(t)$",
         "g_color": RED,
         "g_width": DEFAULT_STROKE_WIDTH*1,
     }
@@ -730,25 +722,15 @@ class DifferIntegral(GraphScene):
         f1 = self.get_graph(
             lambda t:  0.5*t**2,
             color=PINK,
-            # stroke_width=self.g_width
         )
         f2 = self.get_graph(
             lambda t: 1,
             color=RED,
-            # stroke_width=self.g_width
         )
         f = self.get_graph(
             lambda t: t,
             color=GREEN,
-            # stroke_width=self.g_width
         )
-
-        # f.scale(1.5)
-        #f.shift(1.5 * DOWN + 2.5 * LEFT)
-
-        #fs = VGroup(a1, f1, f2, f)
-        # fs.scale(1.5)
-        #fs.shift(1.5 * DOWN + 2.5 * LEFT)
 
         line1 = Line(1 * LEFT, 0 * RIGHT, color=PINK,
                      stroke_width=self.g_width).shift(1 * UP + 1.5 * LEFT)
