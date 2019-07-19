@@ -628,18 +628,18 @@ class DifferIntegral(Scene):
         fs.shift(1.5 * DOWN + 2.5 * LEFT)
 
         line1 = Line(1 * LEFT, 0 * RIGHT, color=PINK,
-                     stroke_width=self.g_width).shift(1 * UP)
+                     stroke_width=self.g_width).shift(1 * UP + 1 * LEFT)
         line2 = Line(1 * LEFT, 0 * RIGHT, color=GREEN,
-                     stroke_width=self.g_width)
+                     stroke_width=self.g_width).shift(0 * UP + 1 * LEFT)
         line3 = Line(1 * LEFT, 0 * RIGHT, color=RED,
-                     stroke_width=self.g_width).shift(1 * DOWN)
+                     stroke_width=self.g_width).shift(1 * DOWN + 1 * LEFT)
 
         t1 = TexMobject(r"\int f(x)dx = \frac{1}{2}x^2").shift(
-            1 * UP + 2 * RIGHT)
-        t2 = TexMobject(r"f(x) = x").shift(2 * RIGHT)
-        t3 = TexMobject(r"\frac{d}{dx} f(x) = 1").shift(1 * DOWN + 2 * RIGHT)
+            1 * UP + 1 * RIGHT)
+        t2 = TexMobject(r"f(x) = x").shift(1 * RIGHT)
+        t3 = TexMobject(r"\frac{d}{dx} f(x) = 1").shift(1 * DOWN + 1 * RIGHT)
 
-        rect = Rectangle(height=4, width=4)
+        rect = Rectangle(height=4, width=6)
 
         legend = VGroup(line1, line2, line3, t1, t2, t3, rect)
 
