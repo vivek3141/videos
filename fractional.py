@@ -684,17 +684,17 @@ class DifferIntegral(Scene):
         ])
 
     def f_update(self, ff, dt):
-        alpha = interpolate(-1, 1, dt)
+        a = interpolate(-1, 1, dt)
         f = ParametricFunction(
             lambda t: np.array(
-                [t, self.dint(t, alpha), 0]),
+                [t, self.dint(t, a), 0]),
             t_min=0,
-            t_max=3,
+            t_max=math.sqrt(6),
             color=GREEN,
             stroke_width=self.g_width
         )
-        # f.scale(1.5)
-        f.shift(1.5 * DOWN + 2.5 * LEFT)
+        f.scale(1.5)
+
         ff.become(f)
 
     def dint(self, x, a, k=1):
