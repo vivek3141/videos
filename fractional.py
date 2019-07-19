@@ -629,6 +629,7 @@ class DifferIntegral(Scene):
             color=GREEN,
             stroke_width=self.g_width
         )
+
         # f.scale(1.5)
         #f.shift(1.5 * DOWN + 2.5 * LEFT)
 
@@ -664,6 +665,8 @@ class DifferIntegral(Scene):
 
         self.update = True
 
+        self.f.add_updater(self.f_update)
+
         self.wait(5)
 
     @staticmethod
@@ -686,20 +689,16 @@ class DifferIntegral(Scene):
             0
         ])
 
-    def continual_update(self, *args, **kwargs):
-        Scene.continual_update(self, *args, **kwargs)
-        
-        if hasattr(self, "update"):
-            print("uwu")
-            f = ParametricFunction(
-                lambda t: np.array(
-                    [t, float(differint(lambda x: x, t, math.sin(self.t))), 0]),
-                t_min=0,
-                t_max=3,
-                color=GREEN,
-                stroke_width=self.g_width
-            )
-            f.scale(1.5)
-            f.shift(1.5 * DOWN + 2.5 * LEFT)
-            self.t += 0.1
-            self.f = f
+    def f_update(self, ff):
+        f = ParametricFunction(
+            lambda t: np.array(
+                [t, float(differint(lambda x: x, t, math.sin(self.t))), 0]),
+            t_min=0,
+            t_max=3,
+            color=GREEN,
+            stroke_width=self.g_width
+        )
+        f.scale(1.5)
+        f.shift(1.5 * DOWN + 2.5 * LEFT)
+        self.t += 0.1
+        return f
