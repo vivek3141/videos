@@ -1,6 +1,6 @@
 from manimlib.imports import *
 import scipy.special
-import differint.differint as df
+from mpmath import differint
 
 
 class Intro(Scene):
@@ -622,7 +622,7 @@ class DifferIntegral(Scene):
                 "include_tip": False,
             }
         )
-        f = ParametricFunction(
+        self.f = ParametricFunction(
             lambda t: np.array([t, t, 0]),
             t_min=0,
             t_max=3,
@@ -632,7 +632,7 @@ class DifferIntegral(Scene):
         # f.scale(1.5)
         #f.shift(1.5 * DOWN + 2.5 * LEFT)
 
-        fs = VGroup(a1, f1, f2, f)
+        fs = VGroup(a1, f1, f2, self.f)
         fs.scale(1.5)
         fs.shift(1.5 * DOWN + 2.5 * LEFT)
 
@@ -664,6 +664,8 @@ class DifferIntegral(Scene):
 
         self.update = True
 
+        self.wait(5)
+
     @staticmethod
     def get_differint(func, n):
         if n > 0:
@@ -688,7 +690,15 @@ class DifferIntegral(Scene):
         Scene.update_frame(self, *args, **kwargs)
         if hasattr(self, "update"):
             dt = self.frame_duration
+            f = ParametricFunction(
+            lambda t: differint(lambda x: x, t, sin(self.t)),
+            t_min=0,
+            t_max=3,
+            color=GREEN,
+            stroke_width=self.g_width
+            )
+            f.scale(1.5)
+            f.shift(1.5 * DOWN + 2.5 * LEFT)
 
-            DF = df.RL(0.5, f)
-            v.put_start_and_end_on(v.get_start(), field_vect+v.get_start())
+            self.f.put_start_and_end_on(self.f.get_start(), f+self.f.get_start())
 
