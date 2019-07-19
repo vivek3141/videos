@@ -608,14 +608,14 @@ class DifferIntegral(Scene):
         f2 = ParametricFunction(
             lambda t: np.array([t, 1, 0]),
             t_min=0,
-            t_max=5,
+            t_max=4,
             color=RED,
             stroke_width=self.g_width
         )
 
         a1 = Axes(
             x_min=0,
-            x_max=5,
+            x_max=4,
             y_min=0,
             y_max=3,
             number_line_config={
@@ -626,6 +626,16 @@ class DifferIntegral(Scene):
         fs = VGroup(a1, f1, f2)
         fs.scale(1.5)
         fs.shift(1.5 * DOWN + 2.5 * LEFT)
+
+        f = ParametricFunction(
+            lambda t: np.array([t, t, 0]),
+            t_min=0,
+            t_max=3,
+            color=GREEN,
+            stroke_width=self.g_width
+        )
+        f.scale(1.5)
+        f.shift(1.5 * DOWN + 2.5 * LEFT)
 
         line1 = Line(1 * LEFT, 0 * RIGHT, color=PINK,
                      stroke_width=self.g_width).shift(1 * UP + 1.5 * LEFT)
@@ -642,7 +652,7 @@ class DifferIntegral(Scene):
         rect = Rectangle(height=4, width=6)
 
         legend = VGroup(line1, line2, line3, t1, t2, t3, rect).scale(0.5)
-        legend.shift(2.5 * UP + 4 * RIGHT)
+        legend.shift(2.5 * UP + 5 * RIGHT)
 
         self.play(Write(fs))
         self.play(Write(legend))
