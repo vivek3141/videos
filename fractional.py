@@ -624,7 +624,7 @@ class DifferIntegral(Scene):
                 "include_tip": False,
             }
         )
-        self.f = ParametricFunction(
+        f = ParametricFunction(
             lambda t: np.array([t, t, 0]),
             t_min=0,
             t_max=3,
@@ -635,7 +635,7 @@ class DifferIntegral(Scene):
         # f.scale(1.5)
         #f.shift(1.5 * DOWN + 2.5 * LEFT)
 
-        fs = VGroup(a1, f1, f2, self.f)
+        fs = VGroup(a1, f1, f2, f)
         fs.scale(1.5)
         fs.shift(1.5 * DOWN + 2.5 * LEFT)
 
@@ -662,12 +662,10 @@ class DifferIntegral(Scene):
         self.play(Write(legend))
         self.wait()
 
-        self.play(Write(self.f))
+        self.play(Write(f))
         self.wait()
 
-        self.update = True
-
-        self.f.add_updater(self.f_update)
+        f.add_updater(self.f_update)
 
         self.wait(5)
 
@@ -703,7 +701,6 @@ class DifferIntegral(Scene):
         f.scale(1.5)
         f.shift(1.5 * DOWN + 2.5 * LEFT)
         self.t += dt
-        return f
 
     def dint(self, x, a, k=1):
         return (scipy.special.gamma(k+1)/scipy.special.gamma(k-a+1)) * (x**(k-a))
