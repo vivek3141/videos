@@ -762,17 +762,6 @@ class DifferIntegral(GraphScene):
                   rate_func=there_and_back, run_time=2)
         self.wait()
 
-    @staticmethod
-    def _func(t):
-        return t
-
-    def func(self, t):
-        return np.array([
-            t,
-            self._func(t),
-            0
-        ])
-
     def f_update1(self, ff, dt):
         a = interpolate(0, 1, dt)
         f = self.get_graph(
