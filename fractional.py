@@ -598,8 +598,16 @@ class FracProperty(Scene):
         pass
 
 
-class DifferIntegral(Scene):
+class DifferIntegral(GraphScene):
     CONFIG = {
+        "y_max": 3,
+        "y_min": 0,
+        "x_max": 4,
+        "x_min": 0,
+        "y_tick_frequency": 5,
+        "axes_color": BLUE,
+        "x_axis_label": "$t$",
+        "y_axis_label": "$f(t)$",
         "g_color": RED,
         "g_width": DEFAULT_STROKE_WIDTH*1,
     }
@@ -693,7 +701,111 @@ class DifferIntegral(Scene):
             color=GREEN,
             stroke_width=self.g_width
         )
-        f.scale(1.5)
+        point = 1.5 * DOWN + 2.5 * LEFT
+        f.shift(point)
+        f.scale(1.5, about_point=point)
+
+        ff.become(f)
+
+    def dint(self, x, a, k=1):
+        return (scipy.special.gamma(k+1)/scipy.special.gamma(k-a+1)) * (x**(k-a))
+
+
+class DifferIntegral(GraphScene):
+    CONFIG = {
+        "y_max": 3,
+        "y_min": 0,
+        "x_max": 4,
+        "x_min": 0,
+        "y_tick_frequency": 5,
+        "axes_color": BLUE,
+        "x_axis_label": "$t$",
+        "y_axis_label": "$f(t)$",
+        "g_color": RED,
+        "g_width": DEFAULT_STROKE_WIDTH*1,
+    }
+
+    def construct(self):
+        self.setup_axes()
+        f1 = self.get_graph(
+            lambda t:  0.5*t**2,
+            color=PINK,
+            # stroke_width=self.g_width
+        )
+        f2 = self.get_graph(
+            lambda t: 1,
+            color=RED,
+            # stroke_width=self.g_width
+        )
+        f = self.get_graph(
+            lambda t: t,
+            color=GREEN,
+            # stroke_width=self.g_width
+        )
+
+        # f.scale(1.5)
+        #f.shift(1.5 * DOWN + 2.5 * LEFT)
+
+        #fs = VGroup(a1, f1, f2, f)
+        # fs.scale(1.5)
+        #fs.shift(1.5 * DOWN + 2.5 * LEFT)
+
+        line1 = Line(1 * LEFT, 0 * RIGHT, color=PINK,
+                     stroke_width=self.g_width).shift(1 * UP + 1.5 * LEFT)
+        line2 = Line(1 * LEFT, 0 * RIGHT, color=GREEN,
+                     stroke_width=self.g_width).shift(0 * UP + 1.5 * LEFT)
+        line3 = Line(1 * LEFT, 0 * RIGHT, color=RED,
+                     stroke_width=self.g_width).shift(1 * DOWN + 1.5 * LEFT)
+
+        t1 = TexMobject(r"\int f(x)dx = \frac{1}{2}x^2").shift(
+            1 * UP + 0.5 * RIGHT)
+        t2 = TexMobject(r"f(x) = x").shift(0.5 * RIGHT)
+        t3 = TexMobject(r"\frac{d}{dx} f(x) = 1").shift(1 * DOWN + 0.5 * RIGHT)
+
+        rect = Rectangle(height=4, width=6)
+
+        legend = VGroup(line1, line2, line3, t1, t2, t3, rect).scale(0.5)
+        legend.shift(2.5 * UP + 5 * RIGHT)
+
+        self.play(Write(f1), Write(f2))
+        self.play(Write(legend))
+        self.wait()
+
+        self.play(ShowCreation(f))
+        self.wait()
+
+        self.play(UpdateFromAlphaFunc(f, self.f_update1),
+                  rate_func=there_and_back, run_time=2)
+        self.play(UpdateFromAlphaFunc(f, self.f_update2),
+                  rate_func=there_and_back, run_time=2)
+        self.wait()
+
+    @staticmethod
+    def _func(t):
+        return t
+
+    def func(self, t):
+        return np.array([
+            t,
+            self._func(t),
+            0
+        ])
+
+    def f_update1(self, ff, dt):
+        a = interpolate(0, 1, dt)
+        f = self.get_graph(
+            lambda t: self.dint(t, a),
+            color=GREEN,
+        )
+
+        ff.become(f)
+
+    def f_update2(self, ff, dt):
+        a = interpolate(0, -1, dt)
+        f = self.get_graph(
+            lambda t: self.dint(t, a),
+            color=GREEN,
+        )
 
         ff.become(f)
 
