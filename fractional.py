@@ -659,7 +659,7 @@ class DifferIntegral(Scene):
         self.play(Write(legend))
         self.wait()
 
-        self.play(Write(f))
+        self.play(Write(self.f))
         self.wait()
 
         self.update = True
@@ -689,16 +689,16 @@ class DifferIntegral(Scene):
     def update_frame(self, *args, **kwargs):
         Scene.update_frame(self, *args, **kwargs)
         if hasattr(self, "update"):
-            dt = self.frame_duration
             f = ParametricFunction(
-            lambda t: differint(lambda x: x, t, sin(self.t)),
-            t_min=0,
-            t_max=3,
-            color=GREEN,
-            stroke_width=self.g_width
+                lambda t: np.array(
+                    [t, float(differint(lambda x: x, t, math.sin(self.t))), 0]),
+                t_min=0,
+                t_max=3,
+                color=GREEN,
+                stroke_width=self.g_width
             )
             f.scale(1.5)
             f.shift(1.5 * DOWN + 2.5 * LEFT)
-
-            self.f.put_start_and_end_on(self.f.get_start(), f+self.f.get_start())
-
+            self.t += 0.1
+            self.f.put_start_and_end_on(
+                self.f.get_start(), f+self.f.get_start())
