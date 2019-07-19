@@ -694,7 +694,7 @@ class DifferIntegral(Scene):
     def f_update(self, ff, dt):
         f = ParametricFunction(
             lambda t: np.array(
-                [t, float(mp.mpf(differint(lambda x: x, mp.mpf(t), 0.5))), 0]),
+                [t, self.dint(t, 0.5), 0]),
             t_min=0,
             t_max=3,
             color=GREEN,
@@ -704,19 +704,6 @@ class DifferIntegral(Scene):
         f.shift(1.5 * DOWN + 2.5 * LEFT)
         self.t += dt
         return f
-
-
-class Test(Scene):
-    def construct(self):
-        f = ParametricFunction(
-            lambda t: np.array(
-                [t, dint(t,0.5), 0]),
-            t_min=0,
-            t_max=3,
-            color=GREEN
-        )
-        self.add(f)
-        self.wait()
 
     def dint(self, x, a, k=1):
         return (scipy.special.gamma(k+1)/scipy.special.gamma(k-a+1)) * (x**(k-a))
