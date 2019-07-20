@@ -882,10 +882,12 @@ class TChroneAnim(Scene):
         pos = self.cyc.pos_func(0.5)
         c2.move_to(pos[0] * RIGHT + pos[1] * UP)
 
-        c3 = Circle(radius=0.2, color=GREEN, fill_opacity=1,  stroke_color=WHITE)
+        c3 = Circle(radius=0.2, color=GREEN,
+                    fill_opacity=1,  stroke_color=WHITE)
         pos = self.cyc.pos_func(0.75)
         c3.move_to(pos[0] * RIGHT + pos[1] * UP)
 
+        l1 = Line(3*LEFT+2*UP, 3*LEFT+1*DOWN)
 
         self.play(Write(self.cyc))
         self.play(
@@ -897,14 +899,15 @@ class TChroneAnim(Scene):
 
         self.play(
             UpdateFromAlphaFunc(c1, lambda c, dt: self.update(c, dt, start=0)),
-            UpdateFromAlphaFunc(c2, lambda c, dt: self.update(c, dt, start=0.5)),
-            UpdateFromAlphaFunc(c3, lambda c, dt: self.update(c, dt, start=0.75)),
-                  rate_func=linear, run_time=2
-                  )
+            UpdateFromAlphaFunc(
+                c2, lambda c, dt: self.update(c, dt, start=0.5)),
+            UpdateFromAlphaFunc(
+                c3, lambda c, dt: self.update(c, dt, start=0.75)),
+            rate_func=linear, run_time=2
+        )
         self.wait()
 
     def update(self, c, dt, start=0):
         a = interpolate(start, 1, dt)
         pos = self.cyc.pos_func(a)
         c.move_to(pos[0] * RIGHT + pos[1] * UP)
-    
