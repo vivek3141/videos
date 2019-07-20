@@ -782,3 +782,20 @@ class DifferIntegral(GraphScene):
 
     def dint(self, x, a, k=1):
         return (scipy.special.gamma(k+1)/scipy.special.gamma(k-a+1)) * (x**(k-a))
+
+
+class RLProperty(Scene):
+    def construct(self):
+        eq1 = TexMobject(r"1. I^{a+b} = I^aI^bf")
+        eq1.scale(1.5)
+        eq1.shift(1.5 * UP)
+
+        eq2 = TexMobject(r"2. \frac{d}{dx} I^{a+1} = I^a")
+        eq2.scale(1.5)
+        eq2.shift(1.5 * DOWN)
+
+        self.play(
+            Write(eq1),
+            Write(eq2)
+        )
+        self.wait()
