@@ -829,7 +829,8 @@ class FracNo(Scene):
 
         e = VGroup(eq, c)
 
-        er = TexMobject(r"\Gamma(x) \text{ is not defined for }n < 0", color=RED)
+        er = TexMobject(
+            r"\Gamma(x) \text{ is not defined for }n < 0", color=RED)
         er.scale(1.5)
         er.shift(2 * DOWN)
 
@@ -840,12 +841,14 @@ class FracNo(Scene):
         self.play(Write(er))
         self.wait()
 
+
 class FracDeriv(Scene):
     def construct(self):
         eq1 = TexMobject(r"\frac{d^nf}{dx^n}(I^nf(t)) = f(t)")
+
+        self.play(Write(eq1))
 
 
 class TChroneAnim(Scene):
     def construct(self):
         pass
-        
