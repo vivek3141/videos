@@ -887,9 +887,16 @@ class TChroneAnim(Scene):
         pos = self.cyc.pos_func(0.75)
         c3.move_to(pos[0] * RIGHT + pos[1] * UP)
 
-        l1 = Line(3*LEFT+2*UP, 3*LEFT+1*DOWN)
+        l1 = Line(3*LEFT+2*UP, 3*LEFT+2*DOWN, color=YELLOW,
+                  stroke_width=1.25 * DEFAULT_STROKE_WIDTH)
+        l2 = Line(3*LEFT+2*DOWN, 3*RIGHT+2*DOWN, color=YELLOW,
+                  stroke_width=1.25 * DEFAULT_STROKE_WIDTH)
 
-        self.play(Write(self.cyc))
+        self.play(
+            Write(self.cyc),
+            Write(l1),
+            Write(l2)
+        )
         self.play(
             Write(c1),
             Write(c2),
