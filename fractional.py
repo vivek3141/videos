@@ -851,9 +851,9 @@ class FracDeriv(Scene):
 
 class Cycloid(ParametricFunction):
     CONFIG = {
-        "point_a": 6*LEFT+3*UP,
+        "point_a": 3*LEFT+2*UP,
         "radius": 2,
-        "end_theta": 3*np.pi/2,
+        "end_theta": np.pi,
         "density": 5*DEFAULT_POINT_DENSITY_1D,
         "color": YELLOW
     }
@@ -873,4 +873,6 @@ class Cycloid(ParametricFunction):
 
 class TChroneAnim(Scene):
     def construct(self):
-        pass
+        cyc = Cycloid()
+        self.play(Write(cyc))
+        self.wait()
