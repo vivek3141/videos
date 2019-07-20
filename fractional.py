@@ -794,8 +794,15 @@ class RLProperty(Scene):
         eq2.scale(1.5)
         eq2.shift(1.5 * DOWN)
 
+        rect = Rectangle(width=3, height=2, color=YELLOW,
+                         stroke_width=1.25 * DEFAULT_STROKE_WIDTH)
+        rect.shift(1.5 * DOWN)
+
         self.play(
             Write(eq1),
             Write(eq2)
         )
+        self.wait()
+
+        self.play(Write(rect))
         self.wait()
