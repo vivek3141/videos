@@ -873,7 +873,12 @@ class Cycloid(ParametricFunction):
 
 class TChroneAnim(Scene):
     def construct(self):
-        self.cyc = Cycloid(stroke_width=1.25 * DEFAULT_STROKE_WIDTH)
+        title = TextMobject("Tautochrone problem", color=GREEN)
+        title.shift(3 * UP)
+        title.scale(1.5)
+
+        self.cyc = Cycloid(stroke_width=1.25 *
+                           DEFAULT_STROKE_WIDTH, color=GRAY)
 
         c1 = Circle(radius=0.2, color=BLUE, fill_opacity=1, stroke_color=WHITE)
         c1.shift(3*LEFT+2*UP)
@@ -887,15 +892,16 @@ class TChroneAnim(Scene):
         pos = self.cyc.pos_func(0.75)
         c3.move_to(pos[0] * RIGHT + pos[1] * UP)
 
-        l1 = Line(3*LEFT+2*UP, 3*LEFT+2*DOWN, color=YELLOW,
+        l1 = Line(3*LEFT+2*UP, 3*LEFT+2*DOWN, color=GRAY,
                   stroke_width=1.25 * DEFAULT_STROKE_WIDTH)
-        l2 = Line(3*LEFT+2*DOWN, 3*RIGHT+2*DOWN, color=YELLOW,
+        l2 = Line(3*LEFT+2*DOWN, 3*RIGHT+2*DOWN, color=GRAY,
                   stroke_width=1.25 * DEFAULT_STROKE_WIDTH)
 
         self.play(
             Write(self.cyc),
             Write(l1),
-            Write(l2)
+            Write(l2),
+            Write(title)
         )
         self.play(
             Write(c1),
