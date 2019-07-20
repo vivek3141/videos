@@ -786,23 +786,66 @@ class DifferIntegral(GraphScene):
 
 class RLProperty(Scene):
     def construct(self):
+        title = TextMobject("Properties of R-L Integrals", color=GREEN)
+        title.scale(1.5)
+        title.shift(3 * UP)
+
         eq1 = TexMobject(r"1. I^{a+b} = I^aI^bf")
         eq1.scale(1.5)
-        eq1.shift(1.5 * UP)
+        eq1.shift(1 * UP)
 
         eq2 = TexMobject(r"2. \frac{d}{dx} I^{a+1} = I^a")
         eq2.scale(1.5)
         eq2.shift(1.5 * DOWN)
 
-        rect = Rectangle(width=3, height=2, color=YELLOW,
+        eq3 = TextMobject("1st fundamental theorem of calculus", color=RED)
+        eq3.shift(3 * DOWN)
+
+        rect = Rectangle(width=5, height=2, color=YELLOW,
                          stroke_width=1.25 * DEFAULT_STROKE_WIDTH)
         rect.shift(1.5 * DOWN)
 
         self.play(
             Write(eq1),
-            Write(eq2)
+            Write(eq2),
+            Write(title)
         )
         self.wait()
 
         self.play(Write(rect))
+        self.play(Write(eq3))
         self.wait()
+
+
+class FracNo(Scene):
+    def construct(self):
+        eq = TexMobject(r"\frac{d^n}{dx^n} = I^{-n}")
+        eq.scale(1.5)
+
+        c = VGroup(
+            Line(UP + LEFT, DOWN + RIGHT, color=RED),
+            Line(UP + RIGHT, DOWN + LEFT, color=RED),
+        )
+
+        e = VGroup(eq, c)
+
+        er = TexMobject(r"\Gamma(x) \text{ is not defined for }n < 0", color=RED)
+        er.scale(1.5)
+        er.shift(2 * DOWN)
+
+        self.play(Write(eq))
+        self.wait()
+
+        self.play(Write(c))
+        self.play(Write(er))
+        self.wait()
+
+class FracDeriv(Scene):
+    def construct(self):
+        eq1 = TexMobject(r"\frac{d^nf}{dx^n}(I^nf(t)) = f(t)")
+
+
+class TChroneAnim(Scene):
+    def construct(self):
+        pass
+        
