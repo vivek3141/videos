@@ -849,6 +849,28 @@ class FracDeriv(Scene):
         self.play(Write(eq1))
 
 
+class Cycloid(ParametricFunction):
+    CONFIG = {
+        "point_a": 6*LEFT+3*UP,
+        "radius": 2,
+        "end_theta": 3*np.pi/2,
+        "density": 5*DEFAULT_POINT_DENSITY_1D,
+        "color": YELLOW
+    }
+
+    def __init__(self, **kwargs):
+        digest_config(self, kwargs)
+        ParametricFunction.__init__(self, self.pos_func, **kwargs)
+
+    def pos_func(self, t):
+        T = t*self.end_theta
+        return self.point_a + self.radius * np.array([
+            T - np.sin(T),
+            np.cos(T) - 1,
+            0
+        ])
+
+
 class TChroneAnim(Scene):
     def construct(self):
         pass
