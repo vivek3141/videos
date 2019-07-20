@@ -875,31 +875,36 @@ class TChroneAnim(Scene):
     def construct(self):
         self.cyc = Cycloid(stroke_width=1.25 * DEFAULT_STROKE_WIDTH)
 
-        c1 = Circle(radius=0.2, color=BLUE, fill_opacity=1)
+        c1 = Circle(radius=0.2, color=BLUE, fill_opacity=1, stroke_color=WHITE)
         c1.shift(3*LEFT+2*UP)
 
-        c2 = Circle(radius=0.2, color=BLUE, fill_opacity=1)
+        c2 = Circle(radius=0.2, color=RED, fill_opacity=1,  stroke_color=WHITE)
         pos = self.cyc.pos_func(0.5)
         c2.move_to(pos[0] * RIGHT + pos[1] * UP)
 
+        c3 = Circle(radius=0.2, color=GREEN, fill_opacity=1,  stroke_color=WHITE)
+        pos = self.cyc.pos_func(0.75)
+        c3.move_to(pos[0] * RIGHT + pos[1] * UP)
+
 
         self.play(Write(self.cyc))
-        self.play(Write(c1))
+        self.play(
+            Write(c1),
+            Write(c2),
+            Write(c3)
+        )
         self.wait()
 
         self.play(
-            UpdateFromAlphaFunc(c1, self.update),
-            UpdateFromAlphaFunc(c2, self.update2),
+            UpdateFromAlphaFunc(c1, lambda c, dt: self.update(c, dt, start=0)),
+            UpdateFromAlphaFunc(c2, lambda c, dt: self.update(c, dt, start=0.5)),
+            UpdateFromAlphaFunc(c3, lambda c, dt: self.update(c, dt, start=0.75)),
                   rate_func=linear, run_time=2
                   )
         self.wait()
 
-    def update(self, c, dt):
-        a = interpolate(0, 1, dt)
+    def update(self, c, dt, start=0):
+        a = interpolate(start, 1, dt)
         pos = self.cyc.pos_func(a)
         c.move_to(pos[0] * RIGHT + pos[1] * UP)
     
-    def update2(self, c, dt):
-        a = interpolate(0.5, 1, dt)
-        pos = self.cyc.pos_func(a)
-        c.move_to(pos[0] * RIGHT + pos[1] * UP)
