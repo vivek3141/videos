@@ -873,19 +873,33 @@ class Cycloid(ParametricFunction):
 
 class TChroneAnim(Scene):
     def construct(self):
-        self.cyc = Cycloid()
-        c = Circle(radius=0.1, color=YELLOW, fill_opacity=1)
-        c.shift(3*LEFT+2*UP)
+        self.cyc = Cycloid(stroke_width=1.25 * DEFAULT_STROKE_WIDTH)
+
+        c1 = Circle(radius=0.2, color=BLUE, fill_opacity=1)
+        c1.shift(3*LEFT+2*UP)
+
+        c2 = Circle(radius=0.2, color=BLUE, fill_opacity=1)
+        pos = self.cyc.pos_func(0.5)
+        c2.move_to(pos[0] * RIGHT + pos[1] * UP)
+
 
         self.play(Write(self.cyc))
-        self.play(Write(c))
+        self.play(Write(c1))
         self.wait()
 
-        self.play(UpdateFromAlphaFunc(c, self.update),
-                  rate_func=linear, run_time=2)
+        self.play(
+            UpdateFromAlphaFunc(c1, self.update),
+            UpdateFromAlphaFunc(c2, self.update2),
+                  rate_func=linear, run_time=2
+                  )
         self.wait()
 
     def update(self, c, dt):
         a = interpolate(0, 1, dt)
         pos = self.cyc.pos_func(a)
-        c.move_to(pos[0] * RIGHT + pos[0] * UP)
+        c.move_to(pos[0] * RIGHT + pos[1] * UP)
+    
+    def update2(self, c, dt):
+        a = interpolate(0.5, 1, dt)
+        pos = self.cyc.pos_func(a)
+        c.move_to(pos[0] * RIGHT + pos[1] * UP)
