@@ -817,6 +817,64 @@ class RLProperty(Scene):
         self.wait()
 
 
+class CeilFunc(Scene):
+    def construct(self):
+        func = VGroup(
+            FunctionGraph(
+                lambda x: math.ceil(x),
+                x_min=0,
+                x_max=0.99
+            ),
+            FunctionGraph(
+                lambda x: math.ceil(x),
+                x_min=1.01,
+                x_max=1.99
+            ),
+            FunctionGraph(
+                lambda x: math.ceil(x),
+                x_min=2.01,
+                x_max=2.99
+            ),
+            FunctionGraph(
+                lambda x: math.ceil(x),
+                x_min=3.01,
+                x_max=3.99
+            ),
+            Circle(radius=0.1, color=WHITE, fill_opacity=1).shift(
+                1 * UP + 0 * RIGHT),
+            Circle(radius=0.1, color=WHITE, fill_opacity=1).shift(
+                1 * UP + 1 * RIGHT),
+            Circle(radius=0.1, color=WHITE, fill_opacity=1).shift(
+                2 * UP + 1 * RIGHT),
+            Circle(radius=0.1, color=WHITE, fill_opacity=1).shift(
+                2 * UP + 2 * RIGHT),
+            Circle(radius=0.1, color=WHITE, fill_opacity=1).shift(
+                3 * UP + 2 * RIGHT),
+            Circle(radius=0.1, color=WHITE, fill_opacity=1).shift(
+                3 * UP + 3 * RIGHT),
+            Circle(radius=0.1, color=WHITE, fill_opacity=1).shift(
+                4 * UP + 3 * RIGHT),
+            Circle(radius=0.1, color=WHITE, fill_opacity=1).shift(
+                4 * UP + 4 * RIGHT),
+
+        )
+        axes = Axes(
+            x_min=0,
+            x_max=4,
+            y_min=0,
+            y_max=4,
+            number_line_config={
+                "include_tip": False,
+            }
+        )
+        f = VGroup(func, axes)
+        f.scale(1.5)
+        f.center()
+
+        self.play(Write(f))
+        self.wait()
+
+
 class FracNo(Scene):
     def construct(self):
         eq = TexMobject(r"\frac{d^n}{dx^n} = I^{-n}")
@@ -861,7 +919,7 @@ class FracDeriv(Scene):
 
         eq3 = TexMobject(
             r"D^n f(x) = \frac{1}{\Gamma(\lceil n \rceil - n)} \frac{d}{dx^{\lceil n \rceil}} \int_{a}^{x} (x-t)^{\lceil n \rceil - n -1} f(t) dt}")
-        eq3.scale(1.5)
+        eq3.scale(1)
 
         title1 = TextMobject("Fractional Derivative", color=BLUE)
         title1.scale(1.5)
@@ -869,7 +927,7 @@ class FracDeriv(Scene):
 
         title2 = TextMobject(
             "Left Riemann-Liouville Fractional Derivative", color=BLUE)
-        title2.scale(1.5)
+        title2.scale(1)
         title2.shift(2 * UP)
 
         self.play(Write(eq1))
@@ -894,6 +952,7 @@ class FracDeriv(Scene):
             Transform(eq2, eq3),
             Transform(title1, title2)
         )
+        self.wait()
 
 
 class Cycloid(ParametricFunction):
