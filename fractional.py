@@ -845,8 +845,9 @@ class FracNo(Scene):
 class FracDeriv(Scene):
     def construct(self):
         eq1 = TexMobject(r"\frac{d^nf}{dx^n}(I^nf(t)) = f(t)")
+        eq1.scale(1.5)
 
-        rect = Rectangle(width=5, height=2, color=YELLOW,
+        rect = Rectangle(width=7, height=2, color=YELLOW,
                          stroke_width=1.25 * DEFAULT_STROKE_WIDTH)
 
         t1 = TexMobject(
@@ -854,10 +855,29 @@ class FracDeriv(Scene):
         t1.scale(1.5)
         t1.shift(2 * DOWN)
 
+        eq2 = TexMobject(
+            r"D^n f = \frac{d^{\lceil n \rceil}}{dx^{\lceil n \rceil}} \left(I^{\lceil n \rceil - n} f \right)")
+        eq2.scale(1.5)
+
+        title1 = TextMobject("Fractional Derivative", color=BLUE)
+        title1.scale(1.5)
+        title1.shift(2 * UP)
+
         self.play(Write(eq1))
         self.play(
             Write(rect),
             Write(t1)
+        )
+        self.wait()
+
+        self.play(
+            Uncreate(eq1),
+            Uncreate(rect),
+            Uncreate(t1)
+        )
+        self.play(
+            Write(eq2),
+            Write(title1)
         )
         self.wait()
 
