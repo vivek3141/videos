@@ -999,6 +999,13 @@ class DifferEquation(Scene):
         bt = b.get_tex(r"J^af = ")
         eq = VGroup(et, b, bt)
 
+        eq.scale(2)
+        eq.center()
+
+        title = TextMobject("Differintegral Operator", color=YELLOW)
+        title.scale(1.5)
+        title.shift(3.5 * UP)
+
         self.play(Write(eq))
         self.wait()
 
