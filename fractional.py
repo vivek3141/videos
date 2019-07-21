@@ -890,6 +890,11 @@ class FracDeriv(Scene):
         )
         self.wait()
 
+        self.play(
+            Transform(eq2, eq3),
+            Transform(title1, title2)
+        )
+
 
 class Cycloid(ParametricFunction):
     CONFIG = {
