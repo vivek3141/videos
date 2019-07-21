@@ -980,14 +980,14 @@ class DifferEquation(Scene):
         eq1 = TexMobject(r"D^a f").shift(1 * UP)
         eq2 = TexMobject(r"f").shift(0 * UP)
         eq3 = TexMobject(r"I^{|a|}").shift(-1 * UP)
-        
+
         eq1.align_to(eq2, LEFT)
         eq3.align_to(eq2, LEFT)
 
         t1 = TexMobject(r"\text{if } a > 0").shift(1 * UP + 2 * RIGHT)
         t2 = TexMobject(r"\text{if } a = 0").shift(0 * UP + 2 * RIGHT)
         t3 = TexMobject(r"\text{if } a < 0").shift(-1 * UP + 2 * RIGHT)
-        
+
         t1.align_to(t2, LEFT)
         t3.align_to(t2, LEFT)
 
@@ -1001,10 +1001,11 @@ class DifferEquation(Scene):
 
         eq.scale(1.5)
         eq.center()
+        eq.shift(0.5 * DOWN)
 
         title = TextMobject("Differintegral Operator", color=YELLOW)
         title.scale(1.5)
-        title.shift(3.5 * UP)
+        title.shift(3 * UP)
 
         self.play(Write(eq), Write(title))
         self.wait()
