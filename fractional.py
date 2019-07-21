@@ -859,9 +859,18 @@ class FracDeriv(Scene):
             r"D^n f = \frac{d^{\lceil n \rceil}}{dx^{\lceil n \rceil}} \left(I^{\lceil n \rceil - n} f \right)")
         eq2.scale(1.5)
 
+        eq3 = TexMobject(
+            r"D^n f(x) = \frac{1}{\Gamma(\lceil n \rceil - n)} \frac{d}{dx^{\lceil n \rceil}} \int_{a}^{x} (x-t)^{\lceil n \rceil - n -1} f(t) dt}")
+        eq3.scale(1.5)
+
         title1 = TextMobject("Fractional Derivative", color=BLUE)
         title1.scale(1.5)
         title1.shift(2 * UP)
+
+        title2 = TextMobject(
+            "Left Riemann-Liouville Fractional Derivative", color=BLUE)
+        title2.scale(1.5)
+        title2.shift(2 * UP)
 
         self.play(Write(eq1))
         self.play(
