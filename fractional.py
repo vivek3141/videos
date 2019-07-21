@@ -870,24 +870,24 @@ class CeilFunc(Scene):
         f = VGroup(axes, func)
         f.scale(1.25)
         f.center()
+        f.shift(0.5 * DOWN)
 
         title = TexMobject(r"\text{ceil}(x) = \lceil x \rceil", color=GREEN)
         title.scale(1.5)
-        title.shift(3.5 * UP)
+        title.shift(3 * UP)
 
         examples = TexMobject(
-            r"\text{ceil}(4.1) = 5 \\",r"\text{ceil}(4.6) = 5 \\",r"\text{ceil}(4.0) = 4 \\",
-                tex_to_color_map={r"\text{ceil}":GREEN})
+            r"\text{ceil}(4.1) = 5 \\", r"\text{ceil}(4.6) = 5 \\", r"\text{ceil}(4.0) = 4 \\",
+            tex_to_color_map={r"\text{ceil}": GREEN})
         examples.scale(1.5)
-        examples.shift(1.5 * RIGHT)
+        examples.shift(3.5 * RIGHT)
 
         self.play(Write(f), Write(title))
         self.wait()
 
-
         self.play(
-            ApplyMethod(title.shift, 1.5 * LEFT),
-            ApplyMethod(f.shift, 1.5 * LEFT)
+            ApplyMethod(title.shift, 2 * LEFT),
+            ApplyMethod(f.shift, 2 * LEFT)
         )
         self.play(
             Write(examples)
@@ -973,6 +973,11 @@ class FracDeriv(Scene):
             Transform(title1, title2)
         )
         self.wait()
+
+
+class DifferEquation(Scene):
+    def construct(self):
+        pass
 
 
 class Cycloid(ParametricFunction):
