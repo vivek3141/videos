@@ -871,6 +871,10 @@ class CeilFunc(Scene):
         f.scale(1.5)
         f.center()
 
+        title = TexMobject(r"\text{ceil}(x) = \lceil x \rceil", color=YELLOW)
+        title.scale(1.5)
+        title.shift(3 * UP)
+
         self.play(Write(f))
         self.wait()
 
