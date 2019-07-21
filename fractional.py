@@ -1085,4 +1085,4 @@ class TChroneAnim(Scene):
     def update(self, c, dt, start=0):
         a = interpolate(start, 1, dt)
         pos = self.cyc.pos_func(a)
-        c.move_to(pos[0] * RIGHT + pos[1] * UP)
+        c.move_to(pos[0] * RIGHT + pos[1] * UP)        
