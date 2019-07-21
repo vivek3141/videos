@@ -991,8 +991,13 @@ class DifferEquation(Scene):
         t1.align_to(t2, LEFT)
         t3.align_to(t2, LEFT)
 
-        eq = VGroup(eq1, eq2, eq3)
+        e = VGroup(eq1, eq2, eq3)
         t = VGroup(t1, t2, t3)
+        et = VGroup(e, t)
+
+        b = Brace(et, LEFT)
+        bt = b.get_tex(r"J^af = ")
+        eq = VGroup(et, b, bt)
 
         self.play(Write(eq))
         self.wait()
