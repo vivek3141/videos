@@ -867,15 +867,27 @@ class CeilFunc(Scene):
                 "include_tip": False,
             }
         )
-        f = VGroup(func, axes)
-        f.scale(1.5)
+        f = VGroup(axes, func)
+        f.scale(1.25)
         f.center()
 
-        title = TexMobject(r"\text{ceil}(x) = \lceil x \rceil", color=YELLOW)
+        title = TexMobject(r"\text{ceil}(x) = \lceil x \rceil", color=GREEN)
         title.scale(1.5)
-        title.shift(3 * UP)
+        title.shift(3.5 * UP)
 
-        self.play(Write(f))
+        examples = TexMobject(
+            r"\text{ceil}(4.1) = 5 \\",r"\text{ceil}(4.6) = 5 \\",r"\text{ceil}(4.0) = 4 \\",
+                tex_to_color_map={r"\text{ceil}":GREEN})
+        examples.scale(1.5)
+
+        self.play(Write(f), Write(title))
+        self.wait()
+
+
+        self
+        self.play(
+            Write(examples)
+        )
         self.wait()
 
 
