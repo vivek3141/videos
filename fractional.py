@@ -638,7 +638,7 @@ class DifferIntegralOLD(Scene):
         )
 
         # f.scale(1.5)
-        #f.shift(1.5 * DOWN + 2.5 * LEFT)
+        # f.shift(1.5 * DOWN + 2.5 * LEFT)
 
         fs = VGroup(a1, f1, f2, f)
         fs.scale(1.5)
@@ -977,7 +977,25 @@ class FracDeriv(Scene):
 
 class DifferEquation(Scene):
     def construct(self):
-        pass
+        eq1 = TexMobject(r"D^a f").shift(1 * UP)
+        eq2 = TexMobject(r"f").shift(0 * UP)
+        eq3 = TexMobject(r"I^{|a|}").shift(-1 * UP)
+        
+        eq1.align_to(eq2, LEFT)
+        eq3.align_to(eq2, LEFT)
+
+        t1 = TexMobject(r"\text{if } a > 0").shift(1 * UP + 2 * RIGHT)
+        t2 = TexMobject(r"\text{if } a = 0").shift(0 * UP + 2 * RIGHT)
+        t3 = TexMobject(r"\text{if } a < 0").shift(-1 * UP + 2 * RIGHT)
+        
+        t1.align_to(t2, LEFT)
+        t3.align_to(t2, LEFT)
+
+        eq = VGroup(eq1, eq2, eq3)
+        t = VGroup(t1, t2, t3)
+
+        self.play(Write(eq))
+        self.wait()
 
 
 class Cycloid(ParametricFunction):
