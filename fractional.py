@@ -879,12 +879,16 @@ class CeilFunc(Scene):
             r"\text{ceil}(4.1) = 5 \\",r"\text{ceil}(4.6) = 5 \\",r"\text{ceil}(4.0) = 4 \\",
                 tex_to_color_map={r"\text{ceil}":GREEN})
         examples.scale(1.5)
+        example.shift(1.5 * RIGHT)
 
         self.play(Write(f), Write(title))
         self.wait()
 
 
-        self
+        self.play(
+            ApplyMethod(title.shift, 1.5 * LEFT),
+            ApplyMethod(f.shift, 1.5 * LEFT)
+        )
         self.play(
             Write(examples)
         )
