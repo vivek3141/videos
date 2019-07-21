@@ -846,7 +846,20 @@ class FracDeriv(Scene):
     def construct(self):
         eq1 = TexMobject(r"\frac{d^nf}{dx^n}(I^nf(t)) = f(t)")
 
+        rect = Rectangle(width=5, height=2, color=YELLOW,
+                         stroke_width=1.25 * DEFAULT_STROKE_WIDTH)
+
+        t1 = TexMobject(
+            r"\text{We are trying to preserve this}", color=RED)
+        t1.scale(1.5)
+        t1.shift(2 * DOWN)
+
         self.play(Write(eq1))
+        self.play(
+            Write(rect),
+            Write(t1)
+        )
+        self.wait()
 
 
 class Cycloid(ParametricFunction):
