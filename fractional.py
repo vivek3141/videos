@@ -1094,7 +1094,7 @@ class Nonlocality(Scene):
         title1.scale(2)
         title1.shift(3 * UP)
 
-        exp1 = TextMobject("$$ D^n $$ also depends on $$a$$")
+        exp1 = TexMobject(r"D^n \text{ also depends on }a")
         exp1.scale(1.25)
         exp1.shift(2 * DOWN)
 
