@@ -1227,12 +1227,18 @@ class TChroneAnim(Scene):
         )
 
         line1 = Line(1 * LEFT, 1 * RIGHT)
-        line1.shift(2 * LEFT)
-        eq1 = TexMobject(r"\sqrt{\pi}")
-        eq1.move_to(line1, 1 * DOWN)
+        line1.shift(3.5 * LEFT + 1 * DOWN)
+        e1 = TexMobject(r"\sqrt{\pi}")
+        e1.move_to(line1)
+        e1.shift(1 * DOWN)
 
-        ll1 = VGroup(line1, eq1)
-        ll2 = VGroup()
+        line2 = Line(1 * LEFT, 1 * RIGHT)
+        line2.shift(2 * RIGHT + 2 * DOWN)
+        e2 = TexMobject(r"\sqrt{\pi}")
+        e2.move_to(line2, 1 * DOWN)
+
+        ll1 = VGroup(line1, e1)
+        ll2 = VGroup(line2, e2)
 
         grp = VGroup(l1, l2, self.cyc, c1, c2, c3)
         self.wait()
