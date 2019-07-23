@@ -1212,7 +1212,24 @@ class TChroneAnim(Scene):
             r"\sqrt{\frac{2g}{\pi}}} T_0 = I^{\frac{1}{2}} \left ( \frac{ds}{dy} \right )")
         eq3.scale(1.25)
 
+        eq4 = TexMobject(
+            r"\frac{ds}{dy} = D^{\frac{1}{2}} \left ( \sqrt{\frac{2g}{\pi}} T_0 \right )")
+        eq4.scale(1.25)
+
+        eq5 = TexMobject(
+            r"= \frac{\sqrt{2g}}{\pi} \frac{T_0}{\sqrt{y}}")
+        eq5.scale(1.25)
+        eq5.shift(1.5 * DOWN)
+
         r1 = BackgroundRectangle(
+            eq2[1],
+            color=RED,
+            stroke_width=1.25*DEFAULT_STROKE_WIDTH,
+            stroke_opacity=1,
+            fill_opacity=0
+        )
+
+        r2 = BackgroundRectangle(
             eq2[1],
             color=RED,
             stroke_width=1.25*DEFAULT_STROKE_WIDTH,
@@ -1289,6 +1306,14 @@ class TChroneAnim(Scene):
 
         self.play(Transform(eq1, eq3), Uncreate(
             e1), Uncreate(r1), Uncreate(a1))
+        self.wait()
+
+        self.play(Transform(eq1, eq4))
+        self.wait()
+
+        self.play(eq1.shift, 1.5 * UP)
+        self.play(Write(eq5))
+        self.wait()
 
     def update(self, c, dt, start=0):
         a = interpolate(start, 1, dt)
