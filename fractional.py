@@ -1216,10 +1216,14 @@ class TChroneAnim(Scene):
             fill_opacity=0
         )
 
-        a1 = Arrow(0 * UP, 1 * DOWN, color=GREEN,
-                   stroke_width=2 * DEFAULT_STROKE_WIDTH)
+        a1 = Arrow(0 * UP, 1 * DOWN, color=GREEN,)
         a1.move_to(eq2[1])
         a1.shift(1.25 * DOWN)
+
+        e1 = TexMobject(r"I^{1/2}")
+        e1.scale(2)
+        e1.move_to(a1)
+        e1.shift(2 * DOWN)
 
         self.play(
             Write(self.cyc),
@@ -1276,7 +1280,7 @@ class TChroneAnim(Scene):
         self.wait()
 
         self.play(Write(r1))
-        self.play(Write(a1))
+        self.play(Write(a1), Write(e1))
         self.wait()
 
     def update(self, c, dt, start=0):
