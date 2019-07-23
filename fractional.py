@@ -1097,7 +1097,7 @@ class Nonlocality(Scene):
         exp1 = TextMobject("$$ D^n $$ also depends on $$a$$")
         exp1.scale(1.25)
         exp1.shift(2 * DOWN)
-        
+
         eq1 = TexMobject(
             r"D^n_a f(x) = \frac{1}{\Gamma(\lceil n \rceil - n)} \frac{d}{dx^{\lceil n \rceil}} \int_{a}^{x} (x-t)^{\lceil n \rceil - n -1} f(t) dt}")
         eq1.scale(1)
@@ -1112,4 +1112,5 @@ class Nonlocality(Scene):
         self.wait()
 
         self.play(Write(rect1), Write(rect2))
+        self.play(Write(title1), Write(exp1))
         self.wait()
