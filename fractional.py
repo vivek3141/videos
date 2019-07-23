@@ -1205,9 +1205,16 @@ class TChroneAnim(Scene):
         eq1.shift(2 * DOWN)
 
         eq2 = TexMobject(
-            r"\frac{T(y_0)}{\sqrt{pi}} = \frac{1}{\Gamma{1/2}} \frac{1}{\sqrt{2g}} \int_0^{y_0} \frac{1}{\sqrt{y_0-y}} \frac{ds}{dy} dy")
+            r"\frac{T(y_0)}{\sqrt{\pi}} = \frac{1}{\sqrt{2g}}", r"\frac{1}{\Gamma(1/2)} \int_0^{y_0} \frac{1}{\sqrt{y_0-y}} \frac{ds}{dy} dy")
         eq2.scale(1.25)
-        eq2.shift(2 * DOWN)
+
+        r1 = BackgroundRectangle(
+            eq2[1], 
+            color=RED, 
+            stroke_width=1.25*DEFAULT_STROKE_WIDTH, 
+            stroke_opacity=1, 
+            fill_opacity=0
+        )
 
         self.play(
             Write(self.cyc),
@@ -1261,6 +1268,9 @@ class TChroneAnim(Scene):
         self.play(
             Transform(eq1, eq2)
         )
+        self.wait()
+
+        self.play(Write(r1))
         self.wait()
 
     def update(self, c, dt, start=0):
