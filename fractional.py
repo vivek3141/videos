@@ -1230,12 +1230,17 @@ class TChroneAnim(Scene):
         )
 
         r2 = BackgroundRectangle(
-            eq2[1],
+            eq5,
             color=RED,
             stroke_width=1.25*DEFAULT_STROKE_WIDTH,
             stroke_opacity=1,
             fill_opacity=0
         )
+
+        fa = TextMobject("Cycloid", color=YELLOW)
+        fa.scale(1.5)
+        fa.move_to(eq5)
+        fa.shift(2 * DOWN)
 
         a1 = Arrow(0 * UP, 1 * DOWN, color=GREEN,)
         a1.move_to(eq2[1])
@@ -1313,6 +1318,9 @@ class TChroneAnim(Scene):
 
         self.play(eq1.shift, 1.5 * UP)
         self.play(Write(eq5))
+        self.wait()
+
+        self.play(Write(r2), Write(fa))
         self.wait()
 
     def update(self, c, dt, start=0):
