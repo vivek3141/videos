@@ -1233,6 +1233,10 @@ class TChroneAnim(Scene):
         self.play(Write(eq1))
         self.wait()
 
+        self.play(ApplyMethod(grp.scale, 0.75))
+        self.play(ApplyMethod(grp.shift, 3 * UP + 2 * RIGHT),
+                  ApplyMethod(eq1.center))
+
     def update(self, c, dt, start=0):
         a = interpolate(start, 1, dt)
         pos = self.cyc.pos_func(a)
