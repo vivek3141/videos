@@ -1102,10 +1102,12 @@ class Nonlocality(Scene):
             r"D^n_a f(x) = \frac{1}{\Gamma(\lceil n \rceil - n)} \frac{d}{dx^{\lceil n \rceil}} \int_{a}^{x} (x-t)^{\lceil n \rceil - n -1} f(t) dt}")
         eq1.scale(1)
 
-        rect1 = Rectangle(height=0.3, width=0.3, color=RED, stroke_width=DEFAULT_STROKE_WIDTH*1.25)
+        rect1 = Rectangle(height=0.3, width=0.3, color=RED,
+                          stroke_width=DEFAULT_STROKE_WIDTH*1.25)
         rect1.shift(5.175 * LEFT + 0.15 * DOWN)
 
-        rect2 = Rectangle(height=0.3, width=0.3, color=RED, stroke_width=DEFAULT_STROKE_WIDTH*1.25)
+        rect2 = Rectangle(height=0.3, width=0.3, color=RED,
+                          stroke_width=DEFAULT_STROKE_WIDTH*1.25)
         rect2.shift(0.85 * RIGHT + 0.5 * DOWN)
 
         self.play(Write(eq1))
@@ -1113,4 +1115,73 @@ class Nonlocality(Scene):
 
         self.play(Write(rect1), Write(rect2))
         self.play(Write(title1), Write(exp1))
+        self.wait()
+
+
+class Locality(Scene):
+    def construct(self):
+
+        title = TexMobject(r"\frac{d^nf}{dx^n} \text{ only depends on }x}?}",
+                           tex_to_color_map={r"\frac{d^nf}{dx^n}": YELLOW}
+                           )
+        title.shift(3 * UP)
+
+        f1 = ParametricFunction(
+            lambda t: np.array([t, t**2, 0]),
+            t_min=0,
+            t_max=math.sqrt(2),
+            color=RED,
+            stroke_width=1.25*DEFAULT_STROKE_WIDTH
+        )
+        a1 = Axes(
+            x_min=0,
+            x_max=2,
+            y_min=0,
+            y_max=2,
+            number_line_config={
+                "include_tip": False,
+            }
+        )
+
+        func1 = VGroup(a1, f1)
+        func1.scale(1.5)
+        func1.shift(4.5 * LEFT + 1 * DOWN)
+
+        f2 = ParametricFunction(
+            lambda t: np.array([t, 2*t, 0]),
+            t_min=0,
+            t_max=1,
+            color=BLUE,
+            stroke_width=1.25*DEFAULT_STROKE_WIDTH
+        )
+        a2 = Axes(
+            x_min=0,
+            x_max=2,
+            y_min=0,
+            y_max=2,
+            number_line_config={
+                "include_tip": False,
+            }
+        )
+
+        func2 = VGroup(a2, f2)
+        func2.scale(1.5)
+        func2.shift(3 * RIGHT + 1 * DOWN)
+
+        a = Arrow(1 * LEFT, 1 * RIGHT, color=GREEN)
+        a.scale(1.5)
+
+        t = TexMobject(r"\frac{d}{dx}")
+        t.shift(1 * UP)
+
+        arr = VGroup(a, t)
+
+        self.play(Write(title))
+        self.wait()
+
+        self.play(Write(func1))
+        self.wait()
+
+        self.play(Write(arr))
+        self.play(TransformFromCopy(func1, func2))
         self.wait()
