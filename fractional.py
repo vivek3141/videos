@@ -1126,8 +1126,9 @@ class Locality(Scene):
                            )
         title.shift(3 * UP)
 
-        title2 = TextMobject("Locality", color=RED)
-        title2.shift(2 * DOWN)
+        title2 = TexMobject(r"\frac{d^nf}{dx^n} \text{ has Locality}", color=RED)
+        title2.shift(3 * DOWN)
+        title2.scale(1.25)
 
         f1 = ParametricFunction(
             lambda t: np.array([t, t**2, 0]),
@@ -1190,4 +1191,27 @@ class Locality(Scene):
         self.wait()
 
         self.play(Write(title2))
+        self.wait()
+
+class Formulas(Scene):
+    def construct(self):
+        eq1 = TexMobject(r"D^a(x^n) = \frac{\Gamma(n+1)}{\Gamma(n+1-a)}x^{n-a}")
+        eq1.scale(1)
+        eq1.shift(3 * UP)
+
+        eq2 = TexMobject(r"D^{\frac{1}{2}} (1) = \frac{1}{\sqrt{\pi t}}")
+        eq2.scale(1)
+        eq2.shift(1 * UP)
+
+        eq3 = TexMobject(r"D^{\frac{1}{2}} (1) = \frac{1}{\sqrt{\pi t}}")
+        eq3.scale(1)
+        eq3.shift(1 * DOWN)
+
+        eq4 = TexMobject(r"D^{\frac{1}{2}} (1) = \frac{1}{\sqrt{\pi t}}")
+        eq4.scale(1)
+        eq4.shift(3 * DOWN)
+
+
+
+        self.play(Write(eq1))
         self.wait()
