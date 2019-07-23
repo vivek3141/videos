@@ -1208,6 +1208,10 @@ class TChroneAnim(Scene):
             r"\frac{T(y_0)}{\sqrt{\pi}} = \frac{1}{\sqrt{2g}}", r"\frac{1}{\Gamma(1/2)} \int_0^{y_0} \frac{1}{\sqrt{y_0-y}} \frac{ds}{dy} dy")
         eq2.scale(1.25)
 
+        eq3 = TexMobject(
+            r"\sqrt{\frac{2g}{\pi}}} T_0 = I^{\frac{1}{2}} \left ( \frac{ds}{dy} \right )")
+        eq3.scale(1.25)
+
         r1 = BackgroundRectangle(
             eq2[1],
             color=RED,
@@ -1220,10 +1224,10 @@ class TChroneAnim(Scene):
         a1.move_to(eq2[1])
         a1.shift(1.25 * DOWN)
 
-        e1 = TexMobject(r"I^{1/2}")
+        e1 = TexMobject(r"I^{\frac{1}{2}}")
         e1.scale(2)
         e1.move_to(a1)
-        e1.shift(2 * DOWN)
+        e1.shift(1 * DOWN)
 
         self.play(
             Write(self.cyc),
@@ -1282,6 +1286,9 @@ class TChroneAnim(Scene):
         self.play(Write(r1))
         self.play(Write(a1), Write(e1))
         self.wait()
+
+        self.play(Transform(eq1, eq3), Uncreate(
+            e1), Uncreate(r1), Uncreate(a1))
 
     def update(self, c, dt, start=0):
         a = interpolate(start, 1, dt)
