@@ -1085,4 +1085,14 @@ class TChroneAnim(Scene):
     def update(self, c, dt, start=0):
         a = interpolate(start, 1, dt)
         pos = self.cyc.pos_func(a)
-        c.move_to(pos[0] * RIGHT + pos[1] * UP)        
+        c.move_to(pos[0] * RIGHT + pos[1] * UP)
+
+
+class Nonlocality(Scene):
+    def construct(self):
+        eq1 = TexMobject(
+            r"D^n f(x) = \frac{1}{\Gamma(\lceil n \rceil - n)} \frac{d}{dx^{\lceil n \rceil}} \int_{a}^{x} (x-t)^{\lceil n \rceil - n -1} f(t) dt}")
+        eq1.scale(1)
+
+        self.play(Write(eq1))
+        self.wait()
