@@ -1226,10 +1226,10 @@ class TChroneAnim(Scene):
             rate_func=linear, run_time=2
         )
 
-        grp = VGroup(l1, l2, title, self.cyc, c1, c2, c3)
+        grp = VGroup(l1, l2, self.cyc, c1, c2, c3)
         self.wait()
 
-        self.play(ApplyMethod(grp.shift, 2 * UP))
+        self.play(ApplyMethod(grp.shift, 1.5 * UP), Uncreate(title))
         self.play(Write(eq1))
         self.wait()
 
