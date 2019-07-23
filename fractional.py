@@ -1011,83 +1011,6 @@ class DifferEquation(Scene):
         self.wait()
 
 
-class Cycloid(ParametricFunction):
-    CONFIG = {
-        "point_a": 3*LEFT+2*UP,
-        "radius": 2,
-        "end_theta": np.pi,
-        "density": 5*DEFAULT_POINT_DENSITY_1D,
-        "color": YELLOW
-    }
-
-    def __init__(self, **kwargs):
-        digest_config(self, kwargs)
-        ParametricFunction.__init__(self, self.pos_func, **kwargs)
-
-    def pos_func(self, t):
-        T = t*self.end_theta
-        return self.point_a + self.radius * np.array([
-            T - np.sin(T),
-            np.cos(T) - 1,
-            0
-        ])
-
-
-class TChroneAnim(Scene):
-    def construct(self):
-        title = TextMobject("Tautochrone problem", color=GREEN)
-        title.shift(3 * UP)
-        title.scale(1.5)
-
-        self.cyc = Cycloid(stroke_width=1.25 *
-                           DEFAULT_STROKE_WIDTH, color=GRAY)
-
-        c1 = Circle(radius=0.2, color=BLUE, fill_opacity=1, stroke_color=WHITE)
-        c1.shift(3*LEFT+2*UP)
-
-        c2 = Circle(radius=0.2, color=RED, fill_opacity=1,  stroke_color=WHITE)
-        pos = self.cyc.pos_func(0.5)
-        c2.move_to(pos[0] * RIGHT + pos[1] * UP)
-
-        c3 = Circle(radius=0.2, color=GREEN,
-                    fill_opacity=1,  stroke_color=WHITE)
-        pos = self.cyc.pos_func(0.75)
-        c3.move_to(pos[0] * RIGHT + pos[1] * UP)
-
-        l1 = Line(3*LEFT+2*UP, 3*LEFT+2*DOWN, color=GRAY,
-                  stroke_width=1.25 * DEFAULT_STROKE_WIDTH)
-        l2 = Line(3*LEFT+2*DOWN, 3*RIGHT+2*DOWN, color=GRAY,
-                  stroke_width=1.25 * DEFAULT_STROKE_WIDTH)
-
-        self.play(
-            Write(self.cyc),
-            Write(l1),
-            Write(l2),
-            Write(title)
-        )
-        self.play(
-            Write(c1),
-            Write(c2),
-            Write(c3)
-        )
-        self.wait()
-
-        self.play(
-            UpdateFromAlphaFunc(c1, lambda c, dt: self.update(c, dt, start=0)),
-            UpdateFromAlphaFunc(
-                c2, lambda c, dt: self.update(c, dt, start=0.5)),
-            UpdateFromAlphaFunc(
-                c3, lambda c, dt: self.update(c, dt, start=0.75)),
-            rate_func=linear, run_time=2
-        )
-        self.wait()
-
-    def update(self, c, dt, start=0):
-        a = interpolate(start, 1, dt)
-        pos = self.cyc.pos_func(a)
-        c.move_to(pos[0] * RIGHT + pos[1] * UP)
-
-
 class Nonlocality(Scene):
     def construct(self):
         title1 = TextMobject("Nonlocality", color=YELLOW)
@@ -1226,3 +1149,80 @@ class Formulas(Scene):
 
         self.play(Write(eq4))
         self.wait()
+
+
+class Cycloid(ParametricFunction):
+    CONFIG = {
+        "point_a": 3*LEFT+2*UP,
+        "radius": 2,
+        "end_theta": np.pi,
+        "density": 5*DEFAULT_POINT_DENSITY_1D,
+        "color": YELLOW
+    }
+
+    def __init__(self, **kwargs):
+        digest_config(self, kwargs)
+        ParametricFunction.__init__(self, self.pos_func, **kwargs)
+
+    def pos_func(self, t):
+        T = t*self.end_theta
+        return self.point_a + self.radius * np.array([
+            T - np.sin(T),
+            np.cos(T) - 1,
+            0
+        ])
+
+
+class TChroneAnim(Scene):
+    def construct(self):
+        title = TextMobject("Tautochrone problem", color=GREEN)
+        title.shift(3 * UP)
+        title.scale(1.5)
+
+        self.cyc = Cycloid(stroke_width=1.25 *
+                           DEFAULT_STROKE_WIDTH, color=GRAY)
+
+        c1 = Circle(radius=0.2, color=BLUE, fill_opacity=1, stroke_color=WHITE)
+        c1.shift(3*LEFT+2*UP)
+
+        c2 = Circle(radius=0.2, color=RED, fill_opacity=1,  stroke_color=WHITE)
+        pos = self.cyc.pos_func(0.5)
+        c2.move_to(pos[0] * RIGHT + pos[1] * UP)
+
+        c3 = Circle(radius=0.2, color=GREEN,
+                    fill_opacity=1,  stroke_color=WHITE)
+        pos = self.cyc.pos_func(0.75)
+        c3.move_to(pos[0] * RIGHT + pos[1] * UP)
+
+        l1 = Line(3*LEFT+2*UP, 3*LEFT+2*DOWN, color=GRAY,
+                  stroke_width=1.25 * DEFAULT_STROKE_WIDTH)
+        l2 = Line(3*LEFT+2*DOWN, 3*RIGHT+2*DOWN, color=GRAY,
+                  stroke_width=1.25 * DEFAULT_STROKE_WIDTH)
+
+        self.play(
+            Write(self.cyc),
+            Write(l1),
+            Write(l2),
+            Write(title)
+        )
+        self.play(
+            Write(c1),
+            Write(c2),
+            Write(c3)
+        )
+        self.wait()
+
+        self.play(
+            UpdateFromAlphaFunc(c1, lambda c, dt: self.update(c, dt, start=0)),
+            UpdateFromAlphaFunc(
+                c2, lambda c, dt: self.update(c, dt, start=0.5)),
+            UpdateFromAlphaFunc(
+                c3, lambda c, dt: self.update(c, dt, start=0.75)),
+            rate_func=linear, run_time=2
+        )
+        self.wait()
+
+    def update(self, c, dt, start=0):
+        a = interpolate(start, 1, dt)
+        pos = self.cyc.pos_func(a)
+        c.move_to(pos[0] * RIGHT + pos[1] * UP)
