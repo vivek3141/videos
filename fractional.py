@@ -1090,9 +1090,26 @@ class TChroneAnim(Scene):
 
 class Nonlocality(Scene):
     def construct(self):
+        title1 = TextMobject("Nonlocality", color=YELLOW)
+        title1.scale(2)
+        title1.shift(3 * UP)
+
+        exp1 = TextMobject("$$ D^n $$ also depends on $$a$$")
+        exp1.scale(1.25)
+        exp1.shift(2 * DOWN)
+        
         eq1 = TexMobject(
-            r"D^n f(x) = \frac{1}{\Gamma(\lceil n \rceil - n)} \frac{d}{dx^{\lceil n \rceil}} \int_{a}^{x} (x-t)^{\lceil n \rceil - n -1} f(t) dt}")
+            r"D^n_a f(x) = \frac{1}{\Gamma(\lceil n \rceil - n)} \frac{d}{dx^{\lceil n \rceil}} \int_{a}^{x} (x-t)^{\lceil n \rceil - n -1} f(t) dt}")
         eq1.scale(1)
 
+        rect1 = Rectangle(height=0.3, width=0.3, color=RED, stroke_width=DEFAULT_STROKE_WIDTH*1.25)
+        rect1.shift(5.175 * LEFT + 0.15 * DOWN)
+
+        rect2 = Rectangle(height=0.3, width=0.3, color=RED, stroke_width=DEFAULT_STROKE_WIDTH*1.25)
+        rect2.shift(0.85 * RIGHT + 0.5 * DOWN)
+
         self.play(Write(eq1))
+        self.wait()
+
+        self.play(Write(rect1), Write(rect2))
         self.wait()
