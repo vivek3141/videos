@@ -1209,12 +1209,17 @@ class TChroneAnim(Scene):
         eq2.scale(1.25)
 
         r1 = BackgroundRectangle(
-            eq2[1], 
-            color=RED, 
-            stroke_width=1.25*DEFAULT_STROKE_WIDTH, 
-            stroke_opacity=1, 
+            eq2[1],
+            color=RED,
+            stroke_width=1.25*DEFAULT_STROKE_WIDTH,
+            stroke_opacity=1,
             fill_opacity=0
         )
+
+        a1 = Arrow(0 * UP, 1 * DOWN, color=GREEN,
+                   stroke_width=2 * DEFAULT_STROKE_WIDTH)
+        a1.move_to(eq2[1])
+        a1.shift(1.25 * DOWN)
 
         self.play(
             Write(self.cyc),
@@ -1271,6 +1276,7 @@ class TChroneAnim(Scene):
         self.wait()
 
         self.play(Write(r1))
+        self.play(Write(a1))
         self.wait()
 
     def update(self, c, dt, start=0):
