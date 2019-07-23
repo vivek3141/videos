@@ -1199,6 +1199,9 @@ class TChroneAnim(Scene):
         l2 = Line(3*LEFT+2*DOWN, 3*RIGHT+2*DOWN, color=GRAY,
                   stroke_width=1.25 * DEFAULT_STROKE_WIDTH)
 
+        eq1 = TexMobject(
+            r"T(y_0) = \frac{1}{\sqrt{2g}} \int_0^{y_0} \frac{1}{\sqrt{y_0-y}} \frac{ds}{dy} dy")
+
         self.play(
             Write(self.cyc),
             Write(l1),
@@ -1220,6 +1223,8 @@ class TChroneAnim(Scene):
                 c3, lambda c, dt: self.update(c, dt, start=0.75)),
             rate_func=linear, run_time=2
         )
+
+        grp = VGroup(l1, l2, title, self.cyc, c1, c2, c3)
         self.wait()
 
     def update(self, c, dt, start=0):
