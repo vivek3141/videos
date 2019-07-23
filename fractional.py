@@ -1207,11 +1207,11 @@ class Formulas(Scene):
         eq2.shift(1 * UP)
 
         eq3 = TexMobject(
-            r"D^{a} \sin(t)) = \sin \left ( t + \frac{a \pi}{2} \right )")
+            r"D^{a} (\sin(t)) = \sin \left ( t + \frac{a \pi}{2} \right )")
         eq3.scale(1)
         eq3.shift(1 * DOWN)
 
-        eq4 = TexMobject(r"D^{\frac{1}{2}} (1) = \frac{1}{\sqrt{\pi t}}")
+        eq4 = TexMobject(r"D^{a} (e^{kt}) = k^{a}e^{kt}")
         eq4.scale(1)
         eq4.shift(3 * DOWN)
 
