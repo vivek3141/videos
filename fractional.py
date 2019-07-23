@@ -1204,6 +1204,11 @@ class TChroneAnim(Scene):
         eq1.scale(1.25)
         eq1.shift(2 * DOWN)
 
+        eq2 = TexMobject(
+            r"\frac{T(y_0)}{\sqrt{pi}} = \frac{1}{\Gamma{1/2}} \frac{1}{\sqrt{2g}} \int_0^{y_0} \frac{1}{\sqrt{y_0-y}} \frac{ds}{dy} dy")
+        eq2.scale(1.25)
+        eq2.shift(2 * DOWN)
+
         self.play(
             Write(self.cyc),
             Write(l1),
@@ -1225,7 +1230,7 @@ class TChroneAnim(Scene):
                 c3, lambda c, dt: self.update(c, dt, start=0.75)),
             rate_func=linear, run_time=2
         )
-
+        """
         line1 = Line(1 * LEFT, 1 * RIGHT)
         line1.shift(3.5 * LEFT + 1 * DOWN)
         e1 = TexMobject(r"\sqrt{\pi}")
@@ -1239,6 +1244,7 @@ class TChroneAnim(Scene):
 
         ll1 = VGroup(line1, e1)
         ll2 = VGroup(line2, e2)
+        """
 
         grp = VGroup(l1, l2, self.cyc, c1, c2, c3)
         self.wait()
@@ -1253,9 +1259,9 @@ class TChroneAnim(Scene):
         self.wait()
 
         self.play(
-            Write(ll1),
-            Write(ll2)
+            Transform(eq1, eq2)
         )
+        self.wait()
 
     def update(self, c, dt, start=0):
         a = interpolate(start, 1, dt)
