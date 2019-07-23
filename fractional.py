@@ -1201,6 +1201,8 @@ class TChroneAnim(Scene):
 
         eq1 = TexMobject(
             r"T(y_0) = \frac{1}{\sqrt{2g}} \int_0^{y_0} \frac{1}{\sqrt{y_0-y}} \frac{ds}{dy} dy")
+        eq1.scale(1.25)
+        eq1.shift(2 * DOWN)
 
         self.play(
             Write(self.cyc),
@@ -1225,6 +1227,10 @@ class TChroneAnim(Scene):
         )
 
         grp = VGroup(l1, l2, title, self.cyc, c1, c2, c3)
+        self.wait()
+
+        self.play(ApplyMethod(grp.shift, 2 * UP))
+        self.play(Write(eq1))
         self.wait()
 
     def update(self, c, dt, start=0):
