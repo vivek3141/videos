@@ -1121,10 +1121,13 @@ class Nonlocality(Scene):
 class Locality(Scene):
     def construct(self):
 
-        title = TexMobject(r"\frac{d^nf}{dx^n} \text{ only depends on }x}?}",
+        title = TexMobject(r"\frac{d^nf}{dx^n} \text{ only depends on } x",
                            tex_to_color_map={r"\frac{d^nf}{dx^n}": YELLOW}
                            )
         title.shift(3 * UP)
+
+        title2 = TextMobject("Locality", color=RED)
+        title2.shift(2 * DOWN)
 
         f1 = ParametricFunction(
             lambda t: np.array([t, t**2, 0]),
@@ -1184,4 +1187,7 @@ class Locality(Scene):
 
         self.play(Write(arr))
         self.play(TransformFromCopy(func1, func2))
+        self.wait()
+
+        self.play(Write(title2))
         self.wait()
