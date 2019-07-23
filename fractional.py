@@ -1226,6 +1226,14 @@ class TChroneAnim(Scene):
             rate_func=linear, run_time=2
         )
 
+        line1 = Line(1 * LEFT, 1 * RIGHT)
+        line1.shift(2 * LEFT)
+        eq1 = TexMobject(r"\sqrt{\pi}")
+        eq1.move_to(line1, 1 * DOWN)
+
+        ll1 = VGroup(line1, eq1)
+        ll2 = VGroup()
+
         grp = VGroup(l1, l2, self.cyc, c1, c2, c3)
         self.wait()
 
@@ -1234,9 +1242,14 @@ class TChroneAnim(Scene):
         self.wait()
 
         self.play(ApplyMethod(grp.scale, 0.25))
-        self.play(ApplyMethod(grp.shift, 2 * UP + 4 * RIGHT),
+        self.play(ApplyMethod(grp.shift, 1.75 * UP + 5 * RIGHT),
                   ApplyMethod(eq1.center))
         self.wait()
+
+        self.play(
+            Write(ll1),
+            Write(ll2)
+        )
 
     def update(self, c, dt, start=0):
         a = interpolate(start, 1, dt)
