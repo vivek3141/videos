@@ -1221,26 +1221,16 @@ class TChroneAnim(Scene):
         eq5.scale(1.25)
         eq5.shift(1.5 * DOWN)
 
-        r1 = BackgroundRectangle(
-            eq2[1],
-            color=RED,
-            stroke_width=1.25*DEFAULT_STROKE_WIDTH,
-            stroke_opacity=1,
-            fill_opacity=0
-        )
+        r1 = Rectangle(height=2, width=7, color=RED)
+        r1.move_to(eq2[1])
 
-        r2 = BackgroundRectangle(
-            eq5,
-            color=RED,
-            stroke_width=1.25*DEFAULT_STROKE_WIDTH,
-            stroke_opacity=1,
-            fill_opacity=0
-        )
+        r2 = Rectangle(height=2, width=3, color=RED)
+        r2.move_to(eq5)
 
         fa = TextMobject("Cycloid", color=YELLOW)
         fa.scale(1.5)
         fa.move_to(eq5)
-        fa.shift(2 * DOWN)
+        fa.shift(4 * RIGHT)
 
         a1 = Arrow(0 * UP, 1 * DOWN, color=GREEN,)
         a1.move_to(eq2[1])
@@ -1327,3 +1317,102 @@ class TChroneAnim(Scene):
         a = interpolate(start, 1, dt)
         pos = self.cyc.pos_func(a)
         c.move_to(pos[0] * RIGHT + pos[1] * UP)
+
+
+class RollAlongVector(Animation):
+    CONFIG = {
+        "rotation_vector": OUT,
+    }
+
+    def __init__(self, mobject, vector, **kwargs):
+        radius = mobject.get_width()/2
+        radians = get_norm(vector)/radius
+        last_alpha = 0
+        digest_config(self, kwargs, locals())
+        Animation.__init__(self, mobject, **kwargs)
+
+    def interpolate_mobject(self, alpha):
+        d_alpha = alpha - self.last_alpha
+        self.last_alpha = alpha
+        self.mobject.rotate_in_place(
+            d_alpha*self.radians,
+            self.rotation_vector
+        )
+        self.mobject.shift(d_alpha*self.vector)
+
+
+class CycloidScene(Scene):
+    CONFIG = {
+        "point_a": 6*LEFT+3*UP,
+        "radius": 2,
+        "end_theta": 2*np.pi
+    }
+
+    def construct(self):
+        self.generate_cycloid()
+        self.generate_circle()
+        self.generate_ceiling()
+
+    def grow_parts(self):
+        self.play(*[
+            ShowCreation(mob)
+            for mob in (self.circle, self.ceiling)
+        ])
+
+    def generate_cycloid(self):
+        self.cycloid = Cycloid(
+            point_a=self.point_a,
+            radius=self.radius,
+            end_theta=self.end_theta
+        )
+
+    def generate_circle(self, **kwargs):
+        self.circle = Circle(radius=self.radius, **kwargs)
+        self.circle.shift(self.point_a - self.circle.get_top())
+        radial_line = Line(
+            self.circle.get_center(), self.point_a
+        )
+        self.circle.add(radial_line)
+
+    def generate_ceiling(self):
+        self.ceiling = Line(FRAME_X_RADIUS*LEFT, FRAME_X_RADIUS*RIGHT)
+        self.ceiling.shift(self.cycloid.get_top()[1]*UP)
+
+    def draw_cycloid(self, run_time=3, *anims, **kwargs):
+        kwargs["run_time"] = run_time
+        self.play(
+            RollAlongVector(
+                self.circle,
+                self.cycloid.points[-1]-self.cycloid.points[0],
+                **kwargs
+            ),
+            ShowCreation(self.cycloid, **kwargs),
+            *anims
+        )
+
+    def roll_back(self, run_time=3, *anims, **kwargs):
+        kwargs["run_time"] = run_time
+        self.play(
+            RollAlongVector(
+                self.circle,
+                self.cycloid.points[0]-self.cycloid.points[- 1],
+                rotation_vector=IN,
+                **kwargs
+            ),
+            ShowCreation(
+                self.cycloid,
+                rate_func=lambda t: smooth(1-t),
+                **kwargs
+            ),
+            *anims
+        )
+        self.generate_cycloid()
+
+
+class DrawCycloid(CycloidScene):
+    def construct(self):
+        CycloidScene.construct(self)
+        self.grow_parts()
+        self.draw_cycloid()
+        self.wait()
+        self.roll_back()
