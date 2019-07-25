@@ -568,14 +568,19 @@ class FractionalIntegral(Scene):
         title.scale(1.25)
         title.shift(2.5 * UP)
 
+        title2 = TextMobject(
+            "Riemann-Liouville Fractional Integral", color=YELLOW)
+        title2.scale(1.25)
+        title2.shift(2.5 * UP)
+
         eq1 = TexMobject(
             r"I^n f(x) = \frac{1}{(n-1)!} \int_{a}^{x} (x-t)^{n-1} f(t) dt",
         )
         eq1.scale(1.5)
 
         eq2 = TexMobject(
-            r"I^n f(x) = \frac{1}{\Gamma(n-1)} \int_{a}^{x} (x-t)^{n-1} f(t) dt",
-            tex_to_color_map={r"\Gamma(n-1)": BLUE}
+            r"I^n f(x) = \frac{1}{\Gamma(n)} \int_{a}^{x} (x-t)^{n-1} f(t) dt",
+            tex_to_color_map={r"\Gamma(n)": BLUE}
         )
         eq2.scale(1.5)
 
@@ -592,10 +597,8 @@ class FractionalIntegral(Scene):
         self.play(Write(eq3))
         self.wait()
 
-
-class FracProperty(Scene):
-    def construct(self):
-        pass
+        self.play(Transform(title, title2))
+        self.wait()
 
 
 class DifferIntegralOLD(Scene):
@@ -1125,16 +1128,16 @@ class Formulas(Scene):
         eq1.scale(1)
         eq1.shift(3 * UP)
 
-        eq2 = TexMobject(r"D^{\frac{1}{2}} (1) = \frac{1}{\sqrt{\pi t}}")
+        eq2 = TexMobject(r"D^{\frac{1}{2}} (1) = \frac{1}{\sqrt{\pi x}}")
         eq2.scale(1)
         eq2.shift(1 * UP)
 
         eq3 = TexMobject(
-            r"D^{a} (\sin(t)) = \sin \left ( t + \frac{a \pi}{2} \right )")
+            r"D^{a} (\sin(x)) = \sin \left ( x + \frac{a \pi}{2} \right )")
         eq3.scale(1)
         eq3.shift(1 * DOWN)
 
-        eq4 = TexMobject(r"D^{a} (e^{kt}) = k^{a}e^{kt}")
+        eq4 = TexMobject(r"D^{a} (e^{kx}) = k^{a}e^{kx}")
         eq4.scale(1)
         eq4.shift(3 * DOWN)
 
@@ -1416,3 +1419,104 @@ class DrawCycloid(CycloidScene):
         self.draw_cycloid()
         self.wait()
         self.roll_back()
+
+
+class IntroQuote(Scene):
+    def construct(self):
+        quote = TextMobject(
+            "[Fractional derivatives] will lead to a paradox, ")
+        quote2 = TextMobject(
+            "from which one day useful consequences will be drawn.")
+        author = TextMobject("-Gottfried Leibniz", color=YELLOW)
+        author.shift(1 * DOWN + 1 * RIGHT)
+        quote.shift(2 * UP)
+        quote2.shift(UP)
+        self.play(Write(quote), Write(quote2))
+        self.play(Write(author))
+        self.wait()
+
+
+class PartOneTitle(Scene):
+    def construct(self):
+        part = TextMobject("Part 1")
+        part.scale(1.5)
+        part.shift(2 * UP)
+
+        title = TextMobject("Fractional Integration", color=RED)
+        title.scale(2)
+
+        self.play(Write(part))
+        self.play(Write(title))
+        self.wait(2)
+
+
+class GammaPlug(Scene):
+    def construct(self):
+        eq1 = TexMobject(r"\Gamma(1) = (1-1)! = 1")
+        eq1.shift(1 * UP)
+
+        eq2 = TexMobject(r"\Gamma(2) = (2-1)! = 1")
+
+        eq3 = TexMobject(r"\Gamma(3) = (3-1)! = 2")
+        eq3.shift(1 * DOWN)
+
+        self.play(Write(eq1))
+        self.wait()
+
+        self.play(Write(eq2))
+        self.wait()
+
+        self.play(Write(eq3))
+        self.wait()
+
+
+class PartTwoTitle(Scene):
+    def construct(self):
+        part = TextMobject("Part 2")
+        part.scale(1.5)
+        part.shift(2 * UP)
+
+        title = TextMobject("The Left R-L Fractional Derivative", color=GREEN)
+        title.scale(1.75)
+
+        self.play(Write(part))
+        self.play(Write(title))
+        self.wait(2)
+
+
+class ChainProduct(Scene):
+    def construct(self):
+        eq1 = TexMobject(r"\frac{d}{dx} f(g(x)) = f'(g(x)) g'(x)")
+        eq1.shift(1 * UP)
+        eq1.scale(1.5)
+
+        eq2 = TexMobject(r"\frac{d}{dx} f(x)g(x) = f'(x)g(x) + g'(x)f(x)")
+        eq2.scale(1.5)
+        eq2.shift(1 * DOWN)
+
+        text = TextMobject("These don't work", color=RED)
+        text.scale(1.5)
+        text.shift(3 * DOWN)
+
+        self.play(
+            Write(eq1),
+            Write(eq2)
+        )
+        self.wait()
+
+        self.play(Write(text))
+        self.wait()
+
+
+class PartThreeTitle(Scene):
+    def construct(self):
+        part = TextMobject("Part 3")
+        part.scale(1.5)
+        part.shift(2 * UP)
+
+        title = TextMobject("Tautochrone Problem", color=PURPLE)
+        title.scale(2)
+
+        self.play(Write(part))
+        self.play(Write(title))
+        self.wait(2)
