@@ -1,8 +1,5 @@
 from manimlib.imports import *
 import scipy.special
-from mpmath import differint
-from sympy import Float
-import mpmath as mp
 
 
 class Intro(Scene):
@@ -640,9 +637,6 @@ class DifferIntegralOLD(Scene):
             stroke_width=self.g_width
         )
 
-        # f.scale(1.5)
-        # f.shift(1.5 * DOWN + 2.5 * LEFT)
-
         fs = VGroup(a1, f1, f2, f)
         fs.scale(1.5)
         fs.shift(1.5 * DOWN + 2.5 * LEFT)
@@ -1265,21 +1259,6 @@ class TChroneAnim(Scene):
                 c3, lambda c, dt: self.update(c, dt, start=0.75)),
             rate_func=linear, run_time=2
         )
-        """
-        line1 = Line(1 * LEFT, 1 * RIGHT)
-        line1.shift(3.5 * LEFT + 1 * DOWN)
-        e1 = TexMobject(r"\sqrt{\pi}")
-        e1.move_to(line1)
-        e1.shift(1 * DOWN)
-
-        line2 = Line(1 * LEFT, 1 * RIGHT)
-        line2.shift(2 * RIGHT + 2 * DOWN)
-        e2 = TexMobject(r"\sqrt{\pi}")
-        e2.move_to(line2, 1 * DOWN)
-
-        ll1 = VGroup(line1, e1)
-        ll2 = VGroup(line2, e2)
-        """
 
         grp = VGroup(l1, l2, self.cyc, c1, c2, c3)
         self.wait()
