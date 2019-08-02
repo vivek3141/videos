@@ -570,7 +570,7 @@ class FTC(GraphScene):
         self.wait()
 
 
-class Example(Skkcene):
+class Example(Scene):
     def construct(self):
         c1 = ParametricFunction(
             lambda t: np.array([t, 3-t, 0]),
