@@ -35,14 +35,12 @@ class Setup(Scene):
         field = VGroup(axes, f)
         # field.scale(0.6)
 
-
         c = ParametricFunction(
             self.func,
             t_min=0,
             t_max=2*PI,
             stroke_width=1.5 * DEFAULT_STROKE_WIDTH,
         )
-
 
         curve = c
 
