@@ -1,7 +1,6 @@
 from manimlib.imports import *
 
 
-
 class Setup(Scene):
     CONFIG = {
         "color_list": ['#e22b2b', '#e88e10', '#eae600', '#88ea00',
@@ -28,52 +27,27 @@ class Setup(Scene):
         axes = Axes(**axes_config)
         f = VGroup(
             *[self.calc_field_color(x * RIGHT + y * UP, self.vect, prop=0)
-              for x in np.arange(-5, 5, 1)
-              for y in np.arange(-5, 5, 1)
+              for x in np.arange(-5, 6, 1)
+              for y in np.arange(-5, 6, 1)
               ]
         )
 
         field = VGroup(axes, f)
         # field.scale(0.6)
 
-        axes2 = Axes(**axes_config)
-        f2 = VGroup(
-            *[self.calc_field_color(x * RIGHT + y * UP, self.vect, prop=0).set_fill(opacity=0.5)
-              for x in np.arange(-5, 5, 1)
-              for y in np.arange(-5, 5, 1)
-              ]
-        )
-
-        field2 = VGroup(axes, f2)
-        # field2.scale(0.6)
 
         c = ParametricFunction(
             self.func,
-            t_min=-2,
-            t_max=2,
+            t_min=0,
+            t_max=2*PI,
+            stroke_width=1.5 * DEFAULT_STROKE_WIDTH,
         )
-        c.set_stroke(opacity=0.75)
-        label = TextMobject("C")
-        label.shift(3 * LEFT)
-        label.scale(2)
 
-        s = ParametricSurface(
-            self.surface,
-            u_min=-2,
-            u_max=2,
-            v_min=-1,
-            v_max=1,
-            fill_color=BLUE,
-            checkerboard_colors=[BLUE, BLUE],
-            stroke_color=BLUE
-        ).set_fill(opacity=0.5)
 
-        r = TextMobject("R", color=BLUE)
-        r.scale(1.5)
-        r.shift(2 * RIGHT + 3.5 * UP)
+        curve = c
 
-        curve = VGroup(label, c)
-        surface = VGroup(r, s)
+        field.set_fill(opacity=0.75)
+        field.set_stroke(opacity=0.75)
 
         self.play(ShowCreation(field))
         self.wait()
@@ -81,11 +55,8 @@ class Setup(Scene):
         self.play(Write(curve))
         self.wait()
 
-        self.play(Transform(field, field2))
-        self.wait()
-
-        #self.play(Write(surface))
-        #self.wait()
+        # self.play(Write(surface))
+        # self.wait()
 
     def calc_field_color(self, point, f, prop=0.0, opacity=None):
         x, y = point[:2]
@@ -104,16 +75,16 @@ class Setup(Scene):
     @staticmethod
     def vect(x, y):
         return np.array([
-            y,
-            x,
+            x*y+x,
+            x+y,
             0
         ])
 
     @staticmethod
     def func(t):
         return np.array([
-            1 - 2*t**2 + 2,
-            t**3 - 4*t,
+            math.cos(t),
+            math.sin(t),
             0
         ])
 
