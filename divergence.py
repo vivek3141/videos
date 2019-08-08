@@ -50,11 +50,8 @@ class FluxIntegral(Scene):
         t1.scale(1.5)
         t1.shift(3 * UP)
 
-        eq2f = TexMobject(r"\int_C \vec{F} \cdot \hat{n} \ \text{d}s")
-        eq2f.shift(3 * UP)
-
-        back = BackgroundRectangle(eq2f, color=BLACK, fill_opacity=1)
-        eq2 = VGroup(back, eq2f)
+        eq2 = TexMobject(r"\int_C \vec{F} \cdot \hat{n} \ \text{d}s")
+        eq2.shift(3 * UP)
 
         axes = Axes(
             x_min=-5,
