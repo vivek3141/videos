@@ -1,6 +1,28 @@
 from manimlib.imports import *
 
 
+class Intro(Scene):
+    def construct(self):
+        title = TextMobject("Green's Theorem")
+        title.scale(1.5)
+        title.to_edge(UP)
+        rect = ScreenRectangle(height=6)
+        rect.next_to(title, DOWN)
+
+        eq = TexMobject(r"\oiint_S \vec{F} \cdot d \vec{S} = \iiint_V \nabla \times \vec F\,dV")
+        eq.scale(1.5)
+        
+        self.play(
+            FadeInFromDown(title),
+            Write(rect)
+        )
+        self.wait()
+
+        self.play(Uncreate(rect), Uncreate(title))
+        self.play(Write(eq))
+        self.wait()
+
+
 class Setup(Scene):
     CONFIG = {
         "color_list": ['#e22b2b', '#e88e10', '#eae600', '#88ea00',
@@ -94,10 +116,12 @@ class Setup(Scene):
             0
         ])
 
+
 class Test(Scene):
     def construct(self):
-        eq = TexMobject(r"\oiint_S \vec{F} \cdot d \vec{S} = \iiint_V \nabla \times \vec F\,dV")
+        eq = TexMobject(
+            r"\oiint_S \vec{F} \cdot d \vec{S} = \iiint_V \nabla \times \vec F\,dV")
         eq.scale(1.5)
-        
+
         self.play(Write(eq))
         self.wait()
