@@ -37,7 +37,9 @@ class Intro(Scene):
 
 class FluxIntegral(Scene):
     def construct(self):
-        pass
+        eq1 = TexMobject(r"\int_C \vec{F} \cdot \hat{n} \mathbb{d}s")
+        self.play(Write(eq1))
+        self.wait()
 
 
 class Setup(Scene):
