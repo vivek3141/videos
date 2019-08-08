@@ -9,18 +9,35 @@ class Intro(Scene):
         rect = ScreenRectangle(height=6)
         rect.next_to(title, DOWN)
 
-        eq = TexMobject(r"\oiint_S \vec{F} \cdot d \vec{S} = \iiint_V \nabla \times \vec F\,dV")
+        eq = TexMobject(r"\oiint_S \vec{F} \cdot d \vec{S} = \iiint_V \nabla \times \vec{F} \,dV",
+                        tex_to_color_map={r"S": BLUE, r"\vec{F}": YELLOW,
+                                          r"\nabla": RED, r"V": GREEN})
         eq.scale(1.5)
-        
+
+        title2 = TextMobject("Divergence Theorem", color=PURPLE)
+        title2.scale(1.5)
+        title2.shift(3 * UP)
+
         self.play(
             FadeInFromDown(title),
             Write(rect)
         )
         self.wait()
 
-        self.play(Uncreate(rect), Uncreate(title))
-        self.play(Write(eq))
+        self.play(
+            Uncreate(rect),
+            Uncreate(title)
+        )
+        self.play(
+            Write(eq),
+            Write(title2)
+        )
         self.wait()
+
+
+class FluxIntegral(Scene):
+    def construct(self):
+        pass
 
 
 class Setup(Scene):
