@@ -93,20 +93,19 @@ class FluxIntegral(Scene):
             self.func,
             t_min=-2,
             t_max=2,
-            color=WHITE
-        )
-        curve2 = ParametricFunction(
-            self.func,
-            t_min=-2,
-            t_max=2,
-            color=WHITE,
-            stroke_opacity=0.75,
+            color=YELLOW_E
         )
 
-        rect = Rectangle(height=3, width=4, fill_color=BLACK, fill_opacity=1)
+        rect = Rectangle(
+            height=3,
+            width=4,
+            fill_color=BLACK,
+            fill_opacity=1,
+            stroke_width=1.5*DEFAULT_STROKE_WIDTH
+        )
         rect.shift(2.5 * RIGHT + 1.5 * DOWN)
 
-        point = 2 * UP + 2 * RIGHT
+        point = 2 * UP + 2.474606757 * RIGHT
         l1 = Line(0.5 * RIGHT, point)
         l2 = Line(4.5 * RIGHT, point)
 
@@ -123,9 +122,10 @@ class FluxIntegral(Scene):
 
         self.play(
             Write(rect),
-            Transform(curve, curve2),
+            #Transform(curve, curve2),
             Write(l1),
-            Write(l2))
+            Write(l2)
+        )
         self.wait()
 
     def calc_field_color(self, point, f, prop=0.0, opacity=None):
