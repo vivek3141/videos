@@ -113,12 +113,13 @@ class FluxIntegral(Scene):
         b.shift(0.75 * RIGHT)
         t = b.get_tex(r"\Delta s")
 
-        p1 = self.func2(-0.57)
+        p1 = self.func2(-0.58)
         p2 = self.func2(-0.52)
 
-        v1 = self.calc_field_color(p1[0]*RIGHT + p1[1]*UP, self.vect)
-        v2 = self.calc_field_color(p1[0]*RIGHT + p1[1]*UP, self.vect)
-        v2.shift(-(p1[0]*RIGHT + p1[1]*UP)+(p2[0]*RIGHT + p2[1]*UP))
+        v1 = Vector(np.array([0.5, 0.75, 0]), color=RED).shift(
+            p1[0]*RIGHT + p1[1]*UP)
+        v2 = Vector(np.array([0.5, 0.75, 0]), color=RED).shift(
+            p2[0]*RIGHT + p2[1]*UP)
 
         r = Rectangle(
             height=3,
@@ -191,6 +192,14 @@ class FluxIntegral(Scene):
         return np.array([
             1 - 2*t**2 + 2,
             t**3 - 4*t,
+            0
+        ])
+
+    @staticmethod
+    def func2(t, a=9.6):
+        return np.array([
+            a*(1-2*t**2-0.4),
+            a*(t**3-4*t-2.03),
             0
         ])
 
@@ -332,7 +341,7 @@ class Test(Scene):
             stroke_width=1.25*DEFAULT_STROKE_WIDTH
         )
         r1 = VGroup(r, c1, b, t, v1, v2)
-        #r1.shift(2.5 * RIGHT + 1.5 * DOWN)
+        # r1.shift(2.5 * RIGHT + 1.5 * DOWN)
 
         self.play(Write(r1))
         self.wait()
