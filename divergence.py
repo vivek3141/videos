@@ -281,9 +281,29 @@ class Setup(Scene):
 
 class Test(Scene):
     def construct(self):
-        eq = TexMobject(
-            r"\oiint_S \vec{F} \cdot d \vec{S} = \iiint_V \nabla \times \vec F\,dV")
-        eq.scale(1.5)
+        a=9.6
+        c1 = ParametricFunction(
+            lambda t: np.array([a*(1-2*t**2-0.4), a*(t**3-4*t-2.03), 0]),
+            t_min=-0.6,
+            t_max=-0.5,
+            color=YELLOW_E
+        )
 
-        self.play(Write(eq))
+        b = Brace(c1, LEFT)
+        b.rotate(-0.9520791718223733 + (PI/2))
+        b.shift(0.5 * RIGHT)
+        t = b.get_tex(r"\Delta s")
+
+
+        r = Rectangle(
+            height=3,
+            width=4,
+            fill_color=BLACK,
+            fill_opacity=1,
+            stroke_width=1.25*DEFAULT_STROKE_WIDTH
+        )
+        r1 = VGroup(r, c1,b,t)
+        #r1.shift(2.5 * RIGHT + 1.5 * DOWN)
+
+        self.play(Write(r1))
         self.wait()
