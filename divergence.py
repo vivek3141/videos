@@ -272,6 +272,12 @@ class Setup(Scene):
 
 
 class Test(Scene):
+    CONFIG = {
+        "color_list": ['#e22b2b', '#e88e10', '#eae600', '#88ea00',
+                       '#00eae2', '#0094ea', "#2700ea", '#bf00ea', '#ea0078'],
+        "prop": 0
+    }
+
     def construct(self):
         a = 9.6
         c1 = ParametricFunction(
@@ -296,8 +302,8 @@ class Test(Scene):
         p1 = self.func2(-0.58)
         p2 = self.func2(-0.51)
 
-        v1 = self.calc_field_color([p1[0], p1[1]], self.vect)
-        v2 = self.calc_field_color([p2[0], p2[1]], self.vect)
+        v1 = self.calc_field_color(p1[0]*RIGHT + p1[1]*UP, self.vect)
+        v2 = self.calc_field_color(p2[0]*RIGHT + p2[1]*UP, self.vect)
 
         r = Rectangle(
             height=3,
@@ -319,7 +325,7 @@ class Test(Scene):
             a*(t**3-4*t-2.03),
             0
         ])
-    
+
     def calc_field_color(self, point, f, prop=0.0, opacity=None):
         x, y = point[:2]
         func = f(x, y)
