@@ -303,7 +303,8 @@ class Test(Scene):
         p2 = self.func2(-0.51)
 
         v1 = self.calc_field_color(p1[0]*RIGHT + p1[1]*UP, self.vect)
-        v2 = self.calc_field_color(p2[0]*RIGHT + p2[1]*UP, self.vect)
+        v2 = self.calc_field_color(p1[0]*RIGHT + p1[1]*UP, self.vect)
+        v2.shift(p2[0]*RIGHT + p2[1]*UP)
 
         r = Rectangle(
             height=3,
