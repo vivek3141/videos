@@ -93,3 +93,11 @@ class Setup(Scene):
             v*(t**3 - 4*t),
             0
         ])
+
+class Test(Scene):
+    def construct(self):
+        eq = TexMobject(r"\oiint_S \vec{F} \cdot d \vec{S} = \iiint_V \nabla \times \vec F\,dV")
+        eq.scale(1.5)
+        
+        self.play(Write(eq))
+        self.wait()
