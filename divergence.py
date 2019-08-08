@@ -86,19 +86,15 @@ class FluxIntegral(Scene):
               ]
         )
 
-        field2 = VGroup(axes, f)
+        field2 = VGroup(axes, f2)
+        field2.set_fill(opacity=0.5)
+        field2.set_stroke(opacity=0.5)
 
-        c = ParametricFunction(
+        curve = ParametricFunction(
             self.func,
             t_min=-2,
-            t_max=2,
-            stroke_width=1.5 * DEFAULT_STROKE_WIDTH,
+            t_max=2
         )
-
-        curve = c
-
-        field2.set_fill(opacity=0.75)
-        field2.set_stroke(opacity=0.75)
 
         self.play(Write(eq1), Write(t1))
         self.wait()
