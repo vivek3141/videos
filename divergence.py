@@ -94,13 +94,31 @@ class FluxIntegral(Scene):
         )
 
         a = 9.6
-
         c1 = ParametricFunction(
             lambda t: np.array([a*(1-2*t**2-0.4), a*(t**3-4*t-2.03), 0]),
             t_min=-0.6,
             t_max=-0.5,
             color=YELLOW_E
         )
+
+        c2 = ParametricFunction(
+            self.func2,
+            t_min=-0.58,
+            t_max=-0.51,
+            color=YELLOW_E
+        )
+
+        b = Brace(c2, LEFT)
+        b.rotate(-0.9520791718223733 + (PI/2))
+        b.shift(0.75 * RIGHT)
+        t = b.get_tex(r"\Delta s")
+
+        p1 = self.func2(-0.57)
+        p2 = self.func2(-0.52)
+
+        v1 = self.calc_field_color(p1[0]*RIGHT + p1[1]*UP, self.vect)
+        v2 = self.calc_field_color(p1[0]*RIGHT + p1[1]*UP, self.vect)
+        v2.shift(-(p1[0]*RIGHT + p1[1]*UP)+(p2[0]*RIGHT + p2[1]*UP))
 
         r = Rectangle(
             height=3,
@@ -109,7 +127,7 @@ class FluxIntegral(Scene):
             fill_opacity=1,
             stroke_width=1.25*DEFAULT_STROKE_WIDTH
         )
-        r1 = VGroup(r, c1)
+        r1 = VGroup(r, c1, b, t, v1, v2)
         r1.shift(2.5 * RIGHT + 1.5 * DOWN)
 
         point = 2 * UP + 2.474606757 * RIGHT
@@ -299,12 +317,12 @@ class Test(Scene):
         b.shift(0.75 * RIGHT)
         t = b.get_tex(r"\Delta s")
 
-        p1 = self.func2(-0.58)
-        p2 = self.func2(-0.51)
+        p1 = self.func2(-0.57)
+        p2 = self.func2(-0.52)
 
         v1 = self.calc_field_color(p1[0]*RIGHT + p1[1]*UP, self.vect)
         v2 = self.calc_field_color(p1[0]*RIGHT + p1[1]*UP, self.vect)
-        v2.shift(p2[0]*RIGHT + p2[1]*UP)
+        v2.shift(-(p1[0]*RIGHT + p1[1]*UP)+(p2[0]*RIGHT + p2[1]*UP))
 
         r = Rectangle(
             height=3,
