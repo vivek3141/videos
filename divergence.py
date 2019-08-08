@@ -176,14 +176,6 @@ class FluxIntegral(Scene):
             0
         ])
 
-    @staticmethod
-    def surface(t, v):
-        return np.array([
-            1 - 2*t**2 + 2,
-            v*(t**3 - 4*t),
-            0
-        ])
-
 
 class Setup(Scene):
     CONFIG = {
@@ -281,7 +273,7 @@ class Setup(Scene):
 
 class Test(Scene):
     def construct(self):
-        a=9.6
+        a = 9.6
         c1 = ParametricFunction(
             lambda t: np.array([a*(1-2*t**2-0.4), a*(t**3-4*t-2.03), 0]),
             t_min=-0.6,
@@ -289,11 +281,23 @@ class Test(Scene):
             color=YELLOW_E
         )
 
-        b = Brace(c1, LEFT)
+        c2 = ParametricFunction(
+            self.func2,
+            t_min=-0.58,
+            t_max=-0.51,
+            color=YELLOW_E
+        )
+
+        b = Brace(c2, LEFT)
         b.rotate(-0.9520791718223733 + (PI/2))
-        b.shift(0.5 * RIGHT)
+        b.shift(0.75 * RIGHT)
         t = b.get_tex(r"\Delta s")
 
+        p1 = self.func2(-0.58)
+        p2 = self.func2(-0.51)
+
+        v1 = self.calc_field_color([p1[0], p1[1]], self.vect)
+        v2 = self.calc_field_color([p2[0], p2[1]], self.vect)
 
         r = Rectangle(
             height=3,
@@ -302,8 +306,46 @@ class Test(Scene):
             fill_opacity=1,
             stroke_width=1.25*DEFAULT_STROKE_WIDTH
         )
-        r1 = VGroup(r, c1,b,t)
+        r1 = VGroup(r, c1, b, t, v1, v2)
         #r1.shift(2.5 * RIGHT + 1.5 * DOWN)
 
         self.play(Write(r1))
         self.wait()
+
+    @staticmethod
+    def func2(t, a=9.6):
+        return np.array([
+            a*(1-2*t**2-0.4),
+            a*(t**3-4*t-2.03),
+            0
+        ])
+    
+    def calc_field_color(self, point, f, prop=0.0, opacity=None):
+        x, y = point[:2]
+        func = f(x, y)
+        magnitude = math.sqrt(func[0] ** 2 + func[1] ** 2)
+        func = func / magnitude if magnitude != 0 else np.array([0, 0])
+        func = func / 1.5
+        v = int(magnitude / 10 ** prop)
+        index = len(self.color_list) - 1 if v > len(self.color_list) - 1 else v
+        c = self.color_list[index]
+        v = Vector(func, color=c).shift(point)
+        if opacity:
+            v.set_fill(opacity=opacity)
+        return v
+
+    @staticmethod
+    def vect(x, y):
+        return np.array([
+            x*y+x,
+            x+y,
+            0
+        ])
+
+    @staticmethod
+    def func(t):
+        return np.array([
+            1 - 2*t**2 + 2,
+            t**3 - 4*t,
+            0
+        ])
