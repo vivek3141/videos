@@ -36,10 +36,118 @@ class Intro(Scene):
 
 
 class FluxIntegral(Scene):
+    CONFIG = {
+        "color_list": ['#e22b2b', '#e88e10', '#eae600', '#88ea00',
+                       '#00eae2', '#0094ea', "#2700ea", '#bf00ea', '#ea0078'],
+        "prop": 0
+    }
+
     def construct(self):
-        eq1 = TexMobject(r"\int_C \vec{F} \cdot \hat{n} \mathbb{d}s")
-        self.play(Write(eq1))
+        eq1 = TexMobject(r"\int_C \vec{F} \cdot \hat{n} \ \text{d}s")
+        eq1.scale(1.5)
+
+        t1 = TextMobject("Flux Integral", color=BLUE)
+        t1.scale(1.5)
+        t1.shift(3 * UP)
+
+        eq2f = TexMobject(r"\int_C \vec{F} \cdot \hat{n} \ \text{d}s")
+        eq2f.shift(3 * UP)
+
+        back = BackgroundRectangle(eq2f, color=BLACK, fill_opacity=1)
+        eq2 = VGroup(back, eq2f)
+
+        axes = Axes(
+            x_min=-5,
+            x_max=5,
+            y_min=-5,
+            y_max=5,
+            number_line_config={"include_tip": False, }
+        )
+        f = VGroup(
+            *[self.calc_field_color(x * RIGHT + y * UP, self.vect, prop=0)
+              for x in np.arange(-5, 6, 1)
+              for y in np.arange(-5, 6, 1)
+              ]
+        )
+
+        field = VGroup(axes, f)
+
+        axes2 = Axes(
+            x_min=-5,
+            x_max=5,
+            y_min=-5,
+            y_max=5,
+            number_line_config={"include_tip": False, }
+        )
+        f2 = VGroup(
+            *[self.calc_field_color(x * RIGHT + y * UP, self.vect, prop=0)
+              for x in np.arange(-5, 6, 1)
+              for y in np.arange(-5, 6, 1)
+              ]
+        )
+
+        field2 = VGroup(axes, f)
+
+        c = ParametricFunction(
+            self.func,
+            t_min=-2,
+            t_max=2,
+            stroke_width=1.5 * DEFAULT_STROKE_WIDTH,
+        )
+
+        curve = c
+
+        field2.set_fill(opacity=0.75)
+        field2.set_stroke(opacity=0.75)
+
+        self.play(Write(eq1), Write(t1))
         self.wait()
+
+        self.play(Uncreate(t1), Transform(eq1, eq2))
+
+        self.play(ShowCreation(field), Uncreate(eq1))
+        self.wait()
+
+        self.play(Transform(field, field2), Write(curve))
+        self.wait()
+
+    def calc_field_color(self, point, f, prop=0.0, opacity=None):
+        x, y = point[:2]
+        func = f(x, y)
+        magnitude = math.sqrt(func[0] ** 2 + func[1] ** 2)
+        func = func / magnitude if magnitude != 0 else np.array([0, 0])
+        func = func / 1.5
+        v = int(magnitude / 10 ** prop)
+        index = len(self.color_list) - 1 if v > len(self.color_list) - 1 else v
+        c = self.color_list[index]
+        v = Vector(func, color=c).shift(point)
+        if opacity:
+            v.set_fill(opacity=opacity)
+        return v
+
+    @staticmethod
+    def vect(x, y):
+        return np.array([
+            x*y+x,
+            x+y,
+            0
+        ])
+
+    @staticmethod
+    def func(t):
+        return np.array([
+            1 - 2*t**2 + 2,
+            t**3 - 4*t,
+            0
+        ])
+
+    @staticmethod
+    def surface(t, v):
+        return np.array([
+            1 - 2*t**2 + 2,
+            v*(t**3 - 4*t),
+            0
+        ])
 
 
 class Setup(Scene):
