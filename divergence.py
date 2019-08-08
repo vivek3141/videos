@@ -69,7 +69,6 @@ class FluxIntegral(Scene):
               for y in np.arange(-5, 6, 1)
               ]
         )
-
         field = VGroup(axes, f)
 
         axes2 = Axes(
