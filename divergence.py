@@ -96,18 +96,42 @@ class FluxIntegral(Scene):
             color=YELLOW_E
         )
 
-        rect = Rectangle(
+        a = 9.6
+
+        c1 = ParametricFunction(
+            lambda t: np.array([a*(1-2*t**2-0.4), a*(t**3-4*t-2.03), 0]),
+            t_min=-0.6,
+            t_max=-0.5,
+            color=YELLOW_E
+        )
+
+        r = Rectangle(
             height=3,
             width=4,
             fill_color=BLACK,
             fill_opacity=1,
-            stroke_width=1.5*DEFAULT_STROKE_WIDTH
+            stroke_width=1.25*DEFAULT_STROKE_WIDTH
         )
-        rect.shift(2.5 * RIGHT + 1.5 * DOWN)
+        r1 = VGroup(r, c1)
+        r1.shift(2.5 * RIGHT + 1.5 * DOWN)
 
         point = 2 * UP + 2.474606757 * RIGHT
-        l1 = Line(0.5 * RIGHT, point)
-        l2 = Line(4.5 * RIGHT, point)
+        p1 = 0.125 * UP + 0.125 * RIGHT
+        p2 = 0.125 * UP + 0.125 * LEFT
+
+        l1 = Line(0.5 * RIGHT, point-p1, stroke_width=1*DEFAULT_STROKE_WIDTH)
+        l2 = Line(4.5 * RIGHT, point-p2, stroke_width=1*DEFAULT_STROKE_WIDTH)
+
+        r2 = Rectangle(
+            height=0.25,
+            width=0.25,
+            fill_color=BLACK,
+            fill_opacity=0,
+            stroke_width=1*DEFAULT_STROKE_WIDTH
+        )
+        r2.shift(point)
+
+        zoom = VGroup(l1, l2, r1, r2)
 
         self.play(Write(eq1), Write(t1))
         self.wait()
@@ -121,10 +145,7 @@ class FluxIntegral(Scene):
         self.wait()
 
         self.play(
-            Write(rect),
-            #Transform(curve, curve2),
-            Write(l1),
-            Write(l2)
+            Write(zoom)
         )
         self.wait()
 
