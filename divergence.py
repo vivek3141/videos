@@ -185,6 +185,14 @@ class FluxIntegral(Scene):
             Uncreate(t)
         )
 
+        def focus(opacity=0.25):
+            for i in self.mobjects:
+                i.set_stroke(opacity=opacity)
+            v1.set_stroke(opacity=1)
+            v2.set_stroke(opacity=1)
+
+        focus()
+
         self.play(ll1.move_to, ORIGIN)
         self.play(ApplyMethod(ll1.scale, 2))
 
@@ -227,6 +235,8 @@ class FluxIntegral(Scene):
             a*(t**3-4*t-2.03),
             0
         ])
+
+    
 
 
 class Setup(Scene):
