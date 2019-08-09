@@ -139,8 +139,10 @@ class FluxIntegral(Scene):
             stroke_opacity=0.75
         )
 
-        ll = VGroup(p, b, t, v1, v2)
-        r1 = VGroup(r, c1, ll)
+        ll1 = VGroup(p, v1, v2)
+        ll2 = VGroup(r, c1, b, t)
+        r1 = VGroup(ll2, ll1)
+
         r1.shift(2.5 * RIGHT + 1.5 * DOWN)
 
         point = 2 * UP + 2.474606757 * RIGHT
@@ -159,7 +161,7 @@ class FluxIntegral(Scene):
         )
         r2.shift(point)
 
-        zoom = VGroup(l1, l2, r1, r2)
+        zoom = VGroup(r2, l1, l2, r1)
 
         self.play(Write(eq1), Write(t1))
         self.wait()
@@ -177,7 +179,16 @@ class FluxIntegral(Scene):
         )
         self.wait()
 
-        self.play(ApplyMethod(ll.rotate, 0.6187171549725232))
+        self.play(
+            ApplyMethod(ll1.rotate, -0.6187171549725232 + (PI/2)),
+            Uncreate(b),
+            Uncreate(t)
+        )
+
+        self.play(ll1.move_to, ORIGIN)
+        self.play(ApplyMethod(ll1.scale, 2))
+
+        self.wait()
 
     def calc_field_color(self, point, f, prop=0.0, opacity=None):
         x, y = point[:2]
@@ -363,15 +374,21 @@ class Test(Scene):
             color=BLUE,
             fill_opacity=0.75,
             stroke_opacity=0.75)
-        ll = VGroup(p, v1, v2)
-        r1 = VGroup(r, c1, ll, b, t,)
+        l1 = VGroup(p, v1, v2)
+        l2 = VGroup(r, c1, b, t)
+        r1 = VGroup(l2, l1)
 
         # r1.shift(2.5 * RIGHT + 1.5 * DOWN)
 
         self.play(Write(r1))
         self.wait()
 
-        self.play(ApplyMethod(ll.rotate, -0.6187171549725232 + (PI/2)))
+        self.play(ApplyMethod(
+            l1.rotate, -0.6187171549725232 + (PI/2)), Uncreate(l2))
+
+        self.play(l1.center, ApplyMethod(l1.scale, 2))
+
+        self.wait()
 
     @staticmethod
     def func2(t, a=9.6):
