@@ -128,7 +128,19 @@ class FluxIntegral(Scene):
             fill_opacity=1,
             stroke_width=1.25*DEFAULT_STROKE_WIDTH
         )
-        r1 = VGroup(r, c1, b, t, v1, v2)
+
+        p = Polygon(
+            np.array([0.5, 0.75, 0])+p1[0]*RIGHT + p1[1]*UP,
+            np.array([0.5, 0.75, 0])+p2[0]*RIGHT + p2[1]*UP,
+            p2[0]*RIGHT + p2[1]*UP,
+            p1[0]*RIGHT + p1[1]*UP,
+            color=BLUE,
+            fill_opacity=0.75,
+            stroke_opacity=0.75
+        )
+        
+        ll = VGroup(p, b, t, v1, v2)
+        r1 = VGroup(r, c1, ll)
         r1.shift(2.5 * RIGHT + 1.5 * DOWN)
 
         point = 2 * UP + 2.474606757 * RIGHT
