@@ -185,16 +185,17 @@ class FluxIntegral(Scene):
             Uncreate(t)
         )
 
-        def focus(opacity=0.25):
+        def focus(opacity=0.1):
             for i in self.mobjects:
                 i.set_stroke(opacity=opacity)
             v1.set_stroke(opacity=1)
             v2.set_stroke(opacity=1)
+            field.set_fill(opacity=opacity)
 
         focus()
 
         self.play(ll1.move_to, ORIGIN)
-        self.play(ApplyMethod(ll1.scale, 2))
+        self.play(ApplyMethod(ll1.scale, 3))
 
         self.wait()
 
