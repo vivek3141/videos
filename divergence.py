@@ -326,12 +326,13 @@ class Test(Scene):
         b.shift(0.75 * RIGHT)
         t = b.get_tex(r"\Delta s")
 
-        p1 = self.func2(-0.57)
+        p1 = self.func2(-0.58)
         p2 = self.func2(-0.52)
 
-        v1 = self.calc_field_color(p1[0]*RIGHT + p1[1]*UP, self.vect)
-        v2 = self.calc_field_color(p1[0]*RIGHT + p1[1]*UP, self.vect)
-        v2.shift(-(p1[0]*RIGHT + p1[1]*UP)+(p2[0]*RIGHT + p2[1]*UP))
+        v1 = Vector(np.array([0.5, 0.75, 0]), color=RED).shift(
+            p1[0]*RIGHT + p1[1]*UP)
+        v2 = Vector(np.array([0.5, 0.75, 0]), color=RED).shift(
+            p2[0]*RIGHT + p2[1]*UP)
 
         r = Rectangle(
             height=3,
@@ -340,7 +341,17 @@ class Test(Scene):
             fill_opacity=1,
             stroke_width=1.25*DEFAULT_STROKE_WIDTH
         )
-        r1 = VGroup(r, c1, b, t, v1, v2)
+        p = Polygon(
+            np.array([0.5, 0.75, 0])+p1[0]*RIGHT + p1[1]*UP,
+            np.array([0.5, 0.75, 0])+p2[0]*RIGHT + p2[1]*UP,
+            p2[0]*RIGHT + p2[1]*UP,
+            p1[0]*RIGHT + p1[1]*UP,
+            color=BLUE,
+            fill_opacity=0.75,
+            stroke_opacity=0.75)
+        ll = VGroup(p, b, t, v1, v2)
+        r1 = VGroup(r, c1, ll)
+
         # r1.shift(2.5 * RIGHT + 1.5 * DOWN)
 
         self.play(Write(r1))
