@@ -197,6 +197,8 @@ class FluxIntegral(Scene):
         self.play(ll1.move_to, ORIGIN)
         self.play(ApplyMethod(ll1.scale, 3))
 
+        b1 = Brace(ll1, DOWN)
+
         self.wait()
 
     def calc_field_color(self, point, f, prop=0.0, opacity=None):
