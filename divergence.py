@@ -69,9 +69,18 @@ class FluxIntegral(Scene):
 
         n = VGroup(
             *[self.n(t)
-              for t in np.arange(-2, 3, 1)]
+              for t in np.arange(-1.9, 2.001, 0.5)]
         )
-        field = VGroup(axes, f, n)
+        field = VGroup(axes, f)
+
+        lbl = TexMobject(r"\hat{n}")
+        lv = Vector([0, 1, 0], color=GREEN)
+        lv.center()
+        lbl.shift(0.25 * RIGHT)
+        lv.shift(0.25 * LEFT)
+        lr = Rectangle(height=1.5, width=1.5)
+        nll = VGroup(lr, lv, lbl)
+        nll.shift(5 * RIGHT + 3 * UP)
 
         axes2 = Axes(
             x_min=-5,
@@ -87,9 +96,27 @@ class FluxIntegral(Scene):
               ]
         )
 
-        field2 = VGroup(axes, f2)
+        field2 = VGroup(axes2, f2)
         field2.set_fill(opacity=0.5)
         field2.set_stroke(opacity=0.5)
+
+        axes3 = Axes(
+            x_min=-5,
+            x_max=5,
+            y_min=-5,
+            y_max=5,
+            number_line_config={"include_tip": False, }
+        )
+        f3 = VGroup(
+            *[self.calc_field_color(x * RIGHT + y * UP, self.vect, prop=0)
+              for x in np.arange(-5, 6, 1)
+              for y in np.arange(-5, 6, 1)
+              ]
+        )
+
+        field3 = VGroup(axes3, f3)
+        field3.set_fill(opacity=0.5)
+        field3.set_stroke(opacity=0.5)
 
         curve = ParametricFunction(
             self.func,
@@ -179,6 +206,12 @@ class FluxIntegral(Scene):
         self.play(Transform(field, field2), Write(curve))
         self.wait()
 
+        self.play(Write(n), Uncreate(field), Write(nll))
+        self.wait()
+
+        self.play(ShowCreation(field3), Uncreate(nll))
+        self.wait()
+
         self.play(
             Write(zoom)
         )
@@ -195,7 +228,8 @@ class FluxIntegral(Scene):
                 i.set_stroke(opacity=opacity)
             v1.set_stroke(opacity=1)
             v2.set_stroke(opacity=1)
-            field.set_fill(opacity=opacity)
+            field3.set_fill(opacity=opacity)
+            n.set_fill(opacity=opacity)
 
         focus()
 
