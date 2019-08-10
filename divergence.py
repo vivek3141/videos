@@ -262,6 +262,12 @@ class FluxIntegral(Scene):
         head.scale(1.5)
         head.shift(3 * UP)
 
+        hhead2 = TexMobject(r"\text{Area per unit time} = (v \cdot \hat{n})(\Delta s)")
+        rhead2 = BackgroundRectangle(hhead2, color=BLACK, fill_opacity=1)
+        head2 = VGroup(rhead2, hhead2)
+        head2.scale(1.5)
+        head2.shift(3 * UP)
+
         self.play(ShowCreation(line1), Write(lbl1))
         self.wait()
         
@@ -273,6 +279,25 @@ class FluxIntegral(Scene):
         self.wait()
 
         self.play(Write(head))
+        self.wait()
+
+        self.play(Transform(head, head2))
+        self.wait()
+
+        a = VGroup(*self.mobjects)
+
+        self.play(Uncreate(a))
+
+        feq = TexMobject(r"\text{Flow rate over C} = \int_C (\vec{F} \cdot \hat{n}) \ ds",
+        tex_to_color_map={r"\text{Flow rate over C}":BLUE})
+
+        feq2 = TexMobject(r"\text{Flux = \int_C (\vec{F} \cdot \hat{n}) \ ds",
+        tex_to_color_map={r"\text{Flow rate over C}":BLUE})
+
+        self.play(Write(feq))
+        self.wait()
+
+        self.play(Transform(feq, feq2))
         self.wait()
 
     def calc_field_color(self, point, f, prop=0.0, opacity=None):
