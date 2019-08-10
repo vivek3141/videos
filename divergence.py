@@ -433,9 +433,12 @@ class Test(Scene):
             color=BLUE,
             fill_opacity=0.75,
             stroke_opacity=0.75)
-        l1 = VGroup(p, v1, v2)
+        ll1 = VGroup(p, v1, v2)
         l2 = VGroup(r, c1, b, t)
-        r1 = VGroup(l2, l1)
+        r1 = VGroup(l2, ll1)
+        
+
+        
 
         # r1.shift(2.5 * RIGHT + 1.5 * DOWN)
 
@@ -443,9 +446,27 @@ class Test(Scene):
         self.wait()
 
         self.play(ApplyMethod(
-            l1.rotate, -0.6187171549725232 + (PI/2)), Uncreate(l2))
+            ll1.rotate, -0.6187171549725232 + (PI/2)), Uncreate(l2))
 
-        self.play(l1.center, ApplyMethod(l1.scale, 2))
+        self.play(ll1.move_to, ORIGIN)
+        self.play(ApplyMethod(ll1.scale, 3))
+        
+        w = ll1.get_width()
+        h = ll1.get_height()
+        line1 = Line((w/2 - 1) * LEFT, (w/2) * RIGHT, color=YELLOW, stroke_width=6).shift(h/2 * DOWN)
+        lbl1 = TexMobject(r"\Delta s")
+        lbl1.shift((h/2 + 1) * DOWN)
+        lbl1.scale(2)
+
+        lbl2 = TexMobject(r"v \Delta t")
+        lbl2.shift((w/2 + 1) * LEFT)
+        lbl2.scale(2)
+
+        self.play(Write(line1), Write(lbl1))
+        self.wait()
+        
+        self.play(Write(lbl2))
+        self.wait()
 
         self.wait()
 
