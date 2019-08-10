@@ -66,7 +66,12 @@ class FluxIntegral(Scene):
               for y in np.arange(-5, 6, 1)
               ]
         )
-        field = VGroup(axes, f)
+
+        n = VGroup(
+            *[self.n(t)
+              for t in np.arange(-2, 3, 1)]
+        )
+        field = VGroup(axes, f, n)
 
         axes2 = Axes(
             x_min=-5,
@@ -197,8 +202,6 @@ class FluxIntegral(Scene):
         self.play(ll1.move_to, ORIGIN)
         self.play(ApplyMethod(ll1.scale, 3))
 
-        b1 = Brace(ll1, DOWN)
-
         self.wait()
 
     def calc_field_color(self, point, f, prop=0.0, opacity=None):
@@ -231,6 +234,17 @@ class FluxIntegral(Scene):
             0
         ])
 
+    def n(self, t):
+        vect = np.array([
+            -3*t**2 + 4,
+            -4*t,
+            0
+        ])
+        mag = math.sqrt(vect[0] ** 2 + vect[1] ** 2)
+        v = Vector((1/mag) * vect, color=GREEN).shift(self.func(t)
+                                                      [0] * RIGHT + self.func(t)[1] * UP)
+        return v
+
     @staticmethod
     def func2(t, a=9.6):
         return np.array([
@@ -238,8 +252,6 @@ class FluxIntegral(Scene):
             a*(t**3-4*t-2.03),
             0
         ])
-
-    
 
 
 class Setup(Scene):
