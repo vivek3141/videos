@@ -238,6 +238,43 @@ class FluxIntegral(Scene):
 
         self.wait()
 
+        w = ll1.get_width()
+        h = ll1.get_height()
+
+        line1 = Line((w/2 - 1) * LEFT, (w/2) * RIGHT, color=YELLOW, stroke_width=6).shift(h/2 * DOWN)
+        lbl1 = TexMobject(r"\Delta s")
+        lbl1.shift((h/2 + 1) * DOWN)
+        lbl1.scale(1.5)
+
+        lbl2 = TexMobject(r"v \Delta t")
+        lbl2.shift((w/2 + 1) * LEFT)
+        lbl2.scale(1.5)
+
+        lbv = Vector([0, h, 0], color=GREEN).shift(h/2 * DOWN + (w/2) * RIGHT)
+
+        lbl3 = TexMobject(r"v \Delta t \cdot \hat{n}")
+        lbl3.shift((w/2 + 1.5) * RIGHT)
+        lbl3.scale(1.5)
+
+        hhead = TexMobject(r"\text{Area} = (v \cdot \hat{n})(\Delta t)(\Delta s)")
+        rhead = BackgroundRectangle(hhead, color=BLACK, fill_opacity=1)
+        head = VGroup(rhead, hhead)
+        head.scale(1.5)
+        head.shift(3 * UP)
+
+        self.play(ShowCreation(line1), Write(lbl1))
+        self.wait()
+        
+        self.play(Write(lbl2))
+        self.wait()
+
+        self.play(TransformFromCopy(v2, lbv))
+        self.play(Write(lbl3))
+        self.wait()
+
+        self.play(Write(head))
+        self.wait()
+
     def calc_field_color(self, point, f, prop=0.0, opacity=None):
         x, y = point[:2]
         func = f(x, y)
@@ -469,7 +506,7 @@ class Test(Scene):
         lbl3.shift((w/2 + 1.5) * RIGHT)
         lbl3.scale(1.5)
 
-        hhead = TexMobject(r"\text{Area: } = (v \cdot \hat{n})(\Delta t)(\Delta s)")
+        hhead = TexMobject(r"\text{Area} = (v \cdot \hat{n})(\Delta t)(\Delta s)")
         rhead = BackgroundRectangle(hhead, color=BLACK, fill_opacity=1)
         head = VGroup(rhead, hhead)
         head.scale(1.5)
@@ -486,8 +523,6 @@ class Test(Scene):
         self.wait()
 
         self.play(Write(head))
-        self.wait()
-
         self.wait()
 
     @staticmethod
