@@ -241,7 +241,8 @@ class FluxIntegral(Scene):
         w = ll1.get_width()
         h = ll1.get_height()
 
-        line1 = Line((w/2 - 1) * LEFT, (w/2) * RIGHT, color=YELLOW, stroke_width=6).shift(h/2 * DOWN)
+        line1 = Line((w/2 - 1) * LEFT, (w/2) * RIGHT,
+                     color=YELLOW, stroke_width=6).shift(h/2 * DOWN)
         lbl1 = TexMobject(r"\Delta s")
         lbl1.shift((h/2 + 1) * DOWN)
         lbl1.scale(1.5)
@@ -256,13 +257,15 @@ class FluxIntegral(Scene):
         lbl3.shift((w/2 + 1.5) * RIGHT)
         lbl3.scale(1.5)
 
-        hhead = TexMobject(r"\text{Area} = (v \cdot \hat{n})(\Delta t)(\Delta s)")
+        hhead = TexMobject(
+            r"\text{Area} = (v \cdot \hat{n})(\Delta t)(\Delta s)")
         rhead = BackgroundRectangle(hhead, color=BLACK, fill_opacity=1)
         head = VGroup(rhead, hhead)
         head.scale(1.5)
         head.shift(3 * UP)
 
-        hhead2 = TexMobject(r"\text{Area per unit time} = (v \cdot \hat{n})(\Delta s)")
+        hhead2 = TexMobject(
+            r"\text{Area per unit time} = (v \cdot \hat{n})(\Delta s)")
         rhead2 = BackgroundRectangle(hhead2, color=BLACK, fill_opacity=1)
         head2 = VGroup(rhead2, hhead2)
         head2.scale(1.5)
@@ -270,7 +273,7 @@ class FluxIntegral(Scene):
 
         self.play(ShowCreation(line1), Write(lbl1))
         self.wait()
-        
+
         self.play(Write(lbl2))
         self.wait()
 
@@ -289,10 +292,10 @@ class FluxIntegral(Scene):
         self.play(Uncreate(a))
 
         feq = TexMobject(r"\text{Flow rate over C} = \int_C (\vec{F} \cdot \hat{n}) \ ds",
-        tex_to_color_map={r"\text{Flow rate over C}":BLUE})
+                         tex_to_color_map={r"\text{Flow rate over C}": BLUE})
 
-        feq2 = TexMobject(r"\text{Flux = \int_C (\vec{F} \cdot \hat{n}) \ ds",
-        tex_to_color_map={r"\text{Flow rate over C}":BLUE})
+        feq2 = TexMobject(r"\text{Flux} = \int_C (\vec{F} \cdot \hat{n}) \ ds",
+                          tex_to_color_map={r"\text{Flux}": BLUE})
 
         self.play(Write(feq))
         self.wait()
@@ -498,9 +501,6 @@ class Test(Scene):
         ll1 = VGroup(p, v1, v2)
         l2 = VGroup(r, c1, b, t)
         r1 = VGroup(l2, ll1)
-        
-
-        
 
         # r1.shift(2.5 * RIGHT + 1.5 * DOWN)
 
@@ -512,11 +512,12 @@ class Test(Scene):
 
         self.play(ll1.move_to, ORIGIN)
         self.play(ApplyMethod(ll1.scale, 3))
-        
+
         w = ll1.get_width()
         h = ll1.get_height()
 
-        line1 = Line((w/2 - 1) * LEFT, (w/2) * RIGHT, color=YELLOW, stroke_width=6).shift(h/2 * DOWN)
+        line1 = Line((w/2 - 1) * LEFT, (w/2) * RIGHT,
+                     color=YELLOW, stroke_width=6).shift(h/2 * DOWN)
         lbl1 = TexMobject(r"\Delta s")
         lbl1.shift((h/2 + 1) * DOWN)
         lbl1.scale(1.5)
@@ -531,7 +532,8 @@ class Test(Scene):
         lbl3.shift((w/2 + 1.5) * RIGHT)
         lbl3.scale(1.5)
 
-        hhead = TexMobject(r"\text{Area} = (v \cdot \hat{n})(\Delta t)(\Delta s)")
+        hhead = TexMobject(
+            r"\text{Area} = (v \cdot \hat{n})(\Delta t)(\Delta s)")
         rhead = BackgroundRectangle(hhead, color=BLACK, fill_opacity=1)
         head = VGroup(rhead, hhead)
         head.scale(1.5)
@@ -539,7 +541,7 @@ class Test(Scene):
 
         self.play(ShowCreation(line1), Write(lbl1))
         self.wait()
-        
+
         self.play(Write(lbl2))
         self.wait()
 
