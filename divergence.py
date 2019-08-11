@@ -425,16 +425,12 @@ class FluxExample(Scene):
         r1 = Rectangle(height=1, width=2, color=YELLOW)
         r1.shift(3 * DOWN)
 
-        self.play(ShowCreation(field), Write(rect))
-        self.wait()
-
-        self.play(Write(curve))
-        self.wait()
-
         self.play(Write(eq1))
         self.wait()
 
         self.play(Write(eq2), Write(eq3))
+        self.play(ShowCreation(field), Write(rect))
+        self.play(Write(curve))
         self.wait()
 
         self.play(Write(eq4))
