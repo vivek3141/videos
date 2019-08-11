@@ -483,7 +483,11 @@ class DivTwoEq(Scene):
                         tex_to_color_map={r"\vec{F}": YELLOW, r"C": GREEN, r"R": BLUE, r"\nabla": RED})
         eq.scale(1.5)
 
-        self.play(Write(eq))
+        title = TextMobject("2D Divergence Theorem", color=PURPLE)
+        title.scale(1.5)
+        title.shift(3 * UP)
+
+        self.play(Write(eq), Write(title))
         self.wait()
 
 
