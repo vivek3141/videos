@@ -394,7 +394,7 @@ class FluxExample(Scene):
         grp = VGroup(field, curve, rect)
         grp.scale(0.35)
 
-        grp.shift(3 * LEFT  + 2.5 * UP)
+        grp.shift(3 * LEFT + 2.3 * UP)
 
         eq1 = TexMobject(r"\text{Find} \int_C (\vec{F} \cdot \hat{n}) \ ds")
         eq1.shift(3 * RIGHT + 3 * UP)
@@ -409,7 +409,8 @@ class FluxExample(Scene):
             r"\int_C \vec{F} \cdot d\vec{r} = \int_a^b F(r(t)) || r'(t) || \ dt")
         eq4.shift(0 * UP)
 
-        eq5 = TexMobject(r"\int_C (\vec{F} \cdot \hat{n}) \ ds = \int_a^b F(r(t)) \cdot \hat{n}(r(t)) \ || r'(t) || \ dt")
+        eq5 = TexMobject(
+            r"\int_C (\vec{F} \cdot \hat{n}) \ ds = \int_a^b F(r(t)) \cdot \hat{n}(r(t)) \ || r'(t) || \ dt")
         eq5.shift(1.5 * DOWN)
 
         eq6 = TexMobject(
@@ -418,6 +419,9 @@ class FluxExample(Scene):
 
         eq7 = TexMobject(r"= 2 \pi")
         eq7.shift(3 * DOWN)
+
+        r1 = Rectangle(height=1, width=2, color=YELLOW)
+        r1.shift(3 * DOWN)
 
         self.play(ShowCreation(field), Write(rect))
         self.wait()
@@ -440,7 +444,8 @@ class FluxExample(Scene):
         self.play(Transform(eq5, eq6))
         self.wait()
 
-        self.play(Write(eq6))
+        self.play(Write(eq7))
+        self.play(Write(r1))
         self.wait()
 
     def calc_field_color(self, point, f, prop=0.0, opacity=None):
