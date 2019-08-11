@@ -406,11 +406,11 @@ class FluxExample(Scene):
         eq3.shift(3 * RIGHT + 1 * UP)
 
         eq4 = TexMobject(
-            r"\int_C \vec{F} \cdot d\vec{r} = \int_a^b F(r(t)) || r'(t) || \ dt")
+            r"\int_C \vec{F} \cdot d\vec{r} = \int_a^b F(r(t)) \ || r'(t) || \ dt")
         eq4.shift(0 * UP)
 
         eq5 = TexMobject(
-            r"\int_C (\vec{F} \cdot \hat{n}) \ ds = \int_a^b F(r(t)) \cdot \hat{n}(r(t)) \ || r'(t) || \ dt")
+            r"\int_C (\vec{F} \cdot \hat{n}) \ ds = \int_a^b (F(r(t)) \cdot \hat{n}(r(t)) )\ || r'(t) || \ dt")
         eq5.shift(1.5 * DOWN)
 
         eq6 = TexMobject(
@@ -475,6 +475,16 @@ class FluxExample(Scene):
             math.sin(t),
             0
         ])
+
+
+class DivTwoEq(Scene):
+    def construct(self):
+        eq = TexMobject(r"\oint_C (\vec{F} \cdot \hat{n}) \ ds = \iint_R \nabla \cdot \vec{F} \ dA",
+                        tex_to_color_map={r"\vec{F}": YELLOW, r"C": GREEN, r"R": BLUE, r"\nabla": RED})
+        eq.scale(1.5)
+
+        self.play(Write(eq))
+        self.wait()
 
 
 class Setup(Scene):
