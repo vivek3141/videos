@@ -414,7 +414,9 @@ class FluxExample(Scene):
         eq5.shift(1.5 * DOWN)
 
         eq6 = TexMobject(
-            r"\int_C (\vec{F} \cdot \hat{n}) \ ds = \int_0^{2\pi} \begin{bmatrix}\cos(t)\sin(t) + \cos(t) \\ \cos(t) + \sin(t) \end{bmatrix} \cdot \begin{bmatrix}\cos(t) \\ \sin(t)\end{bmatrix} \text{d}t")
+            r"\int_C (\vec{F} \cdot \hat{n}) \ ds = \int_0^{2\pi} " +
+            r"\begin{bmatrix}\cos(t)\sin(t) + \cos(t) \\ \cos(t) + " +
+            r"\sin(t) \end{bmatrix} \cdot \begin{bmatrix}\cos(t) \\ \sin(t)\end{bmatrix} \text{d}t")
         eq6.shift(1.5 * DOWN)
 
         eq7 = TexMobject(r"= 2 \pi")
