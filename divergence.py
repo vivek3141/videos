@@ -247,25 +247,25 @@ class FluxIntegral(Scene):
         lbl1.shift((h/2 + 1) * DOWN)
         lbl1.scale(1.5)
 
-        lbl2 = TexMobject(r"v \Delta t")
+        lbl2 = TexMobject(r"F \Delta t")
         lbl2.shift((w/2 + 1) * LEFT)
         lbl2.scale(1.5)
 
         lbv = Vector([0, h, 0], color=GREEN).shift(h/2 * DOWN + (w/2) * RIGHT)
 
-        lbl3 = TexMobject(r"v \Delta t \cdot \hat{n}")
+        lbl3 = TexMobject(r"F \Delta t \cdot \hat{n}")
         lbl3.shift((w/2 + 1.5) * RIGHT)
         lbl3.scale(1.5)
 
         hhead = TexMobject(
-            r"\text{Area} = (v \cdot \hat{n})(\Delta t)(\Delta s)")
+            r"\text{Area} = (F \cdot \hat{n})(\Delta t)(\Delta s)")
         rhead = BackgroundRectangle(hhead, color=BLACK, fill_opacity=1)
         head = VGroup(rhead, hhead)
         head.scale(1.5)
         head.shift(3 * UP)
 
         hhead2 = TexMobject(
-            r"\text{Area per unit time} = (v \cdot \hat{n})(\Delta s)")
+            r"\text{Area per unit time} = (F \cdot \hat{n})(\Delta s)")
         rhead2 = BackgroundRectangle(hhead2, color=BLACK, fill_opacity=1)
         head2 = VGroup(rhead2, hhead2)
         head2.scale(1.5)
@@ -292,10 +292,10 @@ class FluxIntegral(Scene):
         self.play(Uncreate(a))
 
         feq = TexMobject(r"\text{Flow rate over C} = \int_C (\vec{F} \cdot \hat{n}) \ ds",
-                         tex_to_color_map={r"\text{Flow rate over C}": BLUE})
+                         tex_to_color_map={r"\text{Flow rate over C}": BLUE}).scale(2)
 
         feq2 = TexMobject(r"\text{Flux} = \int_C (\vec{F} \cdot \hat{n}) \ ds",
-                          tex_to_color_map={r"\text{Flux}": BLUE})
+                          tex_to_color_map={r"\text{Flux}": BLUE}).scale(2)
 
         self.play(Write(feq))
         self.wait()
