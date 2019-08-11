@@ -491,6 +491,117 @@ class DivTwoEq(Scene):
         self.wait()
 
 
+class CurlDemo(Scene):
+    CONFIG = {
+        "color_list": ['#e22b2b', '#e88e10', '#eae600', '#88ea00',
+                       '#00eae2', '#0094ea', "#2700ea", '#bf00ea', '#ea0078'],
+        "prop": 0.1
+    }
+
+    def construct(self):
+        axes = Axes(
+            x_min=-5,
+            x_max=5,
+            y_min=-5,
+            y_max=5,
+            number_line_config={"include_tip": False}
+        )
+        f1 = VGroup(
+            *[self.calc_field_color(x * RIGHT + y * UP, self.field1, prop=0)
+                for x in np.arange(-5, 5, 1)
+                for y in np.arange(-5, 5, 1)
+              ]
+        )
+        c = Circle(fill_color=RED, fill_opacity=0.25, color=WHITE, radius=1)
+        field1 = VGroup(axes, f1, c)
+        field1.scale(0.6)
+
+        axes = Axes(**axes_config)
+        f2 = VGroup(
+            *[self.calc_field_color(x * RIGHT + y * UP, self.field2, prop=0)
+                for x in np.arange(-5, 5, 1)
+                for y in np.arange(-5, 5, 1)
+              ]
+        )
+
+        c = Circle(fill_color=RED, fill_opacity=0.25, color=WHITE, radius=1)
+        field2 = VGroup(axes, f2, c)
+        field2.scale(0.6)
+
+        axes = Axes(**axes_config)
+        f3 = VGroup(
+            *[self.calc_field_color(x * RIGHT + y * UP, self.field3, prop=0)
+                for x in np.arange(-5, 5, 1)
+                for y in np.arange(-5, 5, 1)
+              ]
+        )
+
+        c = Circle(fill_color=RED, fill_opacity=0.25, color=WHITE, radius=1)
+        field3 = VGroup(axes, f3, c)
+        field3.scale(0.6)
+
+        text1 = TexMobject(r"\nabla \cdot \textbf{F} > 0",
+                           tex_to_color_map={">": YELLOW})
+        text1.shift(3 * UP)
+
+        text2 = TexMobject(r"\nabla \cdot \textbf{F} < 0",
+                           tex_to_color_map={"<": YELLOW})
+        text2.shift(3 * UP)
+
+        self.play(Write(field1))
+        self.wait()
+
+        # self.play(Write(c))
+        self.play(Write(text1))
+        self.wait()
+
+        self.play(
+            Transform(field1, field2),
+            Transform(text1, text2)
+        )
+        self.wait()
+
+        self.play(
+            Transform(field1, field3)
+        )
+        self.wait()
+
+    def calc_field_color(self, point, f, prop=0.0, opacity=None):
+        x, y = point[:2]
+        func = f(x, y)
+        magnitude = math.sqrt(func[0] ** 2 + func[1] ** 2)
+        func = func / magnitude if magnitude != 0 else np.array([0, 0])
+        func = func / 1.5
+        v = int(magnitude / 10 ** prop)
+        index = len(self.color_list) - 1 if v > len(self.color_list) - 1 else v
+        c = self.color_list[index]
+        v = Vector(func, color=c).shift(point)
+        if opacity:
+            v.set_fill(opacity=opacity)
+        return v
+
+    @staticmethod
+    def field1(x, y):
+        return np.array([
+            x,
+            y
+        ])
+
+    @staticmethod
+    def field2(x, y):
+        return np.array([
+            -x,
+            -y
+        ])
+
+    @staticmethod
+    def field3(x, y):
+        return np.array([
+            x,
+            0
+        ])
+
+
 class Setup(Scene):
     CONFIG = {
         "color_list": ['#e22b2b', '#e88e10', '#eae600', '#88ea00',
