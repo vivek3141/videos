@@ -352,6 +352,12 @@ class FluxIntegral(Scene):
             0
         ])
 
+class FluxExample(Scene):
+    CONFIG = {
+        "color_list": ['#e22b2b', '#e88e10', '#eae600', '#88ea00',
+                       '#00eae2', '#0094ea', "#2700ea", '#bf00ea', '#ea0078'],
+        "prop": 0
+    }
 
 class Setup(Scene):
     CONFIG = {
@@ -416,27 +422,7 @@ class Setup(Scene):
         func = func / 1.5
         v = int(magnitude / 10 ** prop)
         index = len(self.color_list) - 1 if v > len(self.color_list) - 1 else v
-        c = self.color_list[index]
-        v = Vector(func, color=c).shift(point)
-        if opacity:
-            v.set_fill(opacity=opacity)
-        return v
-
-    @staticmethod
-    def vect(x, y):
-        return np.array([
-            x*y+x,
-            x+y,
-            0
-        ])
-
-    @staticmethod
-    def func(t):
-        return np.array([
-            math.cos(t),
-            math.sin(t),
-            0
-        ])
+        k
 
     @staticmethod
     def surface(t, v):
