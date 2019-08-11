@@ -491,7 +491,7 @@ class DivTwoEq(Scene):
         self.wait()
 
 
-class CurlDemo(Scene):
+class DivDemo(Scene):
     CONFIG = {
         "color_list": ['#e22b2b', '#e88e10', '#eae600', '#88ea00',
                        '#00eae2', '#0094ea', "#2700ea", '#bf00ea', '#ea0078'],
@@ -499,17 +499,20 @@ class CurlDemo(Scene):
     }
 
     def construct(self):
-        axes = Axes(
-            x_min=-5,
-            x_max=5,
-            y_min=-5,
-            y_max=5,
-            number_line_config={"include_tip": False}
-        )
+        axes_config = {
+            "x_min": -5,
+            "x_max": 5,
+            "y_min": -4,
+            "y_max": 4,
+            "number_line_config": {
+                "include_tip": False,
+            },
+        }
+        axes = Axes(**axes_config)
         f1 = VGroup(
             *[self.calc_field_color(x * RIGHT + y * UP, self.field1, prop=0)
                 for x in np.arange(-5, 5, 1)
-                for y in np.arange(-5, 5, 1)
+                for y in np.arange(-4, 5, 1)
               ]
         )
         c = Circle(fill_color=RED, fill_opacity=0.25, color=WHITE, radius=1)
@@ -520,7 +523,7 @@ class CurlDemo(Scene):
         f2 = VGroup(
             *[self.calc_field_color(x * RIGHT + y * UP, self.field2, prop=0)
                 for x in np.arange(-5, 5, 1)
-                for y in np.arange(-5, 5, 1)
+                for y in np.arange(-4, 5, 1)
               ]
         )
 
@@ -531,8 +534,8 @@ class CurlDemo(Scene):
         axes = Axes(**axes_config)
         f3 = VGroup(
             *[self.calc_field_color(x * RIGHT + y * UP, self.field3, prop=0)
-                for x in np.arange(-5, 5, 1)
-                for y in np.arange(-5, 5, 1)
+                for x in np.arange(-5, 6, 1)
+                for y in np.arange(-4, 5, 1)
               ]
         )
 
@@ -540,18 +543,27 @@ class CurlDemo(Scene):
         field3 = VGroup(axes, f3, c)
         field3.scale(0.6)
 
-        text1 = TexMobject(r"\nabla \cdot \textbf{F} > 0",
-                           tex_to_color_map={">": YELLOW})
-        text1.shift(3 * UP)
+        t1 = TexMobject(r"\nabla \cdot \textbf{F} > 0",
+                        tex_to_color_map={">": YELLOW})
+        t1.shift(3 * UP)
+        b1 = BackgroundRectangle(t1, color=BLACK, fill_opacity=1)
+        text1 = VGroup(b1, t1)
 
-        text2 = TexMobject(r"\nabla \cdot \textbf{F} < 0",
-                           tex_to_color_map={"<": YELLOW})
-        text2.shift(3 * UP)
+        t2 = TexMobject(r"\nabla \cdot \textbf{F} < 0",
+                        tex_to_color_map={"<": YELLOW})
+        t2.shift(3 * UP)
+        b2 = BackgroundRectangle(t2, color=BLACK, fill_opacity=1)
+        text2 = VGroup(b2, t2)
+
+        t3 = TexMobject(r"\nabla \cdot \textbf{F} > 0",
+                        tex_to_color_map={">": YELLOW})
+        t3.shift(3 * UP)
+        b3 = BackgroundRectangle(t3, color=BLACK, fill_opacity=1)
+        text3 = VGroup(b3, t3)
 
         self.play(Write(field1))
         self.wait()
 
-        # self.play(Write(c))
         self.play(Write(text1))
         self.wait()
 
@@ -562,7 +574,8 @@ class CurlDemo(Scene):
         self.wait()
 
         self.play(
-            Transform(field1, field3)
+            Transform(field1, field3),
+            Transform(text1, text3)
         )
         self.wait()
 
@@ -597,7 +610,7 @@ class CurlDemo(Scene):
     @staticmethod
     def field3(x, y):
         return np.array([
-            x,
+            x + 6,
             0
         ])
 
