@@ -364,14 +364,14 @@ class FluxExample(Scene):
         axes = Axes(
             x_min=-5,
             x_max=5,
-            y_min=-5,
-            y_max=5,
+            y_min=-3,
+            y_max=3,
             number_line_config={"include_tip": False, }
         )
         f = VGroup(
             *[self.calc_field_color(x * RIGHT + y * UP, self.vect, prop=0)
               for x in np.arange(-5, 6, 1)
-              for y in np.arange(-5, 6, 1)
+              for y in np.arange(-3, 4, 1)
               ]
         )
 
@@ -389,10 +389,32 @@ class FluxExample(Scene):
         field.set_fill(opacity=0.75)
         field.set_stroke(opacity=0.75)
 
-        self.play(ShowCreation(field))
+        rect = Rectangle(height=8, width=12)
+
+        grp = VGroup(field, curve, rect)
+        grp.scale(0.5)
+
+        grp.shift(3 * LEFT)
+
+        eq1 = TexMobject(r"\text{Find} \int_C (\vec{F} \cdot \hat{n}) \ ds")
+        eq1.shift(3 * RIGHT + 3 * UP)
+
+        eq2 = TexMobject(r"F = \langle xy + x, x + y \rangle")
+        eq2.shift(3 * RIGHT + 2 * UP)
+
+        eq3 = TexMobject(r"C = \langle \cos(t), \sin(t) \rangle")
+        eq3.shift(3 * RIGHT + 1 * UP)
+
+        self.play(ShowCreation(field), Write(rect))
         self.wait()
 
         self.play(Write(curve))
+        self.wait()
+
+        self.play(Write(eq1))
+        self.wait()
+
+        self.play(Write(eq2), Write(eq3))
         self.wait()
 
     def calc_field_color(self, point, f, prop=0.0, opacity=None):
