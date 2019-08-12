@@ -622,14 +622,6 @@ class DivTwoVisual(Scene):
         "prop": 0
     }
 
-    def getEq(self, eq, tex_map={}):
-        eq1 = TexMobject(eq, tex_to_color_map=tex_map)
-        back = BackgroundRectangle(eq1, color=BLACK, fill_opacity=1)
-        eq0 = VGroup(back, eq1)
-        eq0.shift(3 * UP)
-
-        return eq0
-
     def construct(self):
         axes_config = {
             "x_min": -5,
@@ -819,3 +811,11 @@ class DivTwoVisual(Scene):
             x,
             0
         ])
+
+    def getEq(self, eq, tex_map={}):
+        eq1 = TexMobject(eq, tex_to_color_map=tex_map)
+        back = BackgroundRectangle(eq1, color=BLACK, fill_opacity=1)
+        eq0 = VGroup(back, eq1)
+        eq0.shift(3 * UP)
+
+        return eq0
