@@ -622,6 +622,14 @@ class DivTwoVisual(Scene):
         "prop": 0
     }
 
+    def getEq(self, eq, tex_map={}):
+        eq1 = TexMobject(eq, tex_to_color_map=tex_map)
+        back = BackgroundRectangle(eq1, color=BLACK, fill_opacity=1)
+        eq0 = VGroup(back, eq1)
+        eq0.shift(3 * UP)
+
+        return eq0
+
     def construct(self):
         axes_config = {
             "x_min": -5,
@@ -678,34 +686,16 @@ class DivTwoVisual(Scene):
 
         curve = VGroup(label, c)
 
-        D = UP
-        eq = TexMobject(
-            r"\int_C (\vec{\text{F}} \cdot \hat{n}) \ ds")
-        back = BackgroundRectangle(eq, color=BLACK, fill_opacity=1)
-        eq0 = VGroup(back, eq)
-        eq0.shift(3 * D)
+        eq0 = self.getEq(r"\int_C (\vec{\text{F}} \cdot \hat{n}) \ ds")
+        eq1 = self.getEq(r"\int_C (\vec{\text{F}} \cdot \hat{n}) \ ds = "
+                         + r"\int_{C_1} (\vec{\text{F}} \cdot \hat{n}) \ ds + "
+                         + r"\int_{C_2} (\vec{\text{F}} \cdot \hat{n}) \ ds",
+                         tex_map={r"{C_1}": RED, r"{C_2}": GREEN})
+        eq2 = self.getEq(
+            r"\int_{C_r} (\vec{\text{F}} \cdot \hat{n}) \ ds \approx \nabla \cdot \vec{\text{F}} |r|")
+        eqf = self.getEq(
+            r"\int_C (\vec{\text{F}} \cdot \hat{n}) \ ds = \iint_D \nabla \cdot \vec{\text{F}} \ \text{dA}")
 
-        eq = TexMobject(
-            r"\int_C \vec{\text{F}} \bullet \text{d}\vec{\text{r}} = \int_{C_1} \vec{\text{F}} \bullet \text{d}\vec{\text{r}} + \int_{C_2} \vec{\text{F}} \bullet \text{d}\vec{\text{r}}")
-        back = BackgroundRectangle(eq, color=BLACK, fill_opacity=1)
-        eq1 = VGroup(back, eq)
-        eq1.shift(3 * D)
-
-        eq = TexMobject(
-            r"\int_{C_r} \vec{\text{F}} \bullet \text{d}\vec{\text{r}} \approx \nabla \times \vec{\text{F}} |r|")
-        back = BackgroundRectangle(eq, color=BLACK, fill_opacity=1)
-        eq2 = VGroup(back, eq)
-        eq2.shift(3 * D)
-
-        eq = TexMobject(
-            r"\int_C \vec{\text{F}} \bullet \text{d}\vec{\text{r}} = \iint_D \nabla \times \vec{\text{F}} \ \text{dA}")
-        back = BackgroundRectangle(eq, color=BLACK, fill_opacity=1)
-        eqf = VGroup(back, eq)
-        eqf.shift(3 * D)
-
-        # div = TexMobject(r"\iint_S \vec{\text{F}} \bullet \text{d}\vec{\text{S}}= \iiint_V \vec{\nabla} \bullet \text{d}\vec{\text{V}}
-        #
-        #                 ")
         t1 = [1.225]
 
         c1 = VGroup(
