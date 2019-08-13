@@ -819,3 +819,65 @@ class DivTwoVisual(Scene):
         eq0.shift(3 * UP)
 
         return eq0
+
+
+class IntP1(GraphScene):
+    CONFIG = {
+        "x_max": 4,
+        "x_labeled_nums": list(range(-1, 5)),
+        "y_min": 0,
+        "y_max": 2,
+        "y_tick_frequency": 2.5,
+        "y_labeled_nums": list(range(5, 20, 5)),
+        "n_rect_iterations": 6,
+        "default_right_x": 3,
+        "func": lambda x: 0.1*math.pow(x-2, 2) + 1,
+    }
+
+    def construct(self):
+        ftc = TexMobject(r"\int_a^b f'(x) \ dx = f(b) - f(a)")
+        ftc.shift(3 * UP)
+
+        self.play(Write(ftc))
+        self.setup_axes()
+        graph = self.get_graph(self.func)
+        self.play(ShowCreation(graph))
+
+        self.graph = graph
+        rect = self.get_riemann_rectangles(
+            self.graph,
+            x_min=1,
+            x_max=self.default_right_x,
+            dx=0.004,
+            stroke_width=4*0.004,
+        )
+        foreground_mobjects = [self.axes, self.graph]
+
+        self.play(
+            DrawBorderThenFill(
+                rect,
+                run_time=2,
+                rate_func=smooth,
+                lag_ratio=0.5,
+            ),
+            *list(map(Animation, foreground_mobjects))
+        )
+
+        self.wait()
+
+
+class DivThreeEq(Scene):
+    def construct(self):
+        eq = TexMobject(r"\oiint_S \vec{F} \cdot d \vec{S} = \iiint_V \nabla \times \vec{F} \,dV",
+                        tex_to_color_map={r"\vec{F}": YELLOW, r"S": GREEN, r"V": BLUE, r"\nabla": RED})
+        eq.scale(1.5)
+
+        title = TextMobject("3D Divergence Theorem", color=PURPLE)
+        title.scale(1.5)
+        title.shift(3 * UP)
+
+        title2 = TextMobject("Gauss' Theorem", color=ORANGE)
+        title2.shift(2 * UP)
+
+        self.play(Write(eq), Write(title), Write(title2))
+        self.wait()
