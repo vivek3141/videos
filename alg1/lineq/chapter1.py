@@ -70,7 +70,83 @@ class Cartesian(Scene):
 
 class Satisfy(Scene):
     def construct(self):
-        eq = TexMobject(r"2y = 3x + 1")
+        self.eq = TexMobject(r"2y = 3x + 1")
+        self.eq.scale(1.5)
+        self.eq.shift(3 * UP)
 
-    def replace(self, num):
-        pass
+        self.play(Write(self.eq))
+        self.wait()
+
+        self.replace(1, 2)
+
+    def replace(self, x, y):
+        t1 = TexMobject(r"\times")
+        t1.shift(2.5 * LEFT)
+
+        t2 = TexMobject(r"\times")
+        t2.shift(-0.5 * LEFT)
+
+        e1 = TexMobject("2")
+        e1.shift(3 * LEFT)
+
+        e2 = TexMobject("y")
+        e2.shift(2 * LEFT)
+
+        e3 = TexMobject("=")
+        e3.shift(1 * LEFT)
+
+        e4 = TexMobject("3")
+        e4.shift(0 * LEFT)
+
+        e5 = TexMobject("x")
+        e5.shift(-1 * LEFT)
+
+        e6 = TexMobject("+")
+        e6.shift(-2 * LEFT)
+
+        e7 = TexMobject("1")
+        e7.shift(-3 * LEFT)
+
+        group = VGroup(e1, e2, e3, e4, e5, e6, e7, t1, t2)
+
+        rep1 = TexMobject(str(x), color=YELLOW)
+        rep1.shift(-1 * LEFT)
+
+        rep2 = TexMobject(str(y), color=YELLOW)
+        rep2.shift(2 * LEFT)
+
+        ev1 = TexMobject(str(y * 2))
+        ev2 = TexMobject(str(3 * x + 1))
+
+        ev1.shift(2 * DOWN + 2 * LEFT)
+        ev2.shift(2 * DOWN + 0 * RIGHT)
+
+        eve = TexMobject(r"\neq") if y * 2 != 3 * x + 1 else TexMobject(r"=")
+
+        eve.shift(2 * DOWN + 1 * LEFT)
+
+        ev = VGroup(ev1, ev2, eve)
+
+        g2 = VGroup(rep1, group, rep2, ev)
+        g2.scale(1.5)
+        
+        a1 = Arrow(1 * UP, 1 * DOWN)
+
+        b1 = Brace(VGroup(e4, e5, e6, e7))
+
+        a = VGroup(a1, b1)
+
+        self.play(Write(group))
+        self.wait()
+
+        self.play(Transform(e5, rep1), Transform(e2, rep2))
+        self.wait()
+
+        self.play(g2.shift, 1 * UP)
+        self.wait()
+
+        self.play(Write(a))
+        self.wait()
+
+        self.play(Write(ev))
+        self.wait()
