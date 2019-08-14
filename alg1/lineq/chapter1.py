@@ -61,8 +61,16 @@ class Cartesian(Scene):
 
         rect = BackgroundRectangle(title, fill_opacity=1)
 
-        self.play(Write(axes), Write(rect), Write(title) )
+        self.play(Write(axes), Write(rect), Write(title))
         self.wait()
 
         self.play(Write(label), ShowCreation(p))
         self.wait()
+
+
+class Satisfy(Scene):
+    def construct(self):
+        eq = TexMobject(r"2y = 3x + 1")
+
+    def replace(self, num):
+        pass
