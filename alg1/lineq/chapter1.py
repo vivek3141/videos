@@ -196,7 +196,44 @@ class LinearEq(Scene):
         func = VGroup(axes, f)
         func.shift(2 * RIGHT)
 
+        l1 = Line(3 * DOWN, 4 * UP)
+        l1.shift(5 * LEFT)
+
+        l2 = Line(7 * LEFT, 3*LEFT)
+        l2.shift(3 * UP)
+
+        l3 = Line(3 * DOWN, 4 * UP)
+        l3.shift(3 * LEFT)
+
+        l4 = Line(3 * DOWN, 4 * UP)
+        l4.shift(7 * LEFT)
+
+        l5 = Line(7 * LEFT, 3*LEFT)
+        l5.shift(4 * UP)
+
+        t1 = TexMobject("x")
+        t1.shift(6 * LEFT + (3 + 0.5) * UP)
+
+        t2 = TexMobject("y")
+        t2.shift(4 * LEFT + (3 + 0.5) * UP)
+
+        table = VGroup(l1, l2, t1, t2, l3, l4, l5)
+
+        for i in range(-3, 3):
+            l = Line(7 * LEFT, 3*LEFT)
+            l.shift(i * UP)
+
+            t = TexMobject(str(i))
+            t.shift(6 * LEFT + (i + 0.5) * UP)
+            table.add(l)
+            table.add(t)
+        
+        table.shift(0.5 * DOWN)
+
         self.play(Write(axes))
+        self.wait()
+
+        self.play(Write(table))
         self.wait()
 
         self.plot(1)
@@ -204,7 +241,7 @@ class LinearEq(Scene):
 
         self.play(Write(f))
         self.wait()
-    
+
     def plot(self, x):
         p = Circle(radius=0.1,  color=YELLOW,
                    fill_opacity=1).shift(x * RIGHT + (x * 0.5 + 0.5) * UP)
@@ -212,6 +249,3 @@ class LinearEq(Scene):
 
         self.play(Write(p))
         self.wait()
-
-
-
