@@ -1,6 +1,23 @@
 from manimlib.imports import *
 
 
+class LinEQ(Scene):
+    def construct(self):
+        axes = Axes(
+            x_min=-3,
+            x_max=3,
+            y_min=-3,
+            y_max=3,
+            number_line_config={
+                "include_tip": False,
+            }
+        )
+        f = FunctionGraph(lambda x: 0.5*x + 1, x_min=-3, x_max=3)
+        func = VGroup(axes, f)
+
+        self.play(Write(func))
+
+
 class Intro(Scene):
     def construct(self):
         logo = SVGMobject("files/logo_t.svg")
@@ -9,7 +26,7 @@ class Intro(Scene):
 
 
 class ElectricField(ThreeDScene):
-    """def reset(self):
+    def reset(self):
         self.play(
             Transform(line0, line00),
             Transform(line1, line10),
@@ -27,7 +44,7 @@ class ElectricField(ThreeDScene):
             Transform(line4, line4),
             Transform(line5, line5),
             Transform(line6, line6),
-        )"""
+        )
 
     def construct(self):
         OPACITY = 0.1
@@ -287,6 +304,7 @@ class BannerE(Scene):
         r_d = np.array([2 / (1 + x ** 2), 1, 0])
         return r_d
 
+
 class FTC(GraphScene):
     CONFIG = {
         "x_max": 4,
@@ -338,9 +356,7 @@ class TypeT(Scene):
         text1 = TextMobject("Animated").scale(3).shift(0.75 * UP)
         text2 = TextMobject(r"Math and CS").scale(1.5).shift(0.75 * DOWN)
 
-        self.play(Write(text1),Write(text2))
-
-from manim import *
+        self.play(Write(text1), Write(text2))
 
 
 class Sigmoid(GraphScene):
@@ -371,7 +387,8 @@ class Sigmoid(GraphScene):
 
 class SigmoidEq(Scene):
     def construct(self):
-        text = TexMobject(r"\sigma (x) = \frac{1}{1 + e^{-x}}", tex_to_color_map={"Mean Squared Error": YELLOW})
+        text = TexMobject(
+            r"\sigma (x) = \frac{1}{1 + e^{-x}}", tex_to_color_map={"Mean Squared Error": YELLOW})
         text.scale(4)
         self.play(Write(text))
         self.wait(10)
@@ -406,7 +423,8 @@ class Sigmoid(GraphScene):
 
 class SigmoidEq(Scene):
     def construct(self):
-        text = TexMobject(r"\sigma (x) = \frac{1}{1 + e^{-x}}", tex_to_color_map={"Mean Squared Error": YELLOW})
+        text = TexMobject(
+            r"\sigma (x) = \frac{1}{1 + e^{-x}}", tex_to_color_map={"Mean Squared Error": YELLOW})
         text.scale(4)
         self.play(Write(text))
         self.wait(10)
