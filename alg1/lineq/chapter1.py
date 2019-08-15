@@ -183,6 +183,12 @@ class Satisfy(Scene):
 
 class LinearEq(Scene):
     def construct(self):
+        eqq = TexMobject("2y = x + 1").scale(1.5)
+        eqq.shift(2 * RIGHT + 3 * UP)
+
+        rr = BackgroundRectangle(eqq, fill_opacity=1)
+        equation = VGroup(rr, eqq)
+
         axes = Axes(
             x_min=-3,
             x_max=3,
@@ -227,25 +233,35 @@ class LinearEq(Scene):
             t.shift(6 * LEFT + (i + 0.5) * UP)
             table.add(l)
             table.add(t)
-        
-        table.shift(0.5 * DOWN)
 
-        self.play(Write(axes))
+        table.shift(0.5 * DOWN + 1 * RIGHT)
+
+        self.play(Write(axes), Write(equation))
         self.wait()
 
         self.play(Write(table))
         self.wait()
 
+        self.plot(0)
         self.plot(1)
         self.plot(-1)
+
+        self.plot(2)
+        self.plot(-2)
+        self.plot(-3)
 
         self.play(Write(f))
         self.wait()
 
     def plot(self, x):
+        y = x * 0.5 + 0.5
         p = Circle(radius=0.1,  color=YELLOW,
-                   fill_opacity=1).shift(x * RIGHT + (x * 0.5 + 0.5) * UP)
+                   fill_opacity=1).shift(x * RIGHT + y * UP)
         p.shift(2 * RIGHT)
 
+        t = TexMobject(str(y))
+        t.shift(3 * LEFT + x * UP)
+
+        self.play(Write(t))
         self.play(Write(p))
         self.wait()
