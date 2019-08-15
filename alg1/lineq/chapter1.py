@@ -77,9 +77,21 @@ class Satisfy(Scene):
         self.play(Write(self.eq))
         self.wait()
 
-        self.replace(1, 2)
+        m = self.replace(1, 1)
+
+        self.play(Uncreate(m))
+        self.wait()
+
+        m = self.replace(1, 2)
 
     def replace(self, x, y):
+        rect = Rectangle(height=2, width=2, color=YELLOW)
+        val1 = TexMobject("x = {}".format(x)).shift(0.5 * UP)
+        val2 = TexMobject("y = {}".format(y)).shift(0.5 * DOWN)
+
+        r = VGroup(val1, rect, val2)
+        r.shift(4 * RIGHT + 2.5 * UP)
+
         t1 = TexMobject(r"\times")
         t1.shift(2.5 * LEFT)
 
@@ -118,23 +130,38 @@ class Satisfy(Scene):
         ev1 = TexMobject(str(y * 2))
         ev2 = TexMobject(str(3 * x + 1))
 
-        ev1.shift(2 * DOWN + 2 * LEFT)
-        ev2.shift(2 * DOWN + 0 * RIGHT)
+        ev1.shift(1.5 * DOWN + 2 * LEFT)
+        ev2.shift(1.5 * DOWN + 0 * RIGHT)
 
         eve = TexMobject(r"\neq") if y * 2 != 3 * x + 1 else TexMobject(r"=")
 
-        eve.shift(2 * DOWN + 1 * LEFT)
+        eve.shift(1.5 * DOWN + 1 * LEFT)
 
         ev = VGroup(ev1, ev2, eve)
 
         g2 = VGroup(rep1, group, rep2, ev)
         g2.scale(1.5)
-        
-        a1 = Arrow(1 * UP, 1 * DOWN)
 
         b1 = Brace(VGroup(e4, e5, e6, e7))
+        a1 = Arrow(b1.get_tip(), 1.5 * DOWN, color=GREEN)
 
-        a = VGroup(a1, b1)
+        b2 = Brace(VGroup(e1, e2))
+        a2 = Arrow(b2.get_tip(), 1.5 * DOWN + 3 * LEFT, color=GREEN)
+
+        a = VGroup(a1, b1, a2, b2)
+
+        state = TexMobject(
+            r"\text{("+str(x)+r","+str(y) +
+            r") does not satisfy the equation }2y = 3x + 11",
+            tex_to_color_map={r"2y = 3x + 1": YELLOW, r"("+str(x)+r","+str(y)+r")": GREEN}) if y * 2 != 3 * x + 1 else TexMobject(
+                r"\text{("+str(x)+r","+str(y) +
+            r") satisfies the equation }2y = 3x + 11",
+                tex_to_color_map={r"2y = 3x + 1": YELLOW, r"("+str(x)+r","+str(y)+r")": GREEN})
+
+        state.shift(3.25 * DOWN)
+
+        self.play(Write(r))
+        self.wait()
 
         self.play(Write(group))
         self.wait()
@@ -142,11 +169,49 @@ class Satisfy(Scene):
         self.play(Transform(e5, rep1), Transform(e2, rep2))
         self.wait()
 
-        self.play(g2.shift, 1 * UP)
-        self.wait()
-
         self.play(Write(a))
         self.wait()
 
         self.play(Write(ev))
         self.wait()
+
+        self.play(Write(state))
+        self.wait()
+
+        return VGroup(r, group, a, ev, state)
+
+
+class LinearEq(Scene):
+    def construct(self):
+        axes = Axes(
+            x_min=-3,
+            x_max=3,
+            y_min=-3,
+            y_max=3,
+            number_line_config={
+                "include_tip": False,
+            }
+        )
+        f = FunctionGraph(lambda x: 0.5*x + 0.5, x_min=-3, x_max=3, color=BLUE)
+        func = VGroup(axes, f)
+        func.shift(2 * RIGHT)
+
+        self.play(Write(axes))
+        self.wait()
+
+        self.plot(1)
+        self.plot(-1)
+
+        self.play(Write(f))
+        self.wait()
+    
+    def plot(self, x):
+        p = Circle(radius=0.1,  color=YELLOW,
+                   fill_opacity=1).shift(x * RIGHT + (x * 0.5 + 0.5) * UP)
+        p.shift(2 * RIGHT)
+
+        self.play(Write(p))
+        self.wait()
+
+
+
