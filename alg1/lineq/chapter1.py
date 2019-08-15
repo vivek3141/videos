@@ -255,6 +255,7 @@ class LinearEq(Scene):
 
     def plot(self, x):
         y = x * 0.5 + 0.5
+        
         p = Circle(radius=0.1,  color=YELLOW,
                    fill_opacity=1).shift(x * RIGHT + y * UP)
         p.shift(2 * RIGHT)
