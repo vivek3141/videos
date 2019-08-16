@@ -26,25 +26,6 @@ class Intro(Scene):
 
 
 class ElectricField(ThreeDScene):
-    def reset(self):
-        self.play(
-            Transform(line0, line00),
-            Transform(line1, line10),
-            Transform(line2, line20),
-            Transform(line3, line30),
-            Transform(line4, line40),
-            Transform(line5, line50),
-            Transform(line6, line60),
-        )
-        self.play(
-            Transform(line0, line0),
-            Transform(line1, line1),
-            Transform(line2, line2),
-            Transform(line3, line3),
-            Transform(line4, line4),
-            Transform(line5, line5),
-            Transform(line6, line6),
-        )
 
     def construct(self):
         OPACITY = 0.1

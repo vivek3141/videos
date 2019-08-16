@@ -864,6 +864,7 @@ class IntP1(GraphScene):
         )
 
         self.wait()
+        Sphere
 
 
 class DivThreeEq(Scene):
@@ -881,3 +882,7 @@ class DivThreeEq(Scene):
 
         self.play(Write(eq), Write(title), Write(title2))
         self.wait()
+
+class IntP2(ThreeDScene):
+    def construct(self):
+        pass
