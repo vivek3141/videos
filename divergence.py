@@ -883,6 +883,47 @@ class DivThreeEq(Scene):
         self.play(Write(eq), Write(title), Write(title2))
         self.wait()
 
+
 class IntP2(ThreeDScene):
     def construct(self):
-        pass
+        s = ParametricSurface(
+            self.func,
+            u_min=0,
+            u_max=2*PI,
+            v_min=0,
+            v_max=2 * PI
+        )
+
+        axes = ThreeDAxes(
+            number_line_config={
+                "color": LIGHT_GREY,
+                "include_tip": False,
+                "exclude_zero_from_default_numbers": True,
+            }
+        )
+
+        conf = {"fill_color": ORANGE,
+                "fill_opacity": 1.0,
+                "checkerboard_colors": [ORANGE, RED],
+                "stroke_color": RED,
+                "stroke_width": 0.5, }
+
+        surface = VGroup(axes, s)
+        surface.scale(2)
+
+        self.move_camera(0.8 * np.pi / 2, -0.45 * np.pi)
+        self.play(Write(surface))
+        self.wait()
+
+        self.begin_ambient_camera_rotation()
+        self.wait(3)
+
+    def func(self, u, v):
+        return np.array([
+            self.r(u)*np.sin(u),
+            self.r(u)*np.cos(u)*np.cos(v),
+            self.r(u)*np.cos(u)*np.sin(v)
+        ])
+
+    def r(self, t):
+        return 0.5*(2 + np.cos(2*t)*np.sin(3*t))
