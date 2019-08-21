@@ -886,12 +886,18 @@ class DivThreeEq(Scene):
 
 class IntP2(ThreeDScene):
     def construct(self):
-        s = ParametricSurface(
-            self.func,
-            u_min=0,
-            u_max=2*PI,
-            v_min=0,
-            v_max=2 * PI
+        #s = ParametricSurface(
+        #    self.func,
+        #    u_min=0,
+        #    u_max=2*PI,
+        #    v_min=0,
+        #    v_max=2 * PI
+        #)
+        s = Sphere()
+
+        n = VGroup(
+            *[self.n(*self.func(u, v))
+              for u in np.arange(0, PI, 0.5) for v in np.arange(0, TAU, 0.5)]
         )
 
         axes = ThreeDAxes(
@@ -913,17 +919,29 @@ class IntP2(ThreeDScene):
 
         self.move_camera(0.8 * np.pi / 2, -0.45 * np.pi)
         self.play(Write(surface))
+        self.play(Write(n))
         self.wait()
 
         self.begin_ambient_camera_rotation()
         self.wait(3)
 
     def func(self, u, v):
-        return np.array([
-            self.r(u)*np.sin(u),
-            self.r(u)*np.cos(u)*np.cos(v),
-            self.r(u)*np.cos(u)*np.sin(v)
+        return [
+            np.cos(v) * np.sin(u),
+            np.sin(v) * np.sin(u),
+            np.cos(u)
+        ]
+    
+    def n(self, x, y, z):
+        vect = np.array([
+            x,
+            y,
+            z
         ])
+
+        mag = math.sqrt(vect[0] ** 2 + vect[1] ** 2 + vect[2] ** 2)
+        v = Vector((0.5/mag) * vect, color=GREEN).shift(x * RIGHT + y * UP + z * OUT)
+        return v
 
     def r(self, t):
         return 0.5*(2 + np.cos(2*t)*np.sin(3*t))
