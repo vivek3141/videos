@@ -924,7 +924,7 @@ class IntP2(ThreeDScene):
         surface.scale(2)
 
         f = VGroup(
-            *[self.calc_field_color(x * RIGHT + y * UP + z * OUT, self.vect, prop=0, opacity=0.25)
+            *[self.calc_field_color(x * RIGHT + y * UP + z * OUT, self.vect, prop=0, opacity=0.5)
                 for x in np.arange(-5, 6, 1)
                 for y in np.arange(-5, 6, 1)
                 for z in np.arange(-3, 4, 1)
@@ -934,10 +934,7 @@ class IntP2(ThreeDScene):
         self.move_camera(0.8 * np.pi / 2, -0.45 * np.pi)
         self.play(Write(surface))
         self.play(Write(f))
-        self.wait()
-
-        self.begin_ambient_camera_rotation()
-        self.wait(3)
+        self.play(Write(n))
 
     def func(self, u, v):
         return [
@@ -948,7 +945,7 @@ class IntP2(ThreeDScene):
 
     def vect(self, x, y, z):
         return np.array([
-            x, y, z
+            y, x, z
         ])
 
     def n(self, x, y, z):
@@ -959,8 +956,12 @@ class IntP2(ThreeDScene):
         ])
 
         mag = math.sqrt(vect[0] ** 2 + vect[1] ** 2 + vect[2] ** 2)
-        v = Vector((0.5/mag) * vect, color=GREEN).shift(x *
-                                                        RIGHT + y * UP + z * OUT)
+        v = Vector(
+            (0.5/mag) * vect,
+            color=GREEN).shift(
+                x * RIGHT + y * UP + z * OUT,
+            stroke_width=1.5 * DEFAULT_STROKE_WIDTH
+            )
         return v
 
     def calc_field_color(self, point, f, prop=0.0, opacity=None):
