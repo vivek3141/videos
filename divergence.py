@@ -885,6 +885,11 @@ class DivThreeEq(Scene):
 
 
 class IntP2(ThreeDScene):
+    CONFIG = {
+        "color_list": ['#e22b2b', '#e88e10', '#eae600', '#88ea00',
+                       '#00eae2', '#0094ea', "#2700ea", '#bf00ea', '#ea0078'],
+        "prop": 0
+    }
     def construct(self):
         #s = ParametricSurface(
         #    self.func,
@@ -941,4 +946,18 @@ class IntP2(ThreeDScene):
 
         mag = math.sqrt(vect[0] ** 2 + vect[1] ** 2 + vect[2] ** 2)
         v = Vector((0.5/mag) * vect, color=GREEN).shift(x * RIGHT + y * UP + z * OUT)
+        return v
+    
+    def calc_field_color(self, point, f, prop=0.0, opacity=None):
+        x, y = point[:2]
+        func = f(x, y)
+        magnitude = math.sqrt(func[0] ** 2 + func[1] ** 2)
+        func = func / magnitude if magnitude != 0 else np.array([0, 0])
+        func = func / 1.5
+        v = int(magnitude / 10 ** prop)
+        index = len(self.color_list) - 1 if v > len(self.color_list) - 1 else v
+        c = self.color_list[index]
+        v = Vector(func, color=c).shift(point)
+        if opacity:
+            v.set_fill(opacity=opacity)
         return v
