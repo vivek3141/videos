@@ -942,6 +942,3 @@ class IntP2(ThreeDScene):
         mag = math.sqrt(vect[0] ** 2 + vect[1] ** 2 + vect[2] ** 2)
         v = Vector((0.5/mag) * vect, color=GREEN).shift(x * RIGHT + y * UP + z * OUT)
         return v
-
-    def r(self, t):
-        return 0.5*(2 + np.cos(2*t)*np.sin(3*t))
