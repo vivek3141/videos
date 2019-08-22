@@ -890,14 +890,15 @@ class IntP2(ThreeDScene):
                        '#00eae2', '#0094ea', "#2700ea", '#bf00ea', '#ea0078'],
         "prop": 0
     }
+
     def construct(self):
-        #s = ParametricSurface(
+        # s = ParametricSurface(
         #    self.func,
         #    u_min=0,
         #    u_max=2*PI,
         #    v_min=0,
         #    v_max=2 * PI
-        #)
+        # )
         s = Sphere()
 
         n = VGroup(
@@ -922,6 +923,13 @@ class IntP2(ThreeDScene):
         surface = VGroup(axes, s)
         surface.scale(2)
 
+        f = VGroup(
+            *[self.calc_field_color(x * RIGHT + y * UP + z * OUT, self.vect, prop=0)
+                for x in np.arange(-5, 5, 1)
+                for y in np.arange(-5, 5, 1)
+              ]
+        )
+
         self.move_camera(0.8 * np.pi / 2, -0.45 * np.pi)
         self.play(Write(surface))
         self.play(Write(n))
@@ -936,7 +944,7 @@ class IntP2(ThreeDScene):
             np.sin(v) * np.sin(u),
             np.cos(u)
         ]
-    
+
     def n(self, x, y, z):
         vect = np.array([
             x,
@@ -945,14 +953,15 @@ class IntP2(ThreeDScene):
         ])
 
         mag = math.sqrt(vect[0] ** 2 + vect[1] ** 2 + vect[2] ** 2)
-        v = Vector((0.5/mag) * vect, color=GREEN).shift(x * RIGHT + y * UP + z * OUT)
+        v = Vector((0.5/mag) * vect, color=GREEN).shift(x *
+                                                        RIGHT + y * UP + z * OUT)
         return v
-    
+
     def calc_field_color(self, point, f, prop=0.0, opacity=None):
-        x, y = point[:2]
-        func = f(x, y)
-        magnitude = math.sqrt(func[0] ** 2 + func[1] ** 2)
-        func = func / magnitude if magnitude != 0 else np.array([0, 0])
+        x, y, z = point[:]
+        func = f(x, y, z)
+        magnitude = math.sqrt(func[0] ** 2 + func[1] ** 2 + func[2] ** 2)
+        func = func / magnitude if magnitude != 0 else np.array([0, 0, 0])
         func = func / 1.5
         v = int(magnitude / 10 ** prop)
         index = len(self.color_list) - 1 if v > len(self.color_list) - 1 else v
