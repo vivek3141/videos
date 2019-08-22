@@ -927,12 +927,13 @@ class IntP2(ThreeDScene):
             *[self.calc_field_color(x * RIGHT + y * UP + z * OUT, self.vect, prop=0)
                 for x in np.arange(-5, 5, 1)
                 for y in np.arange(-5, 5, 1)
+                for z in np.arange(-3, 3, 1)
               ]
         )
 
         self.move_camera(0.8 * np.pi / 2, -0.45 * np.pi)
         self.play(Write(surface))
-        self.play(Write(n))
+        self.play(Write(f))
         self.wait()
 
         self.begin_ambient_camera_rotation()
