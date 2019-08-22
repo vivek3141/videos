@@ -924,10 +924,10 @@ class IntP2(ThreeDScene):
         surface.scale(2)
 
         f = VGroup(
-            *[self.calc_field_color(x * RIGHT + y * UP + z * OUT, self.vect, prop=0)
-                for x in np.arange(-5, 5, 1)
-                for y in np.arange(-5, 5, 1)
-                for z in np.arange(-3, 3, 1)
+            *[self.calc_field_color(x * RIGHT + y * UP + z * OUT, self.vect, prop=0, opacity=0.25)
+                for x in np.arange(-5, 6, 1)
+                for y in np.arange(-5, 6, 1)
+                for z in np.arange(-3, 4, 1)
               ]
         )
 
@@ -945,6 +945,11 @@ class IntP2(ThreeDScene):
             np.sin(v) * np.sin(u),
             np.cos(u)
         ]
+
+    def vect(self, x, y, z):
+        return np.array([
+            x, y, z
+        ])
 
     def n(self, x, y, z):
         vect = np.array([
@@ -970,4 +975,5 @@ class IntP2(ThreeDScene):
         v = Vector(func, color=c).shift(point)
         if opacity:
             v.set_fill(opacity=opacity)
+            v.set_stroke(opacity=opacity)
         return v
