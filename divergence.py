@@ -903,7 +903,8 @@ class IntP2(ThreeDScene):
 
         n = VGroup(
             *[self.n(*self.func(u, v))
-              for u in np.arange(0, PI, 0.5) for v in np.arange(0, TAU, 0.5)]
+              for u in np.arange(0, PI, 0.5) 
+              for v in np.arange(0, TAU, 0.5)]
         )
 
         axes = ThreeDAxes(
@@ -958,10 +959,8 @@ class IntP2(ThreeDScene):
         mag = math.sqrt(vect[0] ** 2 + vect[1] ** 2 + vect[2] ** 2)
         v = Vector(
             (0.5/mag) * vect,
-            color=GREEN).shift(
-                x * RIGHT + y * UP + z * OUT,
-            stroke_width=1.5 * DEFAULT_STROKE_WIDTH
-            )
+            color=GREEN,
+            stroke_width=DEFAULT_STROKE_WIDTH).shift(x * RIGHT + y * UP + z * OUT)
         return v
 
     def calc_field_color(self, point, f, prop=0.0, opacity=None):
