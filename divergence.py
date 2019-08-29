@@ -864,7 +864,6 @@ class IntP1(GraphScene):
         )
 
         self.wait()
-        Sphere
 
 
 class DivThreeEq(Scene):
@@ -892,18 +891,11 @@ class IntP2(ThreeDScene):
     }
 
     def construct(self):
-        # s = ParametricSurface(
-        #    self.func,
-        #    u_min=0,
-        #    u_max=2*PI,
-        #    v_min=0,
-        #    v_max=2 * PI
-        # )
         s = Sphere()
 
         n = VGroup(
             *[self.n(*self.func(u, v))
-              for u in np.arange(0, PI, 0.5) 
+              for u in np.arange(0, PI, 0.5)
               for v in np.arange(0, TAU, 0.5)]
         )
 
