@@ -895,8 +895,8 @@ class IntP2(ThreeDScene):
 
         n = VGroup(
             *[self.n(*self.func(u, v))
-              for u in np.arange(0, PI, 0.5)
-              for v in np.arange(0, TAU, 0.5)]
+              for u in np.arange(0, PI, 0.2)
+              for v in np.arange(0, TAU, 0.2)]
         )
 
         axes = ThreeDAxes(
@@ -919,8 +919,11 @@ class IntP2(ThreeDScene):
 
         self.move_camera(0.8 * np.pi / 2, -0.45 * np.pi)
         self.play(Write(surface))
-        # self.play(Write(f))
+        self.play(Write(f))
         self.play(Write(n))
+
+        self.begin_ambient_camera_rotation()
+        self.wait(10)
 
     def func(self, u, v):
         return [
@@ -945,7 +948,7 @@ class IntP2(ThreeDScene):
         v = Vector(
             (0.5/mag) * vect,
             color=GREEN,
-            stroke_width=DEFAULT_STROKE_WIDTH).shift(x * RIGHT + y * UP + z * OUT)
+            stroke_width=DEFAULT_STROKE_WIDTH).shift(2*x * RIGHT + 2*y * UP + 2*z * OUT)
         return v
 
     def calc_field_color(self, point, f, prop=0.0, opacity=None):
