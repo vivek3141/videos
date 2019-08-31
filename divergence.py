@@ -906,13 +906,6 @@ class IntP2(ThreeDScene):
                 "exclude_zero_from_default_numbers": True,
             }
         )
-
-        conf = {"fill_color": ORANGE,
-                "fill_opacity": 1.0,
-                "checkerboard_colors": [ORANGE, RED],
-                "stroke_color": RED,
-                "stroke_width": 0.5, }
-
         surface = VGroup(axes, s)
         surface.scale(2)
 
@@ -926,7 +919,7 @@ class IntP2(ThreeDScene):
 
         self.move_camera(0.8 * np.pi / 2, -0.45 * np.pi)
         self.play(Write(surface))
-        self.play(Write(f))
+        # self.play(Write(f))
         self.play(Write(n))
 
     def func(self, u, v):
