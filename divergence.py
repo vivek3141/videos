@@ -752,6 +752,9 @@ class DivTwoVisual(Scene):
         self.play(Write(curve))
         self.wait()
 
+        self.play(Write(n))
+        self.wait()
+
         self.play(Transform(field, field2))
         self.wait()
 
