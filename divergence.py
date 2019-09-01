@@ -642,6 +642,11 @@ class DivTwoVisual(Scene):
         field = VGroup(axes, f)
         # field.scale(0.6)
 
+        n = VGroup(
+            *[self.n(t)
+              for t in np.arange(-1.9, 2.001, 0.5)]
+        )
+
         axes2 = Axes(**axes_config)
         f2 = VGroup(
             *[self.calc_field_color(x * RIGHT + y * UP, self.vect, prop=0)
@@ -804,14 +809,6 @@ class DivTwoVisual(Scene):
             0
         ])
 
-    @staticmethod
-    def vect(x, y):
-        return np.array([
-            y,
-            x,
-            0
-        ])
-
     def getEq(self, eq, tex_map={}):
         eq1 = TexMobject(eq, tex_to_color_map=tex_map)
         back = BackgroundRectangle(eq1, color=BLACK, fill_opacity=1)
@@ -819,6 +816,25 @@ class DivTwoVisual(Scene):
         eq0.shift(3 * UP)
 
         return eq0
+
+    @staticmethod
+    def vect(x, y):
+        return np.array([
+            x*y+x,
+            x+y,
+            0
+        ])
+
+    def n(self, t):
+        vect = np.array([
+            -3*t**2 + 4,
+            -4*t,
+            0
+        ])
+        mag = math.sqrt(vect[0] ** 2 + vect[1] ** 2)
+        v = Vector((1/mag) * vect, color=GREEN).shift(self.func(t)
+                                                      [0] * RIGHT + self.func(t)[1] * UP)
+        return v
 
 
 class IntP1(GraphScene):
