@@ -887,7 +887,7 @@ class IntP1(GraphScene):
 
 class DivThreeEq(Scene):
     def construct(self):
-        eq = TexMobject(r"\oiint_S \vec{F} \cdot d \vec{S} = \iiint_V \nabla \times \vec{F} \,dV",
+        eq = TexMobject(r"\oiint_S \vec{F} \cdot d \vec{S} = \iiint_V \nabla \cdot \vec{F} \,dV",
                         tex_to_color_map={r"\vec{F}": YELLOW, r"S": GREEN, r"V": BLUE, r"\nabla": RED})
         eq.scale(1.5)
 
@@ -984,3 +984,137 @@ class IntP2(ThreeDScene):
             v.set_fill(opacity=opacity)
             v.set_stroke(opacity=opacity)
         return v
+
+
+class IntP3(ThreeDScene):
+    CONFIG = {
+        "color_list": ['#e22b2b', '#e88e10', '#eae600', '#88ea00',
+                       '#00eae2', '#0094ea', "#2700ea", '#bf00ea', '#ea0078'],
+        "prop": 0
+    }
+
+    def construct(self):
+        s = ParametricSurface(
+            self.func,
+            u_min=0,
+            u_max=TAU,
+            v_min=0,
+            v_max=TAU,
+        )
+        axes = ThreeDAxes(
+            number_line_config={
+                "color": LIGHT_GREY,
+                "include_tip": False,
+                "exclude_zero_from_default_numbers": True,
+            }
+        )
+        surface = VGroup(axes, s)
+        surface.scale(2)
+
+        f = VGroup(
+            *[self.calc_field_color(x * RIGHT + y * UP + z * OUT, self.vect, prop=0, opacity=0.5)
+                for x in np.arange(-5, 6, 1)
+                for y in np.arange(-5, 6, 1)
+                for z in np.arange(-3, 4, 1)
+              ]
+        )
+
+        self.move_camera(0.8 * np.pi / 2, -0.45 * np.pi)
+        self.play(Write(surface))
+        self.play(Write(f))
+
+        self.begin_ambient_camera_rotation()
+        self.wait(10)
+
+    def func(self, u, v):
+        return [
+            np.cos(v) * np.sin(u),
+            np.sin(v) * np.cos(u),
+            np.cos(u)
+        ]
+
+    def vect(self, x, y, z):
+        return np.array([
+            y, x, z
+        ])
+
+    def calc_field_color(self, point, f, prop=0.0, opacity=None):
+        x, y, z = point[:]
+        func = f(x, y, z)
+        magnitude = math.sqrt(func[0] ** 2 + func[1] ** 2 + func[2] ** 2)
+        func = func / magnitude if magnitude != 0 else np.array([0, 0, 0])
+        func = func / 1.5
+        v = int(magnitude / 10 ** prop)
+        index = len(self.color_list) - 1 if v > len(self.color_list) - 1 else v
+        c = self.color_list[index]
+        v = Vector(func, color=c).shift(point)
+        if opacity:
+            v.set_fill(opacity=opacity)
+            v.set_stroke(opacity=opacity)
+        return v
+
+
+class EMFlux(Scene):
+    def construct(self):
+        t1 = TextMobject("Electric Flux", color=YELLOW).scale(1.5)
+        eq1 = TexMobject(r"\phi_E = \iint_S \vec{E} \cdot dS",
+                         tex_to_color_map={r"E": YELLOW, "S": PURPLE}).scale(1.5)
+        t1.shift(3 * UP)
+        eq1.shift(1 * UP)
+
+        self.play(Write(t1), Write(eq1))
+        self.wait()
+
+        t2 = TextMobject("Magnetic Flux", color=BLUE).scale(1.5)
+        eq2 = TexMobject(r"\phi_B = \iint_S \vec{B} \cdot dS",
+                         tex_to_color_map={r"B": BLUE, "S": PURPLE}).scale(1.5)
+        t2.shift(1 * DOWN)
+        eq2.shift(3 * DOWN)
+
+        self.play(Write(t2), Write(eq2))
+        self.wait()
+
+
+class Div(Scene):
+    def construct(self):
+        title = TexMobject(r"\text{div} \textbf{F}",
+                           color=YELLOW).scale(1.5).shift(2.5 * UP)
+        eq = TexMobject(
+            r" = \nabla \cdot \vec{F} = \frac{\partial F_x}{\partial x} + \frac{\partial F_y}{\partial y}").scale(1.5)
+        self.play(Write(eq), Write(title))
+        self.wait()
+
+
+class DivThreeTitle(Scene):
+    def construct(self):
+        title = TextMobject(r"Divergence Theorem in 3D", color=BLUE)
+        title.scale(1.5)
+        self.play(Write(title))
+        self.wait()
+
+
+class Nhat(Scene):
+    def construct(self):
+        lbl = TexMobject(r"\hat{n}")
+        lv = Vector([0, 1, 0], color=GREEN)
+        lv.center()
+        lbl.shift(0.25 * RIGHT)
+        lv.shift(0.25 * LEFT)
+        lr = Rectangle(height=1.5, width=1.5)
+        nll = VGroup(lr, lv, lbl)
+        self.play(Write(nll))
+        self.wait()
+
+
+class MaxWell(Scene):
+    def construct(self):
+        title = TextMobject("Maxwell's Equations",
+                            color=YELLOW).scale(1.5).shift(3.5 * UP)
+        eq1 = TexMobject(
+            r"\nabla \cdot \vec{E} = \frac{p}{\epsilon_0}").shift(2 * UP)
+        a = Arrow(0.5 * UP, 0.5 * DOWN, color=GREEN).shift(1 * UP)
+        eq2 = TexMobject(
+            r"\oiint \vec{E} \cdot dS = \frac{q}{\epsilon_0}").shift(0 * DOWN)
+        self.play(Write(title))
+        self.play(Write(eq1), Write(a), Write(eq2))
+        self.wait()
