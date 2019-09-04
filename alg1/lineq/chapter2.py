@@ -113,14 +113,14 @@ class NegativeSlope(Scene):
         axes = Axes(
             x_min=-5,
             x_max=5,
-            y_min=-3,
-            y_max=3,
+            y_min=-5,
+            y_max=5,
             number_line_config={
                 "include_tip": False,
             }
         )
 
-        f1 = FunctionGraph(lambda x: -2*x + 1, color=PURPLE)
+        f1 = FunctionGraph(lambda x: -0.5*x + 1, color=PURPLE)
 
         self.play(Write(axes), Write(f1))
         self.wait()
