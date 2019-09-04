@@ -18,8 +18,8 @@ class Intro(Scene):
         axes = Axes(
             x_min=-5,
             x_max=5,
-            y_min=-4,
-            y_max=4,
+            y_min=-3,
+            y_max=3,
             number_line_config={
                 "include_tip": False,
             }
@@ -30,3 +30,8 @@ class Intro(Scene):
 
         self.play(Write(axes), Write(f1), Write(f2))
         self.wait()
+
+
+class SlopeCalc(Scene):
+    def construct(self):
+        pass
