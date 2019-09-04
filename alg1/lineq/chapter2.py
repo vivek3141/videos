@@ -62,8 +62,29 @@ class SlopeCalc(Scene):
 
         self.play(eq.shift, 2 * RIGHT)
 
+        self.plot(2)
         self.plot(1)
-        self.plot(-1)
+
+        eq1 = TexMobject(r"\Delta x = 2 - 1 = 1")
+        eq1.scale(1.5)
+        eq1.shift(2 * LEFT + 1 * UP)
+
+        eq2 = TexMobject(r"\Delta y = 2 - 1.5 = 0.5")
+        eq2.scale(1.5)
+        eq2.shift(2 * LEFT - 1 * UP)
+
+        eq3 = TexMobject(r"\frac{\Delta y}{\Delta x} = 0..5")
+        eq3.scale(1.5)
+        eq3.shift(2 * LEFT - 2 * UP)
+
+        self.play(Write(eq1))
+        self.wait()
+
+        self.play(Write(eq2))
+        self.wait()
+
+        self.play(Write(eq3))
+        self.wait()
 
     def plot(self, x):
         y = x * 0.5 + 1
