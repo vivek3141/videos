@@ -86,9 +86,9 @@ class SlopeCalc(Scene):
         self.play(Write(eq3))
         self.wait()
 
-        r = Rectangle(height=2, width=4, color=YELLOW).shift(4 * LEFT - 2 * UP)
+        r = Rectangle(height=2, width=3, color=YELLOW).shift(4 * LEFT - 2 * UP)
         t = TextMobject("Slope", color=GREEN).scale(1.5)
-        t.shift(0 * LEFT + 2 * DOWN)
+        t.shift(1 * LEFT + 2 * DOWN)
 
         self.play(Write(r), Write(t))
         self.wait()
