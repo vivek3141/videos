@@ -34,4 +34,24 @@ class Intro(Scene):
 
 class SlopeCalc(Scene):
     def construct(self):
-        eq = TexMobject("y=0.5x+1")
+        eq = TexMobject("y=0.5x+1").scale(1.5)
+        eq.shift(3 * UP)
+
+        axes = Axes(
+            x_min=-3,
+            x_max=3,
+            y_min=-3,
+            y_max=3,
+            number_line_config={
+                "include_tip": False,
+            }
+        )
+        f = ParametricFunction(
+            lambda t: np.array([t,0.5*t+1,0]),
+            t_min=-3,
+            t_max=3,
+            color=BLUE
+        )
+        eq = VGroup(axes, f)
+
+        self.play(Write(eq))
