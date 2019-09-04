@@ -47,7 +47,7 @@ class SlopeCalc(Scene):
             }
         )
         f = ParametricFunction(
-            lambda t: np.array([t,0.5*t+1,0]),
+            lambda t: np.array([t, 0.5*t+1, 0]),
             t_min=-3,
             t_max=3,
             color=BLUE
@@ -55,3 +55,21 @@ class SlopeCalc(Scene):
         eq = VGroup(axes, f)
 
         self.play(Write(eq))
+        self.wait()
+
+        self.plot(1)
+        self.plot(-1)
+
+    def plot(self, x):
+        y = x * 0.5 + 1
+
+        p = Circle(radius=0.1,  color=YELLOW,
+                   fill_opacity=1).shift(x * RIGHT + y * UP)
+        # p.shift(2 * RIGHT)
+
+        t = TexMobject(r"({},{})".format(str(x), str(y)))
+        t.shift(x * RIGHT + (y - 0.5) * UP)
+
+        self.play(Write(t))
+        self.play(Write(p))
+        self.wait()
