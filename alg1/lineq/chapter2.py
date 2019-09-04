@@ -124,3 +124,16 @@ class NegativeSlope(Scene):
 
         self.play(Write(axes), Write(f1))
         self.wait()
+
+
+class LinearEq(Scene):
+    def construct(self):
+        title = TextMobject("Equation of a Line", color=PINK).scale(1.5)
+        title.shift(3 * UP)
+
+        eq = TexMobject(
+            r"y = mx + b", tex_to_color_map={r"m": BLUE, r"b": GREEN})
+        eq.scale(2)
+
+        self.play(Write(title), Write(eq))
+        self.wait()
