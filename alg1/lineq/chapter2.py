@@ -3,7 +3,7 @@ from manimlib.imports import *
 
 class Intro(Scene):
     def construct(self):
-        title = TextMobject("Green's Theorem")
+        title = TextMobject("Introduction to Linear Equations")
         title.scale(1.5)
         title.to_edge(UP)
         rect = ScreenRectangle(height=6)
@@ -12,4 +12,5 @@ class Intro(Scene):
         self.play(Write(title), Write(rect))
         self.wait()
 
-        #self.play()
+        self.play(Uncreate(title), Uncreate(rect))
+        self.wait()
