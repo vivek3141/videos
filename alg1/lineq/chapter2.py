@@ -34,4 +34,4 @@ class Intro(Scene):
 
 class SlopeCalc(Scene):
     def construct(self):
-        pass
+        eq = TexMobject("y=0.5x+1")
