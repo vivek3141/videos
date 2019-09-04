@@ -66,16 +66,16 @@ class SlopeCalc(Scene):
         self.plot(1)
 
         eq1 = TexMobject(r"\Delta x = 2 - 1 = 1")
-        eq1.scale(1.5)
-        eq1.shift(2 * LEFT + 1 * UP)
+        eq1.scale(1.25)
+        eq1.shift(3 * LEFT + 2 * UP)
 
         eq2 = TexMobject(r"\Delta y = 2 - 1.5 = 0.5")
-        eq2.scale(1.5)
-        eq2.shift(2 * LEFT - 1 * UP)
+        eq2.scale(1.25)
+        eq2.shift(3 * LEFT + 1 * UP)
 
-        eq3 = TexMobject(r"\frac{\Delta y}{\Delta x} = 0..5")
-        eq3.scale(1.5)
-        eq3.shift(2 * LEFT - 2 * UP)
+        eq3 = TexMobject(r"\frac{\Delta y}{\Delta x} = 0.5")
+        eq3.scale(1.25)
+        eq3.shift(4 * LEFT - 2 * UP)
 
         self.play(Write(eq1))
         self.wait()
@@ -84,6 +84,13 @@ class SlopeCalc(Scene):
         self.wait()
 
         self.play(Write(eq3))
+        self.wait()
+
+        r = Rectangle(height=2, width=4, color=YELLOW).shift(4 * LEFT - 2 * UP)
+        t = TextMobject("Slope", color=GREEN).scale(1.5)
+        t.shift(0 * LEFT + 2 * DOWN)
+
+        self.play(Write(r), Write(t))
         self.wait()
 
     def plot(self, x):
