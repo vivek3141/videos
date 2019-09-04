@@ -34,14 +34,14 @@ class Intro(Scene):
 
 class SlopeCalc(Scene):
     def construct(self):
-        eq = TexMobject("y=0.5x+1").scale(1.5)
-        eq.shift(3 * UP)
+        eqt = TexMobject("y=0.5x+1").scale(1.5)
+        eqt.shift(3 * UP)
 
         axes = Axes(
             x_min=-3,
             x_max=3,
-            y_min=-3,
-            y_max=3,
+            y_min=-2,
+            y_max=2,
             number_line_config={
                 "include_tip": False,
             }
@@ -52,10 +52,15 @@ class SlopeCalc(Scene):
             t_max=3,
             color=BLUE
         )
-        eq = VGroup(axes, f)
+        eq = VGroup(axes, f).shift(1 * DOWN)
+
+        self.play(Write(eqt))
+        self.wait()
 
         self.play(Write(eq))
         self.wait()
+
+        self.play(eq.shift, 2 * RIGHT)
 
         self.plot(1)
         self.plot(-1)
@@ -65,10 +70,10 @@ class SlopeCalc(Scene):
 
         p = Circle(radius=0.1,  color=YELLOW,
                    fill_opacity=1).shift(x * RIGHT + y * UP)
-        # p.shift(2 * RIGHT)
+        p.shift(2 * RIGHT + 1 * DOWN)
 
         t = TexMobject(r"({},{})".format(str(x), str(y)))
-        t.shift(x * RIGHT + (y - 0.5) * UP)
+        t.shift((x + 2) * RIGHT + (y - 0.25) * UP)
 
         self.play(Write(t))
         self.play(Write(p))
