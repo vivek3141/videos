@@ -154,11 +154,7 @@ class Example(Scene):
 
         eq1 = TexMobject("y = 2x+b")
         eq1.scale(1.5)
-        eq1.shift(2 * UP)
-
-        eq1 = TexMobject("y = 2x+b")
-        eq1.scale(1.5)
-        eq1.shift(2 * UP)
+        eq1.shift(1.5 * UP)
 
         eq2 = TexMobject(r"1 = 2 \cdot 1+b")
         eq2.scale(1.5)
@@ -166,11 +162,13 @@ class Example(Scene):
 
         eq3 = TexMobject(r"b = -1")
         eq3.scale(1.5)
-        eq3.shift(-1 * UP)
+        eq3.shift(-1.5 * UP)
 
         eq4 = TexMobject(r"y=2x-1")
         eq4.scale(1.5)
-        eq4.shift(-2 * UP)
+        eq4.shift(-3 * UP)
+
+        a = Arrow(2 * UP, 0 * UP, color=GREEN).shift(2 * RIGHT)
 
         self.play(Write(t))
         self.wait()
@@ -181,7 +179,7 @@ class Example(Scene):
         self.play(Write(eq1))
         self.wait()
 
-        self.play(Write(eq2))
+        self.play(Write(eq2), Write(a))
         self.wait()
 
         self.play(Write(eq3))
