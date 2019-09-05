@@ -168,7 +168,10 @@ class Example(Scene):
         eq4.scale(1.5)
         eq4.shift(-3 * UP)
 
-        a = Arrow(2 * UP, 0 * UP, color=GREEN).shift(2 * RIGHT)
+        a = Arrow(2 * UP, -0.5 * UP, color=GREEN).shift(3 * RIGHT)
+        l = TexMobject(r"(1,1)").scale(1.5).shift(4.5 * RIGHT + 0.75 * UP)
+
+        fb = Rectangle(width=3, height=2, color=YELLOW).shift(-3 * DOWN)
 
         self.play(Write(t))
         self.wait()
@@ -179,11 +182,12 @@ class Example(Scene):
         self.play(Write(eq1))
         self.wait()
 
-        self.play(Write(eq2), Write(a))
+        self.play(Write(eq2), Write(a), Write(l))
         self.wait()
 
         self.play(Write(eq3))
         self.wait()
 
         self.play(Write(eq4))
+        self.play(Write(fb))
         self.wait()
