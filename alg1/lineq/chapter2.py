@@ -149,11 +149,43 @@ class Example(Scene):
         t.scale(1.5)
         t.shift(3 * UP)
 
-        given = TexMobject(r"m = 2\\\(1,1)", tex_to_color_map={r"m": BLUE})
+        given = TexMobject(r"m = 2 \\ (1,1)", tex_to_color_map={r"m": BLUE})
+        given.shift(4 * RIGHT + 3 * UP)
 
+        eq1 = TexMobject("y = 2x+b")
+        eq1.scale(1.5)
+        eq1.shift(2 * UP)
+
+        eq1 = TexMobject("y = 2x+b")
+        eq1.scale(1.5)
+        eq1.shift(2 * UP)
+
+        eq2 = TexMobject(r"1 = 2 \cdot 1+b")
+        eq2.scale(1.5)
+        eq2.shift(0 * UP)
+
+        eq3 = TexMobject(r"b = -1")
+        eq3.scale(1.5)
+        eq3.shift(-1 * UP)
+
+        eq4 = TexMobject(r"y=2x-1")
+        eq4.scale(1.5)
+        eq4.shift(-2 * UP)
 
         self.play(Write(t))
         self.wait()
 
         self.play(Write(given))
+        self.wait()
+
+        self.play(Write(eq1))
+        self.wait()
+
+        self.play(Write(eq2))
+        self.wait()
+
+        self.play(Write(eq3))
+        self.wait()
+
+        self.play(Write(eq4))
         self.wait()
