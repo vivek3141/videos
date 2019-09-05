@@ -171,7 +171,7 @@ class Example(Scene):
         a = Arrow(2 * UP, -0.5 * UP, color=GREEN).shift(3 * RIGHT)
         l = TexMobject(r"(1,1)").scale(1.5).shift(4.5 * RIGHT + 0.75 * UP)
 
-        fb = Rectangle(width=3, height=2, color=YELLOW).shift(-3 * DOWN)
+        fb = Rectangle(width=4, height=1, color=YELLOW).shift(3 * DOWN)
 
         self.play(Write(t))
         self.wait()
@@ -191,3 +191,32 @@ class Example(Scene):
         self.play(Write(eq4))
         self.play(Write(fb))
         self.wait()
+
+        v = VGroup()
+
+        for i in self.mobjects:
+            if i != eq4:
+                v.add(i)
+
+        self.play(Uncreate(VGroup(v)))
+        self.play(eq4.shift, 6 * UP)
+        self.wait()
+
+        axes = Axes(
+            x_min=-3,
+            x_max=3,
+            y_min=-3,
+            y_max=3,
+            number_line_config={
+                "include_tip": False,
+            }
+        )
+
+        f1 = FunctionGraph(lambda x: 2*x - 1, color=PINK)
+
+        func = VGroup(axes, f1)
+        func.shift(1 * DOWN)
+
+        self.play(Write(func))
+        self.wait() 
+
