@@ -215,7 +215,7 @@ class Example(Scene):
         f1 = FunctionGraph(lambda x: 2*x - 1, color=PINK)
 
         func = VGroup(axes, f1)
-        func.shift(1 * DOWN)
+        func.shift(0.5 * DOWN)
 
         self.play(Write(func))
         self.wait() 
