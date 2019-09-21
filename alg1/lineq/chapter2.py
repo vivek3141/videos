@@ -18,7 +18,7 @@ class Intro(Scene):
         axes = Axes(
             x_min=-5,
             x_max=5,
-            y_min=-3,
+            y_min=-3, 
             y_max=3,
             number_line_config={
                 "include_tip": False,
