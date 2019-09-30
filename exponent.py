@@ -5,6 +5,7 @@ class ECircle(Scene):
     def construct(self):
         plane = NumberPlane()
         plane.add(plane.get_axis_labels())
+
         curve = ParametricFunction(
             function=lambda t: np.array(2*[np.cos(t), np.sin(t), 0])
             t_min=0,
@@ -12,4 +13,6 @@ class ECircle(Scene):
             color=YELLOW
         )
 
-        self.add(plane)
+        self.play(Write(plane))
+        self.play(Write(curve))
+        self.wait()
