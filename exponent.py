@@ -43,4 +43,4 @@ class ECircle(Scene):
         self.play(Write(r0))
         self.wait()
 
-        self.wait()
+
