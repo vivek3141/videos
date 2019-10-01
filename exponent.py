@@ -84,5 +84,5 @@ class ECircle(Scene):
     
     def update_velocity(self, c, dt):
         a = interpolate(0, 2*PI, dt)
-        c1 = Vector(self.v(a), color=RED).shift(self.r(a))
+        c1 = Vector(self.v(a), color=GREEN).shift(self.r(a))
         c.become(c1)
