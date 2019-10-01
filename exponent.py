@@ -7,7 +7,7 @@ class ECircle(Scene):
 
         )
         plane.add(plane.get_coordinate_labels())
-        plane.scale(2,about_point=ORIGIN)
+        plane.scale(2, about_point=ORIGIN)
 
         curve = ParametricFunction(
             function=lambda t: 2*np.array([np.cos(t), np.sin(t), 0]),
@@ -42,4 +42,3 @@ class ECircle(Scene):
 
         self.play(Write(r0))
         self.wait()
-
