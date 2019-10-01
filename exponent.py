@@ -3,11 +3,11 @@ from manimlib.imports import *
 
 class ECircle(Scene):
     def construct(self):
-        plane = NumberPlane(
-            x_line_frequency=2,
-            y_line_frequency=2
+        plane = ComplexPlane(
+
         )
-        plane.add(plane.get_axis_labels())
+        plane.add(plane.get_coordinate_labels())
+        plane.scale(2,about_point=ORIGIN)
 
         curve = ParametricFunction(
             function=lambda t: 2*np.array([np.cos(t), np.sin(t), 0]),
@@ -26,6 +26,14 @@ class ECircle(Scene):
 
         r0 = Vector([2, 0], color=RED)
 
+        r0tex = TexMobject(r"r(0) = 1+0i")
+        r0tex.scale(1.5)
+
+        r0b = BackgroundRectangle(r0tex, fill_opacity=1, stroke_opacity=1)
+        r0title = VGroup(r0b, r0tex)
+
+        r0title.shift(3 * RIGHT)
+
         self.play(Write(plane))
         self.wait()
 
@@ -34,6 +42,5 @@ class ECircle(Scene):
 
         self.play(Write(r0))
         self.wait()
-        # self.play(Write(curve))
 
         self.wait()
