@@ -81,7 +81,7 @@ class ECircle(Scene):
             color=YELLOW
         )
         c.become(curve2)
-    
+
     def update_velocity(self, c, dt):
         a = interpolate(0, 2*PI, dt)
         c1 = Vector(self.v(a), color=GREEN).shift(self.r(a))
