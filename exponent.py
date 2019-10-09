@@ -86,3 +86,8 @@ class ECircle(Scene):
         a = interpolate(0, 2*PI, dt)
         c1 = Vector(self.v(a), color=GREEN).shift(self.r(a))
         c.become(c1)
+
+
+class Intro(Scene):
+    def construct(self):
+        pass
