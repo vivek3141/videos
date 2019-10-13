@@ -5,6 +5,13 @@ class Intro(Scene):
     pass
 
 
+class Revolution(ThreeDScene):
+    def construct(self):
+        axes = ThreeDAxes()
+
+        self.play(Write(axes))
+
+
 class Horn(ThreeDScene):
     def construct(self):
         surface = ParametricSurface(
