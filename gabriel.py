@@ -8,8 +8,9 @@ class Intro(Scene):
 class Horn(ThreeDScene):
     def construct(self):
         surface = ParametricSurface(
-            self.func, 
+            self.func,
         )
+
     @staticmethod
     def func(u, v):
         return np.array([
