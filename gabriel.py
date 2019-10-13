@@ -2,7 +2,8 @@ from manimlib.imports import *
 
 
 class Intro(Scene):
-    pass
+    def construct(self):
+        pass
 
 
 class Revolution(ThreeDScene):
