@@ -9,9 +9,14 @@ class Revolution(ThreeDScene):
     def construct(self):
         axes = ThreeDAxes()
         func = FunctionGraph(lambda x: 1/x)
+        func2 = FunctionGraph(lambda x: 1/x, x_min=1)
 
-        self.play(Write(axes))
         self.play(Write(func))
+        self.play(Write(axes))
+        self.wait()
+
+        self.play(Transform(func, func2))
+        self.wait()
 
 
 class Horn(ThreeDScene):
