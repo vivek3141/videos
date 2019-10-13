@@ -8,8 +8,10 @@ class Intro(Scene):
 class Revolution(ThreeDScene):
     def construct(self):
         axes = ThreeDAxes()
+        func = FunctionGraph(lambda x: 1/x)
 
         self.play(Write(axes))
+        self.play(Write(func))
 
 
 class Horn(ThreeDScene):
