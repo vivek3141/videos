@@ -9,11 +9,12 @@ class Horn(ThreeDScene):
     def construct(self):
         surface = ParametricSurface(
             self.func,
-            u_min=0.01,
-            u_max=5,
+            u_min=1,
+            u_max=10,
             v_min=0,
             v_max=2*PI
         )
+        surface.center()
 
         self.move_camera(0.8 * np.pi / 2, -0.45 * np.pi)
         self.play(Write(surface))
