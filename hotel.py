@@ -1,4 +1,4 @@
-from manim import *
+from manimlib.imports import *
 
 
 class Intro(Scene):
