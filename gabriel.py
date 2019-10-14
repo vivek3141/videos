@@ -68,7 +68,22 @@ class Revolution(ThreeDScene):
 
 class Volume(ThreeDScene):
     def construct(self):
-        pass
+        surface = ParametricSurface(
+            self.func,
+            u_min=1,
+            u_max=10,
+            v_min=0,
+            v_max=2*PI,
+            checkerboard_colors=[]
+        )
+
+    @staticmethod
+    def func(u, v):
+        return np.array([
+            u,
+            (1/u)*np.cos(v)
+            (1/u)*np.sin(v)
+        ])
 
 
 class Horn(ThreeDScene):
