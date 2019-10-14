@@ -74,16 +74,23 @@ class Volume(ThreeDScene):
             u_max=10,
             v_min=0,
             v_max=2*PI,
-            checkerboard_colors=[]
+            checkerboard_colors=[],
+
         )
+        surface.center()
+
+        self.move_camera(0.8 * np.pi / 2, -0.45 * np.pi)
+        self.play(Write(surface))
+        self.wait()
 
     @staticmethod
     def func(u, v):
         return np.array([
             u,
-            (1/u)*np.cos(v)
+            (1/u)*np.cos(v),
             (1/u)*np.sin(v)
         ])
+
 
 
 class Horn(ThreeDScene):
