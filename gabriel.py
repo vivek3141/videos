@@ -21,21 +21,27 @@ class Revolution(ThreeDScene):
             v_min=0,
             v_max=0.001,
             checkerboard_colors=[],
-            color=YELLOW
+            fill_color=YELLOW,
+            stroke_color=YELLOW
         )
 
         self.play(Write(func), Write(axes))
         self.wait()
 
-        self.play(Transform(f1, surface), Uncreate(f2))
+        self.play(Transform(f1, func2), Uncreate(f2), Write(surface))
         self.wait()
 
         self.move_camera(0.8 * np.pi / 2, -0.45 * np.pi)
+        self.remove(f1)
+        self.begin_ambient_camera_rotation(rate=0.04)
         self.play(
             UpdateFromAlphaFunc(surface, self.update_f),
             rate_func=linear,
             run_time=2
         )
+
+        self.play(Uncreate(axes), surface.center)
+        self.wait(5)
 
     def update_f(self, c, dt):
         a = interpolate(0.1, 2*PI, dt)
@@ -46,10 +52,11 @@ class Revolution(ThreeDScene):
             v_min=0,
             v_max=a,
             checkerboard_colors=[],
-            color=YELLOW
+            color=YELLOW,
+            fill_color=YELLOW,
         )
         c.become(s)
-    
+
     @staticmethod
     def surface(u, v):
         return np.array([
@@ -57,6 +64,11 @@ class Revolution(ThreeDScene):
             (1/u)*np.cos(v),
             (1/u)*np.sin(v)
         ])
+
+
+class Volume(ThreeDScene):
+    def construct(self):
+        pass
 
 
 class Horn(ThreeDScene):
@@ -67,7 +79,8 @@ class Horn(ThreeDScene):
             u_max=10,
             v_min=0,
             v_max=2*PI,
-            checkerboard_colors=[]
+            checkerboard_colors=[],
+
         )
         surface.center()
 
