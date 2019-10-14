@@ -9,14 +9,15 @@ class Intro(Scene):
 class Revolution(ThreeDScene):
     def construct(self):
         axes = ThreeDAxes()
-        func = FunctionGraph(lambda x: 1/x)
+        f1 = FunctionGraph(lambda x: 1/x, x_min=0.1)
+        f2 = FunctionGraph(lambda x: 1/x, x_max=-0.1, x_min=-10)
+        func = VGroup(f1, f2)
         func2 = FunctionGraph(lambda x: 1/x, x_min=1)
 
-        self.play(Write(func))
-        self.play(Write(axes))
+        self.play(Write(func), Write(axes))
         self.wait()
 
-        self.play(Transform(func, func2))
+        self.play(Transform(f1, func2), Uncreate(f2))
         self.wait()
 
 
@@ -27,7 +28,8 @@ class Horn(ThreeDScene):
             u_min=1,
             u_max=10,
             v_min=0,
-            v_max=2*PI
+            v_max=2*PI,
+            checkerboard_colors=[]
         )
         surface.center()
 
