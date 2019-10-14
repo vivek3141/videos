@@ -20,6 +20,31 @@ class Revolution(ThreeDScene):
         self.play(Transform(f1, func2), Uncreate(f2))
         self.wait()
 
+        self.move_camera(0.8 * np.pi / 2, -0.45 * np.pi)
+        self.play(
+            UpdateFromAlphaFunc(surfce, self.update_f),
+            rate_func=linear,
+            run_time=2
+        )
+
+    def update_f(self, c, dt):
+        a = interpolate(0, 2*PI, dt)
+        c = ParamtericSurface(
+            function=self.surface,
+            u_min=1,
+            u_max=10,
+            color=YELLOW
+        )
+        self.add(c)
+    
+    @staticmethod
+    def surface(u, v):
+        return np.array([
+            u,
+            (1/u)*np.cos(v),
+            (1/u)*np.sin(v)
+        ])
+
 
 class Horn(ThreeDScene):
     def construct(self):
