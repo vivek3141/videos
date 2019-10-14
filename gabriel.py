@@ -14,28 +14,41 @@ class Revolution(ThreeDScene):
         func = VGroup(f1, f2)
         func2 = FunctionGraph(lambda x: 1/x, x_min=1)
 
+        surface = ParametricSurface(
+            self.func,
+            u_min=1,
+            u_max=10,
+            v_min=0,
+            v_max=0.001,
+            checkerboard_colors=[],
+            color=YELLOW
+        )
+
         self.play(Write(func), Write(axes))
         self.wait()
 
-        self.play(Transform(f1, func2), Uncreate(f2))
+        self.play(Transform(f1, surface), Uncreate(f2))
         self.wait()
 
         self.move_camera(0.8 * np.pi / 2, -0.45 * np.pi)
         self.play(
-            UpdateFromAlphaFunc(surfce, self.update_f),
+            UpdateFromAlphaFunc(surface, self.update_f),
             rate_func=linear,
             run_time=2
         )
 
     def update_f(self, c, dt):
-        a = interpolate(0, 2*PI, dt)
-        c = ParamtericSurface(
-            function=self.surface,
+        a = interpolate(0.1, 2*PI, dt)
+        s = ParametricSurface(
+            self.surface,
             u_min=1,
             u_max=10,
+            v_min=0,
+            v_max=a,
+            checkerboard_colors=[],
             color=YELLOW
         )
-        self.add(c)
+        c.become(s)
     
     @staticmethod
     def surface(u, v):
