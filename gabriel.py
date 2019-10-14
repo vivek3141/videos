@@ -15,7 +15,7 @@ class Revolution(ThreeDScene):
         func2 = FunctionGraph(lambda x: 1/x, x_min=1)
 
         surface = ParametricSurface(
-            self.func,
+            self.surface,
             u_min=1,
             u_max=10,
             v_min=0,
