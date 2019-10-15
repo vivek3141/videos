@@ -80,7 +80,7 @@ class Volume(ThreeDScene):
         surface.center()
 
         disk = ParametricSurface(
-            self.func,
+            self.disk,
             u_min=0,
             u_max=2*PI,
             v_min=-1/3,
@@ -90,7 +90,6 @@ class Volume(ThreeDScene):
             stroke_color=RED
 
         )
-        disk.center()
 
         self.move_camera(0.8 * np.pi / 2, -0.45 * np.pi)
         self.play(Write(surface))
