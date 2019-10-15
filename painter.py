@@ -222,6 +222,29 @@ class VolumeEval(Scene):
         self.wait()
 
 
+class SurfaceArea(ThreeDScene):
+    def construct(self):
+        frustum = ParametricSurface(
+            self.frustum,
+            u_min=1,
+            u_max=3,
+            v_min=0,
+            v_max=2*PI,
+        )
+
+        self.move_camera(0.8 * np.pi / 2, -0.45 * np.pi)
+        self.play(Write(frustum))
+        self.wait()
+
+    @staticmethod
+    def frustum(u, v, r=0.5):
+        return np.array([
+            r*v*np.cos(u),
+            r*v*np.sin(u),
+            v
+        ])
+
+
 class Horn(ThreeDScene):
     def construct(self):
         surface = ParametricSurface(
