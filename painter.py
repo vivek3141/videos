@@ -230,20 +230,43 @@ class SurfaceArea(ThreeDScene):
             u_max=2*PI,
             v_min=1,
             v_max=3,
-            checkerboard_colors=[eval(key) for key in COLOR_MAP.keys()]
+            checkerboard_colors=[BLUE, PURPLE]
         )
-        frustum.center()
+
+        horn = ParametricSurface(
+            self.horn,
+            u_min=1,
+            u_max=10,
+            v_min=0,
+            v_max=2*PI,
+            checkerboard_colors=[eval(key) for key in COLOR_MAP.keys()],
+            stroke_opacity=0
+        )
+        horn.center()
 
         self.move_camera(0.8 * np.pi / 2, -0.45 * np.pi)
+        self.begin_ambient_camera_rotation()
+
+        self.play(Write(horn))
+        self.wait()
+
         self.play(Write(frustum))
         self.wait()
 
     @staticmethod
-    def frustum(u, v, r=0.5):
+    def frustum(u, v, r=1/3):
         return np.array([
+            -v-1,
             r*v*np.cos(u),
             r*v*np.sin(u),
-            v
+        ])
+
+    @staticmethod
+    def horn(u, v):
+        return np.array([
+            u,
+            (1/u)*np.cos(v),
+            (1/u)*np.sin(v)
         ])
 
 
