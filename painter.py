@@ -20,7 +20,7 @@ class Revolution(ThreeDScene):
             u_max=10,
             v_min=0,
             v_max=0.001,
-            checkerboard_colors=**COLOR_MAP,
+            checkerboard_colors=[eval(key) for key in COLOR_MAP.keys()],
             fill_color=YELLOW,
             stroke_color=YELLOW
         )
@@ -51,7 +51,7 @@ class Revolution(ThreeDScene):
             u_max=10,
             v_min=0,
             v_max=a,
-            checkerboard_colors=[],
+            checkerboard_colors=[eval(key) for key in COLOR_MAP.keys()],
             color=YELLOW,
             fill_color=YELLOW,
         )
@@ -74,7 +74,7 @@ class Volume(ThreeDScene):
             u_max=10,
             v_min=0,
             v_max=2*PI,
-            checkerboard_colors=[],
+            checkerboard_colors=[eval(key) for key in COLOR_MAP.keys()],
 
         )
         surface.center()
@@ -105,8 +105,8 @@ class Horn(ThreeDScene):
             u_max=10,
             v_min=0,
             v_max=2*PI,
-            checkerboard_colors=[],
-
+            checkerboard_colors=[eval(key) for key in COLOR_MAP.keys()],
+            stroke_opacity=0
         )
         surface.center()
 
