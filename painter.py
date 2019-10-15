@@ -86,7 +86,6 @@ class Volume(ThreeDScene):
             v_min=-1/3,
             v_max=1/3,
             checkerboard_colors=[RED, ORANGE],
-
         )
 
         disk2 = ParametricSurface(
@@ -98,6 +97,14 @@ class Volume(ThreeDScene):
             checkerboard_colors=[RED, ORANGE],
         )
 
+        circle = ParametricFunction(
+            self.circle,
+            t_min=0,
+            t_max=2*PI,
+            color=YELLOW,
+            stroke_width=2*DEFAULT_STROKE_WIDTH
+        )
+        """
         self.move_camera(0.8 * np.pi / 2, -0.45 * np.pi)
         self.play(Write(surface))
         self.begin_ambient_camera_rotation()
@@ -111,12 +118,19 @@ class Volume(ThreeDScene):
         self.wait()
 
         self.stop_ambient_camera_rotation()
-        self.play(Uncreate(surface))
+        self.play(Uncreate(surface))"""
         self.move_camera(
             phi=90 * DEGREES,
             theta=0 * DEGREES,
         )
-        self.play(Transform(disk, disk2))
+        #self.play(Transform(disk, disk2))
+
+        #self.wait()
+
+        self.play(Write(disk2))
+
+        self.play(Write(circle))
+        self.wait()
 
     @staticmethod
     def func(u, v):
@@ -135,11 +149,19 @@ class Volume(ThreeDScene):
         ])
 
     @staticmethod
-    def disk2(u, v, a=3):
-        return 7*np.array([
+    def disk2(u, v, r=7):
+        return r*np.array([
             0,
             v*np.cos(u),
             v*np.sin(u)
+        ])
+
+    @staticmethod
+    def circle(t, r=7):
+        return r*np.array([
+            0,
+            np.cos(t),
+            np.sin(t)
         ])
 
 
