@@ -93,6 +93,7 @@ class Volume(ThreeDScene):
 
         self.move_camera(0.8 * np.pi / 2, -0.45 * np.pi)
         self.play(Write(surface))
+        self.begin_ambient_camera_rotation()
         self.wait()
 
         surface.set_fill(opacity=0.5)
@@ -101,6 +102,15 @@ class Volume(ThreeDScene):
 
         self.play(Write(disk))
         self.wait()
+
+        self.stop_ambient_camera_rotation()
+        self.play(Uncreate(surface))
+        self.move_camera(
+            phi=90 * DEGREES,
+            theta=0 * DEGREES,
+        )
+        
+
 
     @staticmethod
     def func(u, v):
