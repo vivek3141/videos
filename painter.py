@@ -194,7 +194,7 @@ class VolumeEval(Scene):
             r"= \pi \lim_{t \rightarrow \infty} \frac{-1}{t} + 1",
             tex_to_color_map={r"\left( \frac{1}{x} \right)^2": RED})
         eq4.scale(1.5)
-        eq4.shift(2 * DOWN)
+        eq4.shift(2.5 * DOWN)
 
         self.play(Write(eq1))
         self.wait()
@@ -202,7 +202,7 @@ class VolumeEval(Scene):
         self.play(Transform(eq1, eq2))
         self.wait()
 
-        self.play(eq1.shift, 2 * UP)
+        self.play(eq1.shift, 2.5 * UP)
         self.wait()
 
         self.play(Write(eq3))
