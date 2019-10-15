@@ -103,7 +103,7 @@ class Volume(ThreeDScene):
                 t_min=0,
                 t_max=2*PI,
                 color=YELLOW,
-                stroke_width=2*DEFAULT_STROKE_WIDTH
+                stroke_width=0.5*DEFAULT_STROKE_WIDTH
             ),
             ParametricFunction(
                 lambda t: np.array([0, 0, t]),
@@ -114,7 +114,6 @@ class Volume(ThreeDScene):
             )
         )
 
-        """
         self.move_camera(0.8 * np.pi / 2, -0.45 * np.pi)
         self.play(Write(surface))
         self.begin_ambient_camera_rotation()
@@ -129,20 +128,16 @@ class Volume(ThreeDScene):
 
         self.stop_ambient_camera_rotation()
         self.play(Uncreate(surface))
-        """
 
         self.move_camera(
             phi=90 * DEGREES,
             theta=0 * DEGREES,
         )
 
-        # self.play(Transform(disk, disk2))
+        self.play(Transform(disk, disk2))
+        self.wait()
 
-        # self.wait()
-
-        self.play(Write(disk2))
-
-        self.play(Write(circle), Write(line))
+        self.play(Write(circle))
         self.wait()
 
     @staticmethod
