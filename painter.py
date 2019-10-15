@@ -226,10 +226,10 @@ class SurfaceArea(ThreeDScene):
     def construct(self):
         frustum = ParametricSurface(
             self.frustum,
-            u_min=1,
-            u_max=3,
-            v_min=0,
-            v_max=2*PI,
+            u_min=0,
+            u_max=2*PI,
+            v_min=1,
+            v_max=3,
         )
 
         self.move_camera(0.8 * np.pi / 2, -0.45 * np.pi)
