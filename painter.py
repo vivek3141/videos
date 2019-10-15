@@ -230,7 +230,9 @@ class SurfaceArea(ThreeDScene):
             u_max=2*PI,
             v_min=1,
             v_max=3,
+            checkerboard_colors=[eval(key) for key in COLOR_MAP.keys()]
         )
+        frustum.center()
 
         self.move_camera(0.8 * np.pi / 2, -0.45 * np.pi)
         self.play(Write(frustum))
