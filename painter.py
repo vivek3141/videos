@@ -97,13 +97,23 @@ class Volume(ThreeDScene):
             checkerboard_colors=[RED, ORANGE],
         )
 
-        circle = ParametricFunction(
-            self.circle,
-            t_min=0,
-            t_max=2*PI,
-            color=YELLOW,
-            stroke_width=2*DEFAULT_STROKE_WIDTH
+        circle = VGroup(
+            ParametricFunction(
+                self.circle,
+                t_min=0,
+                t_max=2*PI,
+                color=YELLOW,
+                stroke_width=2*DEFAULT_STROKE_WIDTH
+            ),
+            ParametricFunction(
+                lambda t: np.array([0, 0, t]),
+                t_min=0,
+                t_max=2.5,
+                color=YELLOW,
+                stroke_width=2*DEFAULT_STROKE_WIDTH
+            )
         )
+
         """
         self.move_camera(0.8 * np.pi / 2, -0.45 * np.pi)
         self.play(Write(surface))
@@ -118,18 +128,21 @@ class Volume(ThreeDScene):
         self.wait()
 
         self.stop_ambient_camera_rotation()
-        self.play(Uncreate(surface))"""
+        self.play(Uncreate(surface))
+        """
+
         self.move_camera(
             phi=90 * DEGREES,
             theta=0 * DEGREES,
         )
-        #self.play(Transform(disk, disk2))
 
-        #self.wait()
+        # self.play(Transform(disk, disk2))
+
+        # self.wait()
 
         self.play(Write(disk2))
 
-        self.play(Write(circle))
+        self.play(Write(circle), Write(line))
         self.wait()
 
     @staticmethod
