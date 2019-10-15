@@ -176,15 +176,19 @@ class Volume(ThreeDScene):
 class VolumeEval(Scene):
     def construct(self):
         eq1 = TexMobject(
-            r"\int_1^{\infty} \pi \left( \frac{1}{x} \right)^2 dx")
+            r"\int_1^{\infty} \pi \left( \frac{1}{x} \right)^2 dx",
+            tex_to_color_map={r"\left( \frac{1}{x} \right)^2": RED})
         eq1.scale(1.5)
 
         eq2 = TexMobject(
-            r"\lim_{t \rightarrow \infty} \int_1^{t} \pi \left( \frac{1}{x} \right)^2 dx")
+            r"\lim_{t \rightarrow \infty} \int_1^{t} \pi \left( \frac{1}{x} \right)^2 dx",
+            tex_to_color_map={r"\left( \frac{1}{x} \right)^2": RED})
         eq2.scale(1.5)
 
         eq3 = TexMobject(
-            r"\pi \lim_{t \rightarrow \infty} \left ( \frac{-1}{x} \right ) \Big |_1^t = \pi \lim_{t \rightarrow \infty} \frac{-1}{t} + 1")
+            r"\pi \lim_{t \rightarrow \infty} \left ( \frac{-1}{x} \right ) \Big |_1^t =  \
+                \pi \lim_{t \rightarrow \infty} \frac{-1}{t} + 1", ,
+            tex_to_color_map={r"\left( \frac{1}{x} \right)^2": RED})
         eq3.scale(1.5)
 
         self.play(Write(eq1))
