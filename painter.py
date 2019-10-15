@@ -20,7 +20,7 @@ class Revolution(ThreeDScene):
             u_max=10,
             v_min=0,
             v_max=0.001,
-            checkerboard_colors=[],
+            checkerboard_colors=**COLOR_MAP,
             fill_color=YELLOW,
             stroke_color=YELLOW
         )
