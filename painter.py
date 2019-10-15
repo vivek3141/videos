@@ -196,6 +196,13 @@ class VolumeEval(Scene):
         eq4.scale(1.5)
         eq4.shift(2.5 * DOWN)
 
+        ans = TexMobject(r"\pi")
+        ans.scale(1.5)
+        ans.shift(2.5 * DOWN)
+
+        rect = Rectangle(height=1, color=YELLOW)
+        rect.shift(2.5 * DOWN)
+
         self.play(Write(eq1))
         self.wait()
 
@@ -209,6 +216,9 @@ class VolumeEval(Scene):
         self.wait()
 
         self.play(Write(eq4))
+        self.wait()
+
+        self.play(Transform(eq4, ans), Write(rect))
         self.wait()
 
 
