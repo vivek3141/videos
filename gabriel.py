@@ -83,6 +83,10 @@ class Volume(ThreeDScene):
         self.play(Write(surface))
         self.wait()
 
+        surface.set_fill(opacity=0.5)
+        surface.set_stroke(opacity=0.5)
+        self.wait()
+
     @staticmethod
     def func(u, v):
         return np.array([
