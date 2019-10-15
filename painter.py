@@ -186,10 +186,15 @@ class VolumeEval(Scene):
         eq2.scale(1.5)
 
         eq3 = TexMobject(
-            r"\pi \lim_{t \rightarrow \infty} \left ( \frac{-1}{x} \right ) \Big |_1^t =  \
-                \pi \lim_{t \rightarrow \infty} \frac{-1}{t} + 1", ,
+            r"= \pi \lim_{t \rightarrow \infty} \left ( \frac{-1}{x} \right ) \Big |_1^t",
             tex_to_color_map={r"\left( \frac{1}{x} \right)^2": RED})
         eq3.scale(1.5)
+
+        eq4 = TexMobject(
+            r"= \pi \lim_{t \rightarrow \infty} \frac{-1}{t} + 1",
+            tex_to_color_map={r"\left( \frac{1}{x} \right)^2": RED})
+        eq4.scale(1.5)
+        eq4.shift(2 * DOWN)
 
         self.play(Write(eq1))
         self.wait()
@@ -197,7 +202,13 @@ class VolumeEval(Scene):
         self.play(Transform(eq1, eq2))
         self.wait()
 
-        self.play(eq2.shift, 2 * UP)
+        self.play(eq1.shift, 2 * UP)
+        self.wait()
+
+        self.play(Write(eq3))
+        self.wait()
+
+        self.play(Write(eq4))
         self.wait()
 
 
