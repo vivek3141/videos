@@ -200,7 +200,7 @@ class VolumeEval(Scene):
         ans.scale(1.5)
         ans.shift(2.5 * DOWN)
 
-        rect = Rectangle(height=1, color=YELLOW)
+        rect = Rectangle(height=1, width=1, color=YELLOW)
         rect.shift(2.5 * DOWN)
 
         self.play(Write(eq1))
