@@ -190,6 +190,12 @@ class VolumeEval(Scene):
         self.play(Write(eq1))
         self.wait()
 
+        self.play(Transform(eq1, eq2))
+        self.wait()
+
+        self.play(eq2.shift, 2 * UP)
+        self.wait()
+
 
 class Horn(ThreeDScene):
     def construct(self):
