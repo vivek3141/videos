@@ -92,8 +92,8 @@ class Volume(ThreeDScene):
             self.disk2,
             u_min=0,
             u_max=2*PI,
-            v_min=-1/3,
-            v_max=1/3,
+            v_min=-2.5,
+            v_max=2.5,
             checkerboard_colors=[RED, ORANGE],
         )
 
@@ -149,15 +149,15 @@ class Volume(ThreeDScene):
         ])
 
     @staticmethod
-    def disk2(u, v, r=7):
-        return r*np.array([
+    def disk2(u, v):
+        return np.array([
             0,
             v*np.cos(u),
             v*np.sin(u)
         ])
 
     @staticmethod
-    def circle(t, r=7):
+    def circle(t, r=2.5):
         return r*np.array([
             0,
             np.cos(t),
