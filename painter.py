@@ -85,22 +85,17 @@ class Volume(ThreeDScene):
             u_max=2*PI,
             v_min=-1/3,
             v_max=1/3,
-            checkerboard_colors=[],
-            fill_color=RED,
-            stroke_color=RED
+            checkerboard_colors=[RED, ORANGE],
 
         )
 
         disk2 = ParametricSurface(
-            self.disk,
+            self.disk2,
             u_min=0,
             u_max=2*PI,
             v_min=-1/3,
             v_max=1/3,
-            checkerboard_colors=[],
-            fill_color=RED,
-            stroke_color=RED
-
+            checkerboard_colors=[RED, ORANGE],
         )
 
         self.move_camera(0.8 * np.pi / 2, -0.45 * np.pi)
@@ -123,8 +118,6 @@ class Volume(ThreeDScene):
         )
         self.play(Transform(disk, disk2))
 
-
-
     @staticmethod
     def func(u, v):
         return np.array([
@@ -143,7 +136,7 @@ class Volume(ThreeDScene):
 
     @staticmethod
     def disk2(u, v, a=3):
-        return 3*np.array([
+        return 7*np.array([
             0,
             v*np.cos(u),
             v*np.sin(u)
