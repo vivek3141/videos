@@ -79,12 +79,28 @@ class Volume(ThreeDScene):
         )
         surface.center()
 
+        disk = ParametricSurface(
+            self.func,
+            u_min=0,
+            u_max=2*PI,
+            v_min=-1/3,
+            v_max=1/3,
+            checkerboard_colors=[],
+            fill_color=RED,
+            stroke_color=RED
+
+        )
+        disk.center()
+
         self.move_camera(0.8 * np.pi / 2, -0.45 * np.pi)
         self.play(Write(surface))
         self.wait()
 
         surface.set_fill(opacity=0.5)
         surface.set_stroke(opacity=0.5)
+        self.wait()
+
+        self.play(Write(disk))
         self.wait()
 
     @staticmethod
@@ -95,6 +111,13 @@ class Volume(ThreeDScene):
             (1/u)*np.sin(v)
         ])
 
+    @staticmethod
+    def disk(u, v):
+        return np.array([
+            -2,
+            v*np.cos(u),
+            v*np.sin(u)
+        ])
 
 
 class Horn(ThreeDScene):
