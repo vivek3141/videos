@@ -230,7 +230,7 @@ class SurfaceArea(ThreeDScene):
             u_max=2*PI,
             v_min=1,
             v_max=3,
-            checkerboard_colors=[BLUE, PURPLE]
+            checkerboard_colors=[]
         )
 
         horn = ParametricSurface(
@@ -242,7 +242,6 @@ class SurfaceArea(ThreeDScene):
             checkerboard_colors=[eval(key) for key in COLOR_MAP.keys()],
             stroke_opacity=0
         )
-        horn.center()
 
         self.move_camera(0.8 * np.pi / 2, -0.45 * np.pi)
         self.begin_ambient_camera_rotation()
@@ -264,7 +263,7 @@ class SurfaceArea(ThreeDScene):
     @staticmethod
     def horn(u, v):
         return np.array([
-            u,
+            u-5,
             (1/u)*np.cos(v),
             (1/u)*np.sin(v)
         ])
