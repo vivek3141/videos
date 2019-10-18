@@ -252,6 +252,16 @@ class SurfaceArea(ThreeDScene):
         self.play(Write(frustum))
         self.wait()
 
+        self.play(Uncreate(horn))
+        self.play(frustum.center)
+        self.play(frustum.rotate, 90)
+        self.wait()
+        self.stop_ambient_camera_rotation()
+
+        self.move_camera(phi=0*DEGREES, theta=-90*DEGREES)
+        self.play(frustum.scale, 2)
+        self.wait()
+
     @staticmethod
     def frustum(u, v, r=1/3):
         return np.array([
