@@ -313,7 +313,7 @@ class SurfaceEval(Scene):
         eq1.scale(1.5)
 
         eq1b = TexMobject(
-            r"\int_{1}^{t} 2\pi\frac{1}{x} \sqrt{1+\left ( \frac{-1}{x^2} \right )^2} dx",
+            r"\int_{1}^{\infty} 2\pi\frac{1}{x} \sqrt{1+\left ( \frac{-1}{x^2} \right )^2} dx",
             tex_to_color_map={
                 r"\frac{1}{x}": RED,
                 r"2\pi": GREEN,
@@ -324,14 +324,26 @@ class SurfaceEval(Scene):
         eq1b.scale(1.5)
 
         eq2 = TexMobject(
-            r"\lim_{t \rightarrow \infty} \int_1^{t} \pi \left( \frac{1}{x} \right)^2 dx",
+            r"\int_{1}^{\infty} 2\pi\frac{1}{x} \sqrt{1+\left ( \frac{-1}{x^2} \right )^2} dx \geq \int_{1}^{\infty} 2\pi\frac{1}{x}dx",
             tex_to_color_map={
-                r"\left( \frac{1}{x} \right)^2": RED,
-                r"\pi": GREEN,
-                r"_1^{t}": BLUE
+                r"\frac{1}{x}": RED,
+                r"2\pi": GREEN,
+                r"_1^t": BLUE,
+                r"\sqrt{1+\left ( \frac{-1}{x^2} \right )^2}":YELLOW
             }
         )
         eq2.scale(1.5)
+
+        eq2b = TexMobject(
+            r"\int_{1}^{\infty} 2\pi\frac{1}{x}dx",
+            tex_to_color_map={
+                r"\frac{1}{x}": RED,
+                r"2\pi": GREEN,
+                r"_1^t": BLUE,
+                r"\sqrt{1+\left ( \frac{-1}{x^2} \right )^2}":YELLOW
+            }
+        )
+        eq2b.scale(1.5)
 
         eq3 = TexMobject(
             r"= \pi \lim_{t \rightarrow \infty} \left ( \frac{-1}{x} \right ) \Big |_1^t",
