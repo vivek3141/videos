@@ -182,7 +182,7 @@ class VolumeEval(Scene):
 
         eq2 = TexMobject(
             r"\lim_{t \rightarrow \infty} \int_1^{t} \pi \left( \frac{1}{x} \right)^2 dx",
-            tex_to_color_map={r"\left( \frac{1}{x} \right)^2": RED, r"\pi": GREEN, r"_1^t": BLUE})
+            tex_to_color_map={r"\left( \frac{1}{x} \right)^2": RED, r"\pi": GREEN, r"_1^{t}": BLUE})
         eq2.scale(1.5)
 
         eq3 = TexMobject(
