@@ -302,14 +302,26 @@ class SurfaceArea(ThreeDScene):
 class SurfaceEval(Scene):
     def construct(self):
         eq1 = TexMobject(
-            r"\int_1^{\infty} \pi \left( \frac{1}{x} \right)^2 dx",
+            r"\int_{1}^{\infty} 2\pi\frac{1}{x}ds",
             tex_to_color_map={
-                r"\left( \frac{1}{x} \right)^2": RED,
-                r"\pi": GREEN,
+                r"\frac{1}{x}": RED,
+                r"ds": YELLOW,
+                r"2\pi": GREEN,
                 r"_1^t": BLUE
             }
         )
         eq1.scale(1.5)
+
+        eq1b = TexMobject(
+            r"\int_{1}^{t} 2\pi\frac{1}{x} \sqrt{1+\left ( \frac{-1}{x^2} \right )^2} dx",
+            tex_to_color_map={
+                r"\frac{1}{x}": RED,
+                r"2\pi": GREEN,
+                r"_1^t": BLUE,
+                r"\sqrt{1+\left ( \frac{-1}{x^2} \right )^2}":YELLOW
+            }
+        )
+        eq1b.scale(1.5)
 
         eq2 = TexMobject(
             r"\lim_{t \rightarrow \infty} \int_1^{t} \pi \left( \frac{1}{x} \right)^2 dx",
@@ -350,6 +362,9 @@ class SurfaceEval(Scene):
         rect.shift(2.5 * DOWN)
 
         self.play(Write(eq1))
+        self.wait()
+
+        self.play(Transform(eq1, eq1b))
         self.wait()
 
         self.play(Transform(eq1, eq2))
