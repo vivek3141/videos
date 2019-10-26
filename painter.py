@@ -357,27 +357,27 @@ class SurfaceEval(Scene):
         eq2c.scale(1.5)
 
         eq3 = TexMobject(
-            r"= \pi \lim_{t \rightarrow \infty} \left ( \frac{-1}{x} \right ) \Big |_1^t",
+            r"= 2\pi \lim_{t \rightarrow \infty} \ln(x) \Big |_1^t",
             tex_to_color_map={
                 r"\left ( \frac{-1}{x} \right )": RED,
-                r"\pi": GREEN,
+                r"2\pi": GREEN,
                 r"_1^t": BLUE
             }
         )
         eq3.scale(1.5)
 
         eq4 = TexMobject(
-            r"= \pi \lim_{t \rightarrow \infty} \frac{-1}{t} + 1",
+            r"= 2\pi \lim_{t \rightarrow \infty} \ln(t)",
             tex_to_color_map={
                 r"\left( \frac{1}{x} \right)^2": RED,
-                r"\pi": GREEN,
+                r"2\pi": GREEN,
                 r"_1^t": BLUE
             }
         )
         eq4.scale(1.5)
         eq4.shift(2.5 * DOWN)
 
-        ans = TexMobject(r"\pi")
+        ans = TexMobject(r"\infty")
         ans.scale(1.5)
         ans.shift(2.5 * DOWN)
 
