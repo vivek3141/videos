@@ -177,22 +177,22 @@ class VolumeEval(Scene):
     def construct(self):
         eq1 = TexMobject(
             r"\int_1^{\infty} \pi \left( \frac{1}{x} \right)^2 dx",
-            tex_to_color_map={r"\left( \frac{1}{x} \right)^2": RED, r"\pi": GREEN})
+            tex_to_color_map={r"\left( \frac{1}{x} \right)^2": RED, r"\pi": GREEN, r"_1^t": BLUE})
         eq1.scale(1.5)
 
         eq2 = TexMobject(
             r"\lim_{t \rightarrow \infty} \int_1^{t} \pi \left( \frac{1}{x} \right)^2 dx",
-            tex_to_color_map={r"\left( \frac{1}{x} \right)^2": RED, r"\pi": GREEN})
+            tex_to_color_map={r"\left( \frac{1}{x} \right)^2": RED, r"\pi": GREEN, r"_1^t": BLUE})
         eq2.scale(1.5)
 
         eq3 = TexMobject(
             r"= \pi \lim_{t \rightarrow \infty} \left ( \frac{-1}{x} \right ) \Big |_1^t",
-            tex_to_color_map={r"\left( \frac{-1}{x} \right)^2": RED, r"\pi": GREEN})
+            tex_to_color_map={r"\left ( \frac{-1}{x} \right )": RED, r"\pi": GREEN, r"_1^t": BLUE})
         eq3.scale(1.5)
 
         eq4 = TexMobject(
             r"= \pi \lim_{t \rightarrow \infty} \frac{-1}{t} + 1",
-            tex_to_color_map={r"\left( \frac{1}{x} \right)^2": RED, r"\pi": GREEN})
+            tex_to_color_map={r"\left( \frac{1}{x} \right)^2": RED, r"\pi": GREEN, r"_1^t": BLUE})
         eq4.scale(1.5)
         eq4.shift(2.5 * DOWN)
 
