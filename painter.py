@@ -412,6 +412,11 @@ class SurfaceEval(Scene):
         self.wait()
 
 
+class TwoConverge(Scene):
+    def construct(self):
+        pass
+
+
 class Horn(ThreeDScene):
     def construct(self):
         surface = ParametricSurface(
@@ -427,7 +432,8 @@ class Horn(ThreeDScene):
 
         self.move_camera(0.8 * np.pi / 2, -0.45 * np.pi)
         self.play(Write(surface))
-        self.wait()
+        self.begin_ambient_camera_rotation(rate=0.04)
+        self.wait(20)
 
     @staticmethod
     def func(u, v):
