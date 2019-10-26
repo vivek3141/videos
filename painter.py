@@ -318,7 +318,7 @@ class SurfaceEval(Scene):
                 r"\frac{1}{x}": RED,
                 r"2\pi": GREEN,
                 r"_1^t": BLUE,
-                r"\sqrt{1+\left ( \frac{-1}{x^2} \right )^2}":YELLOW
+                r"\sqrt{1+\left ( \frac{-1}{x^2} \right )^2}": YELLOW
             }
         )
         eq1b.scale(1.5)
@@ -329,7 +329,7 @@ class SurfaceEval(Scene):
                 r"\frac{1}{x}": RED,
                 r"2\pi": GREEN,
                 r"_1^t": BLUE,
-                r"\sqrt{1+\left ( \frac{-1}{x^2} \right )^2}":YELLOW
+                r"\sqrt{1+\left ( \frac{-1}{x^2} \right )^2}": YELLOW
             }
         )
         eq2.scale(1.5)
@@ -340,10 +340,21 @@ class SurfaceEval(Scene):
                 r"\frac{1}{x}": RED,
                 r"2\pi": GREEN,
                 r"_1^t": BLUE,
-                r"\sqrt{1+\left ( \frac{-1}{x^2} \right )^2}":YELLOW
+                r"\sqrt{1+\left ( \frac{-1}{x^2} \right )^2}": YELLOW
             }
         )
         eq2b.scale(1.5)
+
+        eq2c = TexMobject(
+            r"\lim_{t \rightarrow \infty} \int_{1}^{t} 2\pi\frac{1}{x}dx",
+            tex_to_color_map={
+                r"\frac{1}{x}": RED,
+                r"2\pi": GREEN,
+                r"_{1}^{t}": BLUE,
+                r"\sqrt{1+\left ( \frac{-1}{x^2} \right )^2}": YELLOW
+            }
+        )
+        eq2c.scale(1.5)
 
         eq3 = TexMobject(
             r"= \pi \lim_{t \rightarrow \infty} \left ( \frac{-1}{x} \right ) \Big |_1^t",
@@ -383,6 +394,9 @@ class SurfaceEval(Scene):
         self.wait()
 
         self.play(Transform(eq1, eq2b))
+        self.wait()
+
+        self.play(Transform(eq1, eq2c))
         self.wait()
 
         self.play(eq1.shift, 2.5 * UP)
