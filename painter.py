@@ -382,6 +382,9 @@ class SurfaceEval(Scene):
         self.play(Transform(eq1, eq2))
         self.wait()
 
+        self.play(Transform(eq1, eq2b))
+        self.wait()
+
         self.play(eq1.shift, 2.5 * UP)
         self.wait()
 
