@@ -177,22 +177,22 @@ class VolumeEval(Scene):
     def construct(self):
         eq1 = TexMobject(
             r"\int_1^{\infty} \pi \left( \frac{1}{x} \right)^2 dx",
-            tex_to_color_map={r"\left( \frac{1}{x} \right)^2": RED})
+            tex_to_color_map={r"\left( \frac{1}{x} \right)^2": RED, r"\pi": GREEN})
         eq1.scale(1.5)
 
         eq2 = TexMobject(
             r"\lim_{t \rightarrow \infty} \int_1^{t} \pi \left( \frac{1}{x} \right)^2 dx",
-            tex_to_color_map={r"\left( \frac{1}{x} \right)^2": RED})
+            tex_to_color_map={r"\left( \frac{1}{x} \right)^2": RED, r"\pi": GREEN})
         eq2.scale(1.5)
 
         eq3 = TexMobject(
             r"= \pi \lim_{t \rightarrow \infty} \left ( \frac{-1}{x} \right ) \Big |_1^t",
-            tex_to_color_map={r"\left( \frac{1}{x} \right)^2": RED})
+            tex_to_color_map={r"\left( \frac{-1}{x} \right)^2": RED, r"\pi": GREEN})
         eq3.scale(1.5)
 
         eq4 = TexMobject(
             r"= \pi \lim_{t \rightarrow \infty} \frac{-1}{t} + 1",
-            tex_to_color_map={r"\left( \frac{1}{x} \right)^2": RED})
+            tex_to_color_map={r"\left( \frac{1}{x} \right)^2": RED, r"\pi": GREEN})
         eq4.scale(1.5)
         eq4.shift(2.5 * DOWN)
 
@@ -277,6 +277,55 @@ class SurfaceArea(ThreeDScene):
             (1/u)*np.cos(v),
             (1/u)*np.sin(v)
         ])
+
+
+class SurfaceEval(Scene):
+    def construct(self):
+        eq1 = TexMobject(
+            r"\int_1^{\infty} \pi \left( \frac{1}{x} \right)^2 dx",
+            tex_to_color_map={r"\left( \frac{1}{x} \right)^2": RED})
+        eq1.scale(1.5)
+
+        eq2 = TexMobject(
+            r"\lim_{t \rightarrow \infty} \int_1^{t} \pi \left( \frac{1}{x} \right)^2 dx",
+            tex_to_color_map={r"\left( \frac{1}{x} \right)^2": RED})
+        eq2.scale(1.5)
+
+        eq3 = TexMobject(
+            r"= \pi \lim_{t \rightarrow \infty} \left ( \frac{-1}{x} \right ) \Big |_1^t",
+            tex_to_color_map={r"\left( \frac{1}{x} \right)^2": RED})
+        eq3.scale(1.5)
+
+        eq4 = TexMobject(
+            r"= \pi \lim_{t \rightarrow \infty} \frac{-1}{t} + 1",
+            tex_to_color_map={r"\left( \frac{1}{x} \right)^2": RED})
+        eq4.scale(1.5)
+        eq4.shift(2.5 * DOWN)
+
+        ans = TexMobject(r"\pi")
+        ans.scale(1.5)
+        ans.shift(2.5 * DOWN)
+
+        rect = Rectangle(height=1, width=1, color=YELLOW)
+        rect.shift(2.5 * DOWN)
+
+        self.play(Write(eq1))
+        self.wait()
+
+        self.play(Transform(eq1, eq2))
+        self.wait()
+
+        self.play(eq1.shift, 2.5 * UP)
+        self.wait()
+
+        self.play(Write(eq3))
+        self.wait()
+
+        self.play(Write(eq4))
+        self.wait()
+
+        self.play(Transform(eq4, ans), Write(rect))
+        self.wait()
 
 
 class Horn(ThreeDScene):
