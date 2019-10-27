@@ -428,6 +428,7 @@ class TwoConverge(Scene):
 
         line.numbers = [DecimalNumber(number=i.number*0.5)
                         for i in line.numbers]
+
         line.add_numbers()
         line.shift(6 * LEFT)
 
