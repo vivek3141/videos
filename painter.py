@@ -432,7 +432,30 @@ class TwoConverge(Scene):
         line.add_numbers()
         line.shift(6 * LEFT)
 
+        s = Line(6*LEFT, ORIGIN, stroke_width=2 *
+                 DEFAULT_STROKE_WIDTH, color=YELLOW)
+
+        eq1 = TexMobject(r"\sum_{n=1}^{\infty} \frac{1}{2^n}")
+        eq1.shift(2 * UP)
+        eq1.scale(1.5)
+
+        eq2 = TexMobject(r"\sum_{n=1}^{\infty} \frac{1}{2^n} = 1")
+        eq2.shift(2 * UP)
+        eq2.scale(1.5)
+
         self.play(Write(line))
+        self.play(Write(eq1))
+
+        for i in range(1, 10):
+            val = sum([1/(2**n) for n in range(i)])
+            s = Line(6*LEFT, 6*LEFT + 6*val*RIGHT, stroke_width=2 *
+                 DEFAULT_STROKE_WIDTH, color=YELLOW)
+            self.add(s)
+            self.wait(0.5)
+
+        self.wait()
+
+        self.play(Transform(eq1, eq2))
         self.wait()
 
 
