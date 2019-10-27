@@ -414,7 +414,24 @@ class SurfaceEval(Scene):
 
 class TwoConverge(Scene):
     def construct(self):
-        pass
+        line = NumberLine(
+            include_numbers=True,
+            x_min=-5,
+            x_max=10,
+            unit_size=6,
+            tick_frequency=0.25,
+            decimal_number_config={
+                "num_decimal_places": 1,
+            }
+        )
+
+        line.numbers = [DecimalNumber(number=i.number*0.5)
+                        for i in line.numbers]
+        line.add_numbers()
+        line.shift(6 * LEFT)
+
+        self.play(Write(line))
+        self.wait()
 
 
 class Horn(ThreeDScene):
