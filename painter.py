@@ -422,7 +422,8 @@ class TwoConverge(Scene):
             tick_frequency=0.25,
             decimal_number_config={
                 "num_decimal_places": 1,
-            }
+            },
+            scale_factor=0.5,
         )
 
         line.numbers = [DecimalNumber(number=i.number*0.5)
