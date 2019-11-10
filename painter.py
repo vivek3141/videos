@@ -487,3 +487,27 @@ class Horn(ThreeDScene):
             (1/u)*np.cos(v),
             (1/u)*np.sin(v)
         ])
+
+
+class Torricelli(Scene):
+    def construct(self):
+        text = TextMobject("Evangelista Torricelli")
+        text.scale(2)
+        self.play(Write(text))
+        self.wait()
+
+
+class OneX(Scene):
+    def construct(self):
+        text = TexMobject(r"\frac{1}{x}")
+        text.scale(2)
+        self.play(Write(text))
+        self.wait()
+
+
+class VDisk(Scene):
+    def construct(self):
+        text = TexMobject(r"V = \pi \left( \frac{1}{x} \right) ^2 dx")
+        text.scale(2)
+        self.play(Write(text))
+        self.wait()
