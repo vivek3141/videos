@@ -497,17 +497,21 @@ class Torricelli(Scene):
         self.wait()
 
 
-class OneX(Scene):
+class TextScene(Scene):
     def construct(self):
-        text = TexMobject(r"\frac{1}{x}")
+        text = TexMobject(self.text)
         text.scale(2)
         self.play(Write(text))
         self.wait()
 
 
-class VDisk(Scene):
-    def construct(self):
-        text = TexMobject(r"V = \pi \left( \frac{1}{x} \right) ^2 dx")
-        text.scale(2)
-        self.play(Write(text))
-        self.wait()
+class OneX(TextScene):
+    CONFIG = {"text": r"\frac{1}{x}"}
+
+
+class VDisk(TextScene):
+    CONFIG = {"text": r"V = \pi \left( \frac{1}{x} \right) ^2 dx"}
+
+
+class SFrustum(TextScene):
+    CONFIG = {"text": r"S = 2\pi r l"}
