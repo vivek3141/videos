@@ -297,7 +297,7 @@ class SurfaceArea(ThreeDScene):
                   DEFAULT_STROKE_WIDTH).shift(2.2*LEFT)
 
         lbl2 = TexMobject(r"dy")
-        lbl2.move_to(2)
+        lbl2.move_to(l2)
         lbl2.shift(0.5*LEFT)
 
         l3 = Line(2*RIGHT + 0.667*UP, 2.2*LEFT + 2.1*UP, color=PURPLE, stroke_width=1.5 *
