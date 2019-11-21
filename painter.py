@@ -292,7 +292,7 @@ class SurfaceArea(ThreeDScene):
         l2 = Line(0.667*UP, 2.1*UP, color=RED, stroke_width=1.5 *
                   DEFAULT_STROKE_WIDTH).shift(2.2*LEFT)
 
-        l3 = Line(2*RIGHT, 2.2*LEFT + 2.1*UP, color=RED, stroke_width=1.5 *
+        l3 = Line(2*RIGHT, 2.2*LEFT + 2.1*UP, color=PURPLE, stroke_width=1.5 *
                   DEFAULT_STROKE_WIDTH)
 
         self.play(Write(l))
