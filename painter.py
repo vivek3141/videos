@@ -265,7 +265,7 @@ class SurfaceArea(ThreeDScene):
             checkerboard_colors=[eval(key) for key in COLOR_MAP.keys()],
             stroke_opacity=0
         )
-        """
+
         self.move_camera(0.8 * np.pi / 2, -0.45 * np.pi)
         self.begin_ambient_camera_rotation()
 
@@ -276,15 +276,15 @@ class SurfaceArea(ThreeDScene):
         self.wait()
 
         self.play(Uncreate(horn))
-        """
+
         self.play(frustum.center)
         self.play(frustum.rotate, 0)
-        # self.wait()
-        # self.stop_ambient_camera_rotation()
+        self.wait()
+        self.stop_ambient_camera_rotation()
 
         self.move_camera(phi=0*DEGREES, theta=-90*DEGREES)
         self.play(frustum.scale, 2)
-        # self.wait()
+        self.wait()
 
         l = Line(2.2*LEFT, 2*RIGHT, color=YELLOW, stroke_width=1.5 *
                  DEFAULT_STROKE_WIDTH).shift(0.667*UP)
