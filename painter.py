@@ -290,16 +290,18 @@ class SurfaceArea(ThreeDScene):
                  DEFAULT_STROKE_WIDTH).shift(0.667*UP)
         
         lbl1 = TexMobject(r"dx")
+        lbl1.move_to(l)
+        lbl1.shift(1*DOWN)
 
         l2 = Line(0.667*UP, 2.1*UP, color=RED, stroke_width=1.5 *
                   DEFAULT_STROKE_WIDTH).shift(2.2*LEFT)
 
-        lbl1 = TexMobject(r"dx")
 
         l3 = Line(2*RIGHT + 0.667*UP, 2.2*LEFT + 2.1*UP, color=PURPLE, stroke_width=1.5 *
                   DEFAULT_STROKE_WIDTH)
 
         self.play(Write(l))
+        self.play(Write(lbl1))
         self.wait()
 
         self.play(Write(l2))
