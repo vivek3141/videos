@@ -312,9 +312,11 @@ class SurfaceArea(ThreeDScene):
         self.wait()
 
         self.play(Write(l2))
+        self.play(Write(lbl2))
         self.wait()
 
         self.play(Write(l3))
+        self.play(Write(lbl3))
         self.wait()
 
     @staticmethod
