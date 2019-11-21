@@ -288,22 +288,21 @@ class SurfaceArea(ThreeDScene):
 
         l = Line(2.2*LEFT, 2*RIGHT, color=YELLOW, stroke_width=1.5 *
                  DEFAULT_STROKE_WIDTH).shift(0.667*UP)
-        
+
         lbl1 = TexMobject(r"dx")
         lbl1.move_to(l)
         lbl1.shift(0.5*DOWN)
 
         l2 = Line(0.667*UP, 2.1*UP, color=RED, stroke_width=1.5 *
                   DEFAULT_STROKE_WIDTH).shift(2.2*LEFT)
-        
+
         lbl2 = TexMobject(r"dy")
         lbl2.move_to(2)
         lbl2.shift(0.5*LEFT)
 
-
         l3 = Line(2*RIGHT + 0.667*UP, 2.2*LEFT + 2.1*UP, color=PURPLE, stroke_width=1.5 *
                   DEFAULT_STROKE_WIDTH)
-        
+
         lbl3 = TexMobject(r"ds")
         lbl3.move_to(l3)
         lbl3.shift(0.5*UP)
