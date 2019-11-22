@@ -417,18 +417,31 @@ class Outro(Scene):
         text = TextMobject("Thanks for Watching").scale(2)
 
         ghub = SVGMobject(file_name="files/github-logo.svg")
-        ghub.shift(4 * LEFT)
+        ghub.shift(5 * LEFT + 2.5 * DOWN)
         ghub.scale(self.s)
 
+        ghub_text = TextMobject("/vivek3141")
+        ghub_text.shift(3 * LEFT + 2.5 * DOWN)
+
         insta = SVGMobject(file_name="files/instagram-logo.svg")
-        insta.shift(2*RIGHT)
+        insta.shift(1*RIGHT + 2.5*DOWN)
         insta.scale(self.s)
 
         twitter = SVGMobject(file_name="files/twitter.svg")
-        twitter.shift(3*RIGHT)
+        twitter.shift(2.5*RIGHT + 2.5*DOWN)
         twitter.scale(self.s)
+
+        text2 = TextMobject("/vcubingx")
+        text2.shift(2.5*DOWN + 4.5 * RIGHT)
 
         text.move_to(3 * UP)
 
-        self.play(Write(text), Write(ghub), Write(twitter), Write(insta))
+        self.play(
+            Write(text),
+            Write(ghub),
+            Write(twitter),
+            Write(insta),
+            Write(ghub_text),
+            Write(text2)
+        )
         self.wait(10)
