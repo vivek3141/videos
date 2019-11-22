@@ -373,7 +373,6 @@ class SigmoidEq(Scene):
         text.scale(4)
         self.play(Write(text))
         self.wait(10)
-        from manim import *
 
 
 class Sigmoid(GraphScene):
@@ -408,4 +407,28 @@ class SigmoidEq(Scene):
             r"\sigma (x) = \frac{1}{1 + e^{-x}}", tex_to_color_map={"Mean Squared Error": YELLOW})
         text.scale(4)
         self.play(Write(text))
+        self.wait(10)
+
+
+class Outro(Scene):
+    CONFIG = {"s": 0.5}
+
+    def construct(self):
+        text = TextMobject("Thanks for Watching").scale(2)
+
+        ghub = SVGMobject(file_name="files/github-logo.svg")
+        ghub.shift(4 * LEFT)
+        ghub.scale(self.s)
+
+        insta = SVGMobject(file_name="files/instagram-logo.svg")
+        insta.shift(2*RIGHT)
+        insta.scale(self.s)
+
+        twitter = SVGMobject(file_name="files/twitter.svg")
+        twitter.shift(3*RIGHT)
+        twitter.scale(self.s)
+
+        text.move_to(3 * UP)
+
+        self.play(Write(text), Write(ghub), Write(twitter), Write(insta))
         self.wait(10)
