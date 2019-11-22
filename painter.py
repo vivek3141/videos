@@ -549,3 +549,18 @@ class VDisk(TextScene):
 
 class SFrustum(TextScene):
     CONFIG = {"text": r"S = 2\pi r l"}
+
+
+class Ds(Scene):
+    def construct(self):
+        text = TexMobject(r"ds = \sqrt{dx^2 + dy^2}")
+        text.scale(2)
+
+        text2 = TexMobject(r"ds = \sqrt{1 + (dy/dx)^2 }")
+        text2.scale(2)
+
+        self.play(Write(text))
+        self.wait()
+
+        self.play(Transform(text, text2))
+        self.wait()
