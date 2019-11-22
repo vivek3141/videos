@@ -564,3 +564,7 @@ class Ds(Scene):
 
         self.play(Transform(text, text2))
         self.wait()
+
+
+class SOneFr(TextScene):
+    CONFIG = {"text": r"S = 2 \pi \left ( \frac{1}{x} \right ) ds"}
