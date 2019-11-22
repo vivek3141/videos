@@ -568,3 +568,49 @@ class Ds(Scene):
 
 class SOneFr(TextScene):
     CONFIG = {"text": r"S = 2 \pi \left ( \frac{1}{x} \right ) ds"}
+
+
+class FractalCreation(Scene):
+    CONFIG = {
+        "fractal_class": PentagonalFractal,
+        "max_order": 5,
+        "transform_kwargs": {
+            "path_arc": np.pi/6,
+            "lag_ratio": 0.5,
+            "run_time": 2,
+        },
+        "fractal_kwargs": {},
+    }
+
+    def construct(self):
+        fractal = self.fractal_class(order=0, **self.fractal_kwargs)
+        self.play(FadeIn(fractal))
+        for order in range(1, self.max_order+1):
+            new_fractal = self.fractal_class(
+                order=order,
+                **self.fractal_kwargs
+            )
+            fractal.align_data(new_fractal)
+            self.play(Transform(
+                fractal, new_fractal,
+                **self.transform_kwargs
+            ))
+            self.wait()
+        self.wait()
+        self.fractal = fractal
+
+
+class KochSnowFlake(FractalCreation):
+    CONFIG = {
+        "fractal_class": KochSnowFlake,
+        "max_order": 6,
+        "fractal_kwargs": {
+            "radius": 6,
+            "num_submobjects": 100,
+        },
+        "transform_kwargs": {
+            "lag_ratio": 0.5,
+            "path_arc": np.pi/6,
+            "run_time": 2,
+        },
+    }
