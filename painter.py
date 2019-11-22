@@ -625,3 +625,30 @@ class KochSnowFlake(FractalCreation):
 
 class GabeHorn(TextScene):
     CONFIG = {"text": r"\text{Gabriel's Horn}"}
+
+
+class Thumb(ThreeDScene):
+    def construct(self):
+        surface = ParametricSurface(
+            self.func,
+            u_min=1,
+            u_max=10,
+            v_min=0,
+            v_max=2*PI,
+            checkerboard_colors=[eval(key) for key in COLOR_MAP.keys()],
+            stroke_opacity=0
+        )
+        surface.center()
+
+        self.move_camera(0.9 * np.pi / 2, -0.45 * np.pi)
+        self.play(Write(surface))
+        self.begin_ambient_camera_rotation(rate=-0.04)
+        self.wait(20)
+
+    @staticmethod
+    def func(u, v):
+        return np.array([
+            u,
+            (1/u)*np.cos(v),
+            (1/u)*np.sin(v)
+        ])
