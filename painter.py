@@ -3,9 +3,16 @@ from manimlib.imports import *
 
 class Intro(Scene):
     def construct(self):
-        fig = PiCreature()
+        bucket = SVGMobject(file_name="files/paint-bucket.svg", color=YELLOW)
+        bucket.scale(1.3)
 
-        self.play(Write(fig))
+        tex = TexMobject(r"V \in R")
+        tex.scale(1.5)
+        tex.shift(2*UP)
+
+        self.play(Write(bucket))
+
+        self.play(Write(tex))
         self.wait()
 
 
@@ -614,3 +621,7 @@ class KochSnowFlake(FractalCreation):
             "run_time": 2,
         },
     }
+
+
+class GabeHorn(TextScene):
+    CONFIG = {"text": r"\text{Gabriel's Horn}"}
