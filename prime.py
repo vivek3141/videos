@@ -1,5 +1,6 @@
 from manimlib.imports import *
 
+
 class PrimeFuncGraph(GraphScene):
     CONFIG = {
         "y_max": 100,
@@ -17,11 +18,13 @@ class PrimeFuncGraph(GraphScene):
     def construct(self):
         self.setup_axes()
         f1 = self.get_graph(
-            lambda t:  0.5*t**2,
+            self.count_prime,
             color=PINK,
         )
 
         self.play(Write(f1))
         self.wait()
-    
-    
+
+    @staticmethod
+    def count_prime(x):
+        return x
