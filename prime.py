@@ -3,11 +3,12 @@ from manimlib.imports import *
 
 class PrimeFuncGraph(GraphScene):
     CONFIG = {
-        "y_max": 100,
+        "y_max": 500,
         "y_min": 0,
-        "x_max": 20,
+        "x_max": 3000,
         "x_min": 0,
-        "y_tick_frequency": 5,
+        "y_tick_frequency": 1000000,
+        "x_tick_frequency": 10000000,
         "axes_color": BLUE,
         "x_axis_label": "$x$",
         "y_axis_label": "$\pi(x)$",
