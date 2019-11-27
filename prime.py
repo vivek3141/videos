@@ -25,13 +25,12 @@ class PrimeFuncGraph(GraphScene):
         self.play(Write(f1))
         self.wait()
 
-    @staticmethod
-    def count_prime(x):
+    def count_prime(self, x):
         x = int(x)
         counter = 0
 
         for i in range(x):
-            if isPrime(i):
+            if self.isPrime(i):
                 counter += 1
 
         return counter
