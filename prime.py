@@ -1,7 +1,27 @@
 from manimlib.imports import *
 
 
-class PrimeFuncGraph(GraphScene):
+class PrimeMethods:
+    def count_prime(self, x):
+        counter = 0
+
+        for i in range(int(x)):
+            if self.isPrime(i):
+                counter += 1
+
+        return counter
+
+    def isPrime(self, x):
+        for i in range(2, int((x+1)/2)):
+            if x % i == 0:
+                return False
+        return True
+
+    def pnt(self, x):
+        return self.count_prime(x)/(x/math.log(x))
+
+
+class PrimeFuncGraph(GraphScene, PrimeMethods):
     CONFIG = {
         "y_max": 500,
         "y_min": 0,
@@ -26,25 +46,8 @@ class PrimeFuncGraph(GraphScene):
         self.play(Write(f1))
         self.wait()
 
-    def count_prime(self, x):
-        x = int(x)
-        counter = 0
 
-        for i in range(x):
-            if self.isPrime(i):
-                counter += 1
-
-        return counter
-
-    @staticmethod
-    def isPrime(x):
-        for i in range(2, int((x+1)/2)):
-            if x % i == 0:
-                return False
-        return True
-
-
-class PNTGraph(GraphScene):
+class PNTGraph(GraphScene, PrimeMethods):
     CONFIG = {
         "y_max": 2,
         "y_min": 0,
@@ -68,23 +71,3 @@ class PNTGraph(GraphScene):
 
         self.play(Write(f1))
         self.wait()
-
-    def pnt(self, x):
-        return self.count_prime(x)/(x/math.log(x))
-
-    def count_prime(self, x):
-        x = int(x)
-        counter = 0
-
-        for i in range(x):
-            if self.isPrime(i):
-                counter += 1
-
-        return counter
-
-    @staticmethod
-    def isPrime(x):
-        for i in range(2, int((x+1)/2)):
-            if x % i == 0:
-                return False
-        return True
