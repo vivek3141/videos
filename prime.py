@@ -114,9 +114,10 @@ class PNTGraph2(GraphScene, PrimeMethods):
                 self.get_graph(
                     lambda x: 1,
                     x_min=i * self.freq,
-                    x_max=(i+1)*self.freq,
+                    x_max=(i+1) * self.freq,
                     color=WHITE,
-                    stroke_width=0.5 * DEFAULT_STROKE_WIDTH)
+                    stroke_width=0.5 * DEFAULT_STROKE_WIDTH
+                )
             )
 
         self.play(
