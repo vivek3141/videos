@@ -108,13 +108,15 @@ class PNTGraph2(GraphScene, PrimeMethods):
         lbl2 = TexMobject(r"\frac{\pi(x)}{Li(x)}").shift(1 * DOWN).scale(0.75)
 
         l1 = VGroup()
-        for i in range(0, self.x_max/self.x_tick_frequency, 2):
+        self.freq = 0.33*self.x_tick_frequency
+        for i in range(1, int(self.x_max/self.freq), 2):
             l1.add(
                 self.get_graph(
                     lambda x: 1,
-                    x_min=i * self.x_tick_frequency,
-                    x_max=(i+1)*self.x_tick_frequency,
-                    color=WHITE)
+                    x_min=i * self.freq,
+                    x_max=(i+1)*self.freq,
+                    color=WHITE,
+                    stroke_width=0.5 * DEFAULT_STROKE_WIDTH)
             )
 
         self.play(
