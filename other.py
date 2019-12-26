@@ -445,3 +445,17 @@ class Outro(Scene):
             Write(text2)
         )
         self.wait(10)
+
+
+class UpdateOpacity(Scene):
+    def construct(self):
+        circle = Circle(color=RED, fill_opacity=1, radius=2)
+        self.play(Write(circle))
+
+        self.play(UpdateFromAlphaFunc(circle, self.update),
+                  rate_func=smooth, run_time=4)
+
+    def update(self, circle, dt):
+        opacity = interpolate(1, 0, dt)
+        new_circ = Circle(color=RED, fill_opacity=opacity, radius=2)
+        circle.become(new_circ)
