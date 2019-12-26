@@ -102,15 +102,20 @@ class PNTGraph2(GraphScene, PrimeMethods):
             self.pnt_li,
             color=YELLOW,
         )
-        
+
         lbl1 = TexMobject(
             r"\frac{\pi(x)}{x / \ln (x)}").shift(2 * UP).scale(0.75)
         lbl2 = TexMobject(r"\frac{\pi(x)}{Li(x)}").shift(1 * DOWN).scale(0.75)
 
-        l1 = self.get_graph(
-            lambda x: 1,
-            color=WHITE,
-        )
+        l1 = VGroup()
+        for i in range(0, self.x_max/self.x_tick_frequency, 2):
+            l1.add(
+                self.get_graph(
+                    lambda x: 1,
+                    x_min=i * self.x_tick_frequency,
+                    x_max=(i+1)*self.x_tick_frequency,
+                    color=WHITE)
+            )
 
         self.play(
             Write(f1),
