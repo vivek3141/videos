@@ -1,4 +1,5 @@
 from manimlib.imports import *
+from scipy.special import expi
 
 
 class PrimeMethods:
@@ -19,6 +20,9 @@ class PrimeMethods:
 
     def pnt(self, x):
         return self.count_prime(x)/(x/math.log(x))
+
+    def pnt_li(self, x):
+        return self.count_prime(x)/expi(math.log(x))
 
 
 class PrimeFuncGraph(GraphScene, PrimeMethods):
@@ -72,3 +76,32 @@ class PNTGraph(GraphScene, PrimeMethods):
         self.play(Write(f1))
         self.wait()
 
+
+class PNTGraph2(GraphScene, PrimeMethods):
+    CONFIG = {
+        "y_max": 2,
+        "y_min": 0,
+        "x_max": 1000,
+        "x_min": 0.001,
+        "y_tick_frequency": 1,
+        "x_tick_frequency": 100,
+        "axes_color": BLUE,
+        "x_axis_label": "$x$",
+        "y_axis_label": r"$\frac{\pi(x)}{x/ \ln (x)}$",
+        "g_color": RED,
+        "g_width": DEFAULT_STROKE_WIDTH*1,
+    }
+
+    def construct(self):
+        self.setup_axes()
+        f1 = self.get_graph(
+            self.pnt,
+            color=RED,
+        )
+        f2 = self.get_graph(
+            self.pnt_li,
+            color=YELLOW,
+        )
+
+        self.play(Write(f1), Write(f2))
+        self.wait()
