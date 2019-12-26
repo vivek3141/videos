@@ -72,5 +72,3 @@ class PNTGraph(GraphScene, PrimeMethods):
         self.play(Write(f1))
         self.wait()
 
-
-p = PrimeMethods()
