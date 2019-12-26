@@ -5,14 +5,14 @@ class PrimeMethods:
     def count_prime(self, x):
         counter = 0
 
-        for i in range(int(x)):
+        for i in range(2, int(x)):
             if self.isPrime(i):
                 counter += 1
 
         return counter
 
     def isPrime(self, x):
-        for i in range(2, int((x+1)/2)):
+        for i in range(2, int(x/2) + 1):
             if x % i == 0:
                 return False
         return True
@@ -71,3 +71,6 @@ class PNTGraph(GraphScene, PrimeMethods):
 
         self.play(Write(f1))
         self.wait()
+
+
+p = PrimeMethods()
