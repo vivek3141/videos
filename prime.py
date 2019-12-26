@@ -87,7 +87,7 @@ class PNTGraph2(GraphScene, PrimeMethods):
         "x_tick_frequency": 100,
         "axes_color": BLUE,
         "x_axis_label": "$x$",
-        "y_axis_label": r"$\frac{\pi(x)}{x/ \ln (x)}$",
+        "y_axis_label": "$y$",
         "g_color": RED,
         "g_width": DEFAULT_STROKE_WIDTH*1,
     }
@@ -102,6 +102,20 @@ class PNTGraph2(GraphScene, PrimeMethods):
             self.pnt_li,
             color=YELLOW,
         )
+        lbl1 = TexMobject(
+            r"\frac{\pi(x)}{x / \ln (x)}").shift(2 * UP).scale(0.75)
+        lbl2 = TexMobject(r"\frac{\pi(x)}{Li(x)}").shift(1 * DOWN).scale(0.75)
 
-        self.play(Write(f1), Write(f2))
+        l1 = self.get_graph(
+            lambda x: 1,
+            color=WHITE,
+        )
+
+        self.play(
+            Write(f1),
+            Write(f2),
+            Write(lbl1),
+            Write(lbl2),
+            Write(l1)
+        )
         self.wait()
