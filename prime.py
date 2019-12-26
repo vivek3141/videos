@@ -102,6 +102,7 @@ class PNTGraph2(GraphScene, PrimeMethods):
             self.pnt_li,
             color=YELLOW,
         )
+        
         lbl1 = TexMobject(
             r"\frac{\pi(x)}{x / \ln (x)}").shift(2 * UP).scale(0.75)
         lbl2 = TexMobject(r"\frac{\pi(x)}{Li(x)}").shift(1 * DOWN).scale(0.75)
