@@ -2,6 +2,26 @@ from manimlib.imports import *
 from scipy.special import expi
 
 
+class IntroQuote(Scene):
+    def construct(self):
+        quote = TextMobject(
+            "It is evident that the primes are randomly distributed but,")
+        quote2 = TextMobject(
+            "unfortunately, we don't know what 'random' means.")
+        author = TextMobject("-R. C. Vaughan", color=YELLOW)
+        author.shift(1 * DOWN + 1 * RIGHT)
+        quote.shift(2 * UP)
+        quote2.shift(UP)
+        self.play(Write(quote), Write(quote2))
+        self.play(Write(author))
+        self.wait()
+
+
+class Intro(Scene):
+    def construct(self):
+        text = TextMobject("")
+
+
 class PrimeMethods:
     def count_prime(self, x):
         counter = 0
