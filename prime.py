@@ -58,9 +58,11 @@ class Intro(Scene):
 
 
 class PartScene(Scene):
-    CONFIG = {"num": 1,
-              "text": "filler text"
-              "subt":None}
+    CONFIG = {
+        "num": 1,
+        "text": "filler text",
+        "subt": None
+    }
 
     def construct(self):
         grp = VGroup()
@@ -74,7 +76,7 @@ class PartScene(Scene):
         text.scale(2)
         grp.add(text)
 
-        if self.subt: 
+        if self.subt:
             subt = TextMobject(subt)
             subt.shift(1 * DOWN)
             grp.add(subt)
