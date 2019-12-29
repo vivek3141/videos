@@ -69,7 +69,7 @@ class PartScene(Scene):
 
         title = TextMobject(f"Part {str(self.num)}", color=PURPLE)
         title.scale(1.5)
-        title.shift(2 * UP)
+        title.shift(1.5 * UP)
         grp.add(title)
 
         text = TextMobject(self.text)
