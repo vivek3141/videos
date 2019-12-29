@@ -28,6 +28,34 @@ class PrimeMethods:
         return expi(math.log(x))
 
 
+class PartScene(Scene):
+    CONFIG = {
+        "num": 1,
+        "text": "filler text",
+        "subt": None
+    }
+
+    def construct(self):
+        grp = VGroup()
+
+        title = TextMobject(f"Part {str(self.num)}", color=PURPLE)
+        title.scale(1.5)
+        title.shift(1.5 * UP)
+        grp.add(title)
+
+        text = TextMobject(self.text)
+        text.scale(2)
+        grp.add(text)
+
+        if self.subt:
+            subt = TextMobject(self.subt)
+            subt.shift(1.5 * DOWN)
+            grp.add(subt)
+
+        self.play(Write(grp))
+        self.wait()
+
+
 class IntroQuote(Scene):
     def construct(self):
         quote = TextMobject(
@@ -57,40 +85,16 @@ class Intro(Scene):
         self.wait()
 
 
-class PartScene(Scene):
-    CONFIG = {
-        "num": 1,
-        "text": "filler text",
-        "subt": None
-    }
-
-    def construct(self):
-        grp = VGroup()
-
-        title = TextMobject(f"Part {str(self.num)}", color=PURPLE)
-        title.scale(1.5)
-        title.shift(1.5 * UP)
-        grp.add(title)
-
-        text = TextMobject(self.text)
-        text.scale(2)
-        grp.add(text)
-
-        if self.subt:
-            subt = TextMobject(self.subt)
-            subt.shift(1.5 * DOWN)
-            grp.add(subt)
-
-        self.play(Write(grp))
-        self.wait()
-
-
-class PartOne(PartScene):
+class PartOneTitle(PartScene):
     CONFIG = {
         "num": 1,
         "text": "Euclid’s Theorem",
         "subt": "How many primes are there?"
     }
+
+
+class EuclidTheorem(Scene):
+    def construct(self):
 
 
 class PrimeFuncGraph(GraphScene, PrimeMethods):
