@@ -51,7 +51,10 @@ class PrimeMethods:
         return self.count_prime(x)/(x/math.log(x))
 
     def pnt_li(self, x):
-        return self.count_prime(x)/expi(math.log(x))
+        return self.count_prime(x)/self.li(x)
+
+    def li(self, x):
+        return expi(math.log(x))
 
 
 class PrimeFuncGraph(GraphScene, PrimeMethods):
