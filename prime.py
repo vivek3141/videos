@@ -77,8 +77,8 @@ class PartScene(Scene):
         grp.add(text)
 
         if self.subt:
-            subt = TextMobject(subt)
-            subt.shift(1 * DOWN)
+            subt = TextMobject(self.subt)
+            subt.shift(1.5 * DOWN)
             grp.add(subt)
 
         self.play(Write(grp))
