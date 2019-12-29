@@ -19,7 +19,16 @@ class IntroQuote(Scene):
 
 class Intro(Scene):
     def construct(self):
-        text = TextMobject("")
+        title = TextMobject("Continue the Following Sequence:", color=BLUE)
+        title.scale(1.5)
+        title.shift(2 * UP)
+
+        seq = TexMobject("2, 3, 5, 7, 11, 13, 17, 19, ...")
+        seq.scale(1.5)
+
+        self.play(Write(title))
+        self.play(Write(seq))
+        self.wait()
 
 
 class PrimeMethods:
