@@ -2,6 +2,32 @@ from manimlib.imports import *
 from scipy.special import expi
 
 
+class PrimeMethods:
+    def count_prime(self, x):
+        counter = 0
+
+        for i in range(2, int(x)):
+            if self.isPrime(i):
+                counter += 1
+
+        return counter
+
+    def isPrime(self, x):
+        for i in range(2, int(x/2) + 1):
+            if x % i == 0:
+                return False
+        return True
+
+    def pnt(self, x):
+        return self.count_prime(x)/(x/math.log(x))
+
+    def pnt_li(self, x):
+        return self.count_prime(x)/self.li(x)
+
+    def li(self, x):
+        return expi(math.log(x))
+
+
 class IntroQuote(Scene):
     def construct(self):
         quote = TextMobject(
@@ -29,32 +55,6 @@ class Intro(Scene):
         self.play(Write(title))
         self.play(Write(seq))
         self.wait()
-
-
-class PrimeMethods:
-    def count_prime(self, x):
-        counter = 0
-
-        for i in range(2, int(x)):
-            if self.isPrime(i):
-                counter += 1
-
-        return counter
-
-    def isPrime(self, x):
-        for i in range(2, int(x/2) + 1):
-            if x % i == 0:
-                return False
-        return True
-
-    def pnt(self, x):
-        return self.count_prime(x)/(x/math.log(x))
-
-    def pnt_li(self, x):
-        return self.count_prime(x)/self.li(x)
-
-    def li(self, x):
-        return expi(math.log(x))
 
 
 class PrimeFuncGraph(GraphScene, PrimeMethods):
