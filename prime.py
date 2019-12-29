@@ -59,25 +59,35 @@ class Intro(Scene):
 
 class PartScene(Scene):
     CONFIG = {"num": 1,
-              "text": "filler text"}
+              "text": "filler text"
+              "subt":None}
 
     def construct(self):
+        grp = VGroup()
+
         title = TextMobject(f"Part {str(self.num)}", color=PURPLE)
         title.scale(1.5)
-        title.shift(1 * UP)
+        title.shift(2 * UP)
+        grp.add(title)
 
         text = TextMobject(self.text)
-        text.scale(1.5)
-        text.shift(1 * DOWN)
+        text.scale(2)
+        grp.add(text)
 
-        self.play(Write(title), Write(text))
+        if self.subt: 
+            subt = TextMobject(subt)
+            subt.shift(1 * DOWN)
+            grp.add(subt)
+
+        self.play(Write(grp))
         self.wait()
 
 
 class PartOne(PartScene):
     CONFIG = {
         "num": 1,
-        "text": "Euclid’s Theorem: How many primes are there?"
+        "text": "Euclid’s Theorem",
+        "subt": "How many primes are there?"
     }
 
 
