@@ -57,6 +57,30 @@ class Intro(Scene):
         self.wait()
 
 
+class PartScene(Scene):
+    CONFIG = {"num": 1,
+              "text": "filler text"}
+
+    def construct(self):
+        title = TextMobject(f"Part {str(self.num)}", color=PURPLE)
+        title.scale(1.5)
+        title.shift(1 * UP)
+
+        text = TextMobject(self.text)
+        text.scale(1.5)
+        text.shift(1 * DOWN)
+
+        self.play(Write(title), Write(text))
+        self.wait()
+
+
+class PartOne(PartScene):
+    CONFIG = {
+        "num": 1,
+        "text": "Euclid’s Theorem: How many primes are there?"
+    }
+
+
 class PrimeFuncGraph(GraphScene, PrimeMethods):
     CONFIG = {
         "y_max": 500,
