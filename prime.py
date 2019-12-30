@@ -1,8 +1,19 @@
 from manimlib.imports import *
 from scipy.special import expi
+from scipy.integrate import quad
+import riemann
 
 
 class PrimeMethods:
+    def __init__(self):
+        self.zeros = []
+        with open("zeros.txt") as f:
+            txt = f.read()
+            zeros = txt.split('\n\n')
+            for i in zeros:
+                imag = round(float(i.replace('\n', '')), 4)
+                self.zeros.append(imag)
+
     def count_prime(self, x):
         counter = 0
 
@@ -26,6 +37,22 @@ class PrimeMethods:
 
     def li(self, x):
         return expi(math.log(x))
+
+    def _riemann_int(self, t):
+        return 1/(t * (t**2 - 1)*math.log(t))
+
+    def riemann_count(self, x, num_zeros=10):
+        #s = sum([self.li(x**i) for i in self.zeros[0:num_zeros]])
+        # return self.li(x) - s - math.log(2) + quad(self._riemann_int, x, np.inf)[0]
+        return riemann.single_pi(x, num_zeros, "zeros.txt")
+
+
+#p = PrimeMethods()
+# print(p.li(10))
+# print(p.riemann_count(10))
+
+p, _ = riemann.single_pi(10, 100, "zeros.txt")
+print(float(p))
 
 
 class PartScene(Scene):
@@ -133,6 +160,8 @@ class EuclidTheorem(Scene):
 
         self.play(Write(l))
         self.wait()
+
+        p1 = TextMobject("Let P be the number of primes", )
 
 
 class PrimeFuncGraph(GraphScene, PrimeMethods):
