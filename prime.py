@@ -18,7 +18,7 @@ class PrimeMethods:
     def count_prime(self, x):
         counter = 0
 
-        for i in range(2, int(x)):
+        for i in range(2, int(x+1)):
             if self.isPrime(i):
                 counter += 1
 
@@ -115,14 +115,6 @@ class Test(GraphScene, PrimeMethods):
 
         self.play(Write(f1), Write(f2))
         self.wait()
-
-#p = PrimeMethods()
-# print(p.li(10))
-# print(p.riemann_count(10))
-
-
-#p, _ = riemann.single_pi(10, 100, "zeros.txt")
-# print(float(p))
 
 
 class PartScene(Scene):
