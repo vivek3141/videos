@@ -211,6 +211,12 @@ class EuclidTheorem(Scene):
 
         self.play(Write(p4_1), Write(b2), Write(p4_2))
 
+class PartTwoTitle(PartScene):
+    CONFIG = {
+        "num": 2,
+        "text": "The Euler Product Formula",
+        "subt": r"$$\sum_{n \in \mathbb{N}} \frac{1}{n^s} = \prod_{p \text{ prime}} \frac{1}{1-p^{-s}}$$"
+    }
 
 class PrimeFuncGraph(GraphScene, PrimeMethods):
     CONFIG = {
