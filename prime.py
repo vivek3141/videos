@@ -76,8 +76,6 @@ class PrimeMethods:
         return self.pi_zeros(x, nzeros)
 
     def riemann_count(self, x, num_zeros=35):
-        # s = sum([self.li(x**i) for i in self.zeros[0:num_zeros]])
-        # return self.li(x) - s - math.log(2) + quad(self._riemann_int, x, np.inf)[0]
         return float(self.single_pi(x, num_zeros, "zeros.txt"))
 
 
