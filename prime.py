@@ -220,6 +220,37 @@ class PartTwoTitle(PartScene):
     }
 
 
+class Series(Scene):
+    def construct(self):
+        title = TextMobject("Series", color=RED)
+        title.scale(2)
+        title.shift(3 * UP)
+
+        eq1 = TexMobject(
+            r"\sum_{n=1}^{\infty} \frac{1}{n} = 1 + \frac{1}{2} + \frac{1}{3} + \frac{1}{4} + ... ").scale(1.5)
+
+        self.play(Write(title))
+        self.wait()
+
+        self.play(Write(eq1))
+        self.wait()
+
+        eq2 = TexMobject(
+            r"\sum_{n=1}^{\infty} \frac{1}{n^p} = 1 + \frac{1}{2^p} + \frac{1}{3^p} + \frac{1}{4^p} + ... ",
+            tex_to_color_map={r"^p}": YELLOW})
+        eq2.scale(1.5)
+
+        self.play(Transform(eq1, eq2))
+        self.wait()
+
+        conv = TexMobject(r"\text{Coverges for } p > 1",
+                          tex_to_color_map={r"p": YELLOW})
+        conv.shift(2 * DOWN)
+
+        self.play(Write(conv))
+        self.wait()
+
+
 class PrimeFuncGraph(GraphScene, PrimeMethods):
     CONFIG = {
         "y_max": 500,
