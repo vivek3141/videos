@@ -2,6 +2,7 @@ from manimlib.imports import *
 from scipy.special import expi
 from scipy.integrate import quad
 import riemann
+from mpmath import primepi
 
 
 class PrimeMethods:
@@ -44,7 +45,7 @@ class PrimeMethods:
     def riemann_count(self, x, num_zeros=35):
         # s = sum([self.li(x**i) for i in self.zeros[0:num_zeros]])
         # return self.li(x) - s - math.log(2) + quad(self._riemann_int, x, np.inf)[0]
-        return float(riemann.single_pi(x-1, num_zeros, "zeros.txt")[0])
+        return float(riemann.single_pi(x, num_zeros, "zeros.txt"))
 
 
 class Test(GraphScene, PrimeMethods):
@@ -52,7 +53,7 @@ class Test(GraphScene, PrimeMethods):
         "y_max": 12,
         "y_min": 0,
         "x_max": 30,
-        "x_min": 3,
+        "x_min": 2,
         "y_tick_frequency": 3,
         "x_tick_frequency": 5,
         "axes_color": BLUE,
@@ -65,7 +66,7 @@ class Test(GraphScene, PrimeMethods):
     def construct(self):
         self.setup_axes()
         f1 = self.get_graph(
-            self.count_prime,
+            primepi,
             color=PINK,
         )
         f2 = self.get_graph(
