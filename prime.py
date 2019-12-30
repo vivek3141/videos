@@ -6,15 +6,6 @@ from mpmath.libmp.libintmath import moebius
 
 
 class PrimeMethods:
-    def __init__(self):
-        self.zeros = []
-        with open("zeros.txt") as f:
-            txt = f.read()
-            zeros = txt.split('\n\n')
-            for i in zeros:
-                imag = round(float(i.replace('\n', '')), 4)
-                self.zeros.append(imag)
-
     def count_prime(self, x):
         counter = 0
 
@@ -77,44 +68,6 @@ class PrimeMethods:
 
     def riemann_count(self, x, num_zeros=35):
         return float(self.single_pi(x, num_zeros, "zeros.txt"))
-
-
-class Test(GraphScene, PrimeMethods):
-    CONFIG = {
-        "y_max": 12,
-        "y_min": 0,
-        "x_max": 30,
-        "x_min": 2,
-        "y_tick_frequency": 3,
-        "x_tick_frequency": 3,
-        "axes_color": BLUE,
-        "x_axis_label": "$x$",
-        "y_axis_label": "$\pi(x)$",
-        "g_color": RED,
-        "g_width": DEFAULT_STROKE_WIDTH*1,
-    }
-
-    def construct(self):
-        self.setup_axes()
-        f1 = VGroup()
-
-        x = 0
-        while(x <= self.x_max):
-            next_x = x
-            while(primepi(next_x) == primepi(x) and next_x <= self.x_max):
-                next_x += 1
-            f = self.get_graph(lambda x: primepi(
-                x), x_min=x, x_max=next_x, color=PINK)
-            f1.add(f)
-            x = next_x
-
-        f2 = self.get_graph(
-            self.riemann_count,
-            color=YELLOW,
-        )
-
-        self.play(Write(f1), Write(f2))
-        self.wait()
 
 
 class PartScene(Scene):
@@ -361,4 +314,42 @@ class PrimePi(GraphScene, PrimeMethods):
             x = next_x
 
         self.play(Write(func))
+        self.wait()
+
+
+class RiemannExplicit(GraphScene, PrimeMethods):
+    CONFIG = {
+        "y_max": 12,
+        "y_min": 0,
+        "x_max": 30,
+        "x_min": 2,
+        "y_tick_frequency": 3,
+        "x_tick_frequency": 3,
+        "axes_color": BLUE,
+        "x_axis_label": "$x$",
+        "y_axis_label": "$\pi(x)$",
+        "g_color": RED,
+        "g_width": DEFAULT_STROKE_WIDTH*1,
+    }
+
+    def construct(self):
+        self.setup_axes()
+        f1 = VGroup()
+
+        x = 0
+        while(x <= self.x_max):
+            next_x = x
+            while(primepi(next_x) == primepi(x) and next_x <= self.x_max):
+                next_x += 1
+            f = self.get_graph(lambda x: primepi(
+                x), x_min=x, x_max=next_x, color=PINK)
+            f1.add(f)
+            x = next_x
+
+        f2 = self.get_graph(
+            self.riemann_count,
+            color=YELLOW,
+        )
+
+        self.play(Write(f1), Write(f2))
         self.wait()
