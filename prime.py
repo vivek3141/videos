@@ -3,6 +3,7 @@ from scipy.special import expi
 from scipy.integrate import quad
 import riemann
 from mpmath import primepi
+from mpmath import primezeta
 
 
 class PrimeMethods:
@@ -297,4 +298,37 @@ class PNTGraph2(GraphScene, PrimeMethods):
             Write(lbl2),
             Write(l1)
         )
+        self.wait()
+
+
+class PrimePi(GraphScene, PrimeMethods):
+    CONFIG = {
+        "y_max": 12,
+        "y_min": 0,
+        "x_max": 30,
+        "x_min": 0,
+        "y_tick_frequency": 3,
+        "x_tick_frequency": 5,
+        "axes_color": BLUE,
+        "x_axis_label": "$x$",
+        "y_axis_label": "$\pi(x)$",
+        "g_color": RED,
+        "g_width": DEFAULT_STROKE_WIDTH*1,
+    }
+
+    def construct(self):
+        self.setup_axes()
+        func = VGroup()
+
+        x = 0
+        while(x <= self.x_max):
+            next_x = x
+            while(primepi(next_x) == primepi(x)):
+                next_x += 1
+            f = self.get_graph(lambda x: primepi(
+                x), x_min=x, x_max=next_x, color=PINK)
+            func.add(f)
+            x = next_x
+
+        self.play(Write(func))
         self.wait()
