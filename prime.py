@@ -95,6 +95,25 @@ class PartOneTitle(PartScene):
 
 class EuclidTheorem(Scene):
     def construct(self):
+        eq1 = TexMobject("30")
+        eq1.scale(2.5)
+
+        eq2 = TexMobject("30 =")
+        eq2.scale(2.5)
+        eq2.shift(2.5 * LEFT)
+
+        eq3 = TexMobject(r"3 \cdot 2 \cdot 5")
+        eq3.scale(2.5)
+        eq3.shift(1 * RIGHT)
+
+        self.play(Write(eq1))
+        self.wait()
+
+        self.play(TransformFromCopy(eq1, eq2))
+        self.wait()
+
+        self.play(Transform(eq1, eq3))
+        self.wait()
 
 
 class PrimeFuncGraph(GraphScene, PrimeMethods):
