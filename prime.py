@@ -41,8 +41,8 @@ class PrimeMethods:
     def _riemann_int(self, t):
         return 1/(t * (t**2 - 1)*math.log(t))
 
-    def riemann_count(self, x, num_zeros=10):
-        #s = sum([self.li(x**i) for i in self.zeros[0:num_zeros]])
+    def riemann_count(self, x, num_zeros=100):
+        # s = sum([self.li(x**i) for i in self.zeros[0:num_zeros]])
         # return self.li(x) - s - math.log(2) + quad(self._riemann_int, x, np.inf)[0]
         return float(riemann.single_pi(x, num_zeros, "zeros.txt")[0])
 
@@ -52,7 +52,7 @@ class Test(GraphScene, PrimeMethods):
         "y_max": 50,
         "y_min": 0,
         "x_max": 100,
-        "x_min": 10,
+        "x_min": 0.001,
         "y_tick_frequency": 100,
         "x_tick_frequency": 100,
         "axes_color": BLUE,
@@ -82,7 +82,7 @@ class Test(GraphScene, PrimeMethods):
 
 
 #p, _ = riemann.single_pi(10, 100, "zeros.txt")
-#print(float(p))
+# print(float(p))
 
 
 class PartScene(Scene):
