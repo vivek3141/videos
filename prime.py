@@ -29,12 +29,6 @@ class PrimeMethods:
 
 
 class PartScene(Scene):
-    CONFIG = {
-        "num": 1,
-        "text": "filler text",
-        "subt": None
-    }
-
     def construct(self):
         grp = VGroup()
 
@@ -93,7 +87,7 @@ class PartOneTitle(PartScene):
     }
 
 
-class EuclidTheorem(Scene):
+class Factorization(Scene):
     def construct(self):
         eq1 = TexMobject("30")
         eq1.scale(2.5)
@@ -114,6 +108,9 @@ class EuclidTheorem(Scene):
 
         self.play(Transform(eq1, eq3))
         self.wait()
+
+class EuclidTheorem(Scene):
+    def construct
 
 
 class PrimeFuncGraph(GraphScene, PrimeMethods):
