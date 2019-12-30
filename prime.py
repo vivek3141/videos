@@ -112,7 +112,27 @@ class Factorization(Scene):
 
 class EuclidTheorem(Scene):
     def construct(self):
-        pass
+        title = TextMobject("Euclid's Theorem", color=BLUE)
+        title.scale(1.5)
+        title.shift(2 * UP)
+
+        desc = TextMobject("There are an infinite number of primes")
+        desc.scale(1.25)
+
+        self.play(
+            Write(title),
+            Write(desc)
+        )
+        self.wait()
+
+        self.play(Uncreate(desc), ApplyMethod(title.scale, 2/3))
+        self.play(ApplyMethod(title.shift, 1.5 * UP))
+
+        l = Line(6 * LEFT, 6 * RIGHT, stroke_width=0.5 *
+                 DEFAULT_STROKE_WIDTH).shift(3 * UP)
+
+        self.play(Write(l))
+        self.wait()
 
 
 class PrimeFuncGraph(GraphScene, PrimeMethods):
