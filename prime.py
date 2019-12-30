@@ -2,8 +2,8 @@ from manimlib.imports import *
 from scipy.special import expi
 from scipy.integrate import quad
 import riemann
-from mpmath import primepi
-from mpmath import primezeta
+from mpmath import *
+from mpmath.libmp.libintmath import moebius
 
 
 class PrimeMethods:
@@ -42,6 +42,42 @@ class PrimeMethods:
 
     def _riemann_int(self, t):
         return 1/(t * (t**2 - 1)*math.log(t))
+    
+    def j_zeros(self, x, zz):
+        x = float(x)
+        zz = [mpc(0.5, float(y)) for y in zz]
+        summ = sum([ei(z*log(x)) + ei((1-z)*log(x)) for z in zz])
+        summ = summ.real
+
+        def f(t): return 1.0/log(t)/t/(t**2-1)
+        integral = quad(f, [x, inf])
+
+        return li(x) - summ + integral - log(2)
+
+
+    def pi_zeros(self, x, zz):
+        x = float(x)
+        sup_lim = int(log(x)/log(2.0)) + 2
+        summatory = mpf(0)
+        for n in range(1, sup_lim+1):
+            n = mpf(n)
+            jn = j_zeros(power(x, 1.0/n), zz)
+            mu = moebius(n)
+            summatory += mu*jn/n
+        return summatory
+
+
+    def single_pi(x, num_zeros, zeros_file):
+        f = open(zeros_file)
+        nzeros = []
+        i = 1
+        for l in f:
+            if i > num_zeros:
+                break
+            nzeros.append(mpf(l.strip()))
+            i += 1
+        return pi_zeros(x, nzeros)
+
 
     def riemann_count(self, x, num_zeros=35):
         # s = sum([self.li(x**i) for i in self.zeros[0:num_zeros]])
@@ -56,7 +92,7 @@ class Test(GraphScene, PrimeMethods):
         "x_max": 30,
         "x_min": 2,
         "y_tick_frequency": 3,
-        "x_tick_frequency": 5,
+        "x_tick_frequency": 3,
         "axes_color": BLUE,
         "x_axis_label": "$x$",
         "y_axis_label": "$\pi(x)$",
@@ -66,16 +102,24 @@ class Test(GraphScene, PrimeMethods):
 
     def construct(self):
         self.setup_axes()
-        f1 = self.get_graph(
-            primepi,
-            color=PINK,
-        )
+        f1 = VGroup()
+
+        x = 0
+        while(x <= self.x_max):
+            next_x = x
+            while(primepi(next_x) == primepi(x) and next_x <= self.x_max):
+                next_x += 1
+            f = self.get_graph(lambda x: primepi(
+                x), x_min=x, x_max=next_x, color=PINK)
+            f1.add(f)
+            x = next_x
+
         f2 = self.get_graph(
             self.riemann_count,
             color=YELLOW,
         )
 
-        self.play(Write(f2), Write(f1))
+        self.play(Write(f1), Write(f2))
         self.wait()
 
 #p = PrimeMethods()
