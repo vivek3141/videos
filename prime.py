@@ -109,8 +109,10 @@ class Factorization(Scene):
         self.play(Transform(eq1, eq3))
         self.wait()
 
+
 class EuclidTheorem(Scene):
-    def construct
+    def construct(self):
+        pass
 
 
 class PrimeFuncGraph(GraphScene, PrimeMethods):
