@@ -44,15 +44,45 @@ class PrimeMethods:
     def riemann_count(self, x, num_zeros=10):
         #s = sum([self.li(x**i) for i in self.zeros[0:num_zeros]])
         # return self.li(x) - s - math.log(2) + quad(self._riemann_int, x, np.inf)[0]
-        return riemann.single_pi(x, num_zeros, "zeros.txt")
+        return float(riemann.single_pi(x, num_zeros, "zeros.txt")[0])
 
+
+class Test(GraphScene, PrimeMethods):
+    CONFIG = {
+        "y_max": 50,
+        "y_min": 0,
+        "x_max": 100,
+        "x_min": 10,
+        "y_tick_frequency": 100,
+        "x_tick_frequency": 100,
+        "axes_color": BLUE,
+        "x_axis_label": "$x$",
+        "y_axis_label": "$\pi(x)$",
+        "g_color": RED,
+        "g_width": DEFAULT_STROKE_WIDTH*1,
+    }
+
+    def construct(self):
+        self.setup_axes()
+        f1 = self.get_graph(
+            self.count_prime,
+            color=PINK,
+        )
+        f2 = self.get_graph(
+            self.riemann_count,
+            color=YELLOW,
+        )
+
+        self.play(Write(f1), Write(f2))
+        self.wait()
 
 #p = PrimeMethods()
 # print(p.li(10))
 # print(p.riemann_count(10))
 
-p, _ = riemann.single_pi(10, 100, "zeros.txt")
-print(float(p))
+
+#p, _ = riemann.single_pi(10, 100, "zeros.txt")
+#print(float(p))
 
 
 class PartScene(Scene):
