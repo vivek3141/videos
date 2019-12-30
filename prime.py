@@ -185,20 +185,20 @@ class EuclidTheorem(Scene):
         p2.shift(1 * UP)
 
         b1 = Circle(fill_opacity=1, radius=0.1,
-                    color=BLUE).shift(6 * LEFT + 0.5*DOWN)
+                    color=BLUE).shift(6 * LEFT + 0.5 * DOWN)
         p3 = TexMobject(r"\text{If }Q \text{ is prime, then contradiction}",
                         tex_to_color_map={r"Q": PURPLE})
         p3.move_to(b1, LEFT).shift(0.5 * RIGHT)
 
         b2 = Circle(fill_opacity=1, radius=0.1,
-                    color=BLUE).shift(6 * LEFT + 1.5*DOWN)
+                    color=BLUE).shift(6 * LEFT + 1.5 * DOWN)
         p4_1 = TexMobject(r"\text{If }Q \text{ isn't prime, then one of its prime factors } p",
                           tex_to_color_map={r"Q": PURPLE, r"} p": RED})
         p4_1.move_to(b2, LEFT).shift(0.5 * RIGHT)
 
         p4_2 = TexMobject(r"\text{ must divide }P-Q=1 \text{, contradiction}",
                           tex_to_color_map={r"Q": PURPLE, r"P": YELLOW})
-        p4_2.move_to(b2, LEFT).shift(0.5 * RIGHT+1 * DOWN)
+        p4_2.move_to(b2, LEFT).shift(0.5 * RIGHT + 1 * DOWN)
 
         self.play(Write(p1))
         self.wait()
