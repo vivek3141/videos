@@ -237,18 +237,23 @@ class Series(Scene):
 
         eq2 = TexMobject(
             r"\sum_{n=1}^{\infty} \frac{1}{n^p}", r" = 1 + \frac{1}{2^p} + \frac{1}{3^p} + \frac{1}{4^p} + ... ",
-            tex_to_color_map={r"^p}": YELLOW})
+            tex_to_color_map={r"^p}": YELLOW}
+        )
         eq2.scale(1.5)
 
         self.play(Transform(eq1, eq2))
         self.wait()
 
-        conv = TexMobject(r"\text{Coverges for } p > 1",
-                          tex_to_color_map={r"p": YELLOW})
+        conv = TexMobject(
+            r"\text{Coverges for } p > 1",
+            tex_to_color_map={r"p": YELLOW}
+        )
         conv.shift(2 * DOWN)
 
-        conv2 = TexMobject(r"\text{Coverges for } s > 1",
-                           tex_to_color_map={r"} s": YELLOW})
+        conv2 = TexMobject(
+            r"\text{Coverges for } s > 1",
+            tex_to_color_map={r"} s": YELLOW}
+        )
         conv2.shift(2 * DOWN)
 
         self.play(Write(conv))
@@ -260,12 +265,15 @@ class Series(Scene):
 
         eq3 = TexMobject(
             r"\sum_{n=1}^{\infty} \frac{1}{n^s}",
-            tex_to_color_map={r"^s}": YELLOW})
+            tex_to_color_map={r"^s}": YELLOW}
+        )
         eq3.scale(1.5)
         eq3.shift(1.5 * RIGHT)
 
-        self.play(Uncreate(eq1[2:]), ApplyMethod(
-            eq1[:2].shift, -eq1[:2].get_center() + 1.5 * RIGHT))
+        self.play(
+            Uncreate(eq1[2:]),
+            ApplyMethod(eq1[:2].shift, -eq1[:2].get_center() + 1.5 * RIGHT)
+        )
         self.play(Transform(eq1[:2], eq3), Write(zeta), Transform(conv, conv2))
         self.wait()
 
