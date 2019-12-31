@@ -264,9 +264,8 @@ class Series(Scene):
         eq3.scale(1.5)
         eq3.shift(1.5 * RIGHT)
 
-        self.play(Uncreate(eq1[2:]), Transform(conv, conv2))
-        self.play(eq1[:2].shift, eq1[:2].get_center() + 1.5 * RIGHT)
-        self.play(Transform(eq1[:2], eq3), Write(zeta))
+        self.play(Uncreate(eq1[2:]), ApplyMethod(eq1[:2].shift, -eq1[:2].get_center() + 1.5 * RIGHT))
+        self.play(Transform(eq1[:2], eq3), Write(zeta), Transform(conv, conv2))
         self.wait()
 
 
