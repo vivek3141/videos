@@ -247,10 +247,27 @@ class Series(Scene):
                           tex_to_color_map={r"p": YELLOW})
         conv.shift(2 * DOWN)
 
+        conv2 = TexMobject(r"\text{Coverges for } s > 1",
+                           tex_to_color_map={r"} s": YELLOW})
+        conv2.shift(2 * DOWN)
+
         self.play(Write(conv))
         self.wait()
 
-        zeta = TexMobject(r"\zeta (s)")
+        zeta = TexMobject(r"\zeta (s) =")
+        zeta.scale(1.5)
+        zeta.shift(1 * LEFT)
+
+        eq3 = TexMobject(
+            r"\sum_{n=1}^{\infty} \frac{1}{n^s}",
+            tex_to_color_map={r"^s}": YELLOW})
+        eq3.scale(1.5)
+        eq3.shift(1.5 * RIGHT)
+
+        self.play(Uncreate(eq1[2:]), Transform(conv, conv2))
+        self.play(eq1[:2].shift, eq1[:2].get_center() + 1.5 * RIGHT)
+        self.play(Transform(eq1[:2], eq3), Write(zeta))
+        self.wait()
 
 
 class PrimeFuncGraph(GraphScene, PrimeMethods):
