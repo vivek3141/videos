@@ -236,7 +236,7 @@ class Series(Scene):
         self.wait()
 
         eq2 = TexMobject(
-            r"\sum_{n=1}^{\infty} \frac{1}{n^p} = 1 + \frac{1}{2^p} + \frac{1}{3^p} + \frac{1}{4^p} + ... ",
+            r"\sum_{n=1}^{\infty} \frac{1}{n^p}", r" = 1 + \frac{1}{2^p} + \frac{1}{3^p} + \frac{1}{4^p} + ... ",
             tex_to_color_map={r"^p}": YELLOW})
         eq2.scale(1.5)
 
@@ -249,6 +249,8 @@ class Series(Scene):
 
         self.play(Write(conv))
         self.wait()
+
+        zeta = TexMobject(r"\zeta (s)")
 
 
 class PrimeFuncGraph(GraphScene, PrimeMethods):
