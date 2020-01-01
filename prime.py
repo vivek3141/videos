@@ -384,6 +384,20 @@ class PrimeFunc(Scene, PrimeMethods):
         self.wait()
 
 
+class PNTEq(Scene):
+    def construct(self):
+        eq = TexMobject(
+            r"\lim_{x \rightarrow \infty} \frac{\pi(x)}{x/\ln(x)} = 1")
+        eq.scale(2)
+
+        title = TextMobject("Prime Number Theorem", color=RED)
+        title.shift(2.5 * UP)
+        title.scale(1.5)
+
+        self.play(Write(title), Write(eq))
+        self.wait()
+
+
 class PrimeFuncGraph(GraphScene, PrimeMethods):
     CONFIG = {
         "y_max": 100,
