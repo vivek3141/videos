@@ -553,6 +553,21 @@ class Riemann(Scene):
         self.wait()
 
 
+class ReferenceVideo(Scene):
+    def construct(self):
+        title = TextMobject("Riemann Zeta Function by 3b1b")
+        title.scale(1.5)
+        title.to_edge(UP)
+        rect = ScreenRectangle(height=6)
+        rect.next_to(title, DOWN)
+
+        self.play(
+            FadeInFromDown(title),
+            Write(rect)
+        )
+        self.wait()
+
+
 class PrimePi(GraphScene, PrimeMethods):
     CONFIG = {
         "y_max": 12,
