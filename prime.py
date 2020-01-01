@@ -523,6 +523,37 @@ class LiEq(Scene):
         self.wait()
 
 
+class Riemann(Scene):
+    def construct(self):
+        r = ImageMobject("./files/riemann.jpg", height=4)
+        r.shift(1 * UP)
+
+        subt = TextMobject("Bernhard Riemann")
+        subt.scale(1.25)
+        subt.shift(2 * DOWN)
+
+        f = ["Analysis", "Number Theory", "Differential Geometry"]
+        fields = VGroup()
+
+        for i in range(0, 3):
+            b = Circle(radius=0.1, fill_opacity=1, color=ORANGE)
+            b.shift(i * UP + 1 * RIGHT)
+
+            t = TextMobject(f[i]).move_to(b, LEFT)
+            t.shift(0.5 * RIGHT)
+
+            fields.add(b, t)
+
+
+        self.play(FadeInFromDown(r), Write(subt))
+        self.wait()
+
+        self.play(ApplyMethod(r.shift, 2 * LEFT),
+                  ApplyMethod(subt.shift, 2 * LEFT))
+        self.play(FadeInFromDown(fields))
+        self.wait()
+
+
 class PrimePi(GraphScene, PrimeMethods):
     CONFIG = {
         "y_max": 12,
