@@ -420,11 +420,17 @@ class PrimeFuncGraph(GraphScene, PrimeMethods):
             color=PINK,
         )
         l1 = self.get_graph_label(f1, label=r'\pi(x)')
+        l1.scale(0.75)
 
         f2 = self.get_graph(lambda x: x/math.log(x),
                             color=YELLOW, x_min=0.0001)
         l2 = self.get_graph_label(f2, label=r'\frac{x}{\ln(x)}')
         l2.scale(0.75)
+
+        f3 = self.get_graph(lambda x: self.li(x), color=GREEN, x_min=3)
+        l3 = self.get_graph_label(f3, label=r'\text{Li}(x)')
+        l3.scale(0.75)
+        l3.shift(3 * LEFT)
 
         self.play(Write(f1), Write(l1))
         self.wait()
@@ -432,34 +438,11 @@ class PrimeFuncGraph(GraphScene, PrimeMethods):
         self.play(Write(f2), Write(l2))
         self.wait()
 
-
-class PNTGraph(GraphScene, PrimeMethods):
-    CONFIG = {
-        "y_max": 2,
-        "y_min": 0,
-        "x_max": 1000,
-        "x_min": 0.001,
-        "y_tick_frequency": 1,
-        "x_tick_frequency": 100,
-        "axes_color": BLUE,
-        "x_axis_label": "$x$",
-        "y_axis_label": r"$\frac{\pi(x)}{x/ \ln (x)}$",
-        "g_color": RED,
-        "g_width": DEFAULT_STROKE_WIDTH*1,
-    }
-
-    def construct(self):
-        self.setup_axes()
-        f1 = self.get_graph(
-            self.pnt,
-            color=RED,
-        )
-
-        self.play(Write(f1))
+        self.play(Write(f3), Write(l3))
         self.wait()
 
 
-class PNTGraph2(GraphScene, PrimeMethods):
+class PNTGraph(GraphScene, PrimeMethods):
     CONFIG = {
         "y_max": 2,
         "y_min": 0,
@@ -486,8 +469,9 @@ class PNTGraph2(GraphScene, PrimeMethods):
         )
 
         lbl1 = TexMobject(
-            r"\frac{\pi(x)}{x / \ln (x)}").shift(2 * UP).scale(0.75)
-        lbl2 = TexMobject(r"\frac{\pi(x)}{Li(x)}").shift(1 * DOWN).scale(0.75)
+            r"\frac{\pi(x)}{x / \ln (x)}", color=RED).shift(2 * UP).scale(0.75)
+        lbl2 = TexMobject(r"\frac{\pi(x)}{\text{Li}(x)}", color=YELLOW).shift(
+            1 * DOWN).scale(0.75)
 
         l1 = VGroup()
         self.freq = 0.33*self.x_tick_frequency
@@ -504,10 +488,14 @@ class PNTGraph2(GraphScene, PrimeMethods):
 
         self.play(
             Write(f1),
-            Write(f2),
             Write(lbl1),
-            Write(lbl2),
             Write(l1)
+        )
+        self.wait()
+
+        self.play(
+            Write(f2),
+            Write(lbl2)
         )
         self.wait()
 
