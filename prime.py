@@ -358,7 +358,7 @@ class PrimeFunc(Scene, PrimeMethods):
         self.play(title.shift, 3 * UP)
         self.wait()
 
-        n = 2
+        n = 2.5
 
         eq1 = TexMobject(r"\pi(5)")
         eq1.scale(1.5)
@@ -366,16 +366,21 @@ class PrimeFunc(Scene, PrimeMethods):
         eq2 = TexMobject(r"\pi(10)")
         eq2.scale(1.5)
         eq2.shift(-0.5 * UP + n * LEFT)
-        eq1.move_to(eq2, LEFT).shift(1.5 * UP + n * LEFT)
+        eq1.move_to(eq2, LEFT).shift(1.5 * UP)
 
         eq3 = TexMobject(r"\pi(20)")
         eq3.scale(1.5)
         eq3.shift(2 * DOWN + n * LEFT)
 
-        self.play(Write(eq1))
-        self.play(Write(eq2))
-        self.play(Write(eq3))
-        self.wait()
+        arr = VGroup(*[Arrow(1 * LEFT, 1 * RIGHT, color=RED).shift(i * UP + 0 * LEFT)
+                       for i in np.arange(-2, 2, 1.5)])
+
+        ans = VGroup(*[TexMobject([3, 4, 8][int((i + 2)/1.5)]).shift(i * UP + 2 * RIGHT).scale(1.5)
+                       for i in np.arange(-2, 2, 1.5)])
+
+        self.play(Write(eq1), Write(eq2), Write(eq3))
+
+        self.play(Write(arr), Write(ans))
 
 
 class PrimeFuncGraph(GraphScene, PrimeMethods):
