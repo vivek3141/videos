@@ -409,6 +409,7 @@ class PrimeFuncGraph(GraphScene, PrimeMethods):
 
         f2 = self.get_graph(lambda x: x/math.log(x), color=YELLOW, x_min=0.0001)
         l2 = self.get_graph_label(f2, label=r'\frac{x}{\ln(x)}')
+        l2.scale(0.75)
 
         self.play(Write(f1), Write(l1))
         self.wait()
