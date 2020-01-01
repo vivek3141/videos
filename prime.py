@@ -278,6 +278,67 @@ class Series(Scene):
         self.wait()
 
 
+class EulerProductFormula(Scene):
+    def construct(self):
+        eq1 = TexMobject(
+            r"\zeta(s) = 1 + \frac{1}{2^s} + \frac{1}{3^s} + \frac{1}{4^s} + \frac{1}{5^s}... ")
+        eq1.scale(1.5)
+
+        eq2 = TexMobject(
+            r"\frac{1}{2^s} \zeta(s) = \frac{1}{2^s} + \frac{1}{4^s} + \frac{1}{6^s} + \frac{1}{8^s} + \frac{1}{10^s}... ")
+        eq2.scale(1.5)
+
+        eq3 = TexMobject(
+            r"(1 - \frac{1}{2^s}) \zeta(s) = 1 + \frac{1}{3^s} + \frac{1}{5^s} + \frac{1}{7^s} + \frac{1}{9^s}... ")
+        eq3.scale(1.5)
+
+        eq4 = TexMobject(
+            r"\frac{1}{3^s} (1 - \frac{1}{2^s}) \zeta(s) = \frac{1}{3^s} + \frac{1}{9^s} + \frac{1}{15^s} + \frac{1}{21^s} + \frac{1}{27^s}... ")
+        eq4.scale(1.25)
+
+        eq5 = TexMobject(
+            r"(1 - \frac{1}{3^s}) (1 - \frac{1}{2^s}) \zeta(s) =1+ \frac{1}{5^s} + \frac{1}{7^s} + \frac{1}{11^s} + \frac{1}{13^s}... ")
+        eq5.scale(1.20)
+
+        eq6 = TexMobject(
+            r"...(1 - \frac{1}{11^s})(1 - \frac{1}{7^s})(1 - \frac{1}{5^s})(1 - \frac{1}{3^s}) (1 - \frac{1}{2^s}) \zeta(s) =1")
+        eq6.scale(1.15)
+
+        eq7 = TexMobject(
+            r"\sum_{n \in \mathbb{N}} \frac{1}{n^s} = \prod_{p \text{ prime}} \frac{1}{1-p^{-s}}")
+        eq7.scale(1.5)
+
+        box = Rectangle(height=3, width=10, color=YELLOW)
+
+        text = TextMobject("Euler Product Formula", color=GREEN)
+        text.shift(3 * UP)
+        text.scale(1.5)
+
+        self.play(Write(eq1))
+        self.wait()
+
+        self.play(Transform(eq1, eq2))
+        self.wait()
+
+        self.play(Transform(eq1, eq3))
+        self.wait()
+
+        self.play(Transform(eq1, eq4))
+        self.wait()
+
+        self.play(Transform(eq1, eq5))
+        self.wait()
+
+        self.play(Transform(eq1, eq6))
+        self.wait()
+
+        self.play(Transform(eq1, eq7))
+        self.wait()
+
+        self.play(Write(box), Write(text))
+        self.wait()
+
+
 class PrimeFuncGraph(GraphScene, PrimeMethods):
     CONFIG = {
         "y_max": 500,
