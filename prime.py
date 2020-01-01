@@ -342,9 +342,19 @@ class EulerProductFormula(Scene):
 class PartThreeTitle(PartScene):
     CONFIG = {
         "num": 3,
-        "title": "The Prime Counting Function and the PNT",
-        "subt": r"$$\lim_{x \rightarrow \infty} \frac{\pi(x)}{x/\ln(x)}=1"
+        "text": r"$$\pi(x)\text{ and the PNT}$$",
+        "subt": r"$$\lim_{x \rightarrow \infty} \frac{\pi(x)}{x/\ln(x)}=1$$"
     }
+
+
+class PrimeFunc(Scene, PrimeMethods):
+    def construct(self):
+        title = TextMobject("Prime Counting Function", color=YELLOW)
+        title.scale(1.5)
+        title.shift(3 * UP)
+
+        self.play(Write(title))
+        self.wait()
 
 
 class PrimeFuncGraph(GraphScene, PrimeMethods):
