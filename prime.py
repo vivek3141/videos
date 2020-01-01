@@ -381,6 +381,7 @@ class PrimeFunc(Scene, PrimeMethods):
         self.play(Write(eq1), Write(eq2), Write(eq3))
 
         self.play(Write(arr), Write(ans))
+        self.wait()
 
 
 class PrimeFuncGraph(GraphScene, PrimeMethods):
