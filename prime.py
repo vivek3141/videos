@@ -544,7 +544,6 @@ class Riemann(Scene):
 
             fields.add(b, t)
 
-
         self.play(FadeInFromDown(r), Write(subt))
         self.wait()
 
