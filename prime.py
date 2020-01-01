@@ -9,7 +9,7 @@ class PrimeMethods:
     def count_prime(self, x):
         counter = 0
 
-        for i in range(2, int(x+1)):
+        for i in range(2, int(x) + 1):
             if self.isPrime(i):
                 counter += 1
 
@@ -386,15 +386,15 @@ class PrimeFunc(Scene, PrimeMethods):
 
 class PrimeFuncGraph(GraphScene, PrimeMethods):
     CONFIG = {
-        "y_max": 500,
+        "y_max": 100,
         "y_min": 0,
-        "x_max": 3000,
+        "x_max": 500,
         "x_min": 0,
-        "y_tick_frequency": 100,
-        "x_tick_frequency": 100,
+        "y_tick_frequency": 10,
+        "x_tick_frequency": 20,
         "axes_color": BLUE,
         "x_axis_label": "$x$",
-        "y_axis_label": "$\pi(x)$",
+        "y_axis_label": "$y$",
         "g_color": RED,
         "g_width": DEFAULT_STROKE_WIDTH*1,
     }
@@ -405,8 +405,15 @@ class PrimeFuncGraph(GraphScene, PrimeMethods):
             self.count_prime,
             color=PINK,
         )
+        l1 = self.get_graph_label(f1, label=r'\pi(x)')
 
-        self.play(Write(f1))
+        f2 = self.get_graph(lambda x: x/math.log(x), color=YELLOW, x_min=0.0001)
+        l2 = self.get_graph_label(f2, label=r'\frac{x}{\ln(x)}')
+
+        self.play(Write(f1), Write(l1))
+        self.wait()
+
+        self.play(Write(f2), Write(l2))
         self.wait()
 
 
