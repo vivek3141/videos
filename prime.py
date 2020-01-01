@@ -351,9 +351,30 @@ class PrimeFunc(Scene, PrimeMethods):
     def construct(self):
         title = TextMobject("Prime Counting Function", color=YELLOW)
         title.scale(1.5)
-        title.shift(3 * UP)
 
         self.play(Write(title))
+        self.wait()
+
+        self.play(title.shift, 3 * UP)
+        self.wait()
+
+        n = 2
+
+        eq1 = TexMobject(r"\pi(5)")
+        eq1.scale(1.5)
+
+        eq2 = TexMobject(r"\pi(10)")
+        eq2.scale(1.5)
+        eq2.shift(-0.5 * UP + n * LEFT)
+        eq1.move_to(eq2, LEFT).shift(1.5 * UP + n * LEFT)
+
+        eq3 = TexMobject(r"\pi(20)")
+        eq3.scale(1.5)
+        eq3.shift(2 * DOWN + n * LEFT)
+
+        self.play(Write(eq1))
+        self.play(Write(eq2))
+        self.play(Write(eq3))
         self.wait()
 
 
