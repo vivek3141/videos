@@ -568,6 +568,11 @@ class ReferenceVideo(Scene):
         self.wait()
 
 
+class RiemannZeta(Scene):
+    def construct(self):
+        pass
+
+
 class PrimePi(GraphScene, PrimeMethods):
     CONFIG = {
         "y_max": 12,
