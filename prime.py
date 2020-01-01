@@ -274,7 +274,7 @@ class Series(Scene):
             Uncreate(eq1[2:]),
             ApplyMethod(eq1[:2].shift, -eq1[:2].get_center() + 1.5 * RIGHT)
         )
-        self.play(Transform(eq1[:2], eq3), Write(zeta), Transform(conv, conv2))
+        self.play(Transform(eq1[:2], eq3), FadeInFromDown(zeta), Transform(conv, conv2))
         self.wait()
 
 
@@ -378,9 +378,9 @@ class PrimeFunc(Scene, PrimeMethods):
         ans = VGroup(*[TexMobject([3, 4, 8][int((i + 2)/1.5)]).shift(i * UP + 2 * RIGHT).scale(1.5)
                        for i in np.arange(-2, 2, 1.5)[::-1]])
 
-        self.play(Write(eq1), Write(eq2), Write(eq3))
+        self.play(FadeInFromDown(eq1), FadeInFromDown(eq2), FadeInFromDown(eq3))
 
-        self.play(Write(arr), Write(ans))
+        self.play(Write(arr), FadeInFromDown(ans))
         self.wait()
 
 
@@ -497,6 +497,26 @@ class PNTGraph(GraphScene, PrimeMethods):
             Write(f2),
             Write(lbl2)
         )
+        self.wait()
+
+
+class LiEq(Scene):
+    def construct(self):
+        eq1 = TexMobject(r"\int", r"_2^x", r"\frac{dx}{\ln(x)}", tex_to_color_map={r"_2^x": YELLOW})
+        eq1.scale(1.5)
+        
+        liEq = TexMobject(r"\text{Li}(x) =")
+        liEq.scale(1.5)
+        liEq.shift(3 * LEFT)
+
+        title = TextMobject("Logarithmic Integral Function", color=ORANGE)
+        title.scale(1.5)
+        title.shift(2 * UP)
+
+        self.play(Write(VGroup(eq1[0], eq1[2])))
+        self.wait()
+
+        self.play(FadeInFromDown(liEq), FadeInFromDown(eq1[1]), Write(title))
         self.wait()
 
 
