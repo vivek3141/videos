@@ -579,6 +579,9 @@ class RiemannZeta(Scene):
 
         r1 = Rectangle(width=8, height=20, fill_opacity=0.5,
                        color=RED).shift(5.5 * RIGHT)
+        t1 = TexMobject(r"\zeta(s) \text{ converges}")
+        t1.scale(1.5)
+        t1.shift(1.5 * 3 * RIGHT)
 
         self.play(Write(r1))
         self.wait()
