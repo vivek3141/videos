@@ -593,7 +593,7 @@ class RiemannZeta(Scene):
 class ComplexExponent(Scene):
     def construct(self):
         eq1 = TexMobject(r"\zeta(a + bi) = 1 + ",
-                         r"\left ( \frac{1}{2} \right )^{a + bi}", r"+ ...", tex_to_color_map={r"a + bi": ORANGE})
+                         r"\left ( \frac{1}{2} \right )^{a + bi} + ...", tex_to_color_map={r"a + bi": ORANGE})
         eq1.scale(1.5)
 
         self.play(Write(eq1))
