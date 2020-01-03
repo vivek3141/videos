@@ -592,7 +592,28 @@ class RiemannZeta(Scene):
 
 class ComplexExponent(Scene):
     def construct(self):
-        pass
+        eq1 = TexMobject(r"\zeta(a + bi) = 1 + ",
+                         r"\left ( \frac{1}{2} \right )^{a + bi}", r"+ ...", tex_to_color_map={r"a + bi": ORANGE})
+        eq1.scale(1.5)
+
+        self.play(Write(eq1))
+        self.wait()
+
+        b1 = BackgroundRectangle(
+            eq1[3:5],
+            stroke_width=DEFAULT_STROKE_WIDTH,
+            stroke_opacity=1,
+            fill_opacity=0,
+            buff=0.2,
+            color=YELLOW
+        )
+
+        self.play(Write(b1))
+        self.wait()
+
+        self.play(FadeOut(eq1[0:3]), FadeOut(eq1[5:]), ApplyMethod(
+            eq1[3:5].center), ApplyMethod(b1.center))
+        self.wait()
 
 
 class PrimePi(GraphScene, PrimeMethods):
