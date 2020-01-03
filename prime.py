@@ -580,11 +580,19 @@ class RiemannZeta(Scene):
         r1 = Rectangle(width=8, height=20, fill_opacity=0.5,
                        color=RED).shift(5.5 * RIGHT)
         t1 = TexMobject(r"\zeta(s) \text{ converges}")
-        t1.scale(1.5)
-        t1.shift(1.5 * 3 * RIGHT)
+        t1.scale(1.25)
+        t1.shift(1.5 * 3 * RIGHT + 1 * UP)
+
+        b1 = BackgroundRectangle(t1)
 
         self.play(Write(r1))
+        self.play(Write(b1), Write(t1))
         self.wait()
+
+
+class ComplexExponent(Scene):
+    def construct(self):
+        pass
 
 
 class PrimePi(GraphScene, PrimeMethods):
