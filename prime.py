@@ -615,6 +615,12 @@ class ComplexExponent(Scene):
             eq1[3:5].center), ApplyMethod(b1.center))
         self.wait()
 
+        eq2 = TexMobject(r"\left ( \frac{1}{2} \right )^{a} + \left ( \frac{1}{2} \right )^{bi}",
+                         tex_to_color_map={r"{a}": ORANGE, r"{bi}": ORANGE})
+
+        self.play(Uncreate(b1), Transform(eq1[3:5], eq2))
+        self.wait()
+
 
 class PrimePi(GraphScene, PrimeMethods):
     CONFIG = {
