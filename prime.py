@@ -658,6 +658,12 @@ class CExpPlane(Scene):
 
         self.wait()
 
+        circ = Circle(radius=1.5, color=RED)
+        self.bring_to_back(circ)
+
+        self.play(Write(circ))
+        self.wait()
+
     def update(self, point, dt):
         p = interpolate(0, 9.0647, dt)
         new_p = 0.5 ** (p * 1j)
