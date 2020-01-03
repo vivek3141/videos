@@ -706,6 +706,23 @@ class RiemannZeros(Scene):
         self.play(Uncreate(b1))
         self.wait()
 
+        b2 = BackgroundRectangle(
+            func[1],
+            stroke_width=DEFAULT_STROKE_WIDTH,
+            stroke_opacity=1,
+            fill_opacity=0,
+            buff=0.2,
+            color=RED
+        )
+
+        t1 = TexMobject(r"\zeta(s) = 0 \text{ when Re} (s) = -2n", tex_to_color_map={
+                        r"\zeta(s) = 0": GREEN, r"Re} (s) = -2n": RED})
+        t1.shift(2 * DOWN)
+
+        self.play(Write(b2))
+        self.play(Write(t1))
+        self.wait()
+
 
 class PrimePi(GraphScene, PrimeMethods):
     CONFIG = {
