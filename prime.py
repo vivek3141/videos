@@ -682,6 +682,42 @@ class CExpPlane(Scene):
         text.become(t1)
 
 
+class RealZetaGraph(Scene):
+    def construct(self):
+        N = 125
+        axes = Axes(
+            x_min=-12,
+            x_max=1,
+            y_max=3,
+            y_min=-3
+        )
+
+        axes.center()
+        labels = axes.get_x_axis().get_number_mobjects(
+            *[-2 * x for x in range(1, 6)])
+        brects = VGroup()
+
+        for i in labels:
+            b = BackgroundRectangle(i, fill_opacity=1, color=BLACK, buff=0.1)
+            brects.add(b)
+
+        graph = FunctionGraph(
+            lambda x: 3 * N * float(zeta(complex(x, 0)).real),
+            x_min=-12, x_max=0
+        )
+        graph.shift(5.5 * RIGHT)
+
+        l1 = TexMobject(r"\zeta(s)").shift(3.5 * UP + 5.5 * RIGHT)
+        l2 = TexMobject(r"x").shift(6.75 * RIGHT)
+
+        self.play(Write(axes), Write(graph),  Write(
+            brects), Write(labels), Write(l1), Write(l2))
+        self.wait()
+
+    def riemann_zeta(self, x):
+        return (2 ** x) * (PI**(x-1)) * math.sin(PI*x/2) * gamma(1 - x) * zeta(1 - x)
+
+
 class RiemannZeros(Scene):
     def construct(self):
         func = TexMobject(
