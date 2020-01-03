@@ -570,7 +570,9 @@ class ReferenceVideo(Scene):
 
 class RiemannZeta(Scene):
     def construct(self):
-        pass
+        plane = ComplexPlane()
+        self.play(Write(plane))
+        self.wait()
 
 
 class PrimePi(GraphScene, PrimeMethods):
