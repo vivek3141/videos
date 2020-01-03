@@ -634,6 +634,10 @@ class ComplexExponent(Scene):
         self.play(Write(b2))
         self.wait()
 
+class CExpPlane(Scene):
+    def construct(self):
+        pass
+
 
 class PrimePi(GraphScene, PrimeMethods):
     CONFIG = {
