@@ -634,9 +634,46 @@ class ComplexExponent(Scene):
         self.play(Write(b2))
         self.wait()
 
+
 class CExpPlane(Scene):
     def construct(self):
-        pass
+        p = ComplexPlane()
+        plane = VGroup(p, p.get_coordinate_labels())
+        plane.scale(1.5, about_point=p.get_center())
+
+        c = Circle(radius=0.15, fill_opacity=1, color=YELLOW)
+        c.shift(1.5 * RIGHT)
+
+        t1 = TexMobject(r"\left ( \frac{1}{2} \right )^{0i}")
+        t1.scale(1.25)
+        t1.shift(2.75 * UP)
+        b1 = BackgroundRectangle(t1, color=BLACK, fill_opacity=1, buff=0.1)
+
+        self.play(Write(plane))
+        self.play(Write(c), Write(b1), Write(t1))
+        self.wait()
+
+        self.play(UpdateFromAlphaFunc(c, self.update), UpdateFromAlphaFunc(t1, self.update2),
+                  rate_func=linear, run_time=3)
+
+        self.wait()
+
+    def update(self, point, dt):
+        p = interpolate(0, 9.0647, dt)
+        new_p = 0.5 ** (p * 1j)
+        c = Circle(radius=0.15, fill_opacity=1, color=YELLOW)
+        c.shift(1.5 * RIGHT)
+        c.center()
+        c.shift(new_p.real * 1.5 * RIGHT + new_p.imag * 1.5 * UP)
+        point.become(c)
+
+    def update2(self, text, dt):
+        p = interpolate(0, 9.0647, dt)
+        t1 = TexMobject(
+            r"\left ( \frac{1}{2} \right )^{ "+str(round(float(p), 2))+r"i}")
+        t1.scale(1.25)
+        t1.shift(2.75 * UP)
+        text.become(t1)
 
 
 class PrimePi(GraphScene, PrimeMethods):
