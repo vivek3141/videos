@@ -617,8 +617,21 @@ class ComplexExponent(Scene):
 
         eq2 = TexMobject(r"\left ( \frac{1}{2} \right )^{a} + \left ( \frac{1}{2} \right )^{bi}",
                          tex_to_color_map={r"{a}": ORANGE, r"{bi}": ORANGE})
+        eq2.scale(1.5)
 
         self.play(Uncreate(b1), Transform(eq1[3:5], eq2))
+        self.wait()
+
+        b2 = BackgroundRectangle(
+            eq2[2:],
+            stroke_width=DEFAULT_STROKE_WIDTH,
+            stroke_opacity=1,
+            fill_opacity=0,
+            buff=0.2,
+            color=BLUE
+        )
+
+        self.play(Write(b2))
         self.wait()
 
 
