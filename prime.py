@@ -682,6 +682,31 @@ class CExpPlane(Scene):
         text.become(t1)
 
 
+class RiemannZeros(Scene):
+    def construct(self):
+        func = TexMobject(
+            r"\zeta (s)=2^{s}\pi ^{s-1} \ ", r"\sin \left({\frac {\pi s}{2}}\right)\ ", r" \Gamma (1-s)\ ", r" \zeta (1-s)")
+        func.scale(1.5)
+
+        b1 = BackgroundRectangle(
+            func[2],
+            stroke_width=DEFAULT_STROKE_WIDTH,
+            stroke_opacity=1,
+            fill_opacity=0,
+            buff=0.2,
+            color=YELLOW
+        )
+
+        self.play(Write(func))
+        self.wait()
+
+        self.play(Write(b1))
+        self.wait()
+
+        self.play(Uncreate(b1))
+        self.wait()
+
+
 class PrimePi(GraphScene, PrimeMethods):
     CONFIG = {
         "y_max": 12,
