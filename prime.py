@@ -570,8 +570,17 @@ class ReferenceVideo(Scene):
 
 class RiemannZeta(Scene):
     def construct(self):
-        plane = ComplexPlane()
+        p = ComplexPlane()
+        plane = VGroup(p, p.get_coordinate_labels())
+        plane.scale(1.5)
+
         self.play(Write(plane))
+        self.wait()
+
+        r1 = Rectangle(width=8, height=20, fill_opacity=0.5,
+                       color=RED).shift(5.5 * RIGHT)
+
+        self.play(Write(r1))
         self.wait()
 
 
