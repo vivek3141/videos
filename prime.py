@@ -760,6 +760,29 @@ class RiemannZeros(Scene):
         self.wait()
 
 
+class RiemannZerosGraph(ThreeDScene):
+    def construct(self):
+        f1 = ParametricSurface(
+            lambda u, v: [u, v, float(zeta(complex(u, v)).real)],
+            u_min=-5,
+            u_max=5,
+            v_min=-5,
+            v_max=5
+        )
+        f2 = ParametricSurface(
+            lambda u, v: [u, v, float(zeta(complex(u, v)).imag)],
+            u_min=-5,
+            u_max=5,
+            v_min=-5,
+            v_max=5,
+            checkerboard_colors=[RED, ORANGE]
+        )
+        axes = ThreeDAxes()
+        self.move_camera(0.8 * np.pi / 2, -0.45 * np.pi)
+        self.play(Write(axes), Write(f1), Write(f2))
+        self.wait()
+
+
 class PrimePi(GraphScene, PrimeMethods):
     CONFIG = {
         "y_max": 12,
