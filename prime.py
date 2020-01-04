@@ -778,9 +778,25 @@ class RiemannZerosGraph(ThreeDScene):
             checkerboard_colors=[RED, ORANGE]
         )
         axes = ThreeDAxes()
+
+        plane = ParametricSurface(
+            lambda u, v: [u, v, 0],
+            u_min=-5,
+            u_max=5,
+            v_min=-5,
+            v_max=5,
+            checkerboard_colors=[YELLOW, YELLOW]
+        )
+
         self.move_camera(0.8 * np.pi / 2, -0.45 * np.pi)
         self.play(Write(axes), Write(f1), Write(f2))
-        self.wait()
+        self.begin_ambient_camera_rotation(rate=0.06)
+        self.wait(5)
+
+        f2.set_fill(opacity=0.5)
+        f1.set_fill(opacity=0.5)
+        self.play(Write(plane))
+        self.wait(2)
 
 
 class PrimePi(GraphScene, PrimeMethods):
