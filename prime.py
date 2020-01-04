@@ -795,8 +795,29 @@ class RiemannZerosGraph(ThreeDScene):
 
         f2.set_fill(opacity=0.5)
         f1.set_fill(opacity=0.5)
+
         self.play(Write(plane))
         self.wait(2)
+
+
+class RiemannLevelCurves(Scene):
+    def construct(self):
+        f = VGroup()
+        for x in np.arange(0, 0.999, 0.01):
+            for y in np.arange(-5, 5, 0.01):
+                if self.pass_real(x, y):
+                    p = Circle(color=YELLOW, radius=0.001).shift(
+                        x * RIGHT + y * UP)
+                    f.add(p)
+                    ParametricFunction
+
+        self.play(Write(f))
+        self.wait()
+
+    def pass_real(self, x, y):
+        if -0.001 < float(zeta(complex(x, y)).real) < 0.001:
+            return True
+        return False
 
 
 class PrimePi(GraphScene, PrimeMethods):
