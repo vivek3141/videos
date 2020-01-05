@@ -840,17 +840,17 @@ class RiemannVisual(GraphScene):
         self.wait()
 
     def real_update(self, func, dt):
-        x = interpolate(0.01, 9, dt)
+        r = interpolate(0.01, 9, dt)
         f1 = self.get_graph(
-            lambda x: float(zeta(complex(0.01, x)).real),
+            lambda x: float(zeta(complex(r, x)).real),
             color=GREEN
         )
         func.become(f1)
 
     def imag_update(self, func, dt):
-        x = interpolate(0.01, 9, dt)
+        r = interpolate(0.01, 9, dt)
         f2 = self.get_graph(
-            lambda x: float(zeta(complex(0.01, x)).imag),
+            lambda x: float(zeta(complex(r, x)).imag),
             color=YELLOW
         )
         func.become(f2)
