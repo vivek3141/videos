@@ -833,9 +833,9 @@ class RiemannVisual(GraphScene):
         self.play(Write(f1), Write(f2), Write(text))
         self.wait()
 
-        self.play(UpdateFromAlphaFunc(self.real_update, f1),
-                  UpdateFromAlphaFunc(self.imag_update, f2),
-                  UpdateFromAlphaFunc(self.text_update, text),
+        self.play(UpdateFromAlphaFunc(f1, self.real_update),
+                  UpdateFromAlphaFunc(f2, self.imag_update),
+                  UpdateFromAlphaFunc(text, self.text_update),
                   rate_func=linear, run_time=4)
         self.wait()
 
