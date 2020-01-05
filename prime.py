@@ -801,8 +801,22 @@ class RiemannZerosGraph(ThreeDScene):
 
 
 class RiemannVisual(GraphScene):
+    CONFIG = {
+        "y_max": 6,
+        "y_min": -6,
+        "x_max": 30,
+        "x_min": 0,
+        "y_tick_frequency": 3,
+        "x_tick_frequency": 5,
+        "axes_color": BLUE,
+        "x_axis_label": "$x$",
+        "y_axis_label": "$\pi(x)$",
+        "g_color": RED,
+        "g_width": DEFAULT_STROKE_WIDTH*1,
+    }
     def construct(self):
-        pass
+        self.setup_axes()
+        self.wait()
 
 
 class RiemannLevelCurves(Scene):
