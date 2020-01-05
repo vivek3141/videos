@@ -840,7 +840,7 @@ class RiemannVisual(GraphScene):
         self.wait()
 
     def real_update(self, func, dt):
-        r = interpolate(0.01, 9, dt)
+        r = interpolate(0.01, 4, dt)
         f1 = self.get_graph(
             lambda x: float(zeta(complex(r, x)).real),
             color=GREEN
@@ -848,7 +848,7 @@ class RiemannVisual(GraphScene):
         func.become(f1)
 
     def imag_update(self, func, dt):
-        r = interpolate(0.01, 9, dt)
+        r = interpolate(0.01, 4, dt)
         f2 = self.get_graph(
             lambda x: float(zeta(complex(r, x)).imag),
             color=YELLOW
@@ -856,7 +856,7 @@ class RiemannVisual(GraphScene):
         func.become(f2)
 
     def text_update(self, t, dt):
-        x = interpolate(0.01,4, dt)
+        x = interpolate(0.01, 4, dt)
         text = TexMobject(r"\text{Re}(s) = " + str(round(x, 2)))
         text.scale(1.25)
         text.shift(3 * UP)
