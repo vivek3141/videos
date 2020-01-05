@@ -833,7 +833,11 @@ class RiemannVisual(GraphScene):
         self.play(Write(f1), Write(f2), Write(text))
         self.wait()
 
-        self.play(UpdateFromAlphaFunc(self.))
+        self.play(UpdateFromAlphaFunc(self.real_update, f1),
+                  UpdateFromAlphaFunc(self.imag_update, f2),
+                  UpdateFromAlphaFunc(self.text_update, text),
+                  rate_func=linear, run_time=4)
+        self.wait()
 
     def real_update(self, func, dt):
         x = interpolate(0.01, 9, dt)
