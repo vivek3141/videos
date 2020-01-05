@@ -856,8 +856,8 @@ class RiemannVisual(GraphScene):
         func.become(f2)
 
     def text_update(self, t, dt):
-        x = interpolate(0.01, 9, dt)
-        text = TexMobject(r"\text{Re}(s) = " + str(x))
+        x = interpolate(0.01,4, dt)
+        text = TexMobject(r"\text{Re}(s) = " + str(round(x, 2)))
         text.scale(1.25)
         text.shift(3 * UP)
         t.become(text)
