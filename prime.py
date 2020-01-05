@@ -833,9 +833,28 @@ class RiemannVisual(GraphScene):
         self.play(Write(f1), Write(f2), Write(text))
         self.wait()
 
-    def imag_update(self, func, dt): pass
-    def real_update(self, func, dt): pass
-    def text_update(self, func, dt): pass
+    def imag_update(self, func, dt):
+        x = interpolate(0.01, 9, dt)
+        f1 = self.get_graph(
+            lambda x: float(zeta(complex(0.01, x)).real),
+            color=GREEN
+        )
+        func.become(f1)
+
+    def real_update(self, func, dt):
+        x = interpolate(0.01, 9, dt)
+        f2 = self.get_graph(
+            lambda x: float(zeta(complex(0.01, x)).imag),
+            color=YELLOW
+        )
+        func.become(f2)
+
+    def text_update(self, t, dt):
+        x = interpolate(0.01, 9, dt)
+        text = TexMobject(r"\text{Re}(s) = " + str(x))
+        text.scale(1.25)
+        text.shift(3 * UP)
+        t.become(text)
 
 
 class RiemannLevelCurves(Scene):
