@@ -809,13 +809,23 @@ class RiemannVisual(GraphScene):
         "y_tick_frequency": 3,
         "x_tick_frequency": 5,
         "axes_color": BLUE,
-        "x_axis_label": "$x$",
-        "y_axis_label": "$\pi(x)$",
-        "g_color": RED,
-        "g_width": DEFAULT_STROKE_WIDTH*1,
+        "x_axis_label": r"$\text{Im}(s)$",
+        "y_axis_label": "$\zeta(s)$",
+        "graph_origin": 5 * LEFT
     }
+
     def construct(self):
         self.setup_axes()
+
+        f1 = self.get_graph(
+            lambda x: float(zeta(complex(0.01, x)).real),
+            color=BLUE
+        )
+        f2 = self.get_graph(
+            lambda x: float(zeta(complex(0.01, x)).imag),
+            color=YELLOW
+        )
+        self.play(Write(f1), Write(f2))
         self.wait()
 
 
