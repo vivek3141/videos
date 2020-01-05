@@ -800,22 +800,28 @@ class RiemannZerosGraph(ThreeDScene):
         self.wait(2)
 
 
+class RiemannVisual(GraphScene):
+    def construct(self):
+        pass
+
+
 class RiemannLevelCurves(Scene):
     def construct(self):
-        f = VGroup()
-        for x in np.arange(0, 0.999, 0.01):
-            for y in np.arange(-5, 5, 0.01):
-                if self.pass_real(x, y):
-                    p = Circle(color=YELLOW, radius=0.001).shift(
-                        x * RIGHT + y * UP)
-                    f.add(p)
-                    ParametricFunction
+        f = []
+        p = ComplexPlane()
+        plane = VGroup(p, p.get_coordinate_labels())
 
-        self.play(Write(f))
+        for x in np.arange(-5, 5, 0.1):
+            for y in np.arange(-20, 20, 0.1):
+                if self.pass_real(x, y):
+                    f.append([x, y, 0])
+
+        p = Polygon(*f)
+        self.play(Write(plane), Write(p))
         self.wait()
 
     def pass_real(self, x, y):
-        if -0.001 < float(zeta(complex(x, y)).real) < 0.001:
+        if -0.05 < float(zeta(complex(x, y)).imag) < 0.05:
             return True
         return False
 
