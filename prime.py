@@ -811,7 +811,7 @@ class RiemannVisual(GraphScene):
         "axes_color": BLUE,
         "x_axis_label": r"$\text{Im}(s)$",
         "y_axis_label": "$\zeta(s)$",
-        "graph_origin": 5 * LEFT,
+        "graph_origin": 4.5 * LEFT,
         "x_labeled_nums": [i*5 for i in range(7)],
         "y_labeled_nums": [(i*3 - 6) for i in range(5)]
     }
@@ -847,7 +847,18 @@ class RiemannVisual(GraphScene):
         legend = VGroup(line1, line2, t1, t2, rect).scale(0.5)
         legend.shift(2.5 * UP + 5 * RIGHT)
 
-        self.play(Write(f1), Write(f2), Write(text), Write(legend))
+        z = [14.13472514173500016454,
+             21.02203963877200010302,
+             25.01085758014599846888]
+        zeros = [x/5 * 1.5 - 4.5 for x in z]
+        c = VGroup()
+        for i in zeros:
+            c.add(
+                Circle(radius=0.2, color=RED, stroke_width=1.5 *
+                       DEFAULT_STROKE_WIDTH).shift(i * RIGHT)
+            )
+
+        self.play(Write(f1), Write(f2), Write(text), Write(legend), Write(c))
         self.wait()
 
         self.play(UpdateFromAlphaFunc(f1, self.real_update),
@@ -967,4 +978,68 @@ class RiemannExplicit(GraphScene, PrimeMethods):
         )
 
         self.play(Write(f1), Write(f2))
+        self.wait()
+
+
+class YouTubePost(GraphScene):
+    CONFIG = {
+        "y_max": 6,
+        "y_min": -6,
+        "x_max": 30,
+        "x_min": 0,
+        "y_tick_frequency": 3,
+        "x_tick_frequency": 5,
+        "axes_color": BLUE,
+        "x_axis_label": r"$\text{Im}(s)$",
+        "y_axis_label": "$\zeta(s)$",
+        "graph_origin": 4.5 * LEFT,
+        "x_labeled_nums": [i*5 for i in range(7)],
+        "y_labeled_nums": [(i*3 - 6) for i in range(5)]
+    }
+
+    def construct(self):
+        self.setup_axes()
+
+        f1 = self.get_graph(
+            lambda x: float(zeta(complex(0.5, x)).real),
+            color=GREEN
+        )
+        f2 = self.get_graph(
+            lambda x: float(zeta(complex(0.5, x)).imag),
+            color=YELLOW
+        )
+
+        text = TexMobject(r"\text{Re}(s) = 0.5")
+        text.scale(1.25)
+        text.shift(3 * UP)
+
+        line1 = Line(1 * LEFT, 0 * RIGHT,
+                     color=GREEN).shift(0.5 * UP + 1.5 * LEFT)
+        line2 = Line(1 * LEFT, 0 * RIGHT,
+                     color=YELLOW).shift(0.5 * DOWN + 1.5 * LEFT)
+
+        t1 = TexMobject(r"\text{Re}(\zeta(s))").shift(
+            0.5 * UP + 0.5 * RIGHT).scale(1.5)
+        t2 = TexMobject(r"\text{Im}(\zeta(s))").shift(
+            0.5 * DOWN + 0.5 * RIGHT).scale(1.5)
+
+        rect = Rectangle(height=3, width=6)
+
+        legend = VGroup(line1, line2, t1, t2, rect).scale(0.5)
+        legend.shift(2.5 * UP + 5 * RIGHT)
+
+        z = [14.13472514173500016454,
+             21.02203963877200010302,
+             25.01085758014599846888]
+        zeros = [x/5 * 1.5 - 4.5 for x in z]
+        c = VGroup()
+        for i in zeros:
+            c.add(
+                Circle(radius=0.2, color=RED, stroke_width=1.5 *
+                       DEFAULT_STROKE_WIDTH).shift(i * RIGHT)
+            )
+
+        self.play(Write(f1), Write(f2), Write(text), Write(legend), Write(c))
+        self.wait()
+
         self.wait()
