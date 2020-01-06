@@ -997,7 +997,9 @@ class RiemannExplicit(GraphScene, PrimeMethods):
         self.play(Write(f1), Write(f2), Write(text))
         self.wait()
 
-        self.play(UpdateFromAlphaFunc)
+        self.play(UpdateFromAlphaFunc(f2, self.func_update),
+                  UpdateFromAlphaFunc(text, self.text_update),
+                  run_time=4, rate_func=linear)
 
     def func_update(self, func, dt):
         x = interpolate(0, 35, dt)
