@@ -1008,11 +1008,12 @@ class RiemannExplicit(GraphScene, PrimeMethods):
         )
         func.become(f2)
 
-    def text_update(self, func, dt):
+    def text_update(self, tex, dt):
         x = interpolate(0, 35, dt)
         text = TexMobject(r"\text{Zeros: } " + str(x))
         text.scale(1.25)
         text.shift(3 * UP)
+        tex.become(text)
 
 
 class YouTubePost(GraphScene):
