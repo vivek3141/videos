@@ -811,7 +811,9 @@ class RiemannVisual(GraphScene):
         "axes_color": BLUE,
         "x_axis_label": r"$\text{Im}(s)$",
         "y_axis_label": "$\zeta(s)$",
-        "graph_origin": 5 * LEFT
+        "graph_origin": 5 * LEFT,
+        "x_labeled_nums": [i*5 for i in range(7)],
+        "y_labeled_nums": [(i*3 - 6) for i in range(5)]
     }
 
     def construct(self):
@@ -830,7 +832,22 @@ class RiemannVisual(GraphScene):
         text.scale(1.25)
         text.shift(3 * UP)
 
-        self.play(Write(f1), Write(f2), Write(text))
+        line1 = Line(1 * LEFT, 0 * RIGHT,
+                     color=GREEN).shift(0.5 * UP + 1.5 * LEFT)
+        line2 = Line(1 * LEFT, 0 * RIGHT,
+                     color=YELLOW).shift(0.5 * DOWN + 1.5 * LEFT)
+
+        t1 = TexMobject(r"\text{Re}(\zeta(s))").shift(
+            0.5 * UP + 0.5 * RIGHT).scale(1.5)
+        t2 = TexMobject(r"\text{Im}(\zeta(s))").shift(
+            0.5 * DOWN + 0.5 * RIGHT).scale(1.5)
+
+        rect = Rectangle(height=3, width=6)
+
+        legend = VGroup(line1, line2, t1, t2, rect).scale(0.5)
+        legend.shift(2.5 * UP + 5 * RIGHT)
+
+        self.play(Write(f1), Write(f2), Write(text), Write(legend))
         self.wait()
 
         self.play(UpdateFromAlphaFunc(f1, self.real_update),
@@ -895,8 +912,6 @@ class PrimePi(GraphScene, PrimeMethods):
         "axes_color": BLUE,
         "x_axis_label": "$x$",
         "y_axis_label": "$\pi(x)$",
-        "g_color": RED,
-        "g_width": DEFAULT_STROKE_WIDTH*1,
     }
 
     def construct(self):
