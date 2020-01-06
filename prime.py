@@ -891,6 +891,15 @@ class RiemannVisual(GraphScene):
         t.become(text)
 
 
+class RiemannExplicitEq(Scene):
+    def construct(self):
+        eq = TexMobject(
+            r"{\displaystyle \pi(x)=\operatorname {li} (x)-\sum _{\rho }\operatorname {li} (x^{\rho })-\log(2)+\int _{x}^{\infty }{\frac {dt}{t(t^{2}-1)\log(t)}}}")
+        eq.scale(1.15)
+        self.play(Write(eq))
+        self.wait()
+
+
 class RiemannLevelCurves(Scene):
     def construct(self):
         f = []
