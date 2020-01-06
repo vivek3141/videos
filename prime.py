@@ -759,6 +759,8 @@ class RiemannZeros(Scene):
         self.play(Write(t1))
         self.wait()
 
+# Unused Scene
+
 
 class RiemannZerosGraph(ThreeDScene):
     def construct(self):
@@ -899,6 +901,8 @@ class RiemannExplicitEq(Scene):
         self.play(Write(eq))
         self.wait()
 
+# Unused Scene
+
 
 class RiemannLevelCurves(Scene):
     def construct(self):
@@ -982,12 +986,31 @@ class RiemannExplicit(GraphScene, PrimeMethods):
             x = next_x
 
         f2 = self.get_graph(
-            self.riemann_count,
+            lambda x: self.riemann_count(x, num_zeros=0),
             color=YELLOW,
         )
 
-        self.play(Write(f1), Write(f2))
+        text = TexMobject(r"\text{Zeros: } 0")
+        text.scale(1.25)
+        text.shift(3 * UP)
+
+        self.play(Write(f1), Write(f2), Write(text))
         self.wait()
+
+        self.play(UpdateFromAlphaFunc)
+
+    def func_update(self, func, dt):
+        x = interpolate(0, 35, dt)
+        f2 = self.get_graph(
+            lambda y: self.riemann_count(y, num_zeros=x)
+        )
+        func.become(f2)
+
+    def text_update(self, func, dt):
+        x = interpolate(0, 35, dt)
+        text = TexMobject(r"\text{Zeros: } " + str(x))
+        text.scale(1.25)
+        text.shift(3 * UP)
 
 
 class YouTubePost(GraphScene):
