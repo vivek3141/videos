@@ -961,7 +961,7 @@ class RiemannExplicit(GraphScene, PrimeMethods):
         "y_max": 12,
         "y_min": 0,
         "x_max": 30,
-        "x_min": 2,
+        "x_min": 0,
         "y_tick_frequency": 3,
         "x_tick_frequency": 3,
         "axes_color": BLUE,
@@ -988,6 +988,7 @@ class RiemannExplicit(GraphScene, PrimeMethods):
         f2 = self.get_graph(
             lambda x: self.riemann_count(x, num_zeros=0),
             color=YELLOW,
+            x_min=2
         )
 
         text = TexMobject(r"\text{Zeros: } 0")
