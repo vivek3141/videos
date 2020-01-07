@@ -1004,13 +1004,14 @@ class RiemannExplicit(GraphScene, PrimeMethods):
     def func_update(self, func, dt):
         x = interpolate(0, 35, dt)
         f2 = self.get_graph(
-            lambda y: self.riemann_count(y, num_zeros=x)
+            lambda y: self.riemann_count(y, num_zeros=x),
+            color=YELLOW
         )
         func.become(f2)
 
     def text_update(self, tex, dt):
         x = interpolate(0, 35, dt)
-        text = TexMobject(r"\text{Zeros: } " + str(x))
+        text = TexMobject(r"\text{Zeros: } " + str(int(x)))
         text.scale(1.25)
         text.shift(3 * UP)
         tex.become(text)
