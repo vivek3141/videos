@@ -900,8 +900,7 @@ class RiemannExplicitEq(Scene):
         eq.scale(1.15)
         self.play(Write(eq))
         self.wait()
-
-# Unused Scene
+# Unused Scene 6:18
 
 
 class RiemannLevelCurves(Scene):
@@ -1006,7 +1005,8 @@ class RiemannExplicit(GraphScene, PrimeMethods):
         x = interpolate(0, 35, dt)
         f2 = self.get_graph(
             lambda y: self.riemann_count(y, num_zeros=x),
-            color=YELLOW
+            color=YELLOW,
+            x_min=2
         )
         func.become(f2)
 
