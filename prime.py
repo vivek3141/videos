@@ -919,12 +919,14 @@ class PrimeError(GraphScene, PrimeMethods):
 
         f2 = self.get_graph(lambda x: self.li(x) + (1 / 8 * PI)*math.sqrt(x) * math.log(x),
                             color=YELLOW, x_min=0.0001)
-        l2 = self.get_graph_label(f2, label=r'\text{Li}(x) + \sqrt{x}\ln{x}')
+        l2 = self.get_graph_label(
+            f2, label=r'\text{Li}(x) + O(\sqrt{x}\ln{x})')
         l2.scale(0.75)
 
         f3 = self.get_graph(lambda x: self.li(x) - (1 / 8 * PI)*math.sqrt(x)
                             * math.log(x), color=GREEN, x_min=3)
-        l3 = self.get_graph_label(f3, label=r'\text{Li}(x) - \sqrt{x}\ln{x}')
+        l3 = self.get_graph_label(
+            f3, label=r'\text{Li}(x) - O(\sqrt{x}\ln{x})')
         l3.scale(0.75)
         l3.shift(3 * LEFT)
 
@@ -945,7 +947,6 @@ class RiemannExplicitEq(Scene):
         eq.scale(1.15)
         self.play(Write(eq))
         self.wait()
-# Unused Scene 6:18
 
 
 class RiemannLevelCurves(Scene):
