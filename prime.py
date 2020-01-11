@@ -893,6 +893,51 @@ class RiemannVisual(GraphScene):
         t.become(text)
 
 
+class PrimeError(GraphScene, PrimeMethods):
+    CONFIG = {
+        "y_max": 100,
+        "y_min": 0,
+        "x_max": 500,
+        "x_min": 0,
+        "y_tick_frequency": 10,
+        "x_tick_frequency": 20,
+        "axes_color": BLUE,
+        "x_axis_label": "$x$",
+        "y_axis_label": "$y$",
+        "g_color": RED,
+        "g_width": DEFAULT_STROKE_WIDTH*1,
+    }
+
+    def construct(self):
+        self.setup_axes()
+        f1 = self.get_graph(
+            self.count_prime,
+            color=PINK,
+        )
+        l1 = self.get_graph_label(f1, label=r'\pi(x)')
+        l1.scale(0.75)
+
+        f2 = self.get_graph(lambda x: self.li(x) + (1 / 8 * PI)*math.sqrt(x) * math.log(x),
+                            color=YELLOW, x_min=0.0001)
+        l2 = self.get_graph_label(f2, label=r'\text{Li}(x) + \sqrt{x}\ln{x}')
+        l2.scale(0.75)
+
+        f3 = self.get_graph(lambda x: self.li(x) - (1 / 8 * PI)*math.sqrt(x)
+                            * math.log(x), color=GREEN, x_min=3)
+        l3 = self.get_graph_label(f3, label=r'\text{Li}(x) - \sqrt{x}\ln{x}')
+        l3.scale(0.75)
+        l3.shift(3 * LEFT)
+
+        self.play(Write(f1), Write(l1))
+        self.wait()
+
+        self.play(Write(f2), Write(l2))
+        self.wait()
+
+        self.play(Write(f3), Write(l3))
+        self.wait()
+
+
 class RiemannExplicitEq(Scene):
     def construct(self):
         eq = TexMobject(
