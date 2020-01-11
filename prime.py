@@ -860,7 +860,10 @@ class RiemannVisual(GraphScene):
                        DEFAULT_STROKE_WIDTH).shift(i * RIGHT)
             )
 
-        self.play(Write(f1), Write(f2), Write(text), Write(legend), Write(c))
+        self.play(Write(text), Write(legend), Write(c))
+        self.wait()
+
+        self.play(Write(f1), Write(f2))
         self.wait()
 
         self.play(UpdateFromAlphaFunc(f1, self.real_update),
