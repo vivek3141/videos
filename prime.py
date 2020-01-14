@@ -890,7 +890,11 @@ class RiemannVisual(GraphScene):
 
     def text_update(self, t, dt):
         x = interpolate(0.01, 0.99, dt)
-        
+        n = int(x * 100)
+        if n < 10:
+            n = "0" + str(n)
+        n = str(n)
+        text = TexMobject(r"\text{Re}(s) = 0." + n)
         text.scale(1.25)
         text.shift(3 * UP)
         t.become(text)
@@ -909,25 +913,27 @@ class PrimeError(GraphScene, PrimeMethods):
         "y_axis_label": "$y$",
         "g_color": RED,
         "g_width": DEFAULT_STROKE_WIDTH*1,
+        "graph_origin": 2.5 * DOWN + 5 * LEFT,
+        "const_factor": 0.75
     }
 
     def construct(self):
         self.setup_axes()
         f1 = self.get_graph(
-            self.count_prime,
+            self.const_factor*self.count_prime,
             color=PINK,
         )
         l1 = self.get_graph_label(f1, label=r'\pi(x)')
         l1.scale(0.75)
 
-        f2 = self.get_graph(lambda x: self.li(x) + (1 / 8 * PI)*math.sqrt(x) * math.log(x),
+        f2 = self.get_graph(lambda x: self.const_factor* (self.li(x) + (1 / 8 * PI)*math.sqrt(x) * math.log(x)),
                             color=YELLOW, x_min=0.0001)
         l2 = self.get_graph_label(
             f2, label=r'\text{Li}(x) + O(\sqrt{x}\ln{x})')
         l2.scale(0.75)
 
-        f3 = self.get_graph(lambda x: self.li(x) - (1 / 8 * PI)*math.sqrt(x)
-                            * math.log(x), color=GREEN, x_min=3)
+        f3 = self.get_graph(lambda x: self.const_factor*(self.li(x) - (1 / 8 * PI)*math.sqrt(x)
+                            * math.log(x)), color=GREEN, x_min=3)
         l3 = self.get_graph_label(
             f3, label=r'\text{Li}(x) - O(\sqrt{x}\ln{x})')
         l3.scale(0.75)
