@@ -13,7 +13,8 @@ while(True):
     if head.find("(") == -1:
         li.append(head)
     else:
-        li.append(head.replace(head[head.index("("):head.index(")")], ""))
+        s = head[head.index("("):head.index(")") + 1]
+        li.append(head.replace(s, ""))
 
-print(li)
-
+for i in li:
+    print(i)
