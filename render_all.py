@@ -10,7 +10,10 @@ while(True):
     if ind == -1:
         break
     head = code[ind+6:code.find(":", ind+7)]
-    li.append(head.replace())
+    if head.find("(") == -1:
+        li.append(head)
+    else:
+        li.append(head.replace(head[head.index("("):head.index(")")], ""))
 
 print(li)
 
