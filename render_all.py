@@ -6,10 +6,11 @@ with open(sys.argv[1], "r") as f:
 li = []
 ind = 0
 while(True):
-    ind = code.find("class", start=ind)
+    ind = code.find("class", ind+1)
     if ind == -1:
         break
-    li.append(code[ind+1:code.find(" ", start=ind+2)])
+    head = code[ind+6:code.find(":", ind+7)]
+    li.append(head.replace())
 
 print(li)
 
