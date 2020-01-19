@@ -2,7 +2,9 @@
 This repository contains all the source code for the videos published to
 https://youtube.com/vcubingx
 
-I don't usually keep this public, but I just decided why not and made it public. As a result, a lot of the code is messy and comment-less and a lot of the commits are poorly named or even useless. 
+I don't usually keep this public, so a lot of the code is messy and undocumented and a lot of the commits are poorly named or even useless. 
+
+If you have any questions regarding the code feel free to contact me. 
 
 ## Learning Manim
 
