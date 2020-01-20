@@ -390,7 +390,7 @@ class PrimeFunc(Scene, PrimeMethods):
         arr = VGroup(*[Arrow(1 * LEFT, 1 * RIGHT, color=RED).shift(i * UP + 0 * LEFT)
                        for i in np.arange(-2, 2, 1.5)[::-1]])
 
-        ans = VGroup(*[TexMobject([3, 4, 8][int((i + 2)/1.5)]).shift(i * UP + 2 * RIGHT).scale(1.5)
+        ans = VGroup(*[TexMobject([8, 4, 3][int((i + 2)/1.5)]).shift(i * UP + 2 * RIGHT).scale(1.5)
                        for i in np.arange(-2, 2, 1.5)[::-1]])
 
         self.play(FadeInFromDown(eq1), FadeInFromDown(
