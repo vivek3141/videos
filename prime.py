@@ -80,11 +80,11 @@ class PartScene(Scene):
             title.shift(1.5 * UP)
             grp.add(title)
 
-        if hasattr(self, 'num')
-        title = TextMobject(f"Part {str(self.num)}", color=PURPLE)
-        title.scale(1.5)
-        title.shift(1.5 * UP)
-        grp.add(title)
+        if hasattr(self, 'num'):
+            title = TextMobject(f"Part {str(self.num)}", color=PURPLE)
+            title.scale(1.5)
+            title.shift(1.5 * UP)
+            grp.add(title)
 
         if hasattr(self, 'text'):
             text = TextMobject(self.text)
@@ -1114,6 +1114,12 @@ class RiemannExplicit(GraphScene, PrimeMethods):
         text.scale(1.25)
         text.shift(3 * UP)
         tex.become(text)
+
+
+class Conclusion(PartScene):
+    CONFIG = {
+        "title": "Conclusion"
+    }
 
 
 class YouTubePost(GraphScene):
