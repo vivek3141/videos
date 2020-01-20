@@ -607,8 +607,14 @@ class RiemannZeta(Scene):
 
         b1 = BackgroundRectangle(t1)
 
+        r2 = Rectangle(width=1.5, height=20, fill_opacity=0.5,
+                       color=GREEN).shift(0.75 * RIGHT)
+
         self.play(Write(r1))
         self.play(Write(b1), Write(t1))
+        self.wait()
+
+        self.play(Write(r2))
         self.wait()
 
 
