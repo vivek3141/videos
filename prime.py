@@ -83,7 +83,7 @@ class PartScene(Scene):
         text.scale(2)
         grp.add(text)
 
-        if self.subt:
+        if hasattr(self, 'subt'):
             subt = TextMobject(self.subt)
             subt.shift(1.5 * DOWN)
             grp.add(subt)
