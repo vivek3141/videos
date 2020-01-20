@@ -537,6 +537,14 @@ class LiEq(Scene):
         self.wait()
 
 
+class PartFourTitle(PartScene):
+    CONFIG = {
+        "num": 4,
+        "text": r"Riemann Zeta Function",
+        "subt": r"$$\zeta(s)$$"
+    }
+
+
 class Riemann(Scene):
     def construct(self):
         r = ImageMobject("./files/riemann.jpg", height=4)
@@ -912,6 +920,13 @@ class RiemannVisual(GraphScene):
         text.scale(1.25)
         text.shift(3 * UP)
         t.become(text)
+
+
+class PartFiveTitle(PartScene):
+    CONFIG = {
+        "num": 5,
+        "text": r"The Riemann Hypothesis and Primes",
+    }
 
 
 class PrimeError(GraphScene, PrimeMethods):
