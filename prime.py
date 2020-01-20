@@ -74,14 +74,22 @@ class PartScene(Scene):
     def construct(self):
         grp = VGroup()
 
+        if hasattr(self, 'title'):
+            title = TextMobject(self.title, color=PURPLE)
+            title.scale(1.5)
+            title.shift(1.5 * UP)
+            grp.add(title)
+
+        if hasattr(self, 'num')
         title = TextMobject(f"Part {str(self.num)}", color=PURPLE)
         title.scale(1.5)
         title.shift(1.5 * UP)
         grp.add(title)
 
-        text = TextMobject(self.text)
-        text.scale(2)
-        grp.add(text)
+        if hasattr(self, 'text'):
+            text = TextMobject(self.text)
+            text.scale(2)
+            grp.add(text)
 
         if hasattr(self, 'subt'):
             subt = TextMobject(self.subt)
@@ -931,7 +939,7 @@ class RiemannVisual(GraphScene):
 class PartFiveTitle(PartScene):
     CONFIG = {
         "num": 5,
-        "text": r"The Riemann Hypothesis and Primes",
+        "text": r"Riemann and Primes",
     }
 
 
