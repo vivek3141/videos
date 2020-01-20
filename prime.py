@@ -121,6 +121,20 @@ class Intro(Scene):
         self.wait()
 
 
+class Money(Scene):
+    def construct(self):
+        icon = SVGMobject("./files/price.svg", color=YELLOW)
+        icon.shift(1.5 * LEFT)
+
+        eq = TexMobject(r"\zeta(s) = 0")
+        eq.scale(1.5)
+        eq.shift(1.5 * RIGHT)
+
+        self.play(Write(icon))
+        self.play(Write(eq))
+        self.wait()
+
+
 class PartOneTitle(PartScene):
     CONFIG = {
         "num": 1,
