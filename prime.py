@@ -651,7 +651,7 @@ class ComplexExponent(Scene):
             eq1[3:5].center), ApplyMethod(b1.center))
         self.wait()
 
-        eq2 = TexMobject(r"\left ( \frac{1}{2} \right )^{a} + \left ( \frac{1}{2} \right )^{bi}",
+        eq2 = TexMobject(r"\left ( \frac{1}{2} \right )^{a} \left ( \frac{1}{2} \right )^{bi}",
                          tex_to_color_map={r"{a}": ORANGE, r"{bi}": ORANGE})
         eq2.scale(1.5)
 
