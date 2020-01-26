@@ -236,7 +236,13 @@ class BannerE(Scene):
         everything = VGroup(field, curve)
         everything.scale(0.7)
 
-        self.play(Write(everything))
+        text = TextMobject("Multivariable Calculus")
+        text.scale(2.5)
+        rect = BackgroundRectangle(
+            text, buff=MED_LARGE_BUFF, color=BLACK, fill_opacity=1, stroke_opacity=1)
+        t = VGroup(rect, text)
+
+        self.play(Write(everything), Write(t))
         self.wait()
 
     def calc_field_color(self, point, f, prop=0.0, opacity=None):
@@ -459,57 +465,3 @@ class UpdateOpacity(Scene):
         opacity = interpolate(1, 0, dt)
         new_circ = Circle(color=RED, fill_opacity=opacity, radius=2)
         circle.become(new_circ)
-
-
-class Bitruncated(VMobject):
-    def __init__(self, scalar, **kwargs):
-        VMobject.__init__(self, **kwargs)
-
-        self.vectors = [
-            scalar * np.array([1, 1, 1]),
-            scalar * np.array([1, 1, -1]),
-            scalar * np.array([1, -1, 1]),
-            scalar * np.array([1, -1, -1]),
-            scalar * np.array([-1, 1, 1]),
-            scalar * np.array([-1, 1, -1]),
-            scalar * np.array([-1, -1, 1]),
-            scalar * np.array([-1, -1, -1])]
-
-        for i in range(0, 8):
-            x = self.vectors[i][0]
-            y = self.vectors[i][1]
-            z = self.vectors[i][2]
-            self.add(
-                Polygon(
-                    np.array([x, 2 * y, 0]),
-                    np.array([2 * x, y, 0]),
-                    np.array([2 * x, 0, z]),
-                    np.array([x, 0, 2 * z]),
-                    np.array([0, y, 2 * z]),
-                    np.array([0, 2 * y, z]),
-                    color=kwargs.get("first_color"),
-                    fill_color=kwargs.get("first_fill"),
-                    ** kwargs),
-                Polygon(
-                    np.array([x, 2 * y, 0]),
-                    np.array([0, 2 * y, 0]),
-                    np.array([0, 2 * y, z]),
-                    color=ORANGE, fill_color=BLUE, stroke_opacity=0, **kwargs),
-                Polygon(
-                    np.array([0, y, 2 * z]),
-                    np.array([0, 0, 2 * z]),
-                    np.array([x, 0, 2 * z]),
-                    color=ORANGE, fill_color=BLUE, stroke_opacity=0, **kwargs),
-                Polygon(
-                    np.array([2 * x, 0, z]),
-                    np.array([2 * x, 0, 0]),
-                    np.array([2 * x, y, 0]),
-                    color=ORANGE, fill_color=BLUE,  stroke_opacity=0, **kwargs),
-            )
-
-
-class BitruncatedTest(ThreeDScene):
-    def construct(self):
-        self.set_camera_orientation(phi=80 * DEGREES, theta=20 * DEGREES)
-        self.add(Bitruncated(1, first_color=ORANGE,
-                             first_fill=BLUE, fill_opacity=0.7))
