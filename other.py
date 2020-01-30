@@ -465,3 +465,19 @@ class UpdateOpacity(Scene):
         opacity = interpolate(1, 0, dt)
         new_circ = Circle(color=RED, fill_opacity=opacity, radius=2)
         circle.become(new_circ)
+
+
+class NewIntro(Scene):
+    def construct(self):
+
+        h1 = "#ff5757"
+        h2 = '#5ce1e6'
+
+        text = TexMobject(r"\text{v}\text{(}\text{x}\text{)}", tex_to_color_map={
+            r'\text{v}': h1,
+            r'\text{x}': h2
+        })
+        text.scale(4)
+
+        self.play(Write(text))
+        self.wait()
