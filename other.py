@@ -477,7 +477,12 @@ class NewIntro(Scene):
             r'\textbf{\text{v}}': h1,
             r'\textbf{\text{x}}': h2
         })
-        text.scale(3)
+        text.scale(4)
+
+        vc = TextMobject("vcubingx")
+        vc.scale(1.5)
+        vc.shift(2 * DOWN)
 
         self.play(Write(text), run_time=2)
+        self.add(vc)
         self.wait()
