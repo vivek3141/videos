@@ -469,7 +469,6 @@ class UpdateOpacity(Scene):
 
 class NewIntro(Scene):
     def construct(self):
-
         h1 = "#ff5757"
         h2 = '#5ce1e6'
 
