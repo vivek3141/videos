@@ -473,11 +473,11 @@ class NewIntro(Scene):
         h1 = "#ff5757"
         h2 = '#5ce1e6'
 
-        text = TexMobject(r"\text{v}\text{(}\text{x}\text{)}", tex_to_color_map={
-            r'\text{v}': h1,
-            r'\text{x}': h2
+        text = TexMobject(r"\textbf{\text{v}}\textbf{\text{(}}\textbf{\text{x}}\textbf{\text{)}}}", tex_to_color_map={
+            r'\textbf{\text{v}}': h1,
+            r'\textbf{\text{x}}': h2
         })
-        text.scale(4)
+        text.scale(3)
 
-        self.play(Write(text))
+        self.play(Write(text), run_time=2)
         self.wait()
