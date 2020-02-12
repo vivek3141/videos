@@ -483,5 +483,12 @@ class NewIntro(Scene):
         vc.shift(2 * DOWN)
 
         self.play(Write(text), run_time=2)
-        self.add(vc)
+        self.play(FadeIn(vc))
         self.wait()
+
+
+class QandA(Scene):
+    def construct(self):
+        text = TextMobject(r"Q and A")
+        text.scale(3)
+        self.play(Write(text))
