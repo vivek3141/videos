@@ -254,7 +254,7 @@ class ACWave(ThreeDScene):
         Scene.continual_update(self, *args, **kwargs)
         if self.update:
             pass
-    
+
     def _update(self):
         self.play(Transform(self.pos, self.neg2), Transform(self.neg, self.pos2))
         self.wait(0.5)
