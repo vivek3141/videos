@@ -27,7 +27,7 @@ class Equations(Scene):
         color_map = {r"\nabla": RED, r"\textbf{B}": M_COLOR, r"\textbf{E}": E_COLOR}
         eq1 = TexMobject(r"\nabla \cdot \textbf{E} = \frac{\rho}{\epsilon_0}", tex_to_color_map=color_map)
         eq2 = TexMobject(r"\nabla \cdot \textbf{B} = 0", tex_to_color_map=color_map)
-        eq3 = TexMobject(r"\nabla \cross \textbf{E} = -\frac{\partial \textbf{b} }{\partial t}", tex_to_color_map=color_map)
+        eq3 = TexMobject(r"\nabla \cross \textbf{E} = - \frac{\partial \textbf{E}}{\partial t}", tex_to_color_map=color_map)
         eq4 = TexMobject(r"\nabla \cross \textbf{B} = \mu_0 \textbf{J} + \frac{1}{c^2} \frac{\partial \textbf{e} }{\partial t}", tex_to_color_map=color_map)
 
         i1 = TexMobject(r"\oint \textbf{E} \cdot d \vec{S} = \frac{Q}{\epsilon_0}", tex_to_color_map=color_map)
@@ -35,15 +35,15 @@ class Equations(Scene):
         i3 = TexMobject(r"\oint \textbf{E} \cdot d \vec{l} = -\frac{d \phi_{\textbf{b}}}{dt}", tex_to_color_map=color_map)
         i4 = TexMobject(r"\oint \textbf{B} \cdot d \vec{l} = \mu_0 \textbf{I} + \frac{1}{c^2} \frac{d \phi_{\textbf{e}}}{dt}", tex_to_color_map=color_map)
 
-        eq1.shift(1.5 * UP)
-        eq2.shift(0.25 * UP)
-        eq3.shift(0.75 * DOWN)
-        eq4.shift(1.75 * DOWN)
+        eq1.shift(2 * UP)
+        eq2.shift(0.5 * UP)
+        eq3.shift(1 * DOWN)
+        eq4.shift(2.5 * DOWN)
 
-        i1.shift(1.5 * UP)
+        i1.shift(2 * UP)
         i2.shift(0.5 * UP)
-        i3.shift(0.5 * DOWN)
-        i4.shift(1.5 * DOWN)
+        i3.shift(1 * DOWN)
+        i4.shift(2.5 * DOWN)
 
         diff = VGroup(eq1, eq2, eq3, eq4)
         integ = VGroup(i1, i2, i3, i4)
@@ -51,6 +51,7 @@ class Equations(Scene):
         diff.shift(3 * LEFT)
         integ.shift(3 * RIGHT)
 
+        self.play(Write(l2))
         self.play(Write(diff), Write(integ))
         self.wait()
 
