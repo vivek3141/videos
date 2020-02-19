@@ -10,11 +10,21 @@ class Intro(Scene):
     def construct(self):
         pass
 
-def Equations(Scene):
+class Equations(Scene):
     def construct(self):
-        pass
+        title = TextMobject("Maxwell's Equations", color=BLUE)
+        title.scale(1.25)
+        title.shift(3.5 * UP)
+
+        l = Line(6 * LEFT, 6 * RIGHT, stroke_width=0.5 *
+                 DEFAULT_STROKE_WIDTH).shift(3 * UP)
+
+        self.play(Write(title), Write(l))
+        self.wait()
 
 
+
+"""
 class OscillatingVector(ContinualAnimation):
     CONFIG = {
         "tail": ORIGIN,
@@ -264,3 +274,4 @@ class ACWave(ThreeDScene):
         self.wait(0.5)
         self.play(Transform(self.pos, self.pos3), Transform(self.neg, self.neg3))
         self.wait(0.5)
+"""
