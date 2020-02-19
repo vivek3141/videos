@@ -10,6 +10,10 @@ class Intro(Scene):
     def construct(self):
         pass
 
+def Equations(Scene):
+    def construct(self):
+        pass
+
 
 class OscillatingVector(ContinualAnimation):
     CONFIG = {
