@@ -35,6 +35,25 @@ class Equations(Scene):
         i3 = TexMobject(r"\oint \textbf{E} \cdot d \vec{l} = -\frac{d \phi_{\textbf{b}}}{dt}", tex_to_color_map=color_map)
         i4 = TexMobject(r"\oint \textbf{B} \cdot d \vec{l} = \mu_0 \textbf{I} + \frac{1}{c^2} \frac{d \phi_{\textbf{e}}}{dt}", tex_to_color_map=color_map)
 
+        eq1.shift(1.5 * UP)
+        eq2.shift(0.25 * UP)
+        eq3.shift(0.75 * DOWN)
+        eq4.shift(1.75 * DOWN)
+
+        i1.shift(1.5 * UP)
+        i2.shift(0.5 * UP)
+        i3.shift(0.5 * DOWN)
+        i4.shift(1.5 * DOWN)
+
+        diff = VGroup(eq1, eq2, eq3, eq4)
+        integ = VGroup(i1, i2, i3, i4)
+
+        diff.shift(3 * LEFT)
+        integ.shift(3 * RIGHT)
+
+        self.play(Write(diff), Write(integ))
+        self.wait()
+
 
 
 """
