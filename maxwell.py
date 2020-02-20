@@ -10,6 +10,7 @@ class Intro(Scene):
     def construct(self):
         pass
 
+
 class Equations(Scene):
     def construct(self):
         title = TextMobject("Maxwell's Equations", color=BLUE)
@@ -25,16 +26,36 @@ class Equations(Scene):
         l2 = Line(4 * DOWN, 3 * UP, stroke_widt=0.5 * DEFAULT_STROKE_WIDTH)
         c_color = GOLD
 
-        color_map = {r"\phi": ORANGE, r"\nabla": RED, r"\textbf{B}": M_COLOR, r"\textbf{E}": E_COLOR, r"\cdot": GREEN, r"\cross": GREEN, r"\textbf{J}": PURPLE, r"\textbf{I}": PURPLE, r"\mu_0": c_color, r"\epsilon_0": c_color, r"\frac{1}{c^2}": MAROON}
-        eq1 = TexMobject(r"\nabla \cdot \textbf{E} = \frac{\rho}{\epsilon_0}", tex_to_color_map=color_map)
-        eq2 = TexMobject(r"\nabla \cdot \textbf{B} = 0", tex_to_color_map=color_map)
-        eq3 = TexMobject(r"\nabla \cross \textbf{E} = - {{\partial \textbf{B}} \over {\partial t}}", tex_to_color_map=color_map)
-        eq4 = TexMobject(r"\nabla \cross \textbf{B} = \mu_0 \textbf{J} + \frac{1}{c^2} {{\partial \textbf{E} } \over {\partial t}}", tex_to_color_map=color_map)
+        color_map = {
+            r"\phi": ORANGE,
+            r"\nabla": RED,
+            r"\textbf{B}": M_COLOR,
+            r"\textbf{E}": E_COLOR,
+            r"\cdot": GREEN,
+            r"\cross": GREEN,
+            r"\textbf{J}": PURPLE,
+            r"\textbf{I}": PURPLE,
+            r"\mu_0": c_color,
+            r"\epsilon_0": c_color,
+            r"\frac{1}{c^2}": MAROON
+        }
+        eq1 = TexMobject(
+            r"\nabla \cdot \textbf{E} = \frac{\rho}{\epsilon_0}", tex_to_color_map=color_map)
+        eq2 = TexMobject(
+            r"\nabla \cdot \textbf{B} = 0", tex_to_color_map=color_map)
+        eq3 = TexMobject(
+            r"\nabla \cross \textbf{E} = - {{\partial \textbf{B}} \over {\partial t}}", tex_to_color_map=color_map)
+        eq4 = TexMobject(
+            r"\nabla \cross \textbf{B} = \mu_0 \textbf{J} + \frac{1}{c^2} {{\partial \textbf{E} } \over {\partial t}}", tex_to_color_map=color_map)
 
-        i1 = TexMobject(r"\oint \textbf{E} \cdot d \vec{S} = \frac{Q}{\epsilon_0}", tex_to_color_map=color_map)
-        i2 = TexMobject(r"\oint \textbf{B} \cdot d \vec{S} = 0", tex_to_color_map=color_map)
-        i3 = TexMobject(r"\oint \textbf{E} \cdot d \vec{l} = -{{d \phi_{\textbf{B}}} \over {dt}}", tex_to_color_map=color_map)
-        i4 = TexMobject(r"\oint \textbf{B} \cdot d \vec{l} = \mu_0 \textbf{I} + \frac{1}{c^2} {{d \phi_{\textbf{E}}} \over {dt}}", tex_to_color_map=color_map)
+        i1 = TexMobject(
+            r"\oint \textbf{E} \cdot d \vec{S} = \frac{Q}{\epsilon_0}", tex_to_color_map=color_map)
+        i2 = TexMobject(
+            r"\oint \textbf{B} \cdot d \vec{S} = 0", tex_to_color_map=color_map)
+        i3 = TexMobject(
+            r"\oint \textbf{E} \cdot d \vec{l} = -{{d \phi_{\textbf{B}}} \over {dt}}", tex_to_color_map=color_map)
+        i4 = TexMobject(
+            r"\oint \textbf{B} \cdot d \vec{l} = \mu_0 \textbf{I} + \frac{1}{c^2} {{d \phi_{\textbf{E}}} \over {dt}}", tex_to_color_map=color_map)
 
         eq1.shift(2 * UP)
         eq2.shift(0.5 * UP)
@@ -55,7 +76,6 @@ class Equations(Scene):
         self.play(Write(l2))
         self.play(FadeInFromDown(diff), FadeInFromDown(integ))
         self.wait()
-
 
 
 """
