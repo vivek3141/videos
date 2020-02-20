@@ -23,8 +23,9 @@ class Equations(Scene):
         self.wait()
 
         l2 = Line(4 * DOWN, 3 * UP, stroke_widt=0.5 * DEFAULT_STROKE_WIDTH)
+        c_color = GOLD
 
-        color_map = {r"\nabla": RED, r"\textbf{B}": M_COLOR, r"\textbf{E}": E_COLOR, r"\cdot": GREEN, r"\cross": GREEN}
+        color_map = {r"\phi": ORANGE, r"\nabla": RED, r"\textbf{B}": M_COLOR, r"\textbf{E}": E_COLOR, r"\cdot": GREEN, r"\cross": GREEN, r"\textbf{J}": PURPLE, r"\textbf{I}": PURPLE, r"\mu_0": c_color, r"\epsilon_0": c_color, r"\frac{1}{c^2}": MAROON}
         eq1 = TexMobject(r"\nabla \cdot \textbf{E} = \frac{\rho}{\epsilon_0}", tex_to_color_map=color_map)
         eq2 = TexMobject(r"\nabla \cdot \textbf{B} = 0", tex_to_color_map=color_map)
         eq3 = TexMobject(r"\nabla \cross \textbf{E} = - {{\partial \textbf{B}} \over {\partial t}}", tex_to_color_map=color_map)
@@ -48,8 +49,8 @@ class Equations(Scene):
         diff = VGroup(eq1, eq2, eq3, eq4)
         integ = VGroup(i1, i2, i3, i4)
 
-        diff.shift(3 * LEFT)
-        integ.shift(3 * RIGHT)
+        diff.shift(3.5 * LEFT)
+        integ.shift(3.5 * RIGHT)
 
         self.play(Write(l2))
         self.play(FadeInFromDown(diff), FadeInFromDown(integ))
