@@ -24,7 +24,7 @@ class Equations(Scene):
 
         l2 = Line(4 * DOWN, 3 * UP, stroke_widt=0.5 * DEFAULT_STROKE_WIDTH)
 
-        color_map = {r"\nabla": RED, r"\textbf{B}": M_COLOR, r"\textbf{E}": E_COLOR}
+        color_map = {r"\nabla": RED, r"B": M_COLOR, r"E": E_COLOR}
         eq1 = TexMobject(r"\nabla \cdot \textbf{E} = \frac{\rho}{\epsilon_0}", tex_to_color_map=color_map)
         eq2 = TexMobject(r"\nabla \cdot \textbf{B} = 0", tex_to_color_map=color_map)
         eq3 = TexMobject(r"\nabla \cross \textbf{E} = - \frac{\partial \textbf{E}}{\partial t}", tex_to_color_map=color_map)
@@ -52,7 +52,7 @@ class Equations(Scene):
         integ.shift(3 * RIGHT)
 
         self.play(Write(l2))
-        self.play(Write(diff), Write(integ))
+        self.play(FadeInFromDown(diff), FadeInFromDown(integ))
         self.wait()
 
 
