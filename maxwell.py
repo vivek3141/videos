@@ -82,11 +82,24 @@ class OscVector(Vector):
     CONGIF = {
         "frequency": 1
     }
+
     def __init__(self, direction=UP, **kwargs):
         Vector.__init__(self, direction=direction, **kwargs)
-        Vector.add_updater(self._update)
-    def _update(self, vect, dt):
-        
+        self.t = Circle(radius=0.1, color=RED)
+        self.add(self.t)
+
+    def update(self, dt=0, recursive=True):
+        x = np.cos(dt)
+        y = np.sin(dt)
+        self.t.shift([x, y, 0])
+
+
+class Test(Scene):
+    def construct(self):
+        obj = OscVector()
+        self.play(Write(obj))
+        self.wait(2)
+
 
 class EMWave(ThreeDScene):
     CONFIG = {
@@ -99,7 +112,8 @@ class EMWave(ThreeDScene):
         self.E = VGroup()
         self.M = VGroup()
 
-        for i in range
+        for i in range(1):
+            print(i)
 
 
 class TestWave(ThreeDScene):
