@@ -492,7 +492,7 @@ class Logo(Scene):
         h1 = "#ff5757"
         h2 = '#5ce1e6'
 
-        text = TexMobject(r"\smallint \textbf{\text{v}} ^3 \textbf{\text{(}}\textbf{\text{x}}\textbf{\text{)}}}", tex_to_color_map={
+        text = TexMobject(r"\textbf{\text{v}} ^3 \textbf{\text{(}}\textbf{\text{x}}\textbf{\text{)}}}", tex_to_color_map={
                 r'\textbf{\text{v}} ^3': h1,
                 r'\textbf{\text{x}}': h2
                 })
