@@ -78,20 +78,6 @@ class Equations(Scene):
         self.wait()
 
 
-class OscVector(Vector):
-    CONGIF = {
-        "frequency": 1
-    }
-
-    def __init__(self, direction=UP, **kwargs):
-        Vector.__init__(self, direction=direction, **kwargs)
-
-    def update(self, dt=0, recursive=True):
-        t = interpolate(0, 2*PI, dt)
-        x = np.cos(t)
-        y = np.sin(t)
-        self.move_to([x, y, 0])
-
 
 class EMScene(Scene):
     CONFIG = {
