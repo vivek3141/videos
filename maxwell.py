@@ -78,7 +78,6 @@ class Equations(Scene):
         self.wait()
 
 
-
 class EMScene(Scene):
     CONFIG = {
         "frequency": 1,
@@ -98,28 +97,6 @@ class EMScene(Scene):
     def get_vect(self, color, t):
         length = self.alpha * np.sin(self.frequency * t)
         return Vector(direction=np.array([0, length, 0]), color=color).shift(t * RIGHT)
-
-
-class Test(Scene):
-    def construct(self):
-        obj = OscVector()
-        self.play(Write(obj))
-        self.wait(2)
-
-
-class EMWave(ThreeDScene):
-    CONFIG = {
-        "frequency": 0.5,
-        "num_vect": 40,
-
-    }
-
-    def construct(self):
-        self.E = VGroup()
-        self.M = VGroup()
-
-        for i in range(1):
-            print(i)
 
 
 class TestWave(ThreeDScene):
