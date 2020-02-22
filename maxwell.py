@@ -85,13 +85,32 @@ class OscVector(Vector):
 
     def __init__(self, direction=UP, **kwargs):
         Vector.__init__(self, direction=direction, **kwargs)
-        self.t = Circle(radius=0.1, color=RED)
-        self.add(self.t)
 
     def update(self, dt=0, recursive=True):
-        x = np.cos(dt)
-        y = np.sin(dt)
-        self.t.shift([x, y, 0])
+        t = interpolate(0, 2*PI, dt)
+        x = np.cos(t)
+        y = np.sin(t)
+        self.move_to([x, y, 0])
+
+
+class EMScene(Scene):
+    CONFIG = {
+        "frequency": 1/3,
+        "num_vects": 40,
+        "alpha": 1.5
+    }
+
+    def construct(self):
+        wave = VGroup(
+            *[self.get_vect(E_COLOR, t) for t in np.linspace(0, 4*PI, num=self.num_vects)]
+        ).center()
+
+        self.play(Write(wave))
+        self.wait()
+
+    def get_vect(self, color, t):
+        length = self.alpha * np.sin(self.frequency * t)
+        return Vector(direction=np.array([0, length, 0]), color=color).shift(t * RIGHT)
 
 
 class Test(Scene):
