@@ -95,9 +95,10 @@ class OscVector(Vector):
 
 class EMScene(Scene):
     CONFIG = {
-        "frequency": 1/3,
+        "frequency": 1,
         "num_vects": 40,
-        "alpha": 1.5
+        "alpha": 1.5,
+        "osc_freq": 1
     }
 
     def construct(self):
