@@ -93,6 +93,7 @@ from manimlib.imports import *
 
 
 class LmaoArrow(Line):
+    """
     CONFIG = {
         "tip_length": 0.25,
         "tip_width_to_length_ratio": 1,
@@ -249,7 +250,7 @@ class LmaoArrow(Line):
 
     def copy(self):
         return self.deepcopy()
-
+"""
 
 class LmaoVector(LmaoArrow):
     CONFIG = {
