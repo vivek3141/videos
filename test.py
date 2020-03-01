@@ -1,5 +1,0 @@
-from manimlib.imports import *
-
-
-
-
