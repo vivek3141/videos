@@ -166,7 +166,7 @@ class ThreeDVector(ThreeDArrow):
     def __init__(self, direction, **kwargs):
         if len(direction) == 2:
             direction = np.append(np.array(direction), 0)
-        LmaoArrow.__init__(self, ORIGIN, direction, **kwargs)
+        ThreeDArrow.__init__(self, ORIGIN, direction, **kwargs)
 
 
 class EMWave(VGroup):
