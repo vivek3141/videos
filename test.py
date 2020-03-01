@@ -1,99 +1,7 @@
-"""
-from manimlib.imports import *
-
-
-class EMWave(VGroup):
-    def __init__(
-        self,
-        E_COLOR=YELLOW, M_COLOR=BLUE,
-        frequency=1,
-        alpha=1,
-        num_vects=30,
-        start=-FRAME_WIDTH/2,
-        end=FRAME_WIDTH/2,
-        **kwargs
-    ):
-        VGroup.__init__(self, **kwargs)
-        self.alpha = alpha
-        self.frequency = frequency
-        self.start = start
-        self.end = end
-        self.tracker = ValueTracker(0)
-        e_wave = VGroup(
-            *[self.get_vect(E_COLOR, t, direction=UP) for t in np.linspace(self.start, self.end, num=num_vects)]
-        )
-        m_wave = VGroup(
-            *[self.get_vect(M_COLOR, t, direction=IN) for t in np.linspace(self.start, self.end, num=num_vects)]
-        )
-        self.add(e_wave)
-        self.add(m_wave)
-
-    def get_t(self, value):
-        return value - self.start
-
-    def get_vect(self, color, t, direction=IN):
-        x = self.get_t(t)
-        length = self.alpha * np.sin(x)
-        vect = Vector(direction=direction * length,
-                      color=color).shift(t * RIGHT)
-        vect.add_updater(lambda obj: obj.become(
-            self.get_vect_updater(self.tracker.get_value(), color, t, direction=direction)))
-        return vect
-
-    def get_vect_updater(self, t, color, phi, direction=IN):
-        x = self.get_t(t)
-        length = self.alpha * np.sin(self.frequency * x + self.frequency * phi)
-        return Vector(length * direction, color=color).shift(phi * RIGHT)
-
-
-class Wave(VGroup):
-    def __init__(
-        self,
-        E_COLOR=YELLOW, M_COLOR=BLUE,
-        frequency=1,
-        alpha=1,
-        num_vects=30,
-        start=-FRAME_WIDTH/2,
-        end=FRAME_WIDTH/2,
-        direction=IN,
-        **kwargs
-    ):
-        VGroup.__init__(self, **kwargs)
-        self.alpha = alpha
-        self.frequency = frequency
-        self.start = start
-        self.end = end
-        self.tracker = ValueTracker(0)
-        wave = VGroup(
-            *[self.get_vect(E_COLOR, t, direction=direction) for t in np.linspace(self.start, self.end, num=num_vects)]
-        )
-        self.add(wave)
-
-    def get_t(self, value):
-        return value - self.start
-
-    def get_vect(self, color, t, direction=IN):
-        x = self.get_t(t)
-        length = self.alpha * np.sin(x)
-        vect = VGroup(
-            Line(ORIGIN, direction * length, color=color).shift(t * RIGHT),
-        )
-        tip = ArrowTip(
-            start_angle=PI/2,
-            color=color).shift(direction * length).shift(t * RIGHT).rotate(axis=[1, 0, 0], angle=PI/2).rotate(axis=[1, 0, 0], angle=PI)
-        # if direction * length
-        vect.add(tip)
-        return vect
-
-
-
-"""
-
 from manimlib.imports import *
 
 
 class LmaoArrow(Line):
-    """
     CONFIG = {
         "tip_length": 0.25,
         "tip_width_to_length_ratio": 1,
@@ -113,9 +21,6 @@ class LmaoArrow(Line):
             args = (points[0] + UP + LEFT, points[0])
         Line.__init__(self, *args, **kwargs)
         self.init_tip()
-        if self.use_rectangular_stem and not hasattr(self, "rect"):
-            self.add_rectangular_stem()
-        self.init_colors()
 
     def init_tip(self):
         self.add_tip()
@@ -250,9 +155,9 @@ class LmaoArrow(Line):
 
     def copy(self):
         return self.deepcopy()
-"""
 
-class LmaoVector(LmaoArrow):
+
+class ThreeDVector(LmaoArrow):
     CONFIG = {
         "color": YELLOW,
         "buff": 0,
@@ -264,22 +169,99 @@ class LmaoVector(LmaoArrow):
         LmaoArrow.__init__(self, ORIGIN, direction, **kwargs)
 
 
-class EMTest(Scene):
+class EMWave(VGroup):
+    def __init__(
+        self,
+        E_COLOR=YELLOW, M_COLOR=BLUE,
+        frequency=1,
+        alpha=1,
+        num_vects=30,
+        start=-FRAME_WIDTH/2,
+        end=FRAME_WIDTH/2,
+        **kwargs
+    ):
+        VGroup.__init__(self, **kwargs)
+        self.alpha = alpha
+        self.frequency = frequency
+        self.start = start
+        self.end = end
+        self.tracker = ValueTracker(0)
+        e_wave = VGroup(
+            *[self.get_vect(E_COLOR, t, direction=UP) for t in np.linspace(self.start, self.end, num=num_vects)]
+        )
+        m_wave = VGroup(
+            *[self.get_vect(M_COLOR, t, direction=IN) for t in np.linspace(self.start, self.end, num=num_vects)]
+        )
+        self.add(e_wave)
+        self.add(m_wave)
+
+    def get_t(self, value):
+        return value - self.start
+
+    def get_vect(self, color, t, direction=IN):
+        x = self.get_t(t)
+        length = self.alpha * np.sin(x)
+        vect = ThreeDVector(direction=direction * length,
+                            color=color).shift(t * RIGHT)
+        vect.add_updater(lambda obj: obj.become(
+            self.get_vect_updater(self.tracker.get_value(), color, t, direction=direction)))
+        return vect
+
+    def get_vect_updater(self, t, color, phi, direction=IN):
+        x = self.get_t(t)
+        length = self.alpha * np.sin(self.frequency * x + self.frequency * phi)
+        return ThreeDVector(length * direction, color=color).shift(phi * RIGHT)
+
+
+class Wave(VGroup):
+    def __init__(
+        self,
+        E_COLOR=YELLOW, M_COLOR=BLUE,
+        frequency=1,
+        alpha=1,
+        num_vects=30,
+        start=-FRAME_WIDTH/2,
+        end=FRAME_WIDTH/2,
+        direction=IN,
+        **kwargs
+    ):
+        VGroup.__init__(self, **kwargs)
+        self.alpha = alpha
+        self.frequency = frequency
+        self.start = start
+        self.end = end
+        self.tracker = ValueTracker(0)
+        wave = VGroup(
+            *[self.get_vect(E_COLOR, t, direction=direction) for t in np.linspace(self.start, self.end, num=num_vects)]
+        )
+        self.add(wave)
+
+    def get_t(self, value):
+        return value - self.start
+
+    def get_vect(self, color, t, direction=IN):
+        x = self.get_t(t)
+        length = self.alpha * np.sin(x)
+        vect = VGroup(
+            Line(ORIGIN, direction * length, color=color).shift(t * RIGHT),
+        )
+        tip = ArrowTip(
+            start_angle=PI/2,
+            color=color).shift(direction * length).shift(t * RIGHT).rotate(axis=[1, 0, 0], angle=PI/2).rotate(axis=[1, 0, 0], angle=PI)
+        # if direction * length
+        vect.add(tip)
+        return vect
+
+
+class EMTest(ThreeDScene):
     def construct(self):
-        vect = LmaoVector(2 * UP)
-
-        #tip = ArrowTip(start_angle=PI/2).shift([0, 0, 1])
-        #vect = Wave()
-        #self.move_camera(0.4 * np.pi / 2, -PI/2)
-        self.add(vect)
-        self.wait()
-        #wave = EMWave()
-        # self.add(wave)
-        # self.play(wave.tracker.increment_value, 4 *
-        # PI, run_time=4, rate_func=linear)
+        self.move_camera(0.4 * np.pi / 2, -PI/2)
+        wave = EMWave()
+        self.add(wave)
+        self.play(wave.tracker.increment_value, 4 *
+                  PI, run_time=4, rate_func=linear)
 
 
-"""
 class EMScene(Scene):
     CONFIG = {
         "frequency": 1,
@@ -314,4 +296,3 @@ class EMScene(Scene):
     def get_vect_updater(self, t, color, phi):
         length = self.alpha * np.sin(self.frequency * t + self.frequency * phi)
         return Vector([0, length, 0], color=color).shift(phi * RIGHT)
-"""
