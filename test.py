@@ -1,7 +1,7 @@
 from manimlib.imports import *
 
 
-class LmaoArrow(Line):
+class ThreeDArrow(Line):
     CONFIG = {
         "tip_length": 0.25,
         "tip_width_to_length_ratio": 1,
@@ -157,7 +157,7 @@ class LmaoArrow(Line):
         return self.deepcopy()
 
 
-class ThreeDVector(LmaoArrow):
+class ThreeDVector(ThreeDArrow):
     CONFIG = {
         "color": YELLOW,
         "buff": 0,
