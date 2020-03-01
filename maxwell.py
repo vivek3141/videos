@@ -25,9 +25,6 @@ class ThreeDArrow(Line):
         if len(args) == 1:
             args = (points[0] + UP + LEFT, points[0])
         Line.__init__(self, *args, **kwargs)
-        self.init_tip()
-
-    def init_tip(self):
         self.add_tip()
 
     def add_tip(self, add_at_end=True):
@@ -47,42 +44,6 @@ class ThreeDArrow(Line):
             self.tip.match_style(tip)
         self.tip.add(tip)
         return tip
-
-    def add_rectangular_stem(self):
-        self.rect = Rectangle(
-            stroke_width=0,
-            fill_color=self.tip.get_fill_color(),
-            fill_opacity=self.tip.get_fill_opacity()
-        )
-        self.add_to_back(self.rect)
-        self.set_stroke(width=0)
-        self.set_rectangular_stem_points()
-
-    def set_rectangular_stem_points(self):
-        start, end = self.get_start_and_end()
-        tip_base_points = self.tip[0].get_anchors()[1:3]
-        tip_base = center_of_mass(tip_base_points)
-        tbp1, tbp2 = tip_base_points
-        perp_vect = tbp2 - tbp1
-        tip_base_width = get_norm(perp_vect)
-        if tip_base_width > 0:
-            perp_vect /= tip_base_width
-        width = min(
-            self.rectangular_stem_width,
-            self.max_stem_width_to_tip_width_ratio * tip_base_width,
-        )
-        if hasattr(self, "second_tip"):
-            start = center_of_mass(
-                self.second_tip.get_anchors()[1:]
-            )
-        self.rect.set_points_as_corners([
-            tip_base - perp_vect * width / 2,
-            start - perp_vect * width / 2,
-            start + perp_vect * width / 2,
-            tip_base + perp_vect * width / 2,
-        ])
-        self.stem = self.rect  # Alternate name
-        return self
 
     def set_tip_points(
         self, tip,
@@ -200,12 +161,11 @@ class EMWave(VGroup):
         self.add(e_wave)
         self.add(m_wave)
 
-    def get_t(self, value):
+    def get_x(self, value):
         return value - self.start
 
     def get_vect(self, color, t, direction=IN):
-        x = self.get_t(t)
-        length = self.alpha * np.sin(x)
+        length = self.alpha * np.sin(self.get_x(t))
         vect = ThreeDVector(direction=direction * length,
                             color=color).shift(t * RIGHT)
         vect.add_updater(lambda obj: obj.become(
@@ -213,8 +173,7 @@ class EMWave(VGroup):
         return vect
 
     def get_vect_updater(self, t, color, phi, direction=IN):
-        x = self.get_t(t)
-        length = self.alpha * np.sin(self.frequency * x + self.frequency * phi)
+        length = self.alpha * np.sin(self.frequency * (self.get_x(t) + phi))
         return ThreeDVector(length * direction, color=color).shift(phi * RIGHT)
 
 
@@ -292,9 +251,9 @@ class Equations(Scene):
 
 class EMTest(ThreeDScene):
     def construct(self):
-        self.move_camera(0.4 * np.pi / 2, -PI/2)
         wave = EMWave()
         self.add(wave)
+        self.move_camera(0.4 * np.pi / 2, -PI/2)
         self.play(wave.tracker.increment_value, 4 *
                   PI, run_time=4, rate_func=linear)
 
