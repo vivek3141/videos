@@ -138,7 +138,6 @@ class ThreeDVector(ThreeDArrow):
 class EMWave(VGroup):
     def __init__(
         self,
-        E_COLOR=YELLOW, M_COLOR=BLUE,
         frequency=1,
         alpha=1,
         num_vects=30,
