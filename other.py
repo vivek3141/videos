@@ -4,14 +4,14 @@ from manimlib.imports import *
 class LinEQ(Scene):
     def construct(self):
         axes = Axes(
-                x_min=-3,
-                x_max=3,
-                y_min=-3,
-                y_max=3,
-                number_line_config={
-                    "include_tip": False,
-                    }
-                )
+            x_min=-3,
+            x_max=3,
+            y_min=-3,
+            y_max=3,
+            number_line_config={
+                "include_tip": False,
+            }
+        )
         f = FunctionGraph(lambda x: 0.5*x + 1, x_min=-3, x_max=3)
         func = VGroup(axes, f)
 
@@ -30,43 +30,43 @@ class ElectricField(ThreeDScene):
     def construct(self):
         OPACITY = 0.1
         line0 = Line(3 * DOWN + 0.5 * LEFT, 2 *
-                DOWN + 0.5 * LEFT, stroke_width=8)
+                     DOWN + 0.5 * LEFT, stroke_width=8)
         line1 = Line(2 * DOWN + 0.5 * LEFT, 2 *
-                DOWN + 2 * LEFT, stroke_width=8)
+                     DOWN + 2 * LEFT, stroke_width=8)
         line3 = Line(2 * UP + 2 * LEFT, 2 * UP + 2 * RIGHT, stroke_width=8)
         line4 = Line(2 * UP + 2 * RIGHT, 2 * DOWN + 2 * RIGHT, stroke_width=8)
         line2 = Line(2 * DOWN + 2 * LEFT, 2 * UP + 2 * LEFT, stroke_width=8)
         line5 = Line(2 * DOWN + 2 * RIGHT, 2 * DOWN +
-                0.5 * RIGHT, stroke_width=8)
+                     0.5 * RIGHT, stroke_width=8)
         line6 = Line(2 * DOWN + 0.5 * RIGHT, 3 *
-                DOWN + 0.5 * RIGHT, stroke_width=8)
+                     DOWN + 0.5 * RIGHT, stroke_width=8)
 
         line02 = Line(3 * DOWN + 0.5 * LEFT, 2 *
-                DOWN + 0.5 * LEFT, stroke_width=8)
+                      DOWN + 0.5 * LEFT, stroke_width=8)
         line12 = Line(2 * DOWN + 0.5 * LEFT, 2 *
-                DOWN + 2 * LEFT, stroke_width=8)
+                      DOWN + 2 * LEFT, stroke_width=8)
         line32 = Line(2 * UP + 2 * LEFT, 2 * UP + 2 * RIGHT, stroke_width=8)
         line42 = Line(2 * UP + 2 * RIGHT, 2 * DOWN + 2 * RIGHT, stroke_width=8)
         line22 = Line(2 * DOWN + 2 * LEFT, 2 * UP + 2 * LEFT, stroke_width=8)
         line52 = Line(2 * DOWN + 2 * RIGHT, 2 * DOWN +
-                0.5 * RIGHT, stroke_width=8)
+                      0.5 * RIGHT, stroke_width=8)
         line62 = Line(2 * DOWN + 0.5 * RIGHT, 3 *
-                DOWN + 0.5 * RIGHT, stroke_width=8)
+                      DOWN + 0.5 * RIGHT, stroke_width=8)
 
         line00 = Line(3 * DOWN + 0.5 * LEFT, 2 * DOWN +
-                0.5 * LEFT, stroke_opacity=OPACITY)
+                      0.5 * LEFT, stroke_opacity=OPACITY)
         line10 = Line(2 * DOWN + 0.5 * LEFT, 2 * DOWN +
-                2 * LEFT, stroke_opacity=OPACITY)
+                      2 * LEFT, stroke_opacity=OPACITY)
         line30 = Line(2 * UP + 2 * LEFT, 2 * UP + 2 *
-                RIGHT, stroke_opacity=OPACITY)
+                      RIGHT, stroke_opacity=OPACITY)
         line40 = Line(2 * UP + 2 * RIGHT, 2 * DOWN +
-                2 * RIGHT, stroke_opacity=OPACITY)
+                      2 * RIGHT, stroke_opacity=OPACITY)
         line20 = Line(2 * DOWN + 2 * LEFT, 2 * UP +
-                2 * LEFT, stroke_opacity=OPACITY)
+                      2 * LEFT, stroke_opacity=OPACITY)
         line50 = Line(2 * DOWN + 2 * RIGHT, 2 * DOWN +
-                0.5 * RIGHT, stroke_opacity=OPACITY)
+                      0.5 * RIGHT, stroke_opacity=OPACITY)
         line60 = Line(2 * DOWN + 0.5 * RIGHT, 3 * DOWN +
-                0.5 * RIGHT, stroke_opacity=OPACITY)
+                      0.5 * RIGHT, stroke_opacity=OPACITY)
 
         arrow = Arrow(ORIGIN, 1 * UP, color=RED)
         arrow.move_to(line2, 1 * LEFT)
@@ -84,7 +84,7 @@ class ElectricField(ThreeDScene):
         head3.shift(3 * UP)
 
         head2 = TextMobject("Find the direction of magnetic field at A, B, C, D\\\\only using this current",
-                color=GREEN)
+                            color=GREEN)
         head2.scale(1.25)
         head2.shift(3 * DOWN)
 
@@ -106,13 +106,13 @@ class ElectricField(ThreeDScene):
         self.play(Write(head))
 
         self.play(
-                Transform(line0, line00),
-                Transform(line1, line10),
-                Transform(line3, line30),
-                Transform(line4, line40),
-                Transform(line5, line50),
-                Transform(line6, line60),
-                )
+            Transform(line0, line00),
+            Transform(line1, line10),
+            Transform(line3, line30),
+            Transform(line4, line40),
+            Transform(line5, line50),
+            Transform(line6, line60),
+        )
 
         self.wait()
         self.play(Write(head2))
@@ -123,47 +123,47 @@ class ElectricField(ThreeDScene):
         self.wait()
 
         self.play(
-                Transform(line0, line00),
-                Transform(line1, line10),
-                Transform(line2, line20),
-                Transform(line3, line32),
-                Transform(line4, line40),
-                Transform(line5, line50),
-                Transform(line6, line60),
-                )
+            Transform(line0, line00),
+            Transform(line1, line10),
+            Transform(line2, line20),
+            Transform(line3, line32),
+            Transform(line4, line40),
+            Transform(line5, line50),
+            Transform(line6, line60),
+        )
         self.wait()
 
         self.play(
-                Transform(line0, line00),
-                Transform(line1, line10),
-                Transform(line2, line20),
-                Transform(line3, line30),
-                Transform(line4, line42),
-                Transform(line5, line50),
-                Transform(line6, line60),
-                )
+            Transform(line0, line00),
+            Transform(line1, line10),
+            Transform(line2, line20),
+            Transform(line3, line30),
+            Transform(line4, line42),
+            Transform(line5, line50),
+            Transform(line6, line60),
+        )
         self.wait()
 
         self.play(
-                Transform(line0, line00),
-                Transform(line1, line10),
-                Transform(line2, line20),
-                Transform(line3, line30),
-                Transform(line4, line40),
-                Transform(line5, line52),
-                Transform(line6, line60),
-                )
+            Transform(line0, line00),
+            Transform(line1, line10),
+            Transform(line2, line20),
+            Transform(line3, line30),
+            Transform(line4, line40),
+            Transform(line5, line52),
+            Transform(line6, line60),
+        )
         self.wait()
 
         self.play(
-                Transform(line0, line00),
-                Transform(line1, line10),
-                Transform(line2, line20),
-                Transform(line3, line30),
-                Transform(line4, line40),
-                Transform(line5, line50),
-                Transform(line6, line62),
-                )
+            Transform(line0, line00),
+            Transform(line1, line10),
+            Transform(line2, line20),
+            Transform(line3, line30),
+            Transform(line4, line40),
+            Transform(line5, line50),
+            Transform(line6, line62),
+        )
         self.wait()
 
 
@@ -189,49 +189,49 @@ class Test(Scene):
 
 class BannerE(Scene):
     CONFIG = {
-            "color_list": ['#e22b2b', '#e88e10', '#eae600', '#88ea00',
-                '#00eae2', '#0094ea', "#2700ea", '#bf00ea', '#ea0078'],
-            "prop": 0
-            }
+        "color_list": ['#e22b2b', '#e88e10', '#eae600', '#88ea00',
+                       '#00eae2', '#0094ea', "#2700ea", '#bf00ea', '#ea0078'],
+        "prop": 0
+    }
 
     def construct(self):
 
         axes_config = {"x_min": -5,
-                "x_max": 5,
-                "y_min": -5,
-                "y_max": 5,
-                "z_axis_config": {},
-                "z_min": -1,
-                "z_max": 1,
-                "z_normal": DOWN,
-                "num_axis_pieces": 20,
-                "light_source": 9 * DOWN + 7 * LEFT + 10 * OUT,
-                "number_line_config": {
-                    "include_tip": False,
-                    },
-                }
+                       "x_max": 5,
+                       "y_min": -5,
+                       "y_max": 5,
+                       "z_axis_config": {},
+                       "z_min": -1,
+                       "z_max": 1,
+                       "z_normal": DOWN,
+                       "num_axis_pieces": 20,
+                       "light_source": 9 * DOWN + 7 * LEFT + 10 * OUT,
+                       "number_line_config": {
+                           "include_tip": False,
+                       },
+                       }
 
         axes = Axes(**axes_config)
         f = VGroup(
-                *[self.calc_field_color(x * RIGHT + y * UP, lambda x, y: np.array([y, x]), prop=0)
-                    for x in np.arange(-5, 6, 1)
-                    for y in np.arange(-5, 6, 1)
-                    ]
-                )
+            *[self.calc_field_color(x * RIGHT + y * UP, lambda x, y: np.array([y, x]), prop=0)
+              for x in np.arange(-5, 6, 1)
+              for y in np.arange(-5, 6, 1)
+              ]
+        )
 
         field = VGroup(axes, f)
 
         c = ParametricFunction(
-                self.func,
-                t_min=-3,
-                t_max=3,
-                )
+            self.func,
+            t_min=-3,
+            t_max=3,
+        )
         c.set_stroke(opacity=0.75)
         label = TextMobject("C")
         label.shift(2 * LEFT)
         label.scale(2)
 
-        curve = VGroup(label, c)
+        curve = VGroup(c)
 
         everything = VGroup(field, curve)
         everything.scale(0.7)
@@ -239,10 +239,10 @@ class BannerE(Scene):
         text = TextMobject("Multivariable Calculus")
         text.scale(2.5)
         rect = BackgroundRectangle(
-                text, buff=MED_LARGE_BUFF, color=BLACK, fill_opacity=1, stroke_opacity=1)
+            text, buff=MED_LARGE_BUFF, color=BLACK, fill_opacity=1, stroke_opacity=1)
         t = VGroup(rect, text)
 
-        self.play(Write(everything), Write(t))
+        self.play(Write(everything))  # , Write(t))
         self.wait()
 
     def calc_field_color(self, point, f, prop=0.0, opacity=None):
@@ -254,7 +254,7 @@ class BannerE(Scene):
         v = int(magnitude / 10 ** prop)
         index = len(self.color_list) - 1 if v > len(self.color_list) - 1 else v
         c = self.color_list[index]
-        v = Vector(func, color=c).shift(point)
+        v = Vector(func, color=c, stroke_width=30).shift(point)
         if opacity:
             v.set_fill(opacity=opacity)
         return v
@@ -265,7 +265,7 @@ class BannerE(Scene):
             2 * np.arctan(t),
             t,
             0
-            ])
+        ])
 
         def f_r(self, t):
             r = self.func(t)
@@ -273,7 +273,7 @@ class BannerE(Scene):
             r[1],
             r[0],
             0
-            ])
+        ])
 
     @staticmethod
     def line_evaluated(x):
@@ -284,7 +284,7 @@ class BannerE(Scene):
             x,
             0.25 * np.dot(f_r, r_derivative),
             0
-            ])
+        ])
 
     @staticmethod
     def r_prime(x):
@@ -294,16 +294,16 @@ class BannerE(Scene):
 
 class FTC(GraphScene):
     CONFIG = {
-            "x_max": 4,
-            "x_labeled_nums": list(range(-1, 5)),
-            "y_min": 0,
-            "y_max": 2,
-            "y_tick_frequency": 2.5,
-            "y_labeled_nums": list(range(5, 20, 5)),
-            "n_rect_iterations": 1,
-            "default_right_x": 3,
-            "func": lambda x: 0.1*math.pow(x-2, 2) + 1,
-            }
+        "x_max": 4,
+        "x_labeled_nums": list(range(-1, 5)),
+        "y_min": 0,
+        "y_max": 2,
+        "y_tick_frequency": 2.5,
+        "y_labeled_nums": list(range(5, 20, 5)),
+        "n_rect_iterations": 1,
+        "default_right_x": 3,
+        "func": lambda x: 0.1*math.pow(x-2, 2) + 1,
+    }
 
     def construct(self):
         ftc = TexMobject(r"\int_a^b f'(x) \ dx = f(b) - f(a)")
@@ -317,23 +317,23 @@ class FTC(GraphScene):
         self.graph = graph
         dx = 0.2
         rect = self.get_riemann_rectangles(
-                self.graph,
-                x_min=0,
-                x_max=self.default_right_x,
-                dx=dx,
-                stroke_width=4*dx,
-                )
+            self.graph,
+            x_min=0,
+            x_max=self.default_right_x,
+            dx=dx,
+            stroke_width=4*dx,
+        )
         foreground_mobjects = [self.axes, self.graph]
 
         self.play(
-                DrawBorderThenFill(
-                    rect,
-                    run_time=2,
-                    rate_func=smooth,
-                    lag_ratio=0.5,
-                    ),
-                *list(map(Animation, foreground_mobjects))
-                )
+            DrawBorderThenFill(
+                rect,
+                run_time=2,
+                rate_func=smooth,
+                lag_ratio=0.5,
+            ),
+            *list(map(Animation, foreground_mobjects))
+        )
 
         self.wait()
 
@@ -348,16 +348,16 @@ class TypeT(Scene):
 
 class Sigmoid(GraphScene):
     CONFIG = {
-            "x_min": -5,
-            "x_max": 5,
-            "y_min": 0,
-            "y_max": 1,
-            "graph_origin": 2.5 * DOWN,
-            "function_color": BLUE,
-            "axes_color": WHITE,
-            "x_labeled_nums": range(-5, 6, 2),
+        "x_min": -5,
+        "x_max": 5,
+        "y_min": 0,
+        "y_max": 1,
+        "graph_origin": 2.5 * DOWN,
+        "function_color": BLUE,
+        "axes_color": WHITE,
+        "x_labeled_nums": range(-5, 6, 2),
 
-            }
+    }
 
     def construct(self):
         self.setup_axes(animate=True)
@@ -375,7 +375,7 @@ class Sigmoid(GraphScene):
 class SigmoidEq(Scene):
     def construct(self):
         text = TexMobject(
-                r"\sigma (x) = \frac{1}{1 + e^{-x}}", tex_to_color_map={"Mean Squared Error": YELLOW})
+            r"\sigma (x) = \frac{1}{1 + e^{-x}}", tex_to_color_map={"Mean Squared Error": YELLOW})
         text.scale(4)
         self.play(Write(text))
         self.wait(10)
@@ -383,16 +383,16 @@ class SigmoidEq(Scene):
 
 class Sigmoid(GraphScene):
     CONFIG = {
-            "x_min": -5,
-            "x_max": 5,
-            "y_min": 0,
-            "y_max": 1,
-            "graph_origin": 2.5 * DOWN,
-            "function_color": BLUE,
-            "axes_color": WHITE,
-            "x_labeled_nums": range(-5, 6, 2),
+        "x_min": -5,
+        "x_max": 5,
+        "y_min": 0,
+        "y_max": 1,
+        "graph_origin": 2.5 * DOWN,
+        "function_color": BLUE,
+        "axes_color": WHITE,
+        "x_labeled_nums": range(-5, 6, 2),
 
-            }
+    }
 
     def construct(self):
         self.setup_axes(animate=True)
@@ -410,7 +410,7 @@ class Sigmoid(GraphScene):
 class SigmoidEq(Scene):
     def construct(self):
         text = TexMobject(
-                r"\sigma (x) = \frac{1}{1 + e^{-x}}", tex_to_color_map={"Mean Squared Error": YELLOW})
+            r"\sigma (x) = \frac{1}{1 + e^{-x}}", tex_to_color_map={"Mean Squared Error": YELLOW})
         text.scale(4)
         self.play(Write(text))
         self.wait(10)
@@ -421,7 +421,6 @@ class Outro(Scene):
 
     def construct(self):
         text = TextMobject("Thanks for Watching").scale(2)
-
         ghub = SVGMobject(file_name="files/github-logo.svg")
         ghub.shift(5 * LEFT + 2.5 * DOWN)
         ghub.scale(self.s)
@@ -443,13 +442,13 @@ class Outro(Scene):
         text.move_to(3 * UP)
 
         self.play(
-                Write(text),
-                Write(ghub),
-                Write(twitter),
-                Write(insta),
-                Write(ghub_text),
-                Write(text2)
-                )
+            Write(text),
+            Write(ghub),
+            Write(twitter),
+            Write(insta),
+            Write(ghub_text),
+            Write(text2)
+        )
         self.wait(10)
 
 
@@ -459,7 +458,7 @@ class UpdateOpacity(Scene):
         self.play(Write(circle))
 
         self.play(UpdateFromAlphaFunc(circle, self.update),
-                rate_func=smooth, run_time=4)
+                  rate_func=smooth, run_time=4)
 
         def update(self, circle, dt):
             opacity = interpolate(1, 0, dt)
@@ -473,9 +472,9 @@ class NewIntro(Scene):
         h2 = '#5ce1e6'
 
         text = TexMobject(r"\textbf{\text{v}} ^3 \textbf{\text{(}}\textbf{\text{x}}\textbf{\text{)}}}", tex_to_color_map={
-                r'\textbf{\text{v}} ^3': h1,
-                r'\textbf{\text{x}}': h2
-                })
+            r'\textbf{\text{v}} ^3': h1,
+            r'\textbf{\text{x}}': h2
+        })
         text.scale(4)
 
         vc = TextMobject("vcubingx")
@@ -487,25 +486,49 @@ class NewIntro(Scene):
         self.wait()
 
 
-class Logo(Scene):
+class NewIntro2(Scene):
     def construct(self):
         h1 = "#ff5757"
         h2 = '#5ce1e6'
 
         text = TexMobject(r"\textbf{\text{v}} ^3 \textbf{\text{(}}\textbf{\text{x}}\textbf{\text{)}}}", tex_to_color_map={
-                r'\textbf{\text{v}} ^3': h1,
-                r'\textbf{\text{x}}': h2
-                })
-        text.scale(4)
+            r'\textbf{\text{v}} ^3': h1,
+            r'\textbf{\text{x}}': h2
+        })
+        text.scale(9)
+        text.shift(1 * UP)
+
+        vc = TextMobject("vcubingx")
+        vc.scale(3)
+        vc.shift(3 * DOWN)
+
+        self.play(Write(text), run_time=2)
+        self.play(FadeIn(vc))
+        self.wait()
+
+
+class Logo(Scene):
+    def construct(self):
+        h1 = "#ff5757"
+        h2 = '#5ce1e6'
+        text = TexMobject(r"\textbf{\text{v}} ^{3} \textbf{\text{(}}\textbf{\text{x}}\textbf{\text{)}}}",
+                          tex_to_color_map={
+                              r'\textbf{\text{v}} ^{3}': h1,
+                              r'\textbf{\text{x}}': h2
+                          })
+        text.scale(10)
 
         self.play(Write(text), run_time=2)
         self.wait()
 
 
+class Integral(Scene):
+    def construct(self): self.play(Write(TexMobject(r"\int").scale(5)))
+
 
 class Textt(Scene):
     def construct(self):
-        self.play(Write(TextMobject("vcubingx").scale(3)))
+        self.play(Write(TextMobject("vcubingx").scale(7)))
 
 
 class QandA(Scene):

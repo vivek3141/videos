@@ -152,11 +152,13 @@ class EMWave(VGroup):
         self.end = end
         self.tracker = ValueTracker(0)
         e_wave = VGroup(
-            *[self.get_vect(E_COLOR, t, direction=UP) for t in np.linspace(self.start, self.end, num=num_vects)]
-        )
+            *
+            [self.get_vect(E_COLOR, t, direction=UP)
+             for t in np.linspace(self.start, self.end, num=num_vects)])
         m_wave = VGroup(
-            *[self.get_vect(M_COLOR, t, direction=IN) for t in np.linspace(self.start, self.end, num=num_vects)]
-        )
+            *
+            [self.get_vect(M_COLOR, t, direction=IN)
+             for t in np.linspace(self.start, self.end, num=num_vects)])
         self.add(e_wave)
         self.add(m_wave)
 
@@ -167,8 +169,13 @@ class EMWave(VGroup):
         length = self.alpha * np.sin(self.get_x(t))
         vect = ThreeDVector(direction=direction * length,
                             color=color).shift(t * RIGHT)
-        vect.add_updater(lambda obj: obj.become(
-            self.get_vect_updater(self.tracker.get_value(), color, t, direction=direction)))
+        vect.add_updater(
+            lambda obj: obj.become(
+                self.get_vect_updater(
+                    self.tracker.get_value(),
+                    color,
+                    t,
+                    direction=direction)))
         return vect
 
     def get_vect_updater(self, t, color, phi, direction=IN):
@@ -210,22 +217,29 @@ class Equations(Scene):
             r"\frac{1}{c^2}": MAROON
         }
         eq1 = TexMobject(
-            r"\nabla \cdot \textbf{E} = \frac{\rho}{\epsilon_0}", tex_to_color_map=color_map)
+            r"\nabla \cdot \textbf{E} = \frac{\rho}{\epsilon_0}",
+            tex_to_color_map=color_map)
         eq2 = TexMobject(
             r"\nabla \cdot \textbf{B} = 0", tex_to_color_map=color_map)
         eq3 = TexMobject(
-            r"\nabla \cross \textbf{E} = - {{\partial \textbf{B}} \over {\partial t}}", tex_to_color_map=color_map)
+            r"\nabla \cross \textbf{E} = - {{\partial \textbf{B}} \over {\partial t}}",
+            tex_to_color_map=color_map)
         eq4 = TexMobject(
-            r"\nabla \cross \textbf{B} = \mu_0 \textbf{J} + \frac{1}{c^2} {{\partial \textbf{E} } \over {\partial t}}", tex_to_color_map=color_map)
+            r"\nabla \cross \textbf{B} = \mu_0 \textbf{J} + \frac{1}{c^2} {{\partial \textbf{E} } \over {\partial t}}",
+            tex_to_color_map=color_map)
 
         i1 = TexMobject(
-            r"\oint \textbf{E} \cdot d \vec{S} = \frac{Q}{\epsilon_0}", tex_to_color_map=color_map)
+            r"\oint \textbf{E} \cdot d \vec{S} = \frac{Q}{\epsilon_0}",
+            tex_to_color_map=color_map)
         i2 = TexMobject(
-            r"\oint \textbf{B} \cdot d \vec{S} = 0", tex_to_color_map=color_map)
+            r"\oint \textbf{B} \cdot d \vec{S} = 0",
+            tex_to_color_map=color_map)
         i3 = TexMobject(
-            r"\oint \textbf{E} \cdot d \vec{l} = -{{d \phi_{\textbf{B}}} \over {dt}}", tex_to_color_map=color_map)
+            r"\oint \textbf{E} \cdot d \vec{l} = -{{d \phi_{\textbf{B}}} \over {dt}}",
+            tex_to_color_map=color_map)
         i4 = TexMobject(
-            r"\oint \textbf{B} \cdot d \vec{l} = \mu_0 \textbf{I} + \frac{1}{c^2} {{d \phi_{\textbf{E}}} \over {dt}}", tex_to_color_map=color_map)
+            r"\oint \textbf{B} \cdot d \vec{l} = \mu_0 \textbf{I} + \frac{1}{c^2} {{d \phi_{\textbf{E}}} \over {dt}}",
+            tex_to_color_map=color_map)
 
         eq1.shift(2 * UP)
         eq2.shift(0.5 * UP)
