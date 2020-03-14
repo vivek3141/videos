@@ -21,8 +21,13 @@ class Chessboard(Grid):
         Grid.__init__(self, m, n, s_width=s_width, s_length=s_length, **kwargs)
         for x in range(0, m, 2):
             for y in range(0, n):
-                rect = Rectangle(width=s_length, height=s_width, fill_opacity=0.6, color=WHITE).shift(
-                    [s_width * np.array([x - m/2 + (1 if y % 2 == 0 else 1/3) * s_width, y - n/2 + s_width/3, 0])])
+                pos = s_width * np.array([x - m/2 + (1 if y % 2 == 0 else 1/3) * s_width, y - n/2 + s_width/3, 0])
+                rect = Rectangle(
+                    width=s_length, 
+                    height=s_width, 
+                    fill_opacity=0.6, 
+                    color=WHITE)
+                rect.shift(pos)
                 self.add(rect)
 
 
