@@ -237,6 +237,12 @@ class Tmn(Scene):
 
 class TwoByN(Scene):
     def construct(self):
+        eq = TexMobject(r"T(2, n)", r"= T(2, n-1)", r"+ T(2, n-2)",
+                        tex_to_color_map={r"-2": RED, r"-1": RED, r"n": GREEN})
+        # ",
+        eq.scale(1.5)
+        eq.shift(3 * UP)
+
         grid = DominoGrid(5, 2, s_width=1.5, s_length=1.5)
         rect = Rectangle(
             width=1,
@@ -254,6 +260,17 @@ class TwoByN(Scene):
             color=GRAY
         ).shift(0.75 * LEFT)
 
+        self.play(FadeInFromDown(eq[:3]))
         self.play(Write(grid))
+        self.wait()
+
         self.play(Write(rect))
         self.play(Write(rect2))
+        self.wait()
+
+        text1 = TexMobject("T(2, n-1)")
+        text1.scale(1.5)
+        text1.shift(0.75 * LEFT)
+
+        self.play(FadeInFromDown(text1))
+        self.play(FadeInFromDown(eq[3:7]))
