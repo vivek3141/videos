@@ -89,6 +89,8 @@ class Tilings(Scene):
         rects2.add(grid.get_rect(14, 15))
         rects2.add(grid.get_rect(0, 1).shift(1.5 * LEFT))
 
+        rects3 = grid.get_perm((4, 1, 9, 3, 12, 6, 14, 11))
+
         m = TexMobject("M")
         m.shift(4 * LEFT)
         m.scale(1.5)
@@ -97,9 +99,21 @@ class Tilings(Scene):
         n.shift(3.5 * DOWN)
         n.scale(1.5)
 
+        cross = VGroup()
+        cross.add(Line(3.5 * UP + 3.5 * RIGHT, 3.5 * DOWN + 3.5 * LEFT, color=RED, stroke_width=8))
+        cross.add(Line(3.5 * UP + 3.5 * LEFT, 3.5 * DOWN + 3.5 * RIGHT, color=RED, stroke_width=8))
+
         self.play(ShowCreation(grid))
         self.play(FadeInFromDown(m), FadeInFromDown(n))
         self.wait()
 
         self.play(Write(rects1))
+        self.wait()
+
+        self.play(Transform(rects1, rects2))
+        self.play(ShowCreation(cross))
+        self.wait()
+
+        self.play(Uncreate(cross))
+        self.play(Transform(rects1, rects3))
         self.wait()
