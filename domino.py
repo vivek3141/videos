@@ -465,7 +465,21 @@ class NewTopics(Scene):
     def construct(self):
         tree = TreeMobject((1, 2, 4))
         tree.rotate(PI/2, axis=IN)
-        tree.shift(2 * LEFT)
+        tree.shift(3 * LEFT + UP)
 
-        self.play(Write(tree))
+        g = TextMobject(r"Graph Theory")
+        g.scale(1.25)
+        g.shift(3 * LEFT + 2 * DOWN)
+
+        l = TextMobject(r"Linear Algebra")
+        l.scale(1.25)
+        l.shift(3 * RIGHT + 2 * DOWN)
+
+        matrix = TexMobject(
+            r"\begin{bmatrix} 1 & 2 & 3\\ 4 & 5 & 6 \end{bmatrix}")
+        matrix.scale(1.5)
+        matrix.shift(3 * RIGHT + UP)
+
+        self.play(Write(tree), Write(matrix))
+        self.play(FadeInFromDown(g), FadeInFromDown(l))
         self.wait()
