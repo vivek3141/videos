@@ -323,3 +323,8 @@ class TwoByN(Scene):
         self.play(FadeInFromDown(fib))
         self.play(Write(rect))
         self.wait()
+
+
+class NewTopics(Scene):
+    def construct(self):
+        pass
