@@ -41,7 +41,9 @@ class DominoGrid(Grid):
     def __init__(self, m, n, s_width=1, s_length=1, dt=0.5, perm=None, **kwargs):
         Grid.__init__(self, m, n, s_width=s_width, s_length=s_length, **kwargs)
         self.dt = dt
-        self.add_rect(0, 4)
+        if perm is not None:
+            for n, i in enumerate(perm):
+                self.add_rect(*sorted([2 * n if (n // (self.m/2)) % 2 == 0 else 2 * n + 1, i]))
 
     def add_rect(self, pos1, pos2):
         if pos1 // self.m == pos2 // self.m:
@@ -72,6 +74,7 @@ class DominoGrid(Grid):
 
 class DominoTest(Scene):
     def construct(self):
-        grid = DominoGrid(4, 4, s_width=1.5, s_length=1.5)
+        grid = DominoGrid(4, 4, s_width=1.5, s_length=1.5,
+                          perm=(4, 1, 9, 3, 12, 6, 14, 11))
         #grid = Chessboard(4, 4, s_width=1.5, s_length=1.5)
         self.play(ShowCreation(grid))
