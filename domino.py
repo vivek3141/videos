@@ -43,9 +43,17 @@ class DominoGrid(Grid):
         self.dt = dt
         if perm is not None:
             for n, i in enumerate(perm):
-                self.add_rect(*sorted([2 * n if (n // (self.m/2)) % 2 == 0 else 2 * n + 1, i]))
+                self.add(self.get_rect(
+                    *sorted([2 * n if (n // (self.m/2)) % 2 == 0 else 2 * n + 1, i])))
 
-    def add_rect(self, pos1, pos2):
+    def get_perm(self, perm):
+        rects = VGroup()
+        for n, i in enumerate(perm):
+            rects.add(self.get_rect(
+                *sorted([2 * n if (n // (self.m/2)) % 2 == 0 else 2 * n + 1, i])))
+        return rects
+
+    def get_rect(self, pos1, pos2):
         if pos1 // self.m == pos2 // self.m:
             rect = Polygon(
                 self.get_point(pos1) + np.array([-self.dt, self.dt, 0]),
@@ -66,7 +74,7 @@ class DominoGrid(Grid):
                 stroke_color=WHITE,
                 color=PURPLE
             )
-        self.add(rect)
+        return rect
 
     def get_point(self, n):
         return self.s_width * np.array([n % self.m - self.s_width, self.s_width - n // self.n, 0])
@@ -74,7 +82,7 @@ class DominoGrid(Grid):
 
 class DominoTest(Scene):
     def construct(self):
-        grid = DominoGrid(4, 4, s_width=1.5, s_length=1.5,
-                          perm=(4, 1, 9, 3, 12, 6, 14, 11))
+        perm = (4, 1, 9, 3, 12, 6, 14, 11)
+        grid = DominoGrid(4, 4, s_width=1.5, s_length=1.5)
         #grid = Chessboard(4, 4, s_width=1.5, s_length=1.5)
         self.play(ShowCreation(grid))
