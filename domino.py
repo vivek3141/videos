@@ -143,6 +143,16 @@ class Tilings(Scene):
 class TwoByN(Scene):
     def construct(self):
         grid = DominoGrid(5, 2, s_width=1.5, s_length=1.5)
+        rect = Rectangle(
+            width=1,
+            height=2.5,
+            fill_opacity=1,
+            stroke_color=WHITE,
+            color=PURPLE
+        ).shift(3 * RIGHT)
 
         self.play(ShowCreation(grid))
+        self.wait()
+
+        self.play(Write(rect))
         self.wait()
