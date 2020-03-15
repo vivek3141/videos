@@ -84,6 +84,7 @@ class Tilings(Scene):
     def construct(self):
         grid = DominoGrid(4, 4, s_width=1.5, s_length=1.5)
         rects1 = grid.get_perm((4, 1, 9, 3, 12, 6, 14, 11))
+
         rects2 = grid.get_perm((0, 1, 6, 3, 4, 9, 12, 11))[1:]
         rects2.add(grid.get_rect(14, 15))
         rects2.add(grid.get_rect(0, 1).shift(1.5 * LEFT))
@@ -93,7 +94,7 @@ class Tilings(Scene):
         m.scale(1.5)
 
         n = TexMobject("N")
-        n.shift(4 * DOWN)
+        n.shift(3.5 * DOWN)
         n.scale(1.5)
 
         self.play(ShowCreation(grid))
