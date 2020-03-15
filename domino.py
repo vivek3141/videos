@@ -38,8 +38,9 @@ class Chessboard(Grid):
 
 
 class DominoGrid(Grid):
-    def __init__(self, m, n, s_width=1, s_length=1, dt=0.5, perm=None, **kwargs):
+    def __init__(self, m, n, s_width=1, s_length=1, dt=0.5, perm=None, color="#736f31", **kwargs):
         Grid.__init__(self, m, n, s_width=s_width, s_length=s_length, **kwargs)
+        self.color = color
         self.dt = dt
         if perm is not None:
             for n, i in enumerate(perm):
@@ -62,7 +63,7 @@ class DominoGrid(Grid):
                 self.get_point(pos1) - np.array([self.dt, self.dt, 0]),
                 fill_opacity=1,
                 stroke_color=WHITE,
-                color=PURPLE
+                color=self.color
             )
         else:
             rect = Polygon(
@@ -72,7 +73,7 @@ class DominoGrid(Grid):
                 self.get_point(pos1) - np.array([self.dt, -self.dt, 0]),
                 fill_opacity=1,
                 stroke_color=WHITE,
-                color=PURPLE
+                color=self.color
             )
         return rect
 
@@ -493,7 +494,8 @@ class GridGraph(VGroup):
         VGroup.__init__(self, **kwargs)
         for i in range(0, m * n):
             self.add(
-                Circle(radius=0.1, color=RED).shift(self.get_point(i))
+                Circle(radius=0.1, color=PURPLE, fill_opacity=1).shift(
+                    self.get_point(i))
             )
 
     def get_point(self, n):
@@ -504,7 +506,5 @@ class GridGraphTest(Scene):
     def construct(self):
         g = GridGraph(4, 4, s_width=1.5)
         grid = Grid(4, 4, s_width=1.5, s_length=1.5)
-        for i in grid:
-            i.set_fill(color=RED)
-        
+        grid.set_stroke(opacity=0.5)
         self.add(g, grid)
