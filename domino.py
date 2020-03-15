@@ -486,17 +486,25 @@ class NewTopics(Scene):
 
 
 class GridGraph(VGroup):
-    def __init__(self, m, n, s_width, **kwargs):
-        VGroup.__init__(**kwargs)
-        for x in np.arange(-m/2, m/2 + 1):
-            for y in np.arange(-n/2, n/2 + 1):
-                self.add(
-                    Circle(radius=0.1, color=RED).shift(
-                        s_width * np.array([x, y, 0]))
-                )
+    def __init__(self, m, n, s_width=1, **kwargs):
+        self.m = m
+        self.n = n
+        self.s_width = s_width
+        VGroup.__init__(self, **kwargs)
+        for i in range(0, m * n):
+            self.add(
+                Circle(radius=0.1, color=RED).shift(self.get_point(i))
+            )
+
+    def get_point(self, n):
+        return self.s_width * np.array([n % self.m - self.s_width, self.s_width - n // self.n, 0])
 
 
 class GridGraphTest(Scene):
     def construct(self):
-        g = GridGraph(4, 4, 1.5)
-        self.add(g)
+        g = GridGraph(4, 4, s_width=1.5)
+        grid = Grid(4, 4, s_width=1.5, s_length=1.5)
+        for i in grid:
+            i.set_fill(color=RED)
+        
+        self.add(g, grid)
