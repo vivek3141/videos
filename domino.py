@@ -92,9 +92,13 @@ class Tilings(Scene):
         m.shift(4 * LEFT)
         m.scale(1.5)
 
+        n = TexMobject("N")
+        n.shift(4 * DOWN)
+        n.scale(1.5)
+
         self.play(ShowCreation(grid))
-        self.play(FadeInFromDown(m))
+        self.play(FadeInFromDown(m), FadeInFromDown(n))
         self.wait()
 
-        self.play(Write(rects2))
+        self.play(Write(rects1))
         self.wait()
