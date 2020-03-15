@@ -91,6 +91,7 @@ class Tilings(Scene):
 
         rects3 = grid.get_perm((4, 1, 9, 3, 12, 6, 14, 11))
         rects4 = grid.get_perm((1, 3, 9, 11, 4, 6, 12, 14))
+        rects5 = grid.get_perm((1, 3, 4, 6, 9, 11, 12, 14))
 
         m = TexMobject("M")
         m.shift(4 * LEFT)
@@ -122,4 +123,26 @@ class Tilings(Scene):
         self.wait()
 
         self.play(Transform(rects1, rects4))
+        self.wait()
+
+        self.play(Transform(rects1, rects5))
+        self.wait()
+
+        group = VGroup(grid, rects1, m, n)
+        self.play(group.shift, 2 * LEFT)
+
+        eq = TexMobject(r"M \cdot N \text{ is even}", tex_to_color_map={
+                        r"M \cdot N": BLUE})
+        eq.scale(1.5)
+        eq.shift(4 * RIGHT)
+
+        self.play(Write(eq))
+        self.wait()
+
+
+class TwoByN(Scene):
+    def construct(self):
+        grid = DominoGrid(5, 2, s_width=1.5, s_length=1.5)
+
+        self.play(ShowCreation(grid))
         self.wait()
