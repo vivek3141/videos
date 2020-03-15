@@ -38,20 +38,26 @@ class Chessboard(Grid):
 
 
 class DominoGrid(Grid):
-    def __init__(self, m, n, s_width=1, s_length=1, dt=0.6, perm=None, **kwargs):
+    def __init__(self, m, n, s_width=1, s_length=1, dt=0.5, perm=None, **kwargs):
         Grid.__init__(self, m, n, s_width=s_width, s_length=s_length, **kwargs)
         self.dt = dt
-        self.add_rect(2, 3)
+        self.add_rect(0, 1)
 
     def add_rect(self, pos1, pos2):
-        rect = Rectangle(
-            width=(2*self.s_width-self.dt),
-            height=self.s_width-self.dt,
+        dt = np.array([0, self.dt, 0]) if pos1 // self.m == pos2 // self.m else np.array([self.dt, 0, 0])
+        rect = Polygon(
+            self.get_point(pos1) + np.array([-self.dt, self.dt, 0]),
+            self.get_point(pos2) + np.array([self.dt, self.dt, 0]),
+            self.get_point(pos2) - np.array([-self.dt, self.dt, 0]),  
+            self.get_point(pos1) - np.array([self.dt, self.dt, 0]), 
             fill_opacity=1,
             stroke_color=WHITE,
-            color=PURPLE).shift(
-            [self.s_width * np.array([pos1 - self.m/2 + 1, pos2 - self.n/2 + 0.5, 0])])
+            color=PURPLE         
+        )
         self.add(rect)
+
+    def get_point(self, n):
+        return self.s_width * np.array([n % self.m - self.s_width, self.s_width - n // self.n, 0])
 
 
 class DominoTest(Scene):
