@@ -140,27 +140,6 @@ class Tilings(Scene):
         self.wait()
 
 
-class TwoByN(Scene):
-    def construct(self):
-        grid = DominoGrid(5, 2, s_width=1.5, s_length=1.5)
-        rects = VGroup()
-        for i in np.arange(-3, 3.1, 1.5):
-            rect = Rectangle(
-                width=1,
-                height=2.5,
-                fill_opacity=1,
-                stroke_color=WHITE,
-                color=PURPLE
-            ).shift(i * RIGHT)
-            rects.add(rect)
-
-        self.play(ShowCreation(grid))
-        self.wait()
-
-        self.play(Write(rects))
-        self.wait()
-
-
 class Recursion(Scene):
     def construct(self):
         title = TextMobject("Fibonacci Sequence", color=TEAL)
@@ -216,3 +195,65 @@ class Recursion(Scene):
 
         self.play(FadeInFromDown(eq))
         self.wait()
+
+
+class TwoByNExample(Scene):
+    def construct(self):
+        grid = DominoGrid(5, 2, s_width=1.5, s_length=1.5)
+        rects = VGroup()
+        for i in np.arange(-3, 3.1, 1.5):
+            rect = Rectangle(
+                width=1,
+                height=2.5,
+                fill_opacity=1,
+                stroke_color=WHITE,
+                color=PURPLE
+            ).shift(i * RIGHT)
+            rects.add(rect)
+
+        self.play(ShowCreation(grid))
+        self.wait()
+
+        self.play(Write(rects))
+        self.wait()
+
+
+class Tmn(Scene):
+    def construct(self):
+        eq = TexMobject(r"T(m, n)", tex_to_color_map={r"m": RED, r"n": GREEN})
+        eq.scale(2)
+        eq.shift(3 * LEFT)
+
+        arrow = Arrow(LEFT, RIGHT, color=TEAL)
+        text = TextMobject(r"Number of ways \\ to tile M x N",
+                           tex_to_color_map={r"M": RED, r" N": GREEN})
+        text.scale(1.25)
+        text.shift(3.5 * RIGHT)
+
+        self.play(FadeInFromDown(eq))
+        self.play(FadeInFromDown(arrow))
+        self.play(FadeInFromDown(text))
+
+
+class TwoByN(Scene):
+    def construct(self):
+        grid = DominoGrid(5, 2, s_width=1.5, s_length=1.5)
+        rect = Rectangle(
+            width=1,
+            height=2.5,
+            fill_opacity=1,
+            stroke_color=WHITE,
+            color=PURPLE
+        ).shift(3 * RIGHT)
+
+        rect2 = Rectangle(
+            width=5.5,
+            height=2.5,
+            fill_opacity=1,
+            stroke_color=WHITE,
+            color=GRAY
+        ).shift(0.75 * LEFT)
+
+        self.play(Write(grid))
+        self.play(Write(rect))
+        self.play(Write(rect2))
