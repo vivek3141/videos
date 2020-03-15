@@ -465,6 +465,7 @@ class NewTopics(Scene):
     def construct(self):
         tree = TreeMobject((1, 2, 4))
         tree.rotate(PI/2, axis=IN)
-        
+        tree.shift(2 * LEFT)
+
         self.play(Write(tree))
         self.wait()
