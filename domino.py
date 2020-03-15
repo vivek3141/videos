@@ -483,3 +483,20 @@ class NewTopics(Scene):
         self.play(Write(tree), Write(matrix))
         self.play(FadeInFromDown(g), FadeInFromDown(l))
         self.wait()
+
+
+class GridGraph(VGroup):
+    def __init__(self, m, n, s_width, **kwargs):
+        VGroup.__init__(**kwargs)
+        for x in np.arange(-m/2, m/2 + 1):
+            for y in np.arange(-n/2, n/2 + 1):
+                self.add(
+                    Circle(radius=0.1, color=RED).shift(
+                        s_width * np.array([x, y, 0]))
+                )
+
+
+class GridGraphTest(Scene):
+    def construct(self):
+        g = GridGraph(4, 4, 1.5)
+        self.add(g)
