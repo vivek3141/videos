@@ -84,5 +84,9 @@ class DominoTest(Scene):
     def construct(self):
         perm = (4, 1, 9, 3, 12, 6, 14, 11)
         grid = DominoGrid(4, 4, s_width=1.5, s_length=1.5)
-        #grid = Chessboard(4, 4, s_width=1.5, s_length=1.5)
+        rects = grid.get_perm(perm)
         self.play(ShowCreation(grid))
+        self.wait()
+
+        self.play(Write(rects))
+        self.wait()
