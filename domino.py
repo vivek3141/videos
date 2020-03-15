@@ -239,7 +239,6 @@ class TwoByN(Scene):
     def construct(self):
         eq = TexMobject(r"T(2, n)", r"= T(2, n-1)", r"+ T(2, n-2)",
                         tex_to_color_map={r"-2": RED, r"-1": RED, r"n": GREEN})
-        # ",
         eq.scale(1.5)
         eq.shift(3 * UP)
 
@@ -274,3 +273,53 @@ class TwoByN(Scene):
 
         self.play(FadeInFromDown(text1))
         self.play(FadeInFromDown(eq[3:7]))
+        self.wait()
+
+        rects = VGroup(
+            Rectangle(
+                width=2.5,
+                height=1,
+                fill_opacity=1,
+                stroke_color=WHITE,
+                color=PURPLE
+            ).shift(2.25 * RIGHT + 0.75 * UP),
+            Rectangle(
+                width=2.5,
+                height=1,
+                fill_opacity=1,
+                stroke_color=WHITE,
+                color=PURPLE
+            ).shift(2.25 * RIGHT - 0.75 * UP)
+        )
+
+        self.play(Uncreate(rect2), Uncreate(text1))
+        self.play(Transform(rect, rects))
+
+        rect3 = Rectangle(
+            width=4,
+            height=2.5,
+            fill_opacity=1,
+            stroke_color=WHITE,
+            color=GRAY
+        ).shift(1.5 * LEFT)
+
+        text2 = TexMobject("T(2, n-2)")
+        text2.scale(1.5)
+        text2.shift(1.5 * LEFT)
+
+        self.play(Write(rect3))
+        self.play(FadeInFromDown(text2))
+        self.play(FadeInFromDown(eq[7:]))
+        self.wait()
+
+        fib = TexMobject(
+            r"T(2, n) = F_{n + 1}", tex_to_color_map={r"n": GREEN, r"F": TEAL})
+        fib.scale(1.5)
+        fib.shift(2.5 * DOWN)
+
+        rect = BackgroundRectangle(
+            fib, buff=MED_SMALL_BUFF, color=YELLOW, stroke_opacity=1, stroke_width=6, fill_opacity=0)
+
+        self.play(FadeInFromDown(fib))
+        self.play(Write(rect))
+        self.wait()
