@@ -159,3 +159,60 @@ class TwoByN(Scene):
 
         self.play(Write(rects))
         self.wait()
+
+
+class Recursion(Scene):
+    def construct(self):
+        title = TextMobject("Fibonacci Sequence", color=TEAL)
+        title.scale(2)
+        title.shift(3 * UP)
+
+        n1 = TexMobject("1").scale(3)
+        n2 = TexMobject("1").scale(3)
+
+        n1.shift(3 * LEFT)
+        n2.shift(0 * LEFT)
+
+        grp = VGroup(n1, n2)
+
+        n3 = TexMobject("2").scale(3)
+        n3.shift(3 * RIGHT)
+
+        self.play(Write(title))
+        self.play(Write(grp))
+        self.wait()
+
+        self.play(TransformFromCopy(grp, n3))
+        self.wait()
+
+        grp.add(n3)
+
+        self.play(Uncreate(n1))
+        self.play(grp.shift, 3 * LEFT)
+
+        n4 = TexMobject("3").scale(3)
+        n4.shift(3 * RIGHT)
+
+        self.play(TransformFromCopy(grp, n4))
+        self.wait()
+
+        grp.add(n4)
+
+        self.play(Uncreate(n2))
+        self.play(grp.shift, 3 * LEFT)
+
+        n5 = TexMobject("5").scale(3)
+        n5.shift(3 * RIGHT)
+
+        self.play(TransformFromCopy(grp, n5))
+        self.wait()
+
+        grp.add(n5)
+
+        self.play(Uncreate(grp))
+
+        eq = TexMobject(r"F_n = F_{n-1} + F_{n-2}")
+        eq.scale(2.5)
+
+        self.play(FadeInFromDown(eq))
+        self.wait()
