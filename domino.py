@@ -488,10 +488,12 @@ class NewTopics(Scene):
 
 class GridGraph(VGroup):
     def __init__(self, m, n, s_width=1, **kwargs):
+        VGroup.__init__(self, **kwargs)
+
         self.m = m
         self.n = n
         self.s_width = s_width
-        VGroup.__init__(self, **kwargs)
+        self.colors = [TEAL, MAROON, GREEN]
 
         for i in range(m):
             self.add(
@@ -505,7 +507,7 @@ class GridGraph(VGroup):
 
         for i in range(0, m * n):
             self.add(
-                Circle(radius=0.1, color=PURPLE, fill_opacity=1).shift(
+                Circle(radius=0.15, color=self.colors[i % len(self.colors)], fill_opacity=1).shift(
                     self.get_point(i))
             )
 
@@ -513,9 +515,16 @@ class GridGraph(VGroup):
         return self.s_width * np.array([n % self.m - self.s_width, self.s_width - n // self.n, 0])
 
 
-class GridGraphTest(Scene):
+class GridGraphIntro(Scene):
     def construct(self):
         g = GridGraph(4, 4, s_width=1.5)
         grid = Grid(4, 4, s_width=1.5, s_length=1.5)
-        grid.set_stroke(opacity=0.5)
-        self.add(g, grid)
+        grid1 = Grid(4, 4, s_width=1.5, s_length=1.5)
+        grid1.set_stroke(opacity=0.1)
+
+        self.play(Write(grid))
+        self.wait()
+
+        self.play(Transform(grid, grid1))
+        self.play(Write(g))
+        self.wait()
