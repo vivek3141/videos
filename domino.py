@@ -593,6 +593,19 @@ class PerfectBipartiteGraph(VGroup):
 
 class BipartiteGraphs(Scene):
     def construct(self):
-        b = PerfectBipartiteGraph()
-        b.add_perm([[0, 1, 2] for i in range(3)])
-        self.add(b)
+        b1 = PerfectBipartiteGraph()
+        b1.add_perm([[0, 1, 2] for i in range(3)])
+
+        b2 = PerfectBipartiteGraph()
+        b2.add_perm([[1], [2], [0]])
+
+        b1.shift(2.5 * LEFT)
+        b2.shift(2.5 * RIGHT)
+
+        title = TextMobject("Bipartite Graphs", color=GOLD)
+        title.scale(1.5)
+        title.shift(3 * UP)
+
+        self.play(FadeInFromDown(title))
+        self.play(Write(b1), Write(b2))
+        self.wait()
