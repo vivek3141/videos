@@ -514,10 +514,23 @@ class GridGraph(VGroup):
     def get_point(self, n):
         return self.s_width * np.array([n % self.m - self.s_width, self.s_width - n // self.n, 0])
 
+    def get_edge(self, pos1, pos2, color=RED):
+        return Line(self.get_point(pos1), self.get_point(pos2), color=color, stroke_width=8)
+
+    def get_perm(self, perm):
+        edges = VGroup()
+        for n, i in enumerate(perm):
+            edges.add(self.get_edge(
+                *sorted([2 * n if (n // (self.m/2)) % 2 == 0 else 2 * n + 1, i])))
+        return edges
+
 
 class GridGraphIntro(Scene):
     def construct(self):
         g = GridGraph(4, 4, s_width=1.5)
+        g2 = GridGraph(4, 4, s_width=1.5)
+        g2.set_stroke(opacity=0.2)
+        # g2.set_fill(opacity=0.5)
         grid = Grid(4, 4, s_width=1.5, s_length=1.5)
         grid1 = Grid(4, 4, s_width=1.5, s_length=1.5)
         grid1.set_stroke(opacity=0.1)
@@ -528,3 +541,28 @@ class GridGraphIntro(Scene):
         self.play(Transform(grid, grid1))
         self.play(Write(g))
         self.wait()
+
+        edges1 = g.get_perm((4, 1, 9, 3, 12, 6, 14, 11))
+        edges2 = g.get_perm((1, 3, 9, 11, 4, 6, 12, 14))
+        edges3 = g.get_perm((1, 3, 4, 6, 9, 11, 12, 14))
+
+        self.play(Uncreate(grid))
+        self.play(Transform(g, g2))
+        self.play(Write(edges1))
+        self.wait()
+
+        self.play(Transform(edges1, edges2))
+        self.wait()
+
+        self.play(Transform(edges1, edges3))
+        self.wait()
+
+
+class BipartiteGraph(VGroup):
+    def __init__(self, n=3, **kwargs):
+        VGroup.__init__(**kwargs)
+
+
+class BipartiteGraphs(Scene):
+    def construct(self):
+        pass
