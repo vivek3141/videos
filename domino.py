@@ -530,7 +530,7 @@ class GridGraphIntro(Scene):
         g = GridGraph(4, 4, s_width=1.5)
         g2 = GridGraph(4, 4, s_width=1.5)
         g2.set_stroke(opacity=0.2)
-        # g2.set_fill(opacity=0.5)
+
         grid = Grid(4, 4, s_width=1.5, s_length=1.5)
         grid1 = Grid(4, 4, s_width=1.5, s_length=1.5)
         grid1.set_stroke(opacity=0.1)
@@ -558,11 +558,41 @@ class GridGraphIntro(Scene):
         self.wait()
 
 
-class BipartiteGraph(VGroup):
-    def __init__(self, n=3, **kwargs):
-        VGroup.__init__(**kwargs)
+class PerfectBipartiteGraph(VGroup):
+    def __init__(self, n=3, w=1.5, p=1.5, vertex_color=BLUE, line_color=WHITE, radius=0.3, **kwargs):
+        VGroup.__init__(self, **kwargs)
+        self.n = n
+        self.line_color = line_color
+
+        self.vertices = [None for i in range(2 * n)]
+        for i in range(n):
+            self.vertices[i] = Circle(
+                radius=radius,
+                color=vertex_color,
+                fill_opacity=1,
+                fill_color=BLACK).shift(w * LEFT + i * p * DOWN)
+            self.vertices[i + n] = Circle(
+                radius=radius,
+                color=vertex_color,
+                fill_opacity=1,
+                fill_color=BLACK).shift(w * RIGHT + i * p * DOWN)
+        self.add(*self.vertices)
+        self.center()
+
+    def add_edge(self, v1, v2):
+        self.add_to_back(
+            Line(self.vertices[v1].get_center(),
+                 self.vertices[v2].get_center())
+        )
+
+    def add_perm(self, perm):
+        for n, i in enumerate(perm):
+            for x in i:
+                self.add_edge(n, x + self.n)
 
 
 class BipartiteGraphs(Scene):
     def construct(self):
-        pass
+        b = PerfectBipartiteGraph()
+        b.add_perm([[0, 1, 2] for i in range(3)])
+        self.add(b)
