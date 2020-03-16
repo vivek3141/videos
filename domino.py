@@ -492,18 +492,21 @@ class GridGraph(VGroup):
         self.n = n
         self.s_width = s_width
         VGroup.__init__(self, **kwargs)
-        for i in range(0, m * n):
-            self.add(
-                Circle(radius=0.1, color=PURPLE, fill_opacity=1).shift(
-                    self.get_point(i))
-            )
+
         for i in range(m):
             self.add(
                 Line(self.get_point(m * i), self.get_point(m * i + n - 1))
             )
+
         for i in range(n):
             self.add(
                 Line(self.get_point(i), self.get_point(i + m * (n - 1)))
+            )
+
+        for i in range(0, m * n):
+            self.add(
+                Circle(radius=0.1, color=PURPLE, fill_opacity=1).shift(
+                    self.get_point(i))
             )
 
     def get_point(self, n):
