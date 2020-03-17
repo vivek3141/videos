@@ -516,7 +516,7 @@ class GridGraph(VGroup):
                     self.get_point(i))
             )
 
-        self.add(self.circles, self.lines)
+        self.add(self.lines, self.circles)
 
     def get_point(self, n):
         return self.s_width * np.array([n % self.m - self.s_width, self.s_width - n // self.n, 0])
@@ -659,7 +659,7 @@ class GridGraphBipartite(Scene):
             w.move_to(g.circles[wpos], UP)
             b.move_to(g.circles[bpos], UP)
             labels.add(w, b)
-            
+
         labels.shift(0.5 * UP)
 
         self.play(Transform(g, g3))
