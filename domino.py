@@ -709,10 +709,25 @@ class Matrix(VGroup):
 
 class AdjacencyMatrix(Scene):
     def construct(self):
+        title = TextMobject("Adjacency Matrix", color=TEAL)
+        title.scale(1.5)
+        title.shift(3 * UP)
+
         vals = [[0, 1, 0], [0, 0, 1], [1, 0, 0]]
         mat = Matrix(vals)
+        mat.shift(3 * RIGHT)
 
         graph = PerfectBipartiteGraph()
         graph.add_perm([[1], [2], [0]])
 
-        self.add(mat)
+        self.play(FadeInFromDown(title))
+        self.wait()
+
+        self.play(Write(graph))
+        self.wait()
+
+        self.play(graph.shift, 3 * LEFT)
+        self.play(Write(mat))
+        self.wait()
+
+        
