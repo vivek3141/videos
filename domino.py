@@ -748,10 +748,9 @@ class AdjacencyMatrix(Scene):
         self.wait()
 
 
-class Adj2(Scene):
-    def construct(self):
-        mat = TexMobject(
-            r"A=\left[\begin{array}{llllllll} \
+class AdjScene(Scene):
+    CONFIG = {
+        "mat": r"A=\left[\begin{array}{llllllll} \
             1 & 0 & 0 & 1 & 0 & 0 & 0 & 0 \\ \
             1 & 1 & 1 & 0 & 0 & 0 & 0 & 0 \\ \
             0 & 1 & 1 & 0 & 0 & 1 & 0 & 0 \\ \
@@ -760,7 +759,14 @@ class Adj2(Scene):
             0 & 0 & 1 & 0 & 1 & 1 & 1 & 0 \\ \
             0 & 0 & 0 & 0 & 0 & 1 & 1 & 0 \\ \
             0 & 0 & 0 & 0 & 1 & 0 & 1 & 1 \
-            \end{array}\right]")
+            \end{array}\right]"
+    }
+
+
+class Adj2(AdjScene):
+    def construct(self):
+        mat = TexMobject(self.mat)
+
         mat.scale(0.75)
         mat.shift(3 * RIGHT)
 
@@ -786,7 +792,7 @@ class Adj2(Scene):
         self.wait()
 
 
-class PermExample(Scene):
+class PermExample(AdjScene):
     def construct(self):
         li = TexMobject(
             r"[", r"\ 1, ", r"\ 2, ", r"\ 6, \ 4, \ 3, \ 7, \ 8, \ 5 \ ]")
@@ -818,6 +824,7 @@ class PermExample(Scene):
             fill_opacity=0,
             color=YELLOW
         )
+
         self.bring_to_back(edges[0])
         self.play(Write(rect), Write(edges[0]))
         self.wait()
@@ -828,4 +835,54 @@ class PermExample(Scene):
 
         self.bring_to_back(edges[2])
         self.play(ApplyMethod(rect.shift, 0.95 * RIGHT), Write(edges[2]))
+        self.wait()
+
+        graph = VGroup(edges, labels, circles)
+
+        self.play(Uncreate(rect))
+        self.play(ApplyMethod(graph.scale, 0.3))
+        self.play(ApplyMethod(graph.move_to, 5 * LEFT + 1 * UP))
+
+        mat = TexMobject(self.mat)
+        mat.scale(0.5)
+        mat.move_to(5 * LEFT + 1.5 * DOWN)
+
+        self.play(Write(mat))
+        self.wait()
+
+        eq = TexMobject(
+            r"T(m, n)= \sum_{L \in S_{N}}", r"a_{1, L(1)} \cdot a_{2, L(2)} \cdots a_{N, L(N)}", r"= 1")
+        eq.scale(1.35)
+        title = TextMobject("Perfect Matching exists when", color=GOLD)
+        title.scale(1.5)
+        title.shift(3 * UP)
+        eqn = VGroup(eq[0], eq[1])
+
+        self.play(Uncreate(li), Write(title))
+        self.play(Write(eq[1:]))
+        self.wait()
+
+        self.play(Uncreate(mat), Uncreate(graph), Uncreate(eq[2]))
+        self.play(Write(eq[0]), eqn.center)
+        self.wait()
+
+        eq2 = TexMobject(
+            r"\text{per}(A) = ", r"\sum_{L \in S_{N}} a_{1, L(1)} \cdot a_{2, L(2)} \cdots a_{N, L(N)}",
+            tex_to_color_map={r"\text{per}": GREEN})
+        eq2.scale(1.35)
+        eq2.shift(1.5 * DOWN)
+
+        self.play(Uncreate(title), ApplyMethod(eqn.shift, 1.5 * UP))
+        self.play(Write(eq2))
+        self.wait()
+
+        eq3 = TexMobject(
+            r"\operatorname{det}", r"(A)=\sum_{L \in S_{N}} \operatorname{sgn}(L) \cdot a_{1, L(1)} \cdot a_{2, L(2)} \cdots a_{N, L(N)}",
+            tex_to_color_map={r"\operatorname{det}": BLUE}
+        )
+        eq3.scale(1.2)
+        eq3.shift(1.5 * DOWN)
+
+        self.play(Uncreate(eqn), ApplyMethod(eq2.shift, 3 * UP))
+        self.play(Write(eq3))
         self.wait()
