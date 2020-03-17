@@ -720,6 +720,12 @@ class AdjacencyMatrix(Scene):
         graph = PerfectBipartiteGraph()
         graph.add_perm([[1], [2], [0]])
 
+        rect = BackgroundRectangle(
+            mat.nums[0], buff=0.2, stroke_opacity=1, stroke_width=6, fill_opacity=0, color=YELLOW)
+
+        line = graph.get_edge(0, 4).set_stroke(
+            width=8, color=YELLOW).shift(3 * LEFT)
+
         self.play(FadeInFromDown(title))
         self.wait()
 
@@ -730,4 +736,8 @@ class AdjacencyMatrix(Scene):
         self.play(Write(mat))
         self.wait()
 
-        
+        self.play(Write(rect))
+        self.wait()
+
+        self.play(ApplyMethod(rect.shift, 1 * RIGHT), Write(line))
+        self.wait()
