@@ -538,6 +538,27 @@ class GridGraph(VGroup):
             self.circles[i].set_fill(color=c)
             self.circles[i].set_stroke(color=c)
 
+    def get_labels(self):
+        self.labels = VGroup()
+        for i in range(int(self.m * self.n/2)):
+            w = TexMobject(fr"W_{i}")
+            b = TexMobject(fr"B_{i}")
+            if (i // (2)) % 2 == 0:
+                wpos = 2 * i
+                bpos = 2 * i + 1
+            else:
+                wpos = 2 * i + 1
+                bpos = 2 * i
+
+            w.move_to(self.circles[wpos], UP)
+            b.move_to(self.circles[bpos], UP)
+            self.labels.add(w, b)
+        self.labels.shift(0.5 * UP)
+        return self.labels
+
+    def set_labels(self):
+        self.add(self.get_labels())
+
 
 class GridGraphIntro(Scene):
     def construct(self):
@@ -652,23 +673,7 @@ class GridGraphBipartite(Scene):
         self.play(Transform(g, g2))
         self.wait()
 
-        labels = VGroup()
-
-        for i in range(8):
-            w = TexMobject(fr"W_{i}")
-            b = TexMobject(fr"B_{i}")
-            if (i // (2)) % 2 == 0:
-                wpos = 2 * i
-                bpos = 2 * i + 1
-            else:
-                wpos = 2 * i + 1
-                bpos = 2 * i
-
-            w.move_to(g.circles[wpos], UP)
-            b.move_to(g.circles[bpos], UP)
-            labels.add(w, b)
-
-        labels.shift(0.5 * UP)
+        labels = g3.get_labels()
 
         self.play(Transform(g, g3))
         self.play(FadeInFromDown(labels))
@@ -740,4 +745,42 @@ class AdjacencyMatrix(Scene):
         self.wait()
 
         self.play(ApplyMethod(rect.shift, 1 * RIGHT), Write(line))
+        self.wait()
+
+
+class Adj2(Scene):
+    def construct(self):
+        mat = TexMobject(
+            r"A=\left[\begin{array}{llllllll} \
+            1 & 0 & 0 & 1 & 0 & 0 & 0 & 0 \\ \
+            1 & 1 & 1 & 0 & 0 & 0 & 0 & 0 \\ \
+            0 & 1 & 1 & 0 & 0 & 1 & 0 & 0 \\ \
+            1 & 0 & 1 & 1 & 1 & 0 & 0 & 0 \\ \
+            0 & 0 & 0 & 1 & 1 & 0 & 0 & 1 \\ \
+            0 & 0 & 1 & 0 & 1 & 1 & 1 & 0 \\ \
+            0 & 0 & 0 & 0 & 0 & 1 & 1 & 0 \\ \
+            0 & 0 & 0 & 0 & 1 & 0 & 1 & 1 \
+            \end{array}\right]")
+        mat.scale(0.75)
+        mat.shift(3 * RIGHT)
+
+        g = GridGraph(4, 4, s_width=1.5)
+        g.set_black_white()
+
+        g3 = GridGraph(4, 4, s_width=1.5)
+        g3.set_black_white()
+        g3.lines.set_opacity(0.3)
+
+        self.play(Write(g))
+        self.wait()
+
+        labels = g3.get_labels()
+        graph = VGroup(g, labels)
+
+        self.play(Transform(g, g3))
+        self.play(FadeInFromDown(labels))
+        self.wait()
+
+        self.play(graph.shift, 3 * LEFT)
+        self.play(FadeInFromDown(mat))
         self.wait()
