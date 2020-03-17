@@ -541,8 +541,8 @@ class GridGraph(VGroup):
     def get_labels(self):
         self.labels = VGroup()
         for i in range(int(self.m * self.n/2)):
-            w = TexMobject(fr"W_{i}")
-            b = TexMobject(fr"B_{i}")
+            w = TexMobject(fr"W_{i+1}")
+            b = TexMobject(fr"B_{i+1}")
             if (i // (2)) % 2 == 0:
                 wpos = 2 * i
                 bpos = 2 * i + 1
@@ -783,4 +783,49 @@ class Adj2(Scene):
 
         self.play(graph.shift, 3 * LEFT)
         self.play(FadeInFromDown(mat))
+        self.wait()
+
+
+class PermExample(Scene):
+    def construct(self):
+        li = TexMobject(
+            r"[", r"\ 1, ", r"\ 2, ", r"\ 6, \ 4, \ 3, \ 7, \ 8, \ 5 \ ]")
+        li.scale(1.5)
+        li.shift(3 * UP)
+
+        self.play(FadeInFromDown(li))
+
+        g = GridGraph(4, 4, s_width=1.5).shift(0.5 * DOWN)
+        g.set_black_white()
+        labels = g.get_labels()
+        circles = g.circles
+
+        self.play(FadeInFromDown(circles), FadeInFromDown(labels))
+        self.wait()
+
+        edges = VGroup()
+        edges.add(g.get_edge(0, 1))
+        edges.add(g.get_edge(2, 3))
+        edges.add(g.get_edge(7, 11))
+        edges.shift(0.5 * DOWN)
+        g.add_to_back(edges)
+
+        rect = BackgroundRectangle(
+            li[1],
+            buff=0.15,
+            stroke_width=6,
+            stroke_opacity=1,
+            fill_opacity=0,
+            color=YELLOW
+        )
+        self.bring_to_back(edges[0])
+        self.play(Write(rect), Write(edges[0]))
+        self.wait()
+
+        self.bring_to_back(edges[1])
+        self.play(ApplyMethod(rect.shift, 0.95 * RIGHT), Write(edges[1]))
+        self.wait()
+
+        self.bring_to_back(edges[2])
+        self.play(ApplyMethod(rect.shift, 0.95 * RIGHT), Write(edges[2]))
         self.wait()
