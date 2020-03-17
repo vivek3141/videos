@@ -886,3 +886,29 @@ class PermExample(AdjScene):
         self.play(Uncreate(eqn), ApplyMethod(eq2.shift, 3 * UP))
         self.play(Write(eq3))
         self.wait()
+
+
+class NewQuestion(Scene):
+    def construct(self):
+        eqn = TexMobject(
+            r"\text{Given adjacency matrix } A", tex_to_color_map={r"A": RED})
+        eq1 = TexMobject(
+            r"\text{Find some matrix } \hat{A} \text{ such that}", tex_to_color_map={r"A": RED})
+        eq2 = TexMobject(r"| \text{det}( \hat{A} ) |  = \text{per}(A)", r" = T(m, n)",
+                         tex_to_color_map={
+                             r"\text{per}": GOLD,
+                             r"\text{det}": BLUE,
+                             r"A": RED,
+                             r"m": RED,
+                             r"n": GREEN
+                         })
+        eqn.shift(2 * UP)
+        eq1.shift(1 * UP)
+        eq2.shift(1 * DOWN)
+        eq2.scale(2)
+
+        grp = VGroup(eqn, eq1)
+
+        self.play(FadeInFromDown(grp))
+        self.play(FadeInFromDown(eq2))
+        self.wait()
