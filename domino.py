@@ -500,12 +500,12 @@ class GridGraph(VGroup):
         self.circles = VGroup()
         self.lines = VGroup()
 
-        for i in range(m):
+        for i in range(n):
             self.lines.add(
-                Line(self.get_point(m * i), self.get_point(m * i + n - 1))
+                Line(self.get_point(m * i), self.get_point(m * i + m - 1))
             )
 
-        for i in range(n):
+        for i in range(m):
             self.lines.add(
                 Line(self.get_point(i), self.get_point(i + m * (n - 1)))
             )
@@ -519,7 +519,7 @@ class GridGraph(VGroup):
         self.add(self.lines, self.circles)
 
     def get_point(self, n):
-        return self.s_width * np.array([n % self.m - self.s_width, self.s_width - n // self.n, 0])
+        return self.s_width * np.array([n % self.m - self.s_width, self.s_width - n // self.m, 0])
 
     def get_edge(self, pos1, pos2, color=RED):
         return Line(self.get_point(pos1), self.get_point(pos2), color=color, stroke_width=8)
@@ -532,27 +532,43 @@ class GridGraph(VGroup):
         return edges
 
     def set_black_white(self):
-        for i in range(self.m * self.n):
-            c = self.bw[i % 2] if (
-                i // self.m) % 2 == 0 else self.bw[(i + 1) % 2]
-            self.circles[i].set_fill(color=c)
-            self.circles[i].set_stroke(color=c)
+        if self.m % 2 == 1 or self.n % 2 == 1:
+            for i in range(self.m * self.n):
+                c = self.bw[i % 2]
+                self.circles[i].set_fill(color=c)
+                self.circles[i].set_stroke(color=c)
+        else:
+            for i in range(self.m * self.n):
+                c = self.bw[i % 2] if (
+                    i // self.m) % 2 == 0 else self.bw[(i + 1) % 2]
+                self.circles[i].set_fill(color=c)
+                self.circles[i].set_stroke(color=c)
 
     def get_labels(self):
         self.labels = VGroup()
-        for i in range(int(self.m * self.n/2)):
-            w = TexMobject(fr"W_{i+1}")
-            b = TexMobject(fr"B_{i+1}")
-            if (i // (2)) % 2 == 0:
+        if self.m % 2 == 1 or self.n % 2 == 1:
+            for i in range(int(self.m * self.n/2)):
+                w = TexMobject(fr"W_{i+1}")
+                b = TexMobject(fr"B_{i+1}")
                 wpos = 2 * i
                 bpos = 2 * i + 1
-            else:
-                wpos = 2 * i + 1
-                bpos = 2 * i
+                w.move_to(self.circles[wpos], UP)
+                b.move_to(self.circles[bpos], UP)
+                self.labels.add(w, b)
+        else:
+            for i in range(int(self.m * self.n/2)):
+                w = TexMobject(fr"W_{i+1}")
+                b = TexMobject(fr"B_{i+1}")
+                if (i // (2)) % 2 == 0:
+                    wpos = 2 * i
+                    bpos = 2 * i + 1
+                else:
+                    wpos = 2 * i + 1
+                    bpos = 2 * i
 
-            w.move_to(self.circles[wpos], UP)
-            b.move_to(self.circles[bpos], UP)
-            self.labels.add(w, b)
+                w.move_to(self.circles[wpos], UP)
+                b.move_to(self.circles[bpos], UP)
+                self.labels.add(w, b)
         self.labels.shift(0.5 * UP)
         return self.labels
 
@@ -912,3 +928,12 @@ class NewQuestion(Scene):
         self.play(FadeInFromDown(grp))
         self.play(FadeInFromDown(eq2))
         self.wait()
+
+
+class SigningIntro(Scene):
+    def construct(self):
+        graph = GridGraph(3, 2, s_width=1.5)
+        graph.set_black_white()
+        graph.lines.set_stroke(opacity=0.5)
+        labels = graph.get_labels()
+        self.add(graph, labels)
