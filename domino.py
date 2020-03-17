@@ -579,6 +579,7 @@ class PerfectBipartiteGraph(VGroup):
         self.line_color = line_color
 
         self.vertices = [None for i in range(2 * n)]
+        self.lines = VGroup()
 
         for i in range(n):
             self.vertices[i] = Circle(
@@ -602,10 +603,17 @@ class PerfectBipartiteGraph(VGroup):
                  self.vertices[v2].get_center())
         )
 
+    def get_edge(self, v1, v2):
+        return (
+            Line(self.vertices[v1].get_center(),
+                 self.vertices[v2].get_center())
+        )
+
     def add_perm(self, perm):
         for n, i in enumerate(perm):
             for x in i:
-                self.add_edge(n, x + self.n)
+                self.lines.add(self.get_edge(n, x + self.n))
+        self.add_to_back(self.lines)
 
 
 class BipartiteGraphs(Scene):
@@ -663,5 +671,48 @@ class GridGraphBipartite(Scene):
         labels.shift(0.5 * UP)
 
         self.play(Transform(g, g3))
-        self.play(Write(labels))
+        self.play(FadeInFromDown(labels))
         self.wait()
+
+
+class Matrix(VGroup):
+    def __init__(self, vals, p=0.5, **kwargs):
+        VGroup.__init__(self, **kwargs)
+        self.m = len(vals)
+        self.n = len(vals[0])
+        self.nums = VGroup()
+
+        l1 = Line(ORIGIN, self.m * DOWN).shift(p * LEFT).shift(0.45 * UP)
+        l2 = Line(0.45 * UP, 0.45 * UP + 0.22 * RIGHT).shift(p * LEFT)
+        l3 = Line(0.45 * UP, 0.45 * UP + 0.22 *
+                  RIGHT).shift(p * LEFT + (self.m) * DOWN)
+
+        l4 = Line(ORIGIN,
+                  self.m * DOWN).shift((self.m - 1) * RIGHT).shift(0.45 * UP + p * RIGHT)
+        l5 = Line(0.45 * UP, 0.45 * UP + 0.22 *
+                  LEFT).shift((self.m - 1 + p) * RIGHT)
+        l6 = Line(0.45 * UP, 0.45 * UP + 0.22 *
+                  LEFT).shift((self.m - 1 + p) * RIGHT + self.m * DOWN)
+
+        lines = VGroup(l1, l2, l3, l4, l5, l6)
+
+        for x in range(self.m):
+            for y in range(self.n):
+                t = TexMobject(str(vals[x][y])).shift(y * RIGHT + x * DOWN)
+                self.nums.add(t)
+
+        self.add(self.nums)
+        self.add(lines)
+
+        self.center()
+
+
+class AdjacencyMatrix(Scene):
+    def construct(self):
+        vals = [[0, 1, 0], [0, 0, 1], [1, 0, 0]]
+        mat = Matrix(vals)
+
+        graph = PerfectBipartiteGraph()
+        graph.add_perm([[1], [2], [0]])
+
+        self.add(mat)
