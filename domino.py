@@ -495,6 +495,7 @@ class GridGraph(VGroup):
         self.s_width = s_width
         self.colors = [TEAL, MAROON, GREEN]
         self.circles = VGroup()
+        self.bw = ["#FFE9B3", "#4E7C4C"]
 
         for i in range(m):
             self.add(
@@ -512,6 +513,8 @@ class GridGraph(VGroup):
                     self.get_point(i))
             )
 
+        self.add(self.circles)
+
     def get_point(self, n):
         return self.s_width * np.array([n % self.m - self.s_width, self.s_width - n // self.n, 0])
 
@@ -526,8 +529,11 @@ class GridGraph(VGroup):
         return edges
 
     def set_black_white(self):
-        for i in range(self.m):
-            pass
+        for i in range(self.m * self.n):
+            c = self.bw[i % 2] if (
+                i // self.m) % 2 == 0 else self.bw[(i + 1) % 2]
+            self.circles[i].set_fill(color=c)
+            self.circles[i].set_stroke(color=c)
 
 
 class GridGraphIntro(Scene):
@@ -616,4 +622,17 @@ class BipartiteGraphs(Scene):
 
         self.play(FadeInFromDown(title))
         self.play(Write(b1), Write(b2))
+        self.wait()
+
+
+class GridGraphBipartite(Scene):
+    def construct(self):
+        g = GridGraph(4, 4, s_width=1.5)
+        g2 = GridGraph(4, 4, s_width=1.5)
+        g2.set_black_white()
+
+        self.play(Write(g))
+        self.wait()
+
+        self.play(Transform(g, g2))
         self.wait()
