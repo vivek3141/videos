@@ -494,6 +494,7 @@ class GridGraph(VGroup):
         self.n = n
         self.s_width = s_width
         self.colors = [TEAL, MAROON, GREEN]
+        self.circles = VGroup()
 
         for i in range(m):
             self.add(
@@ -506,7 +507,7 @@ class GridGraph(VGroup):
             )
 
         for i in range(0, m * n):
-            self.add(
+            self.circles.add(
                 Circle(radius=0.15, color=self.colors[i % len(self.colors)], fill_opacity=1).shift(
                     self.get_point(i))
             )
@@ -523,6 +524,10 @@ class GridGraph(VGroup):
             edges.add(self.get_edge(
                 *sorted([2 * n if (n // (self.m/2)) % 2 == 0 else 2 * n + 1, i])))
         return edges
+
+    def set_black_white(self):
+        for i in range(self.m):
+            pass
 
 
 class GridGraphIntro(Scene):
@@ -565,17 +570,20 @@ class PerfectBipartiteGraph(VGroup):
         self.line_color = line_color
 
         self.vertices = [None for i in range(2 * n)]
+
         for i in range(n):
             self.vertices[i] = Circle(
                 radius=radius,
                 color=vertex_color,
                 fill_opacity=1,
                 fill_color=BLACK).shift(w * LEFT + i * p * DOWN)
+
             self.vertices[i + n] = Circle(
                 radius=radius,
                 color=vertex_color,
                 fill_opacity=1,
                 fill_color=BLACK).shift(w * RIGHT + i * p * DOWN)
+
         self.add(*self.vertices)
         self.center()
 
