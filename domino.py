@@ -493,17 +493,20 @@ class GridGraph(VGroup):
         self.m = m
         self.n = n
         self.s_width = s_width
+
         self.colors = [TEAL, MAROON, GREEN]
-        self.circles = VGroup()
         self.bw = ["#FFE9B3", "#4E7C4C"]
 
+        self.circles = VGroup()
+        self.lines = VGroup()
+
         for i in range(m):
-            self.add(
+            self.lines.add(
                 Line(self.get_point(m * i), self.get_point(m * i + n - 1))
             )
 
         for i in range(n):
-            self.add(
+            self.lines.add(
                 Line(self.get_point(i), self.get_point(i + m * (n - 1)))
             )
 
@@ -513,7 +516,7 @@ class GridGraph(VGroup):
                     self.get_point(i))
             )
 
-        self.add(self.circles)
+        self.add(self.circles, self.lines)
 
     def get_point(self, n):
         return self.s_width * np.array([n % self.m - self.s_width, self.s_width - n // self.n, 0])
@@ -631,8 +634,34 @@ class GridGraphBipartite(Scene):
         g2 = GridGraph(4, 4, s_width=1.5)
         g2.set_black_white()
 
+        g3 = GridGraph(4, 4, s_width=1.5)
+        g3.set_black_white()
+        g3.lines.set_opacity(0.3)
+
         self.play(Write(g))
         self.wait()
 
         self.play(Transform(g, g2))
+        self.wait()
+
+        labels = VGroup()
+
+        for i in range(8):
+            w = TexMobject(fr"W_{i}")
+            b = TexMobject(fr"B_{i}")
+            if (i // (2)) % 2 == 0:
+                wpos = 2 * i
+                bpos = 2 * i + 1
+            else:
+                wpos = 2 * i + 1
+                bpos = 2 * i
+
+            w.move_to(g.circles[wpos], UP)
+            b.move_to(g.circles[bpos], UP)
+            labels.add(w, b)
+            
+        labels.shift(0.5 * UP)
+
+        self.play(Transform(g, g3))
+        self.play(Write(labels))
         self.wait()
