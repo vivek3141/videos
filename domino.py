@@ -936,4 +936,39 @@ class SigningIntro(Scene):
         graph.set_black_white()
         graph.lines.set_stroke(opacity=0.5)
         labels = graph.get_labels()
-        self.add(graph, labels)
+        g = VGroup(graph, labels)
+        g.center()
+
+        e = TexMobject(r"\text{Edge } e", tex_to_color_map={
+                       r"\text{Edge }": RED}).scale(1.5)
+        s = TexMobject(r"\sigma", color=YELLOW).scale(2)
+        o = TexMobject(r"\pm 1", color=BLUE).scale(1.5)
+
+        a1 = Arrow(1.5 * LEFT, 0.5 * LEFT, buff=10, color=PURPLE).shift(3 * UP)
+        a2 = Arrow(0.5 * RIGHT, 1.5 * RIGHT, buff=10,
+                   color=PURPLE).shift(3 * UP)
+
+        e.shift(3 * LEFT + 3 * UP)
+        o.shift(2.5 * RIGHT + 3 * UP)
+        s.shift(3 * UP)
+
+        grp = VGroup(e, s, o, a1, a2)
+
+        weights = VGroup()
+        n = 1
+        for x in [-0.75, 0.75]:
+            for y in [-0.75, 0.75]:
+                l = TexMobject(str(n), color=BLUE).shift([x, y, 0]).scale(0.75)
+                weights.add(l)
+                n = -n
+        weights.add(
+            TexMobject("1", color=BLUE).shift([-1.8, 0, 0]).scale(0.75),
+            TexMobject("-1", color=BLUE).shift([1.8, 0, 0]).scale(0.75),
+            TexMobject("-1", color=BLUE).shift([0.3, 0, 0]).scale(0.75)
+        )
+        grp2 = VGroup(g, weights)
+        grp2.scale(1.5)
+        
+        self.play(FadeInFromDown(grp), FadeInFromDown(
+            g), FadeInFromDown(weights))
+        self.wait()
