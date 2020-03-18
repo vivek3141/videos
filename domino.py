@@ -1312,6 +1312,23 @@ class Example(Scene):
                             0 & 0 & 0 & 0 & 0 & 1 & 1 & 0 \\ \
                             0 & 0 & 0 & 0 & 1 & 0 & 1 & 1 \
                             \end{array}\right]")
+        mat.scale(0.5)
+        mat.shift(2 * RIGHT + 2 * UP)
+
+        self.play(Write(mat))
+        self.wait()
+
+        ans = TexMobject(r"T(4,4) = \text{det}(A^{\sigma}) = ", r"36",
+                         tex_to_color_map={r"\text{det}": GOLD, r"A^{\sigma}": RED, r"4": BLUE, r"T": GREEN})
+        ans.scale(1.5)
+        ans.shift(2 * RIGHT + 2 * DOWN)
+        rect = BackgroundRectangle(
+            ans[-1], color=YELLOW, stroke_opacity=1, stroke_width=6, fill_opacity=0, buff=0.2)
+
+        self.play(Write(ans[:-1]))
+        self.play(FadeInFromDown(ans[-1]))
+        self.play(Write(rect))
+        self.wait()
 
     def get_faces(self):
         flbl = VGroup()
