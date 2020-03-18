@@ -1090,11 +1090,11 @@ class CycleIntro(Scene):
         self.bring_to_back(lines)
 
         lbl1 = TextMobject(
-            r"Evenly-Spaced", color=TEAL).shift(3 * LEFT + 3 * DOWN)
+            r"Evenly-Spaced", color=GOLD).shift(3 * LEFT + 3 * DOWN)
         lbl1.scale(1.25)
 
         lbl2 = TextMobject(r"Not Evenly-Spaced",
-                           color=TEAL).shift(3 * RIGHT + 3 * DOWN)
+                           color=GOLD).shift(3 * RIGHT + 3 * DOWN)
         lbl2.scale(1.25)
 
         self.play(FadeInFromDown(lbl1))
@@ -1110,4 +1110,34 @@ class CycleIntro(Scene):
         g2 = VGroup(graph2.lines, edges2, graph2.circles)
 
         self.play(Write(g2), FadeInFromDown(lbl2))
+        self.wait()
+
+        signs1 = VGroup()
+        edges1_signs = [-1, 1, 1, -1, 1, -1, 1, 1]
+        edges1_direc = [UP, RIGHT, UP, RIGHT, UP, UP, LEFT, LEFT]
+        for n, i in enumerate(edges):
+            lbl = TexMobject("-1" if edges1_signs[n] < 0 else "+1", color=BLUE)
+            lbl.move_to(i)
+            lbl.scale(0.75)
+            lbl.shift(edges1_direc[n] * 0.3)
+            signs1.add(lbl)
+
+        signs2 = VGroup()
+        edges2_signs = [*[-1 for i in range(8)], *[1 for i in range(4)]]
+        edges2_direc = [UP, UP, RIGHT, UP, RIGHT,
+                        UP, UP, LEFT, DOWN, LEFT, LEFT, LEFT]
+        for n, i in enumerate(edges2[1:]):
+            lbl = TexMobject("-1" if edges2_signs[n] < 0 else "+1", color=BLUE)
+            lbl.move_to(i)
+            lbl.scale(0.75)
+            lbl.shift(edges2_direc[n] * 0.3)
+            signs2.add(lbl)
+
+        title1 = TextMobject("Properly-Signed", color=GREEN)
+        title2 = TextMobject("Not Properly-Signed", color=GREEN)
+        title2.shift(3 * RIGHT + 3.5 * UP)
+        title1.shift(3 * LEFT + 3.5 * UP)
+
+        self.play(Write(signs1), Write(signs2))
+        self.play(FadeInFromDown(title1), FadeInFromDown(title2))
         self.wait()
