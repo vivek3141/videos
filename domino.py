@@ -958,13 +958,13 @@ class SigningIntro(Scene):
         n = 1
         for x in [-0.75, 0.75]:
             for y in [-0.75, 0.75]:
-                l = TexMobject(str(n), color=BLUE).shift([x, y, 0]).scale(0.75)
+                l = TexMobject("1", color=BLUE).shift([x, y, 0]).scale(0.75)
                 weights.add(l)
                 n = -n
         weights.add(
-            TexMobject("1", color=BLUE).shift([-1.8, 0, 0]).scale(0.75),
+            TexMobject("-1", color=BLUE).shift([-1.8, 0, 0]).scale(0.75),
             TexMobject("-1", color=BLUE).shift([1.8, 0, 0]).scale(0.75),
-            TexMobject("-1", color=BLUE).shift([0.3, 0, 0]).scale(0.75)
+            TexMobject("1", color=BLUE).shift([0.3, 0, 0]).scale(0.75)
         )
         grp2 = VGroup(g, weights)
         grp2.scale(1.5)
@@ -999,3 +999,40 @@ class SigningIntro(Scene):
         self.play(Write(eq2), Write(arrow))
         self.play(FadeInFromDown(kastelyn))
         self.wait()
+
+        self.play(Uncreate(grp), Uncreate(VGroup(kastelyn, arrow, eq2)))
+        self.play(ApplyMethod(grp2.scale, 0.75), ApplyMethod(mat.scale, 0.75))
+        self.play(ApplyMethod(grp2.shift, 2 * UP),
+                  ApplyMethod(mat.shift, 2 * UP))
+        self.wait()
+
+        eq3 = TexMobject(
+            r"T(2, 3)", r" = F_{4}", r" = 3", r"= \text{per}(A)", tex_to_color_map={
+                r"\text{per}": GOLD,
+                r"F": BLUE,
+                r"A": RED}
+        )
+        eq3.scale(1.4)
+        eq3.shift(1 * DOWN)
+
+        for a, b in [(0, 1), (1, 4), (4, 5), (5, len(eq3))]:
+            self.play(FadeInFromDown(eq3[a:b]))
+            self.wait(0.5)
+
+        eq4 = TexMobject(r"| \text{det} (A^{\sigma}) | = 3", tex_to_color_map={
+            r"\text{det}": BLUE,
+            r"A^{\sigma}": RED})
+        eq4.scale(1.4)
+        eq4.shift(2.5 * DOWN)
+
+        self.play(FadeInFromDown(eq4))
+        self.wait(0.5)
+
+        self.play(Uncreate(eq3[:5]))
+        self.play(eq4.shift, 1.5 * UP + 1 * LEFT)
+        self.wait()
+
+
+class PlanarIntro(Scene):
+    def construct(self):
+        pass
