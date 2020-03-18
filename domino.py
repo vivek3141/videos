@@ -494,7 +494,7 @@ class GridGraph(VGroup):
         self.n = n
         self.s_width = s_width
 
-        self.colors = [TEAL, MAROON, GREEN]
+        self.colors = [TEAL_D, MAROON_D, GREEN_D]
         self.bw = ["#FFE9B3", "#4E7C4C"]
 
         self.circles = VGroup()
@@ -1141,3 +1141,27 @@ class CycleIntro(Scene):
         self.play(Write(signs1), Write(signs2))
         self.play(FadeInFromDown(title1), FadeInFromDown(title2))
         self.wait()
+
+
+class Facts(Scene):
+    def construct(self):
+        l = 5.5
+        pad = 1.5
+        f1 = TextMobject("Fact 1:")
+        f1.shift(l * LEFT + (pad + 0.9) * UP)
+        f1.scale(1.5)
+
+        f2 = TextMobject("Fact 2:")
+        f2.shift(l * LEFT + pad * DOWN)
+
+        fact1 = TextMobject(
+            r"If every evenly-placed cycle in a \\ \
+                graph is perfectly-signed, then \( \sigma \) \\ \
+                    is a Kastelyn signing of the graph",
+            tex_to_color_map={"evenly-placed": GREEN, r"perfectly-signed": GOLD,
+                              r" \( \sigma \)": RED, "Kastelyn signing": TEAL})
+
+
+        fact1.shift(pad * UP + 1.5 * RIGHT)
+        fact1.scale(1.4)
+        self.add(fact1, f1)
