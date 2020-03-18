@@ -1081,3 +1081,33 @@ class CycleIntro(Scene):
             self.play(Write(i))
 
         self.wait()
+
+        self.play(Uncreate(title))
+
+        self.play(ApplyMethod(graph.shift, 3 * LEFT + 1 * UP),
+                  ApplyMethod(edges.shift, 3 * LEFT + 1 * UP))
+        self.bring_to_back(edges)
+        self.bring_to_back(lines)
+
+        lbl1 = TextMobject(
+            r"Evenly-Spaced", color=TEAL).shift(3 * LEFT + 3 * DOWN)
+        lbl1.scale(1.25)
+
+        lbl2 = TextMobject(r"Not Evenly-Spaced",
+                           color=TEAL).shift(3 * RIGHT + 3 * DOWN)
+        lbl2.scale(1.25)
+
+        self.play(FadeInFromDown(lbl1))
+
+        graph2 = GridGraph(4, 4, s_width=1.5)
+        cycle2 = [0, 1, 2, 6, 7, 11, 10, 9, 13, 12, 8, 4, 0]
+        edges2 = VGroup(
+            *[graph.get_edge(cycle2[i-1], cycle2[i]) for i in range(len(cycle2))]
+        )
+        graph2.shift(3 * RIGHT + 0.5 * UP)
+        edges2.shift(3 * RIGHT + 0.5 * UP)
+        graph2.lines.set_opacity(0.5)
+        g2 = VGroup(graph2.lines, edges2, graph2.circles)
+
+        self.play(Write(g2), FadeInFromDown(lbl2))
+        self.wait()
