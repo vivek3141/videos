@@ -1035,4 +1035,19 @@ class SigningIntro(Scene):
 
 class PlanarIntro(Scene):
     def construct(self):
-        pass
+        graph1 = PerfectBipartiteGraph()
+        graph1.add_perm([[0], [0, 1, 2], [2]])
+        graph1.shift(2.5 * LEFT + 1 * UP)
+
+        graph2 = PerfectBipartiteGraph()
+        graph2.add_perm([[0, 1, 2], [0, 1, 2], [0, 1, 2]])
+        graph2.shift(2.5 * RIGHT + 1 * UP)
+
+        lbl1 = TextMobject("Planar Graph", color=GOLD).shift(
+            2.5 * LEFT + 2 * DOWN)
+        lbl2 = TextMobject("Not Planar Graph", color=GOLD).shift(
+            2.5 * RIGHT + 2 * DOWN)
+
+        self.play(Write(graph1), FadeInFromDown(lbl1))
+        self.play(Write(graph2), FadeInFromDown(lbl2))
+        self.wait()
