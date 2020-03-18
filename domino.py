@@ -980,13 +980,22 @@ class SigningIntro(Scene):
             1 & 1 & 1 \
             \end{array}\right]"
         )
-        mat.shift(2 * RIGHT)
+        mat.shift(3.5 * RIGHT)
 
-        eq2 = TexMobject(r"| \text{det}( \hat{A} ) |  = \text{per}(A)", tex_to_color_map={
+        eq2 = TexMobject(r"| \text{det}( A^{\sigma} ) |  = \text{per}(A)", tex_to_color_map={
             r"\text{per}": GOLD,
             r"\text{det}": BLUE,
             r"A": RED
         })
-        
-        self.play(ApplyMethod(grp2.shift, 2 * LEFT), FadeInFromDown(mat))
+        eq2.shift(3 * DOWN + 3 * LEFT)
+        arrow = Arrow(LEFT, RIGHT, color=PURPLE).shift(3 * DOWN)
+
+        self.play(ApplyMethod(grp2.shift, 3.5 * LEFT), FadeInFromDown(mat))
+        self.wait()
+
+        kastelyn = TextMobject("Kastelyn Signing", color=YELLOW)
+        kastelyn.shift(3 * DOWN + 3 * RIGHT)
+
+        self.play(Write(eq2), Write(arrow))
+        self.play(FadeInFromDown(kastelyn))
         self.wait()
