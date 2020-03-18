@@ -1246,6 +1246,8 @@ class Example(Scene):
         self.play(Write(e1), Uncreate(flbl2[6]))
         self.wait()
 
+        rme = VGroup(e1)
+
         graph2.add(e1)
         graph2.add(graph2.circles)
 
@@ -1254,11 +1256,62 @@ class Example(Scene):
             ApplyMethod(g2.shift, 3.5 * LEFT),
             ApplyMethod(gl2.shift, 3.5 * LEFT)
         )
+        gl = TexMobject(r"\text{G}_i", color=YELLOW).shift(3 * DOWN).scale(1.5)
+        self.play(Transform(gl2, gl))
 
         for y in range(3, 0, -1):
             for x in range(0, 3):
-                ei = graph2.get_edge(4 * y + x, 4 * (y - 1) + x)
-                self.add(ei)
+                if y == 3 and x == 0:
+                    continue
+                ei = graph2.get_edge(4 * y + x, 4 * (y - 1) + x, color=BLACK)
+                ei.shift(0.5 * UP)
+                rme.add(ei)
+                self.bring_to_back(ei)
+                self.bring_to_back(graph2.lines)
+                self.play(Write(ei), Uncreate(flbl2[3 * y - 1 - (2 - x)]))
+                self.wait(0.5)
+
+        rect = Rectangle(height=3, width=2.5)
+        l1 = Line(LEFT, ORIGIN, stroke_width=6, color=BLUE).shift(0.625 * UP)
+        lbl1 = TexMobject(r"+1").scale(1.25).shift(0.625 * UP + 0.625 * RIGHT)
+
+        l2 = Line(LEFT, ORIGIN, stroke_width=6, color=RED).shift(0.625 * DOWN)
+        lbl2 = TexMobject(r"-1").scale(1.25).shift(0.625 *
+                                                   DOWN + 0.625 * RIGHT)
+
+        legend = VGroup(rect, l1, lbl1, l2, lbl2)
+        legend.scale(0.75)
+        legend.shift(5 * LEFT + 0.5 * UP)
+
+        self.play(Write(legend))
+        #self.play(ApplyMethod(graph2.lines.set_stroke, width=6))
+        self.play(graph2.lines.set_color, BLUE)
+        self.wait()
+
+        for n, i in enumerate(rme):
+            i.set_color(RED if n % 3 == 0 or n % 3 == 2 else BLUE)
+            i.set_stroke(width=6 if n % 3 == 0 or n % 3 == 2 else 4)
+            self.play(Write(i))
+            self.wait(0.5)
+
+        self.wait()
+
+        graph2.add(rme)
+        graph2.add(graph2.circles)
+        self.play(Uncreate(legend), Uncreate(gl2),
+                  ApplyMethod(graph2.scale, 0.5))
+        self.play(ApplyMethod(graph2.shift, 4 * LEFT))
+
+        mat = TexMobject(r"A^{\sigma}=\left[\begin{array}{cccccccc} \
+                            1 & 0 & 0 & -1 & 0 & 0 & 0 & 0 \\ \
+                            1 & 1 & -1 & 0 & 0 & 0 & 0 & 0 \\ \
+                            0 & 1 & 1 & 0 & 0 & 1 & 0 & 0 \\ \
+                            1 & 0 & 1 & 1 & 1 & 0 & 0 & 0 \\ \
+                            0 & 0 & 0 & -1 & 1 & 0 & 0 & -1 \\ \
+                            0 & 0 & -1 & 0 & 1 & 1 & -1 & 0 \\ \
+                            0 & 0 & 0 & 0 & 0 & 1 & 1 & 0 \\ \
+                            0 & 0 & 0 & 0 & 1 & 0 & 1 & 1 \
+                            \end{array}\right]")
 
     def get_faces(self):
         flbl = VGroup()
