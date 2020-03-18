@@ -968,7 +968,25 @@ class SigningIntro(Scene):
         )
         grp2 = VGroup(g, weights)
         grp2.scale(1.5)
-        
+
         self.play(FadeInFromDown(grp), FadeInFromDown(
             g), FadeInFromDown(weights))
+        self.wait()
+
+        mat = TexMobject(
+            r"A^{\sigma}=\left[\begin{array}{ccc} \
+            1 & 0 & -1 \\ \
+            1 & -1 & 0 \\ \
+            1 & 1 & 1 \
+            \end{array}\right]"
+        )
+        mat.shift(2 * RIGHT)
+
+        eq2 = TexMobject(r"| \text{det}( \hat{A} ) |  = \text{per}(A)", tex_to_color_map={
+            r"\text{per}": GOLD,
+            r"\text{det}": BLUE,
+            r"A": RED
+        })
+        
+        self.play(ApplyMethod(grp2.shift, 2 * LEFT), FadeInFromDown(mat))
         self.wait()
