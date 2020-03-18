@@ -1212,3 +1212,59 @@ class PlanarGraphProperty(Scene):
 
         self.play(FadeInFromDown(euler))
         self.wait()
+
+
+class Example(Scene):
+    def construct(self):
+        graph1 = GridGraph(4, 4, s_width=1.5)
+        graph1.lines.set_opacity(0.75)
+        flbl1 = self.get_faces()
+        g1 = VGroup(graph1, flbl1)
+        g1.shift(0.5 * UP)
+        gl1 = TextMobject("G", color=YELLOW).shift(3 * DOWN).scale(1.5)
+
+        self.play(Write(g1))
+        self.play(FadeInFromDown(gl1))
+        self.wait()
+
+        grp1 = VGroup(g1, gl1)
+
+        graph2 = GridGraph(4, 4, s_width=1.5)
+        graph2.lines.set_opacity(0.75)
+        flbl2 = self.get_faces()
+        g2 = VGroup(graph2, flbl2)
+        g2.shift(0.5 * UP + 3.5 * RIGHT)
+        gl2 = TexMobject(r"\text{G}_1", color=YELLOW).shift(
+            3 * DOWN + 3.5 * RIGHT).scale(1.5)
+
+        e1 = graph2.get_edge(8, 12, color=BLACK).shift(3.5 * RIGHT + 0.5 * UP)
+
+        self.play(grp1.shift, 3.5 * LEFT)
+        self.play(Write(g2), FadeInFromDown(gl2))
+        self.bring_to_back(e1)
+        self.bring_to_back(graph2.lines)
+        self.play(Write(e1), Uncreate(flbl2[6]))
+        self.wait()
+
+        graph2.add(e1)
+        graph2.add(graph2.circles)
+
+        self.play(Uncreate(grp1))
+        self.play(
+            ApplyMethod(g2.shift, 3.5 * LEFT),
+
+            ApplyMethod(gl2.shift, 3.5 * LEFT)
+        )
+
+        for y in range(3, 0, -1):
+            for x in range(0, 3):
+                pass
+
+    def get_faces(self):
+        flbl = VGroup()
+        i = 1
+        for y in np.arange(1.5, -1.6, -1.5):
+            for x in np.arange(-1.5, 1.6, 1.5):
+                flbl.add(TexMobject(rf"F_\text{{ {i} }}").shift([x, y, 0]))
+                i += 1
+        return flbl
