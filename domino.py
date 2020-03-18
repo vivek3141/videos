@@ -1284,7 +1284,6 @@ class Example(Scene):
         legend.shift(5 * LEFT + 0.5 * UP)
 
         self.play(Write(legend))
-        #self.play(ApplyMethod(graph2.lines.set_stroke, width=6))
         self.play(graph2.lines.set_color, BLUE)
         self.wait()
 
@@ -1338,3 +1337,19 @@ class Example(Scene):
                 flbl.add(TexMobject(rf"F_\text{{ {i} }}").shift([x, y, 0]))
                 i += 1
         return flbl
+
+
+class ClosedForm(Scene):
+    def construct(self):
+        title = TextMobject("Closed Form", color=GOLD)
+        title.scale(1.5)
+        title.shift(3 * UP)
+        eq = TexMobject(r"\begin{aligned} \
+            T(m, n) &=\prod_{k=1}^{m} \prod_{\ell=1}^{n}\left|2 \cos \frac{k \pi}{m+1}+2 \mathrm{i} \cos \frac{\ell \pi}{n+1}\right| \\ \
+            &=\prod_{k=1}^{m} \prod_{\ell=1}^{n}\left(4 \cos ^{2} \frac{k \pi}{m+1}+4 \cos ^{2} \frac{\ell \pi}{n+1}\right)^{1 / 2} \
+            \end{aligned}")
+        eq.scale(1.1)
+
+        self.play(FadeInFromDown(title))
+        self.play(Write(eq))
+        self.wait()
