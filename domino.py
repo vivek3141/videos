@@ -1051,3 +1051,33 @@ class PlanarIntro(Scene):
         self.play(Write(graph1), FadeInFromDown(lbl1))
         self.play(Write(graph2), FadeInFromDown(lbl2))
         self.wait()
+
+
+class CycleIntro(Scene):
+    def construct(self):
+        title = TextMobject("Cycle of a Graph", color=YELLOW)
+        title.scale(1.5)
+        title.shift(3 * UP)
+
+        graph = GridGraph(4, 4, s_width=1.5)
+        lines = graph.lines
+        lines.set_opacity(0.5)
+
+        cycle = [0, 1, 5, 6, 10, 9, 8, 4, 0]
+        edges = VGroup()
+
+        for i in range(1, len(cycle)):
+            edges.add(graph.get_edge(cycle[i-1], cycle[i]))
+
+        graph.shift(0.5 * DOWN)
+        edges.shift(0.5 * DOWN)
+
+        self.play(Write(graph), FadeInFromDown(title))
+        self.wait()
+
+        for i in edges:
+            self.bring_to_back(i)
+            self.bring_to_back(lines)
+            self.play(Write(i))
+
+        self.wait()
