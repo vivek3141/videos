@@ -494,7 +494,7 @@ class GridGraph(VGroup):
         self.n = n
         self.s_width = s_width
 
-        self.colors = [TEAL_D, MAROON_D, GREEN_D]
+        self.colors = [PURPLE_D, MAROON_D, GREEN_D]
         self.bw = ["#FFE9B3", "#4E7C4C"]
 
         self.circles = VGroup()
@@ -1161,7 +1161,37 @@ class Facts(Scene):
             tex_to_color_map={"evenly-placed": GREEN, r"perfectly-signed": GOLD,
                               r" \( \sigma \)": RED, "Kastelyn signing": TEAL})
 
-
         fact1.shift(pad * UP + 1.5 * RIGHT)
         fact1.scale(1.4)
-        self.add(fact1, f1)
+
+        self.play(FadeInFromDown(f1))
+        self.play(Write(fact1))
+        self.wait()
+
+
+class PlanarGraphProperty(Scene):
+    def construct(self):
+        graph = GridGraph(4, 4, s_width=1.5)
+        graph.lines.set_opacity(0.75)
+        graph.shift(0.5 * UP)
+
+        flbl = VGroup()
+
+        i = 1
+        for y in np.arange(2, -1.1, -1.5):
+            for x in np.arange(-1.5, 1.6, 1.5):
+                flbl.add(TexMobject(rf"F_\text{{ {i} }}").shift([x, y, 0]))
+                i += 1
+        flbl.add(TexMobject(r"F_\text{outer}").shift(4 * LEFT))
+
+        self.play(Write(graph))
+        self.play(Write(flbl))
+        self.wait()
+
+        euler = TexMobject(
+            r"V + F - E = 2", tex_to_color_map={"V": GREEN, "F": YELLOW, "E": RED})
+        euler.shift(3 * DOWN)
+        euler.scale(1.5)
+
+        self.play(FadeInFromDown(euler))
+        self.wait()
