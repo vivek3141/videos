@@ -1252,13 +1252,13 @@ class Example(Scene):
         self.play(Uncreate(grp1))
         self.play(
             ApplyMethod(g2.shift, 3.5 * LEFT),
-
             ApplyMethod(gl2.shift, 3.5 * LEFT)
         )
 
         for y in range(3, 0, -1):
             for x in range(0, 3):
-                pass
+                ei = graph2.get_edge(4 * y + x, 4 * (y - 1) + x)
+                self.add(ei)
 
     def get_faces(self):
         flbl = VGroup()
