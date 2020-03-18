@@ -1148,24 +1148,41 @@ class Facts(Scene):
         l = 5.5
         pad = 1.5
         f1 = TextMobject("Fact 1:")
-        f1.shift(l * LEFT + (pad + 0.9) * UP)
-        f1.scale(1.5)
+        f1.shift(l * LEFT + (pad + 0.75) * UP)
+        f1.scale(1.25)
 
         f2 = TextMobject("Fact 2:")
-        f2.shift(l * LEFT + pad * DOWN)
+        f2.shift(l * LEFT + (pad - 0.75) * DOWN)
+        f2.scale(1.25)
 
         fact1 = TextMobject(
             r"If every evenly-placed cycle in a \\ \
                 graph is perfectly-signed, then \( \sigma \) \\ \
                     is a Kastelyn signing of the graph",
             tex_to_color_map={"evenly-placed": GREEN, r"perfectly-signed": GOLD,
-                              r" \( \sigma \)": RED, "Kastelyn signing": TEAL})
+                              r" \( \sigma \)": RED, "Kastelyn signing": TEAL},
+            alignment=r"")
 
-        fact1.shift(pad * UP + 1.5 * RIGHT)
-        fact1.scale(1.4)
+        fact2 = TextMobject(
+            r"If every boundary cycle in a \\ \
+                grid graph is perfectly-signed, then \( \sigma \) \\ \
+                    is a Kastelyn signing of the graph",
+            tex_to_color_map={"boundary": PURPLE, r"perfectly-signed": GOLD,
+                              r" \( \sigma \)": RED, "Kastelyn signing": TEAL},
+            alignment=r"")
+
+        fact1.shift(pad * UP + 1 * RIGHT)
+        fact1.scale(1.25)
+
+        fact2.shift(pad * DOWN + 1.45 * RIGHT)
+        fact2.scale(1.25)
 
         self.play(FadeInFromDown(f1))
         self.play(Write(fact1))
+        self.wait()
+
+        self.play(FadeInFromDown(f2))
+        self.play(Write(fact2))
         self.wait()
 
 
