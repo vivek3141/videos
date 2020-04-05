@@ -205,22 +205,22 @@ class NeuralNetwork(Scene):
         text = brace.get_text("Bias")
 
         self.play(Write(network))
-        self.wait(2)
+        #self.wait()
 
         self.play(Write(neuron_arrow), Write(neuron_text))
-        self.wait(2)
+        #self.wait()
 
         self.play(Write(input_arrow), Write(input_text))
-        self.wait(2)
+        #self.wait()
 
         self.play(Write(output_arrow), Write(output_text))
-        self.wait(2)
+        #self.wait()
 
         self.play(Write(weight_arrow), Write(weight_text))
-        self.wait(2)
+        #self.wait()
 
         self.play(Write(brace), Write(text))
-        self.wait(2)
+        self.wait()
 
 
 class Sigmoid(GraphScene):
@@ -456,28 +456,28 @@ class NeuroEvolution(Scene):
         self.play(Write(one))
         self.play(Transform(one, head))
         self.play(Write(survival))
-        self.wait(2)
+        self.wait(0.25)
 
         self.play(ApplyMethod(one.shift, 3 * UP), Transform(survival, head2))
         self.play(Write(net_group))
-        self.wait(2)
+        self.wait(0.25)
 
         self.play(Write(text_group))
-        self.wait(2)
+        self.wait(0.25)
 
         self.play(Write(circle1), Write(circle2))
-        self.wait(2)
+        self.wait(0.25)
 
         self.play(Transform(circle1, net_group),
                   Uncreate(circle2),
                   Uncreate(text_group),
                   Uncreate(net_group))
-        self.wait(2)
+        self.wait(0.25)
 
         self.play(Write(text_group2))
         self.play(Write(circle3), Write(circle4))
 
-        self.wait(2)
+        self.wait(0.25)
 
         self.play(Uncreate(circle1),
                   Uncreate(text_group2),
@@ -485,7 +485,7 @@ class NeuroEvolution(Scene):
                   Uncreate(circle4),
                   Write(rep)
                   )
-        self.wait(2)
+        self.wait(0.25)
 
 
 class TWEANN(Scene):
