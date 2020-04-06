@@ -300,7 +300,6 @@ class DistanceFunc(Scene):
         self.play(Write(txt))
         self.wait()
 
-
     def f(self, x, alpha=0):
         return alpha * np.cos(PI/4 * x)
 
@@ -319,11 +318,12 @@ class Brac(Scene):
         br1 = ScreenRectangle(height=3, width=4).shift(3.5 * LEFT)
         br2 = ScreenRectangle(height=3, width=4).shift(3.5 * RIGHT)
 
-        t1 = TextMobject("3blue1brown", color=BLUE).shift(3.5 * LEFT + 2.5 * UP).scale(1.5)
-        t2 = TextMobject("VSauce", color=GREEN).shift(3.5 * RIGHT + 2.5 * UP).scale(1.5)
+        t1 = TextMobject("3blue1brown", color=BLUE).shift(
+            3.5 * LEFT + 2.5 * UP).scale(1.5)
+        t2 = TextMobject("VSauce", color=GREEN).shift(
+            3.5 * RIGHT + 2.5 * UP).scale(1.5)
 
         self.play(Write(t1), Write(t2))
         self.play(Write(br1), Write(br2))
         self.wait()
-
 
