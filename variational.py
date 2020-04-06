@@ -32,7 +32,7 @@ class Intro(Scene):
         self.play(Write(graph))
         self.wait()
 
-        head1 = TextMobject("Local min/max", color=GOLD_B)
+        head1 = TextMobject("Stationary Points", color=GOLD_B)
         head1.shift(3.5 * RIGHT + 2.5 * UP)
         head1.scale(1.25)
 
