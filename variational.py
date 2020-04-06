@@ -181,4 +181,28 @@ class Difference(Scene):
         self.play(Write(grp))
         self.wait()
 
-        
+        f1 = TexMobject("f", color=RED)
+        i1 = TexMobject(r"\mathbb{R}", color=YELLOW).shift(1.5 * LEFT)
+        o1 = TexMobject(r"\mathbb{R}", color=YELLOW).shift(1.5 * RIGHT)
+
+        a1 = Arrow(1.25 * LEFT, 0.25 * LEFT, color=GREEN)
+        a2 = Arrow(0.25 * RIGHT, 1.25 * RIGHT, color=GREEN)
+
+        eq1 = VGroup(f1, i1, o1, a1, a2)
+        eq1.shift(3.5 * LEFT)
+        eq1.scale(1.5)
+
+        f2 = TexMobject("f", color=RED)
+        i2 = TexMobject(r"f(x)", color=BLUE).shift(1.5 * LEFT)
+        o2 = TexMobject(r"\mathbb{R}", color=YELLOW).shift(1.5 * RIGHT)
+
+        a3 = Arrow(1 * LEFT, 0 * LEFT, color=GREEN)
+        a4 = Arrow(0.25 * RIGHT, 1.25 * RIGHT, color=GREEN)
+
+        eq2 = VGroup(f2, i2, o2, a3, a4)
+        eq2.shift(3.5 * RIGHT)
+        eq2.scale(1.5)
+
+        self.play(Write(eq1))
+        self.play(Write(eq2))
+        self.wait()
