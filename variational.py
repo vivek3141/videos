@@ -327,3 +327,28 @@ class Brac(Scene):
         self.play(Write(br1), Write(br2))
         self.wait()
 
+
+class IntroToProblem(Scene):
+    def construct(self):
+        head = TextMobject("Variational Calculus",
+                           color=GOLD).scale(1.5).shift(3 * UP)
+
+        self.play(Write(head))
+        self.wait()
+
+        p1 = TextMobject(r"Find some function \( f \) such that:",
+                         tex_to_color_map={r"\( f \)": RED})
+        p1.shift(1 * UP)
+
+        self.play(Write(p1))
+
+        eq1 = TexMobject(r"I[f] = \int_{ x_1 }^{ x_2 } F({x}, f({x}), f'({x})) \ \text{d}x",  tex_to_color_map={
+                         r"f": RED, "_{ x_1 }": YELLOW, "^{ x_2 }": YELLOW, r"\text{d}x": GREEN, r"{x}": BLUE, "I": BLUE, "F": PURPLE})
+        eq1.scale(1.25)
+        eq1.shift(0.5 * DOWN)
+        self.play(Write(eq1))
+
+        p2 = TextMobject(r"is stationary")
+        p2.shift(2 * DOWN)
+        self.play(Write(p2))
+        self.wait()
