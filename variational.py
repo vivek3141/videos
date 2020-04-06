@@ -160,3 +160,25 @@ class Functional(Scene):
 
     def func(self, t):
         return [t - self.f(t), t + self.f(t), 0]
+
+
+class Difference(Scene):
+    def construct(self):
+        t1 = TextMobject("Traditional Calculus", color=GOLD)
+        t2 = TextMobject("Variational Calculus", color=PURPLE)
+
+        t1.shift(3.5 * LEFT + 3 * UP)
+        t2.shift(3.5 * RIGHT + 3 * UP)
+
+        t1.scale(1.25)
+        t2.scale(1.25)
+
+        l1 = Line(6 * UP, 6 * DOWN)
+        l2 = Line(10 * LEFT, 10 * RIGHT).shift(2 * UP)
+
+        grp = VGroup(t1, t2, l1, l2)
+
+        self.play(Write(grp))
+        self.wait()
+
+        
