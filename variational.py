@@ -281,13 +281,25 @@ class DistanceFunc(Scene):
         self.play(FadeInFromDown(eq2[4:]))
         self.wait()
 
-        eq3 = TexMobject(r"= \int_{ x_1 }^{ x_2 } \sqrt{1 +f'(x)^2 }  \ \text{d}x", tex_to_color_map={
+        eq3 = TexMobject(r"=", r"\int_{ x_1 }^{ x_2 } \sqrt{1 +f'(x)^2 }  \ \text{d}x", tex_to_color_map={
                          "_{ x_1 }": YELLOW, "^{ x_2 }": YELLOW, r"\text{d}x": GREEN})
         eq3.scale(1)
         eq3.shift(1 * DOWN + 3 * RIGHT)
 
         self.play(FadeInFromDown(eq3))
         self.wait()
+
+        rect = BackgroundRectangle(eq3[1:], stroke_width=DEFAULT_STROKE_WIDTH,
+                                   stroke_opacity=1, color=GOLD, fill_opacity=0, buff=0.1)
+
+        self.play(Write(rect))
+
+        txt = TextMobject("Minimize this", color=ORANGE)
+        txt.next_to(rect, DOWN)
+
+        self.play(Write(txt))
+        self.wait()
+
 
     def f(self, x, alpha=0):
         return alpha * np.cos(PI/4 * x)
@@ -300,3 +312,18 @@ class DistanceFunc(Scene):
 
     def func(self, t):
         return [t - self.f(t), t + self.f(t), 0]
+
+
+class Brac(Scene):
+    def construct(self):
+        br1 = ScreenRectangle(height=3, width=4).shift(3.5 * LEFT)
+        br2 = ScreenRectangle(height=3, width=4).shift(3.5 * RIGHT)
+
+        t1 = TextMobject("3blue1brown", color=BLUE).shift(3.5 * LEFT + 2.5 * UP).scale(1.5)
+        t2 = TextMobject("VSauce", color=GREEN).shift(3.5 * RIGHT + 2.5 * UP).scale(1.5)
+
+        self.play(Write(t1), Write(t2))
+        self.play(Write(br1), Write(br2))
+        self.wait()
+
+
