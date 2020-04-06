@@ -32,18 +32,23 @@ class Intro(Scene):
         self.play(Write(graph))
         self.wait()
 
-        head1 = TextMobject("Local min/max", color=TEAL)
-        head1.shift(2.5 * LEFT + 3 * UP)
+        head1 = TextMobject("Local min/max", color=GOLD_B)
+        head1.shift(3.5 * RIGHT + 2.5 * UP)
+        head1.scale(1.25)
 
         self.play(Write(head1))
-        
+
         eq1 = TexMobject("f'(x) = 0")
-        eq1.scale(1.5)
-        eq1.shift(2.5 * LEFT + 2 * UP)
+        eq1.scale(1)
+        eq1.shift(3.5 * RIGHT + 1 * UP)
 
         self.wait()
 
+        brect = BackgroundRectangle(
+            eq1, buff=0.25, stroke_opacity=1, fill_opacity=0, stroke_width=6, color=BLUE)
+
         self.play(Write(eq1))
+        self.play(Write(brect), Write(lines))
         self.wait()
 
     def func(self, x):
