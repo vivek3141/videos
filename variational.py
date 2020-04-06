@@ -29,7 +29,22 @@ class Intro(Scene):
         grp = VGroup(graph, lines)
         grp.move_to(2.5 * LEFT)
 
-        self.add(grp)
+        self.play(Write(graph))
+        self.wait()
+
+        head1 = TextMobject("Local min/max", color=TEAL)
+        head1.shift(2.5 * LEFT + 3 * UP)
+
+        self.play(Write(head1))
+        
+        eq1 = TexMobject("f'(x) = 0")
+        eq1.scale(1.5)
+        eq1.shift(2.5 * LEFT + 2 * UP)
+
+        self.wait()
+
+        self.play(Write(eq1))
+        self.wait()
 
     def func(self, x):
         return x * np.sin(np.cos(x)) + 2
