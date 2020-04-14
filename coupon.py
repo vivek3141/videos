@@ -424,12 +424,12 @@ class ExpectBern(Scene):
     def construct(self):
         self.d = RollingDice()
         self.add(self.d)
-        self.roll()
+        self.roll(5)
         self.wait()
 
     def roll(self, value=None, time=2, a=2):
         value = random.randint(1, 6) if value is None else value
-        t = 0.1
+        t = 0.01
 
         while t < time:
             v = random.randint(1, 6)
@@ -438,6 +438,45 @@ class ExpectBern(Scene):
             t *= a
 
         self.d.set_value(value)
+
+
+class DiceExp(Scene):
+    def construct(self):
+        eq1 = TexMobject(
+            r"E[x] = \frac{1}{p}",
+            tex_to_color_map={"E": GOLD, "p": GREEN, "x": TEAL}
+        )
+        eq1.scale(1.5)
+        eq1.shift(2.5 * UP)
+
+        self.play(Write(eq1))
+        self.wait()
+
+        eq2 = TexMobject(
+            r"p = \frac{1}{6}",
+            tex_to_color_map={"p": GREEN}
+        )
+        eq2.scale(1.5)
+
+        eq3 = TexMobject(
+            r"E[x] = \frac{1}{1/6} = ", r"6",
+            tex_to_color_map={"E": GOLD, "x": TEAL}
+        )
+        eq3.scale(1.5)
+        eq3.shift(2.5 * DOWN)
+        rect = BackgroundRectangle(
+            eq3[-1],
+            stroke_opacity=1,
+            stroke_width=4,
+            fill_opacity=0,
+            color=YELLOW,
+            buff=0.2
+        )
+
+        self.play(Write(eq2))
+        self.play(Write(eq3))
+        self.play(Write(rect))
+        self.wait()
 
 
 class Asymptote(Scene):
