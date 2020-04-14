@@ -314,6 +314,18 @@ class Bernoulli(Scene):
         self.play(b.reset)
         self.wait()
 
+class RollingDice(VGroup):
+    def __init__(self, *args, **kwargs):
+        VGroup.__init__(*args, **kwargs)
+        
+
+
+class ExpectBern(Scene):
+    def construct(self):
+        d = RollingDice()
+        self.add(d)
+        d.roll()
+
 
 class Asymptote(Scene):
     CONFIG = {
