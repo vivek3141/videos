@@ -479,6 +479,19 @@ class DiceExp(Scene):
         self.wait()
 
 
+class NumberedCoupon(VGroup):
+    def __init__(self, *args, **kwargs):
+        VGroup.__init__(self, *args, **kwargs)
+        coupon = SVGMobject("./img/coupon.svg")
+        coupon.scale(2)
+        self.add(coupon)
+
+
+class FinalCalc(Scene):
+    def construct(self):
+        n1 = NumberedCoupon()
+        self.add(n1)
+
 class Asymptote(Scene):
     CONFIG = {
         "max_n": 77,
