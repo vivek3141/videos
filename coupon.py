@@ -324,11 +324,16 @@ class RollingDice(VGroup):
         self.add(rect)
 
     def roll(self, value=None, time=2, a=2):
+        value = random.randint(1, 6) if value is None else value
         t = 0.1
 
         while t < time:
-            value = random.randint(1, 6)
-        self.five()
+            v = random.randint(1, 6)
+            self.set_value(v)
+            self.wait(t)
+            t *= a
+
+        self.set_value(value)
 
     def set_value(self, value):
         if value == 1:
@@ -431,7 +436,7 @@ class ExpectBern(Scene):
     def construct(self):
         d = RollingDice()
         self.add(d)
-        d.six()
+        d.roll()
 
 
 class Asymptote(Scene):
