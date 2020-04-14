@@ -189,7 +189,6 @@ class Intro(Scene):
 
 class ExpectedValue(Scene):
     def construct(self):
-        """
         title = TextMobject("Expected value", color=GOLD)
         title.scale(1.5)
         title.shift(3 * UP)
@@ -224,10 +223,10 @@ class ExpectedValue(Scene):
         self.play(Write(tree))
         self.wait()
 
-        self.play(Write(lbl1))
-        self.play(Write(lbl2))
+        self.play(FadeInFromDown(lbl1))
+        self.play(FadeInFromDown(lbl2))
         self.wait()
-        """
+
         ans1 = TextMobject(r"\( = 5 \)", alignment="").scale(1.5)
         ans2 = TextMobject(r"\( = -2.5 \)", alignment="").scale(1.5)
 
@@ -242,6 +241,20 @@ class ExpectedValue(Scene):
         line.shift(2 * DOWN)
 
         self.play(Write(line))
+
+        ans = TexMobject(r"E[{x}] = \sum x_i p_i = ", r"2.5", tex_to_color_map={
+                         r"E": GOLD, r"{x}": BLUE, r"x_i": BLUE, r"p_i": ORANGE}).scale(1.5)
+        ans.shift(3 * DOWN + 2.1 * RIGHT)
+
+        self.play(Write(ans[-1]))
+
+        brect = BackgroundRectangle(
+            ans[-1], color=YELLOW, buff=0.2, fill_opacity=0, stroke_opacity=1, stroke_width=4)
+        self.play(Write(brect))
+        self.wait()
+
+        self.play(FadeInFromDown(ans[:-1]))
+        self.wait()
 
 
 class Asymptote(Scene):
