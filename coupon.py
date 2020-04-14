@@ -189,6 +189,7 @@ class Intro(Scene):
 
 class ExpectedValue(Scene):
     def construct(self):
+        """
         title = TextMobject("Expected value", color=GOLD)
         title.scale(1.5)
         title.shift(3 * UP)
@@ -206,9 +207,41 @@ class ExpectedValue(Scene):
         self.wait()
 
         tree = TreeMobject([1, 2])
-        
+        tree.add_labels(1, [r"\text{H}", r"\text{T}"])
+        tree.scale(3)
+        tree.shift(4 * LEFT + 0 * DOWN)
+
+        lbl1 = TexMobject(r"x_1 = + \$ 10", r"\cdot p_1 = 0.5", tex_to_color_map={
+                          r"x_1": BLUE, r"+ \$ 10": GREEN, r"p_1": ORANGE, r"0.5": GREEN})
+        lbl1.scale(1)
+        lbl1.shift(1 * UP + 1 * RIGHT)
+
+        lbl2 = TexMobject(r"x_2 = - \$ 5", r"\cdot p_2 = 0.5", tex_to_color_map={
+                          r"x_2": BLUE, r"- \$ 5": GREEN, r"p_2": ORANGE, r"0.5": GREEN})
+        lbl2.scale(1)
+        lbl2.shift(1 * DOWN + 1 * RIGHT)
+
         self.play(Write(tree))
         self.wait()
+
+        self.play(Write(lbl1))
+        self.play(Write(lbl2))
+        self.wait()
+        """
+        ans1 = TextMobject(r"\( = 5 \)", alignment="").scale(1.5)
+        ans2 = TextMobject(r"\( = -2.5 \)", alignment="").scale(1.5)
+
+        ans1.shift(1 * UP + 4.4 * RIGHT)
+        ans2.shift(1 * DOWN + 5 * RIGHT)
+
+        self.play(Write(ans1))
+        self.play(Write(ans2))
+        self.wait()
+
+        line = Line(3.5 * RIGHT, 6.5 * RIGHT)
+        line.shift(2 * DOWN)
+
+        self.play(Write(line))
 
 
 class Asymptote(Scene):
