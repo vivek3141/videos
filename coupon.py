@@ -257,6 +257,64 @@ class ExpectedValue(Scene):
         self.wait()
 
 
+class Tails(Scene):
+    def construct(self):
+        eq1 = TexMobject(
+            r"\left ( \frac{1}{2} \right )",
+            r"\left ( \frac{1}{2} \right )",
+            r"\left ( \frac{1}{2} \right )"
+        ).scale(2)
+
+        eq1[:2].set_color_by_gradient(RED, ORANGE)
+        eq1[2].set_color(YELLOW, GOLD)
+
+        b1 = Brace(eq1[:2])
+        l1 = b1.get_tex(r"\text{tails}")
+        brace1 = VGroup(b1, l1)
+
+        b2 = Brace(eq1[-1])
+        l2 = b2.get_tex(r"\text{heads}")
+        brace2 = VGroup(b2, l2)
+
+        self.play(Write(eq1))
+        self.play(Write(brace1), Write(brace2))
+        self.wait()
+
+        ans = TexMobject(r"=  \frac{1}{8}")
+        ans.scale(2)
+        ans.shift(3.2 * RIGHT)
+
+        self.play(
+            ApplyMethod(eq1.shift, 1.3 * LEFT),
+            ApplyMethod(brace1.shift, 1.3 * LEFT),
+            ApplyMethod(brace2.shift, 1.3 * LEFT)
+        )
+        self.play(FadeInFromDown(ans))
+        self.wait()
+
+
+class Bernoulli(Scene):
+    def construct(self):
+        title = TextMobject("Bernoulli Trial", color=TEAL)
+        title.scale(1.5)
+        title.shift(3 * UP)
+
+        b = BulletedList(
+            "Trial is independent", "Trial has two outcomes", "Probability of success doesn't change",
+            dot_scale_factor=5).scale(1.5)
+
+        self.play(Write(title))
+        self.play(Write(b))
+        self.wait()
+
+        for i in range(0, 3):
+            self.play(b.fade_all_but, i)
+            self.wait()
+
+        self.play(b.reset)
+        self.wait()
+
+
 class Asymptote(Scene):
     CONFIG = {
         "max_n": 77,
