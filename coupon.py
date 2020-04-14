@@ -314,17 +314,108 @@ class Bernoulli(Scene):
         self.play(b.reset)
         self.wait()
 
+
 class RollingDice(VGroup):
     def __init__(self, *args, **kwargs):
-        VGroup.__init__(*args, **kwargs)
-        
+        VGroup.__init__(self, *args, **kwargs)
+        rect = Rectangle(height=2, width=2)
+        self.dots = VGroup()
+        self.add(self.dots)
+        self.add(rect)
+
+    def roll(self, value=None):
+        if value is None:
+            value = random.randint(1, 6)
+        self.five()
+
+    def one(self):
+        self.remove(self.dots)
+        self.dots = VGroup()
+        self.dots.add(
+            Circle(radius=0.1, fill_opacity=1, color=WHITE)
+        )
+        self.add(self.dots)
+
+    def two(self):
+        self.remove(self.dots)
+        self.dots = VGroup()
+        self.dots.add(
+            Circle(radius=0.1, fill_opacity=1,
+                   color=WHITE).shift([0.4, 0.4, 0]),
+            Circle(radius=0.1, fill_opacity=1,
+                   color=WHITE).shift([-0.4, -0.4, 0])
+        )
+        self.add(self.dots)
+
+    def three(self):
+        self.remove(self.dots)
+        self.dots = VGroup()
+        self.dots.add(
+            Circle(radius=0.1, fill_opacity=1, color=WHITE),
+            Circle(radius=0.1, fill_opacity=1,
+                   color=WHITE).shift([0.5, 0.5, 0]),
+            Circle(radius=0.1, fill_opacity=1,
+                   color=WHITE).shift([-0.5, -0.5, 0])
+        )
+        self.add(self.dots)
+
+    def four(self):
+        self.remove(self.dots)
+        self.dots = VGroup()
+        self.dots.add(
+            Circle(radius=0.1, fill_opacity=1,
+                   color=WHITE).shift([-0.45, 0.45, 0]),
+            Circle(radius=0.1, fill_opacity=1,
+                   color=WHITE).shift([0.45, -0.45, 0]),
+            Circle(radius=0.1, fill_opacity=1,
+                   color=WHITE).shift([0.45, 0.45, 0]),
+            Circle(radius=0.1, fill_opacity=1,
+                   color=WHITE).shift([-0.45, -0.45, 0])
+        )
+        self.add(self.dots)
+
+    def five(self):
+        self.remove(self.dots)
+        self.dots = VGroup()
+        self.dots.add(
+            Circle(radius=0.1, fill_opacity=1, color=WHITE),
+            Circle(radius=0.1, fill_opacity=1,
+                   color=WHITE).shift([-0.5, 0.5, 0]),
+            Circle(radius=0.1, fill_opacity=1,
+                   color=WHITE).shift([0.5, -0.5, 0]),
+            Circle(radius=0.1, fill_opacity=1,
+                   color=WHITE).shift([0.5, 0.5, 0]),
+            Circle(radius=0.1, fill_opacity=1,
+                   color=WHITE).shift([-0.5, -0.5, 0])
+        )
+        self.add(self.dots)
+
+    def six(self):
+        self.remove(self.dots)
+        self.dots = VGroup()
+        self.dots.add(
+
+            Circle(radius=0.1, fill_opacity=1,
+                   color=WHITE).shift([-0.5, 0.5, 0]),
+            Circle(radius=0.1, fill_opacity=1,
+                   color=WHITE).shift([0.5, -0.5, 0]),
+            Circle(radius=0.1, fill_opacity=1,
+                   color=WHITE).shift([0.5, 0.5, 0]),
+            Circle(radius=0.1, fill_opacity=1,
+                   color=WHITE).shift([-0.5, -0.5, 0]),
+            Circle(radius=0.1, fill_opacity=1,
+                   color=WHITE).shift([0, 0.5, 0]),
+            Circle(radius=0.1, fill_opacity=1,
+                   color=WHITE).shift([0, -0.5, 0])
+        )
+        self.add(self.dots)
 
 
 class ExpectBern(Scene):
     def construct(self):
         d = RollingDice()
         self.add(d)
-        d.roll()
+        d.six()
 
 
 class Asymptote(Scene):
