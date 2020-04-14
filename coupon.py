@@ -323,10 +323,26 @@ class RollingDice(VGroup):
         self.add(self.dots)
         self.add(rect)
 
-    def roll(self, value=None):
-        if value is None:
+    def roll(self, value=None, time=2, a=2):
+        t = 0.1
+
+        while t < time:
             value = random.randint(1, 6)
         self.five()
+
+    def set_value(self, value):
+        if value == 1:
+            self.one()
+        elif value == 2:
+            self.two()
+        elif value == 3:
+            self.three()
+        elif value == 4:
+            self.four()
+        elif value == 5:
+            self.five()
+        elif value == 6:
+            self.six()
 
     def one(self):
         self.remove(self.dots)
