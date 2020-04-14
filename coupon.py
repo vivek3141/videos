@@ -480,17 +480,67 @@ class DiceExp(Scene):
 
 
 class NumberedCoupon(VGroup):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, number, color=YELLOW, *args, **kwargs):
         VGroup.__init__(self, *args, **kwargs)
-        coupon = SVGMobject("./img/coupon.svg")
-        coupon.scale(2)
-        self.add(coupon)
+        coupon = SVGMobject("./img/coupon.svg", stroke_width=2)
+        coupon.rotate(-PI/2)
+        coupon.set_opacity(0.5)
+        coupon.set_stroke(opacity=0.5)
+
+        n = TexMobject(number, color=color)
+        n.scale(2)
+        n.shift(0.4 * UP)
+
+        self.add(coupon, n)
 
 
 class FinalCalc(Scene):
     def construct(self):
-        n1 = NumberedCoupon()
-        self.add(n1)
+        have = VGroup()
+        for i in range(1, 6):
+            have.add(
+                NumberedCoupon(i).scale(0.5).shift((3-(1.5*(i-1))) * RIGHT)
+            )
+        have.shift(2.5 * UP + 0.5 * RIGHT)
+
+        dont = VGroup()
+        for i in range(1, 6):
+            dont.add(
+                NumberedCoupon(i, color=GREEN).scale(0.5).shift((3-(1.5*(i-1))) * RIGHT)
+            )
+        dont.shift(0.5 * RIGHT)
+
+        t1 = TextMobject("Have:", alignment="", color=YELLOW)
+        t1.scale(1)
+        t1.shift(2.5 * UP + 5.6 * LEFT)
+
+        t2 = TextMobject("Don't have:", color=GREEN)
+        t2.scale(1)
+        t2.shift(5 * LEFT)
+
+        self.play(
+            Write(have),
+            Write(t1),
+            Write(t2)
+        )
+        self.wait()
+
+        eq1 = TexMobject(
+            r"\text{P}(\text{new coupon)} = {",
+            r"7",
+            r"\over 7} = 1.00"
+        )
+        eq1.scale(1.5)
+        eq1.shift(2.5 * DOWN)
+
+        self.play(
+            Write(eq1)
+        )
+        self.play(
+            Transform(have[3], dont[3])
+        )
+        self.wait()
+
 
 class Asymptote(Scene):
     CONFIG = {
