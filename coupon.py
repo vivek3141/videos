@@ -520,13 +520,14 @@ class FinalCalc(Scene):
         t2.shift(5.6 * LEFT)
 
         eq1 = TexMobject(
-            r"\text{P}(\text{new coupon)} = {",
+            r"\text{P}(\text{new coupon}) = {",
             r"5",
-            r"\over 5} = 1.00"
+            r"\over 5} = 1.00",
+            tex_to_color_map={r"\text{P}": TEAL, r"\text{new coupon}": ORANGE}
         )
         eq1.scale(1.5)
         eq1.shift(2.5 * DOWN)
-        eq1[1].set_color(GOLD)
+        eq1[-2].set_color(GOLD)
 
         self.play(
             Write(have),
@@ -540,15 +541,16 @@ class FinalCalc(Scene):
 
         a = [3, 0, 1, 2, 4]
         val = list(range(4, -1, -1))
+        #ans = ["0.80", "0.60", "0.40", "0.20", "0.00"]
 
         for i in range(5):
-
             eq = TexMobject(
                 r"\text{P}(\text{new coupon}) = {",
                 str(val[i]),
-                r"\over 5} = " + "{0:.2f}".format(i/5)
+                r"\over 5} = " + "{0:.2f}".format(val[i]/5),
+                tex_to_color_map={r"\text{P}(\text{new coupon})": TEAL}
             )
-            eq[1].set_color(GOLD)
+            eq[-2].set_color(GOLD)
             eq.scale(1.5)
             eq.shift(2.5 * DOWN)
 
@@ -556,8 +558,8 @@ class FinalCalc(Scene):
                 Transform(have[a[i]], dont[a[i]])
             )
             self.play(
-                Transform(eq1[1], eq[1]),
-                Transform(eq1[2], eq1[2])
+                Transform(eq1[-2], eq[-2]),
+                Transform(eq1[-1], eq[-1])
             )
             self.wait()
         """
