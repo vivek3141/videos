@@ -506,11 +506,12 @@ class FinalCalc(Scene):
         dont = VGroup()
         for i in range(1, 6):
             dont.add(
-                NumberedCoupon(i, color=GREEN).scale(0.5).shift((3-(1.5*(i-1))) * RIGHT)
+                NumberedCoupon(i, color=GREEN).scale(
+                    0.5).shift((3-(1.5*(i-1))) * RIGHT)
             )
         dont.shift(0.5 * RIGHT)
 
-        t1 = TextMobject("Have:", alignment="", color=YELLOW)
+        t1 = TextMobject("Don't Have:", alignment="", color=YELLOW)
         t1.scale(1)
         t1.shift(2.5 * UP + 5.6 * LEFT)
 
@@ -527,8 +528,8 @@ class FinalCalc(Scene):
 
         eq1 = TexMobject(
             r"\text{P}(\text{new coupon)} = {",
-            r"7",
-            r"\over 7} = 1.00"
+            r"5",
+            r"\over 5} = 1.00"
         )
         eq1.scale(1.5)
         eq1.shift(2.5 * DOWN)
@@ -539,6 +540,21 @@ class FinalCalc(Scene):
         self.play(
             Transform(have[3], dont[3])
         )
+        self.wait()
+
+        eq2 = TexMobject(
+            r"\text{P}(\text{new coupon}) = {",
+            r"4",
+            r"\over 5} = 0.20"
+        )
+        eq2.scale(1.5)
+        eq2.shift(2.5 * DOWN)
+
+        self.play(
+            Transform(have[2], have[2])
+        )
+        self.play(FadeOut(eq1[1]))
+        self.play(FadeInFromDown(eq2[1]))
         self.wait()
 
 
