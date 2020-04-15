@@ -537,21 +537,28 @@ class FinalCalc(Scene):
         )
         self.wait()
 
-        eq2 = TexMobject(
-            r"\text{P}(\text{new coupon}) = {",
-            r"4",
-            r"\over 5} = 0.80"
-        )
-        eq2.scale(1.5)
-        eq2.shift(2.5 * DOWN)
+        a = [3, 0, 1, 2, 4]
+        val = list(range(4, -1, -1))
 
-        self.play(
-            Transform(have[3], dont[3])
-        )
-        self.play(FadeOut(eq1[1]))
-        self.play(FadeInFromDown(eq2[1]))
-        self.wait()
+        for i in range(5):
 
+            eq = TexMobject(
+                r"\text{P}(\text{new coupon}) = {",
+                str(val[i]),
+                r"\over 5} = " + "{0:.2f}".format(i/5)
+            )
+            eq.scale(1.5)
+            eq.shift(2.5 * DOWN)
+
+            self.play(
+                Transform(have[a[i]], dont[a[i]])
+            )
+            self.play(
+                Transform(eq1[1], eq[1]),
+                Transform(eq1[2], eq1[2])
+            )
+            self.wait()
+        """
         eq3 = TexMobject(
             r"\text{P}(\text{new coupon}) = {",
             r"3",
@@ -566,6 +573,7 @@ class FinalCalc(Scene):
         self.play(FadeOut(eq2[1]))
         self.play(FadeInFromDown(eq3[1]))
         self.wait()
+        """
 
 
 class Asymptote(Scene):
