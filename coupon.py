@@ -540,7 +540,7 @@ class FinalCalc(Scene):
         eq2 = TexMobject(
             r"\text{P}(\text{new coupon}) = {",
             r"4",
-            r"\over 5} = 0.20"
+            r"\over 5} = 0.80"
         )
         eq2.scale(1.5)
         eq2.shift(2.5 * DOWN)
@@ -552,9 +552,19 @@ class FinalCalc(Scene):
         self.play(FadeInFromDown(eq2[1]))
         self.wait()
 
-        self.play(
-            Transform(have[2], dont[2])
+        eq3 = TexMobject(
+            r"\text{P}(\text{new coupon}) = {",
+            r"3",
+            r"\over 5} = 0.60"
         )
+        eq3.scale(1.5)
+        eq3.shift(2.5 * DOWN)
+
+        self.play(
+            Transform(have[0], dont[0])
+        )
+        self.play(FadeOut(eq2[1]))
+        self.play(FadeInFromDown(eq3[1]))
         self.wait()
 
 
