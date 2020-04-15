@@ -494,7 +494,7 @@ class NumberedCoupon(VGroup):
         self.add(coupon, n)
 
 
-class FinalCalc(Scene):
+class CouponCalc(Scene):
     def construct(self):
         have = VGroup()
         for i in range(1, 6):
@@ -528,6 +528,7 @@ class FinalCalc(Scene):
         eq1.scale(1.5)
         eq1.shift(2.5 * DOWN)
         eq1[-2].set_color(GOLD)
+        """
 
         self.play(
             Write(have),
@@ -541,7 +542,6 @@ class FinalCalc(Scene):
 
         a = [3, 0, 1, 2, 4]
         val = list(range(4, -1, -1))
-        #ans = ["0.80", "0.60", "0.40", "0.20", "0.00"]
 
         for i in range(5):
             eq = TexMobject(
@@ -562,22 +562,32 @@ class FinalCalc(Scene):
                 Transform(eq1[-1], eq[-1])
             )
             self.wait()
-        """
-        eq3 = TexMobject(
-            r"\text{P}(\text{new coupon}) = {",
-            r"3",
-            r"\over 5} = 0.60"
-        )
-        eq3.scale(1.5)
-        eq3.shift(2.5 * DOWN)
 
-        self.play(
-            Transform(have[0], dont[0])
-        )
-        self.play(FadeOut(eq2[1]))
-        self.play(FadeInFromDown(eq3[1]))
-        self.wait()
+        self.play(Uncreate(dont), Uncreate(have), Uncreate(eq1[4:]), Uncreate(t1), Uncreate(t2))
         """
+        self.play(eq1[:4].shift, 5 * UP)
+        self.wait()
+
+        eq2 = TexMobject(r"\frac{5-i}{5}")
+        eq2.scale(1.5)
+        eq2.shift(2.5 * UP + 2.5 * RIGHT)
+
+        self.play(Write(eq2))
+        self.wait()
+
+        eq3 = TexMobject(r"{N-i \over N}",
+                         tex_to_color_map={r"N": GREEN, r"i": YELLOW})
+        eq4 = TexMobject(r"p_i = ", tex_to_color_map={
+                         r"p": TEAL, r"i": YELLOW})
+
+        eq3.scale(1.5)
+        eq4.scale(1.5)
+
+        eq3.shift(2.5 * UP + 1 * RIGHT)
+        eq4.shift(2.5 * UP + 1 * LEFT)
+
+        self.play(Transform(eq2, eq3), Transform(eq1[:4], eq4))
+        self.wait()
 
 
 class Asymptote(Scene):
