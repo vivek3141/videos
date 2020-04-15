@@ -519,6 +519,14 @@ class FinalCalc(Scene):
         t2.scale(1)
         t2.shift(5.6 * LEFT)
 
+        eq1 = TexMobject(
+            r"\text{P}(\text{new coupon)} = {",
+            r"5",
+            r"\over 5} = 1.00"
+        )
+        eq1.scale(1.5)
+        eq1.shift(2.5 * DOWN)
+
         self.play(
             Write(have),
             Write(t1),
@@ -529,21 +537,6 @@ class FinalCalc(Scene):
         )
         self.wait()
 
-        eq1 = TexMobject(
-            r"\text{P}(\text{new coupon)} = {",
-            r"5",
-            r"\over 5} = 1.00"
-        )
-        eq1.scale(1.5)
-        eq1.shift(2.5 * DOWN)
-
-        self.play(
-            Transform(have[3], dont[3])
-        )
-        self.play(FadeOut(eq1[1]))
-        self.play(FadeInFromDown(eq2[1]))
-        self.wait()
-
         eq2 = TexMobject(
             r"\text{P}(\text{new coupon}) = {",
             r"4",
@@ -551,6 +544,13 @@ class FinalCalc(Scene):
         )
         eq2.scale(1.5)
         eq2.shift(2.5 * DOWN)
+
+        self.play(
+            Transform(have[3], dont[3])
+        )
+        self.play(FadeOut(eq1[1]))
+        self.play(FadeInFromDown(eq2[1]))
+        self.wait()
 
         self.play(
             Transform(have[2], dont[2])
