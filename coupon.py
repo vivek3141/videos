@@ -513,16 +513,19 @@ class FinalCalc(Scene):
 
         t1 = TextMobject("Don't Have:", alignment="", color=YELLOW)
         t1.scale(1)
-        t1.shift(2.5 * UP + 5.6 * LEFT)
+        t1.shift(2.5 * UP + 5 * LEFT)
 
-        t2 = TextMobject("Don't have:", color=GREEN)
+        t2 = TextMobject("Have:", color=GREEN)
         t2.scale(1)
-        t2.shift(5 * LEFT)
+        t2.shift(5.6 * LEFT)
 
         self.play(
             Write(have),
             Write(t1),
             Write(t2)
+        )
+        self.play(
+            Write(eq1)
         )
         self.wait()
 
@@ -535,11 +538,10 @@ class FinalCalc(Scene):
         eq1.shift(2.5 * DOWN)
 
         self.play(
-            Write(eq1)
-        )
-        self.play(
             Transform(have[3], dont[3])
         )
+        self.play(FadeOut(eq1[1]))
+        self.play(FadeInFromDown(eq2[1]))
         self.wait()
 
         eq2 = TexMobject(
@@ -551,10 +553,8 @@ class FinalCalc(Scene):
         eq2.shift(2.5 * DOWN)
 
         self.play(
-            Transform(have[2], have[2])
+            Transform(have[2], dont[2])
         )
-        self.play(FadeOut(eq1[1]))
-        self.play(FadeInFromDown(eq2[1]))
         self.wait()
 
 
