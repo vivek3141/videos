@@ -526,6 +526,7 @@ class FinalCalc(Scene):
         )
         eq1.scale(1.5)
         eq1.shift(2.5 * DOWN)
+        eq1[1].set_color(GOLD)
 
         self.play(
             Write(have),
@@ -547,6 +548,7 @@ class FinalCalc(Scene):
                 str(val[i]),
                 r"\over 5} = " + "{0:.2f}".format(i/5)
             )
+            eq[1].set_color(GOLD)
             eq.scale(1.5)
             eq.shift(2.5 * DOWN)
 
