@@ -589,6 +589,20 @@ class CouponCalc(Scene):
         self.play(Transform(eq2, eq3), Transform(eq1[:4], eq4))
         self.wait()
 
+        eq5 = TexMobject(r"E[i^{\text{th}}\text{ new coupon}] =",r"{1 \over {{p} _{ i }} } ",
+                         tex_to_color_map={r"i": YELLOW, r"E": GOLD, r"\text{ new coupon}": ORANGE})
+        eq5.scale(1.5)
+
+        self.play(Write(eq5))
+        self.wait()
+
+        eq6 = TexMobject(r"{N \over N-i}", tex_to_color_map={r"N": GREEN, r"i": YELLOW})
+        eq6.scale(1.5)
+        eq6.shift(4 * RIGHT)
+
+        self.play(Transform(eq5[6:], eq6))
+        self.wait()
+
 
 class Asymptote(Scene):
     CONFIG = {
