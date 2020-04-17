@@ -203,6 +203,10 @@ class ExpectedValue(Scene):
 
         self.play(Transform(title, title2[0]))
         self.play(FadeInFromDown(title2[1]))
+
+        srect = ScreenRectangle(height=5, width=7).shift(0.5*DOWN)
+
+        self.play(Write(srect))
         self.wait()
 
         tree = TreeMobject([1, 2])
@@ -220,6 +224,7 @@ class ExpectedValue(Scene):
         lbl2.scale(1)
         lbl2.shift(1 * DOWN + 1 * RIGHT)
 
+        self.play(Uncreate(srect))
         self.play(Write(tree))
         self.wait()
 
@@ -589,14 +594,15 @@ class CouponCalc(Scene):
         self.play(Transform(eq2, eq3), Transform(eq1[:4], eq4))
         self.wait()
 
-        eq5 = TexMobject(r"E[i^{\text{th}}\text{ new coupon}] =",r"{1 \over {{p} _{ i }} } ",
+        eq5 = TexMobject(r"E[i^{\text{th}}\text{ new coupon}] =", r"{1 \over {{p} _{ i }} } ",
                          tex_to_color_map={r"i": YELLOW, r"E": GOLD, r"\text{ new coupon}": ORANGE})
         eq5.scale(1.5)
 
         self.play(Write(eq5))
         self.wait()
 
-        eq6 = TexMobject(r"{N \over N-i}", tex_to_color_map={r"N": GREEN, r"i": YELLOW})
+        eq6 = TexMobject(r"{N \over N-i}",
+                         tex_to_color_map={r"N": GREEN, r"i": YELLOW})
         eq6.scale(1.5)
         eq6.shift(4 * RIGHT)
 
