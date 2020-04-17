@@ -507,18 +507,31 @@ class NewIntro2(Scene):
         self.wait()
 
 
-class Logo(Scene):
+class NewIntroD(Scene):
     def construct(self):
         h1 = "#ff5757"
         h2 = '#5ce1e6'
-        text = TexMobject(r"\textbf{\text{v}} ^{3} \textbf{\text{(}}\textbf{\text{x}}\textbf{\text{)}}}",
-                          tex_to_color_map={
-                              r'\textbf{\text{v}} ^{3}': h1,
-                              r'\textbf{\text{x}}': h2
-                          })
-        text.scale(10)
 
-        self.play(Write(text), run_time=2)
+        text = TexMobject(r"\textbf{\text{v}} ^3 \textbf{\text{(}}\textbf{\text{x}}\textbf{\text{)}}}", tex_to_color_map={
+            r'\textbf{\text{v}} ^3': h1,
+            r'\textbf{\text{x}}': h2
+        })
+        text.scale(4)
+
+        vc = TextMobject("vcubingx")
+        vc.scale(1.5)
+        vc.shift(2 * DOWN)
+
+        text2 = TextMobject("Join my dicord server!")
+        text2.shift(3 * DOWN + 0.7 * RIGHT)
+        logo = ImageMobject("./img/discord.png").scale(0.5)
+        logo.shift(3 * DOWN + 2.3 * LEFT)
+
+        text.shift(UP)
+        vc.shift(UP)
+
+        self.play(Write(text), run_time=1)
+        self.play(FadeIn(vc), FadeIn(text2), FadeIn(logo))
         self.wait()
 
 
