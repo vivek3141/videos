@@ -533,7 +533,6 @@ class CouponCalc(Scene):
         eq1.scale(1.5)
         eq1.shift(2.5 * DOWN)
         eq1[-2].set_color(GOLD)
-        """
 
         self.play(
             Write(have),
@@ -568,7 +567,8 @@ class CouponCalc(Scene):
             )
             self.wait()
 
-        self.play(Uncreate(dont), Uncreate(have), Uncreate(eq1[4:]), Uncreate(t1), Uncreate(t2))
+        self.play(Uncreate(dont), Uncreate(have), Uncreate(
+            eq1[4:]), Uncreate(t1), Uncreate(t2))
         self.play(eq1[:4].shift, 5 * UP)
         self.wait()
 
@@ -608,14 +608,11 @@ class CouponCalc(Scene):
         self.play(Transform(eq5[6:], eq6))
         self.wait()
 
-        
-
         self.play(
             Uncreate(eq2),
             Uncreate(eq1),
             ApplyMethod(VGroup(*self.mobjects).shift, 2.5 * UP)
         )
-        """
 
         eq7 = TexMobject(r"E[n] = E[n-1] + {{1} \over {p_{n-1}}", tex_to_color_map={
                          r"n": YELLOW, r"E": GOLD})  # , r"p": TEAL, })
@@ -643,6 +640,37 @@ class CouponCalc(Scene):
         eq10.scale(1.5)
 
         self.play(Transform(eq7, eq10))
+        self.wait()
+
+        eq11 = TexMobject(r"E[n] = {{N} \over {N}}", r"+ {{N} \over { N - 1 }} + ...", r"+ {{N} \over {1}}", tex_to_color_map={
+            r"n": YELLOW, r"E": GOLD})
+        eq11.scale(1.5)
+
+        self.play(Transform(eq7, eq11))
+        self.wait()
+
+        eq11 = TexMobject(r"E[n] = {N} \left ( {{1} \over {N}} + {{1} \over { N - 1 }} + ... + {{1} \over {1}} \right )", tex_to_color_map={
+            r"n": YELLOW, r"E": GOLD})
+        eq11.scale(1.5)
+
+        self.play(Transform(eq7, eq11))
+        self.wait()
+
+        eq12 = TexMobject(r"E[n] = N \left ( {{1} \over {1}} + {{1} \over {2}} + ... + {{1} \over {N}} \right )", tex_to_color_map={
+            r"n": YELLOW, r"E": GOLD})
+        eq12.scale(1.5)
+
+        self.play(Transform(eq7, eq12))
+        self.wait()
+
+        eq13 = TexMobject(r"E[n] = N \cdot H_N", tex_to_color_map={
+            r"n": YELLOW, r"E": GOLD, r"N": GREEN, r"H": PURPLE})
+        eq13.scale(1.5)
+
+        self.play(Transform(eq7, eq13))
+        rect = BackgroundRectangle(
+            eq13, buff=0.2, color=YELLOW, stroke_opacity=1, fill_opacity=0, stroke_width=4)
+        self.play(Write(rect))
         self.wait()
 
 
