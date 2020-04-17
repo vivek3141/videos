@@ -569,7 +569,6 @@ class CouponCalc(Scene):
             self.wait()
 
         self.play(Uncreate(dont), Uncreate(have), Uncreate(eq1[4:]), Uncreate(t1), Uncreate(t2))
-        """
         self.play(eq1[:4].shift, 5 * UP)
         self.wait()
 
@@ -607,6 +606,43 @@ class CouponCalc(Scene):
         eq6.shift(4 * RIGHT)
 
         self.play(Transform(eq5[6:], eq6))
+        self.wait()
+
+        
+
+        self.play(
+            Uncreate(eq2),
+            Uncreate(eq1),
+            ApplyMethod(VGroup(*self.mobjects).shift, 2.5 * UP)
+        )
+        """
+
+        eq7 = TexMobject(r"E[n] = E[n-1] + {{1} \over {p_{n-1}}", tex_to_color_map={
+                         r"n": YELLOW, r"E": GOLD})  # , r"p": TEAL, })
+        eq7.scale(1.5)
+
+        self.play(Write(eq7))
+        self.wait()
+
+        eq8 = TexMobject(r"E[n] = E[n-2] + \frac{1}{p_{n-1}}", r"+ \frac{1}{p_{n-2}}", tex_to_color_map={
+                         r"n": YELLOW, r"E": GOLD})
+        eq8.scale(1.5)
+
+        self.play(Transform(eq7, eq8))
+        self.wait()
+
+        eq9 = TexMobject(r"E[n] = E[n-3] + \frac{1}{p_{n-1}}", r"+ \frac{1}{p_{n-2}}", r"+ \frac{1}{p_{n-2}}", tex_to_color_map={
+                         r"n": YELLOW, r"E": GOLD})
+        eq9.scale(1.5)
+
+        self.play(Transform(eq7, eq9))
+        self.wait()
+
+        eq10 = TexMobject(r"E[n] = \frac{1}{p_{0}}", r"+ \frac{1}{p_{1}} + ...", r"+ \frac{1}{p_{n-1}}", tex_to_color_map={
+            r"n": YELLOW, r"E": GOLD})
+        eq10.scale(1.5)
+
+        self.play(Transform(eq7, eq10))
         self.wait()
 
 
