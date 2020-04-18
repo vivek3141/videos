@@ -535,7 +535,7 @@ class CouponCalc(Scene):
         eq1[-2].set_color(GOLD)
 
         self.play(
-            Write(have),
+            Write(have), Write(dont),
             Write(t1),
             Write(t2)
         )
