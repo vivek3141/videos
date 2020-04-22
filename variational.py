@@ -1,6 +1,14 @@
 from manimlib.imports import *
 
 
+class EQScene(Scene):
+    def construct(self):
+        eq = TexMobject(self.eq)
+        eq.scale(2)
+        self.play(Write(eq))
+        self.wait()
+
+
 class Intro(Scene):
     def construct(self):
         axes = Axes(
@@ -352,3 +360,93 @@ class IntroToProblem(Scene):
         p2.shift(2 * DOWN)
         self.play(Write(p2))
         self.wait()
+
+
+class EulerLagrange(Scene):
+    def construct(self):
+        xmin = 0
+        xmax = 1.973
+        z = 0.66571
+        axes = Axes(
+            x_min=-1,
+            x_max=5,
+            y_min=0,
+            y_max=4,
+            number_line_config={"include_tip": False}
+        )
+
+        func1 = ParametricFunction(
+            self.f_r(alpha=1), color=TEAL, t_min=-2, t_max=2)
+        func2 = ParametricFunction(
+            self.f_r(alpha=0.6), color=RED, t_min=-2, t_max=2)
+        func3 = ParametricFunction(
+            self.f_r(alpha=0.2), color=TEAL, t_min=-2, t_max=2)
+
+        p1 = Circle(radius=0.05, fill_opacity=1, color=YELLOW)
+        p1.shift([-np.sqrt(3), -1, 0])
+
+        p2 = Circle(radius=0.05, fill_opacity=1, color=YELLOW)
+        p2.shift([np.sqrt(3), 1, 0])
+
+        points = VGroup(p1, p2)
+        f = VGroup(func1, func2, func3)
+        f.shift(2.5 * RIGHT + 2.5 * UP)
+        points.shift(2.5 * RIGHT + 2.5 * UP)
+
+        l1 = DashedLine((-np.sqrt(3) + 2.5) * RIGHT,
+                        (-np.sqrt(3) + 2.5) * RIGHT + 1.5 * UP,
+                        dash_length=0.075, stroke_opacity=0.75)
+        l2 = DashedLine((np.sqrt(3) + 2.5) * RIGHT,
+                        (np.sqrt(3) + 2.5) * RIGHT + 3.5 * UP,
+                        dash_length=0.075, stroke_opacity=0.75)
+
+        self.add(axes)
+        self.add(func1, func2, func3, l1, l2, points)
+
+        eq1 = TexMobject("y(x)", color=RED)
+        eq1.move_to(p2).shift(0.75 * RIGHT)
+
+        eq2 = TexMobject(r"y(x) + \epsilon \eta(x)", color=TEAL)
+        eq2.move_to(func1).shift(1.5 * UP)
+        self.add(eq1, eq2)
+
+        VGroup(*self.mobjects).center().shift(UP)
+        eqq = TexMobject(r"{{\partial F}", r" \over {\partial y}}", r" -\frac{d}{d x} {{\partial F} \over {\partial y'}}=0",
+                         tex_to_color_map={r"y": GREEN})
+        eqq.scale(1.25)
+        eqq.shift(2.5 * DOWN)
+
+        eqq2 = TexMobject(r"{{\partial {F}} \over ", r"{\partial y}}", r" -\frac{d}{d x} {{\partial F} \over {\partial y'}}=0",
+                          tex_to_color_map={r"{F}": YELLOW})
+        eqq2.scale(1.25)
+        eqq2.shift(2.5 * DOWN)
+
+        eqq3 = TexMobject(r"{{\partial F} \over ", r"{\partial y}}", r" -\frac{d}{d x} ", r"{{\partial {F}} ", r"\over {\partial y'}}=0",
+                          tex_to_color_map={r"{F}": YELLOW})
+        eqq3.scale(1.25)
+        eqq3.shift(2.5 * DOWN)
+
+        eqq4 = TexMobject(r"{{\partial F} \over ", r"{\partial y}}", r" -\frac{d}{d x} ", r"{{\partial {F}} ", r"\over {\partial y'}}=0",
+                          tex_to_color_map={r"x": BLUE})
+        eqq4.scale(1.25)
+        eqq4.shift(2.5 * DOWN)
+
+        self.add(eqq[1:], eqq2[:3], eqq3[-3:-2], eqq4[3])
+
+    def f(self, x, alpha=0):
+        return alpha * np.cos(PI/4 * x)
+
+    def f_r(self, theta=PI/6, alpha=0):
+        return lambda t: [
+            t * np.cos(theta) - self.f(t, alpha=alpha) * np.sin(theta),
+            t * np.sin(theta) + self.f(t, alpha=alpha) * np.cos(theta),
+            0]
+
+    def func(self, t):
+        return [t - self.f(t), t + self.f(t), 0]
+
+
+class FEq(EQScene):
+    CONFIG = {
+        "eq": r"I[f] = \int_{ x_1 }^{ x_2 } F({x}, f({x}), f'({x})) \ \text{d}x"
+    }
