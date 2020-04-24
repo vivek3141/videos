@@ -362,11 +362,8 @@ class IntroToProblem(Scene):
         self.wait()
 
 
-class EulerLagrange(Scene):
+class Proof(Scene):
     def construct(self):
-        xmin = 0
-        xmax = 1.973
-        z = 0.66571
         axes = Axes(
             x_min=-1,
             x_max=5,
@@ -400,38 +397,22 @@ class EulerLagrange(Scene):
                         (np.sqrt(3) + 2.5) * RIGHT + 3.5 * UP,
                         dash_length=0.075, stroke_opacity=0.75)
 
-        self.add(axes)
-        self.add(func1, func2, func3, l1, l2, points)
-
-        eq1 = TexMobject("y(x)", color=RED)
+        eq1 = TexMobject("q(x)", color=RED).scale(0.75)
         eq1.move_to(p2).shift(0.75 * RIGHT)
 
-        eq2 = TexMobject(r"y(x) + \epsilon \eta(x)", color=TEAL)
+        eq2 = TexMobject(r"q(x) + s \cdot \delta q(x)", color=TEAL).scale(0.75)
         eq2.move_to(func1).shift(1.5 * UP)
-        self.add(eq1, eq2)
 
-        VGroup(*self.mobjects).center().shift(UP)
-        eqq = TexMobject(r"{{\partial F}", r" \over {\partial y}}", r" -\frac{d}{d x} {{\partial F} \over {\partial y'}}=0",
-                         tex_to_color_map={r"y": GREEN})
-        eqq.scale(1.25)
-        eqq.shift(2.5 * DOWN)
+        everything = VGroup(axes, func1, func2, func3, l1, l2,
+                            points, eq1, eq2).center().scale(1.5)
 
-        eqq2 = TexMobject(r"{{\partial {F}} \over ", r"{\partial y}}", r" -\frac{d}{d x} {{\partial F} \over {\partial y'}}=0",
-                          tex_to_color_map={r"{F}": YELLOW})
-        eqq2.scale(1.25)
-        eqq2.shift(2.5 * DOWN)
+        self.play(Write(axes))
+        self.play(Write(func2), Write(eq1))
+        self.wait()
 
-        eqq3 = TexMobject(r"{{\partial F} \over ", r"{\partial y}}", r" -\frac{d}{d x} ", r"{{\partial {F}} ", r"\over {\partial y'}}=0",
-                          tex_to_color_map={r"{F}": YELLOW})
-        eqq3.scale(1.25)
-        eqq3.shift(2.5 * DOWN)
-
-        eqq4 = TexMobject(r"{{\partial F} \over ", r"{\partial y}}", r" -\frac{d}{d x} ", r"{{\partial {F}} ", r"\over {\partial y'}}=0",
-                          tex_to_color_map={r"x": BLUE})
-        eqq4.scale(1.25)
-        eqq4.shift(2.5 * DOWN)
-
-        self.add(eqq[1:], eqq2[:3], eqq3[-3:-2], eqq4[3])
+        self.play(Write(func3), Write(func1), Write(eq2))
+        self.play(Write(points), Write(VGroup(l1, l2)))
+        self.wait()
 
     def f(self, x, alpha=0):
         return alpha * np.cos(PI/4 * x)
@@ -444,6 +425,25 @@ class EulerLagrange(Scene):
 
     def func(self, t):
         return [t - self.f(t), t + self.f(t), 0]
+
+    def get_eq(self):
+        eqq = TexMobject(r"{{\partial F}", r" \over {\partial y}}", r" -\frac{d}{d x} {{\partial F} \over {\partial y'}}=0",
+                         tex_to_color_map={r"y": GREEN})
+        eqq.scale(1.25)
+
+        eqq2 = TexMobject(r"{{\partial {F}} \over ", r"{\partial y}}", r" -\frac{d}{d x} {{\partial F} \over {\partial y'}}=0",
+                          tex_to_color_map={r"{F}": YELLOW})
+        eqq2.scale(1.25)
+
+        eqq3 = TexMobject(r"{{\partial F} \over ", r"{\partial y}}", r" -\frac{d}{d x} ", r"{{\partial {F}} ", r"\over {\partial y'}}=0",
+                          tex_to_color_map={r"{F}": YELLOW})
+        eqq3.scale(1.25)
+
+        eqq4 = TexMobject(r"{{\partial F} \over ", r"{\partial y}}", r" -\frac{d}{d x} ", r"{{\partial {F}} ", r"\over {\partial y'}}=0",
+                          tex_to_color_map={r"x": BLUE})
+        eqq4.scale(1.25)
+
+        return VGroup(eqq[1:], eqq2[:3], eqq3[-3:-2], eqq4[3])
 
 
 class FEq(EQScene):
