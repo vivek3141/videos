@@ -437,6 +437,9 @@ class FEq(EQScene):
 
 class EulerLagrange(Scene):
     def construct(self):
+        img = ImageMobject("./img/variational_thumb.png")
+        img.scale(3)
+        self.add(img)
         eq = self.get_eq()
         self.add(eq)
     def get_eq(self):
