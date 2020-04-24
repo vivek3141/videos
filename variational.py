@@ -474,4 +474,8 @@ class EulerLagrange(Scene):
         grp.add(eqq[1:], eqq2[:3], eqq3[-3:-2], eqq4[3])
         return grp
 
-
+class DistanceFunc2(Scene):
+    def construct(self):
+        eq2 = TexMobject(r"D(f) ", r"=", r"\int_{ x_1 }^{ x_2 } \sqrt{1 +f'(x)^2 }  \ \text{d}x", tex_to_color_map={
+                         "f": RED, "D": BLUE, r"\text{d}s": GREEN, "_{ x_1 }": YELLOW, "^{ x_2 }": YELLOW})
+        self.add(eq2)
