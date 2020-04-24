@@ -542,14 +542,16 @@ class Wolfram(Scene):
         self.play(Write(eq1))
         self.wait()
 
-        eq2 = TexMobject(r"f''(x) = 0", tex_to_color_map={r"f": RED, "x": BLUE})
+        eq2 = TexMobject(r"f''(x) = 0", tex_to_color_map={
+                         r"f": RED, "x": BLUE})
         eq2.scale(1.5)
         eq2.shift(2.5 * DOWN + 3.5 * LEFT)
-        
+
         self.play(FadeInFromDown(eq2))
         self.wait()
 
-        eq3 = TexMobject(r"f(x) = c_0 + c_1 x", tex_to_color_map={r"f": RED, "x": BLUE})
+        eq3 = TexMobject(r"f(x) = c_0 + c_1 x",
+                         tex_to_color_map={r"f": RED, "x": BLUE})
         eq3.scale(1.5)
         eq3.shift(2.5 * DOWN + 4 * RIGHT)
 
