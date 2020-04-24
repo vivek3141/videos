@@ -433,26 +433,7 @@ class FEq(EQScene):
     }
 
 
-class EulerLagrange(Scene):
-    def construct(self):
-        eq = self.get_eq()
-        eq.scale(0.75)
-        eq.shift([1.25, 0.75, 0])
-
-        self.play(FadeIn(eq))
-        self.wait()
-
-        self.play(eq.shift, [-1.25, -0.75, 0])
-        self.play(eq.scale, 1.5 * 1.333)
-        self.wait()
-
-        title = TextMobject("Euler-Lagrange Equation", color=GOLD)
-        title.scale(1.5)
-        title.shift(2.5 * UP)
-
-        self.play(FadeInFromDown(title))
-        self.wait()
-
+class EulerLagrangeScene(Scene):
     def get_eq(self):
         eqq = TexMobject(r"{{\partial F}", r" \over {\partial y}}", r" -\frac{d}{d x} {{\partial F} \over {\partial y'}}=0",
                          tex_to_color_map={r"y": GREEN})
@@ -474,8 +455,107 @@ class EulerLagrange(Scene):
         grp.add(eqq[1:], eqq2[:3], eqq3[-3:-2], eqq4[3])
         return grp
 
-class DistanceFunc2(Scene):
+
+class EulerLagrange(EulerLagrangeScene):
     def construct(self):
-        eq2 = TexMobject(r"D(f) ", r"=", r"\int_{ x_1 }^{ x_2 } \sqrt{1 +f'(x)^2 }  \ \text{d}x", tex_to_color_map={
-                         "f": RED, "D": BLUE, r"\text{d}s": GREEN, "_{ x_1 }": YELLOW, "^{ x_2 }": YELLOW})
-        self.add(eq2)
+        eq = self.get_eq()
+        eq.scale(0.75)
+        eq.shift([1.25, 0.75, 0])
+
+        self.play(FadeIn(eq))
+        self.wait()
+
+        self.play(eq.shift, [-1.25, -0.75, 0])
+        self.play(eq.scale, 1.5 * 1.333)
+        self.wait()
+
+        title = TextMobject("Euler-Lagrange Equation", color=GOLD)
+        title.scale(1.5)
+        title.shift(2.5 * UP)
+
+        self.play(FadeInFromDown(title))
+        self.wait()
+
+
+class DistanceFunc2(EulerLagrangeScene):
+    def construct(self):
+        eq2 = TexMobject(r"D(y) ", r"=", r"\int_{ x_1 }^{ x_2 } \sqrt{1 +y'(x)^2 } ", r"\ \text{d}x", tex_to_color_map={
+                         "y": GREEN, "D": BLUE, r"\text{d}s": GREEN, "_{ x_1 }": YELLOW, "^{ x_2 }": YELLOW}).scale(1.5)
+        eq3 = TexMobject(r"F = ", tex_to_color_map={"F": YELLOW}).scale(1.5)
+        eq3.shift(1.5 * LEFT)
+
+        self.play(Write(eq2))
+        self.wait()
+
+        self.play(Transform(eq2[:8], eq3), Uncreate(eq2[-1]))
+        self.wait()
+
+        eq = self.get_eq()
+
+        self.play(VGroup(*self.mobjects).center)
+        self.play(VGroup(*self.mobjects).shift, 2.5 * UP)
+        self.play(VGroup(*self.mobjects).scale, 0.75)
+        self.wait()
+
+        self.play(FadeIn(eq))
+        self.wait()
+
+        eq2 = self.get_eq2()
+
+        self.play(Transform(eq, eq2))
+        self.wait()
+
+    def get_eq2(self):
+        eqq = TexMobject(r"0", r" -\frac{d}{d x} {{\partial F} \over {\partial y'}}=0",
+                         tex_to_color_map={r"y": GREEN})
+        eqq.scale(1.25)
+
+        eqq2 = TexMobject(r"0", r" -\frac{d}{d x} {{\partial F} \over {\partial y'}}=0",
+                          tex_to_color_map={r"F": YELLOW})
+        eqq2.scale(1.25)
+
+        eqq4 = TexMobject(r"0", r" -\frac{d}{d x} ", r"{{\partial {F}} ", r"\over {\partial y'}}=0",
+                          tex_to_color_map={r"x": BLUE})
+        eqq4.scale(1.25)
+
+        grp = VGroup()
+        grp.add(eqq[1:], eqq2[:3], eqq4[2])
+        return grp
+
+
+class Wolfram(Scene):
+    def construct(self):
+        img = ImageMobject("./img/wolfram.png")
+        img.scale(2.75)
+        img.shift(1.25 * UP)
+
+        self.play(ShowCreation(img))
+        self.wait()
+
+        rect1 = Rectangle(height=1, width=2, color=RED)
+        rect1.shift(2.75 * LEFT + 0.75 * DOWN)
+
+        eq1 = TexMobject("= 0", color=BLACK).scale(1.5)
+        eq1.shift(0.75 * DOWN + 1 * LEFT)
+
+        self.play(Write(rect1))
+        self.play(Write(eq1))
+        self.wait()
+
+        eq2 = TexMobject(r"f''(x) = 0", tex_to_color_map={r"f": RED, "x": BLUE})
+        eq2.scale(1.5)
+        eq2.shift(2.5 * DOWN + 3.5 * LEFT)
+        
+        self.play(FadeInFromDown(eq2))
+        self.wait()
+
+        eq3 = TexMobject(r"f(x) = c_0 + c_1 x", tex_to_color_map={r"f": RED, "x": BLUE})
+        eq3.scale(1.5)
+        eq3.shift(2.5 * DOWN + 4 * RIGHT)
+
+        arrow = Arrow(LEFT, RIGHT, color=GREEN)
+        arrow.shift(2.5 * DOWN)
+
+        self.play(Write(arrow))
+        self.play(FadeInFromDown(eq3))
+        self.wait()
