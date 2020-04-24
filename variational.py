@@ -426,8 +426,6 @@ class Proof(Scene):
     def func(self, t):
         return [t - self.f(t), t + self.f(t), 0]
 
-    
-
 
 class FEq(EQScene):
     CONFIG = {
@@ -437,11 +435,24 @@ class FEq(EQScene):
 
 class EulerLagrange(Scene):
     def construct(self):
-        img = ImageMobject("./img/variational_thumb.png")
-        img.scale(3)
-        self.add(img)
         eq = self.get_eq()
-        self.add(eq)
+        eq.scale(0.75)
+        eq.shift([1.25, 0.75, 0])
+
+        self.play(FadeIn(eq))
+        self.wait()
+
+        self.play(eq.shift, [-1.25, -0.75, 0])
+        self.play(eq.scale, 1.5 * 1.333)
+        self.wait()
+
+        title = TextMobject("Euler-Lagrange Equation", color=GOLD)
+        title.scale(1.5)
+        title.shift(2.5 * UP)
+
+        self.play(FadeInFromDown(title))
+        self.wait()
+
     def get_eq(self):
         eqq = TexMobject(r"{{\partial F}", r" \over {\partial y}}", r" -\frac{d}{d x} {{\partial F} \over {\partial y'}}=0",
                          tex_to_color_map={r"y": GREEN})
@@ -459,4 +470,8 @@ class EulerLagrange(Scene):
                           tex_to_color_map={r"x": BLUE})
         eqq4.scale(1.25)
 
-        return VGroup(eqq[1:], eqq2[:3], eqq3[-3:-2], eqq4[3])
+        grp = VGroup()
+        grp.add(eqq[1:], eqq2[:3], eqq3[-3:-2], eqq4[3])
+        return grp
+
+
