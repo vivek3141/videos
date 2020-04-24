@@ -426,6 +426,19 @@ class Proof(Scene):
     def func(self, t):
         return [t - self.f(t), t + self.f(t), 0]
 
+    
+
+
+class FEq(EQScene):
+    CONFIG = {
+        "eq": r"I[f] = \int_{ x_1 }^{ x_2 } F({x}, f({x}), f'({x})) \ \text{d}x"
+    }
+
+
+class EulerLagrange(Scene):
+    def construct(self):
+        eq = self.get_eq()
+        self.add(eq)
     def get_eq(self):
         eqq = TexMobject(r"{{\partial F}", r" \over {\partial y}}", r" -\frac{d}{d x} {{\partial F} \over {\partial y'}}=0",
                          tex_to_color_map={r"y": GREEN})
@@ -444,9 +457,3 @@ class Proof(Scene):
         eqq4.scale(1.25)
 
         return VGroup(eqq[1:], eqq2[:3], eqq3[-3:-2], eqq4[3])
-
-
-class FEq(EQScene):
-    CONFIG = {
-        "eq": r"I[f] = \int_{ x_1 }^{ x_2 } F({x}, f({x}), f'({x})) \ \text{d}x"
-    }
