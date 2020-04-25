@@ -421,18 +421,18 @@ class Outro(Scene):
 
     def construct(self):
         text = TextMobject("Thanks for Watching").scale(2)
-        ghub = SVGMobject(file_name="img/github.svg")
+        ghub = ImageMobject("img/github.png")
         ghub.shift(5 * LEFT + 2.5 * DOWN)
         ghub.scale(self.s)
 
         ghub_text = TextMobject("/vivek3141")
         ghub_text.shift(3 * LEFT + 2.5 * DOWN)
 
-        insta = SVGMobject(file_name="img/instagram.svg")
+        insta = ImageMobject("img/instagram.png")
         insta.shift(1*RIGHT + 2.5*DOWN)
         insta.scale(self.s)
 
-        twitter = SVGMobject(file_name="img/twitter.svg")
+        twitter = ImageMobject("img/twitter.png")
         twitter.shift(2.5*RIGHT + 2.5*DOWN)
         twitter.scale(self.s)
 
@@ -443,9 +443,9 @@ class Outro(Scene):
 
         self.play(
             Write(text),
-            Write(ghub),
-            Write(twitter),
-            Write(insta),
+            ShowCreation(ghub),
+            ShowCreation(twitter),
+            ShowCreation(insta),
             Write(ghub_text),
             Write(text2)
         )
@@ -466,6 +466,14 @@ class UpdateOpacity(Scene):
         circle.become(new_circ)
 
 
+class Flammable(VGroup):
+    def __init__(self, *args, **kwargs):
+        logo = SVGMobject("./img/flam.svg")
+        logo.scale(2)
+        logo[-2:].set_color("#fe3a3b")
+        self.add(logo)
+
+
 class NewIntro(Scene):
     def construct(self):
         h1 = "#ff5757"
@@ -483,6 +491,38 @@ class NewIntro(Scene):
 
         self.play(Write(text), run_time=2)
         self.play(FadeIn(vc))
+        self.wait()
+
+
+class IntroFlam(Scene):
+    def construct(self):
+        h1 = "#ff5757"
+        h2 = '#5ce1e6'
+
+        text = TexMobject(r"\textbf{\text{v}} ^3 \textbf{\text{(}}\textbf{\text{x}}\textbf{\text{)}}}", tex_to_color_map={
+            r'\textbf{\text{v}} ^3': h1,
+            r'\textbf{\text{x}}': h2
+        })
+        text.scale(2.5)
+
+        vc = TextMobject("vcubingx")
+        vc.scale(1)
+        vc.shift(2 * DOWN)
+
+        VGroup(text, vc).center()
+
+        logo = SVGMobject("./img/flam.svg")
+        logo.scale(2)
+        logo[-2:].set_color("#fe3a3b")
+        logo.shift(3 * LEFT)
+        logo.scale(0.75)
+
+        line = Line(2 * UP, 2 * DOWN)
+
+        self.play(Write(text))
+        self.play(FadeIn(vc))
+        self.play(ApplyMethod(VGroup(*self.mobjects).shift,
+                              3 * RIGHT), Write(line), Write(logo))
         self.wait()
 
 
