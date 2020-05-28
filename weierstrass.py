@@ -116,3 +116,98 @@ class Secant(MovingCameraScene):
     def f_s(self, x, scale=17):
         x *= 1/scale
         return scale * self.func(x)
+
+
+def anti_func(x, b=3):
+    y = 0
+    for i in range(1, maxn):
+        y += (1 / (9 ** i * PI)) * np.sin(3 ** i * PI * x)
+        # y += -((b ** i) * PI) * np.sin((b ** i) * PI * x) / 3 ** i
+        #y += np.cos((b ** i) * PI * x) / (3 ** i)
+    return y
+
+
+class AntiDerivative(Scene):
+    def construct(self):
+        r_axes = axes = Axes(
+            x_min=0,
+            x_max=6,
+            y_min=-1,
+            y_max=1,
+            axis_config={"include_tip": False}
+        )
+        r_axes.shift(3 * LEFT)
+        # r_axes.set_opacity(0.5)
+
+        c2 = ParametricFunction(
+            self.w_func,
+            t_min=0,
+            t_max=6,
+            color=RED,
+        ).shift(3 * LEFT)
+
+        fgrp = VGroup(r_axes, c2)
+        fgrp.shift(1.5 * DOWN)
+
+        t = ValueTracker(0)
+
+        grp = VGroup()
+
+        def updater(x):
+            rect = self.get_rect(t.get_value())
+            x.add_to_back(rect)
+            self.bring_to_back(x)
+        grp.add_updater(updater)
+
+        axes = Axes(
+            x_min=0,
+            x_max=6,
+            y_min=-1,
+            y_max=1,
+            axis_config={"include_tip": False}
+        )
+
+        def updater2(x):
+            f = FunctionGraph(self.anti, x_min=-0.01, x_max=t.get_value())
+            f.shift(3 * LEFT + 1.5 * UP)
+            x.become(f)
+
+        f2 = FunctionGraph(self.anti, x_min=0, x_max=6)
+        f2.add_updater(updater2)
+
+        grp2 = VGroup(axes, f2)
+        grp2.shift(3 * LEFT + 1.5 * UP)
+
+        self.play(Write(fgrp), Write(grp))
+        self.play(Write(axes), Write(f2))
+        self.bring_to_back(grp)
+        self.wait()
+        self.play(t.increment_value, 6,  run_time=6, rate_func=linear)
+        self.wait()
+
+    def anti(self, x, dx=0.1):
+        return 20 * anti_func(x / 5)
+
+    @staticmethod
+    def w_func(t):
+        return [t, 2.5 * func(t / 5), 0]
+
+    def get_rect(self, t, dx=0.025):
+        y = self.w_func(t)[1]
+        pairity = -1 if y < 0 else (0 if y == 0 else 1)
+
+        return Line(
+            ORIGIN,
+            pairity * (abs(y) - dx) * UP,
+            stroke_width=8,
+            stroke_opacity=0.75,
+            color=BLUE_E
+        ).set_opacity(0.75).shift(3 * LEFT + 1.5 * DOWN + (t * RIGHT))
+
+
+class TestScene(Scene):
+    def construct(self):
+        l = Line(ORIGIN, 2 * RIGHT)
+
+        
+
