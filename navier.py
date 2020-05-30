@@ -286,11 +286,11 @@ class DivergenceDemo(Scene):
             lambda t: -t/3
         )
 
-        title = TexMobject(r"\nabla \cdot \vec{F} < 0", tex_to_color_map={
+        title2 = TexMobject(r"\nabla \cdot \vec{F} < 0", tex_to_color_map={
                            r"\nabla": YELLOW})
-        title.scale(2)
-        title.to_edge(UP)
-        title.add_background_rectangle()
+        title2.scale(2)
+        title2.to_edge(UP)
+        title2.add_background_rectangle()
 
         self.play(Transform(field, field2), Transform(title, title2))
         self.wait()
