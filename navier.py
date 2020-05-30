@@ -233,5 +233,64 @@ class Divergence(Scene):
                     for i in range(5)])
         self.wait()
 
+        b1 = Brace(eq1[:2])
+        t1 = b1.get_text("Divergence")
+        b2 = Brace(eq1[2], direction=UP)
+        t2 = b2.get_text("Velocity Vector Field")
+
+        self.play(Write(VGroup(b1, t1)))
+        self.play(Write(VGroup(b2, t2)))
+        self.wait()
 
 
+class VectorFieldDemo(MovingCameraScene):
+    def construct(self):
+        plane = NumberPlane()
+        plane.set_opacity(0.5)
+        plane.add(plane.get_axis_labels())
+
+        field1 = VectorField(
+            lambda t: 1.5*np.array([np.cos(t[0]), np.sin(t[1]), 0])
+        )
+
+        title = TextMobject("Vector Field")
+        title.scale(2)
+        title.to_edge(UP)
+        title.add_background_rectangle()
+
+        self.play(ShowCreation(plane))
+        self.play(ShowCreation(field1))
+        self.play(Write(title))
+        self.wait()
+
+
+class DivergenceDemo(Scene):
+    def construct(self):
+        field = VectorField(
+            lambda t: t/3
+        )
+
+        title = TexMobject(r"\nabla \cdot \vec{F} > 0", tex_to_color_map={
+                           r"\nabla": YELLOW})
+        title.scale(2)
+        title.to_edge(UP)
+        title.add_background_rectangle()
+
+        self.play(Write(field))
+        self.wait()
+
+        self.play(Write(title))
+        self.wait()
+
+        field2 = VectorField(
+            lambda t: -t/3
+        )
+
+        title = TexMobject(r"\nabla \cdot \vec{F} < 0", tex_to_color_map={
+                           r"\nabla": YELLOW})
+        title.scale(2)
+        title.to_edge(UP)
+        title.add_background_rectangle()
+
+        self.play(Transform(field, field2), Transform(title, title2))
+        self.wait()
