@@ -270,8 +270,8 @@ class DivergenceDemo(Scene):
             lambda t: t/3
         )
 
-        title = TexMobject(r"\nabla \cdot \vec{F} > 0", tex_to_color_map={
-                           r"\nabla": YELLOW})
+        title = TexMobject(r"\text{div} \vec{\text{F}} > 0", tex_to_color_map={
+                           r"\text{div}": YELLOW})
         title.scale(2)
         title.to_edge(UP)
         title.add_background_rectangle()
@@ -286,11 +286,35 @@ class DivergenceDemo(Scene):
             lambda t: -t/3
         )
 
-        title2 = TexMobject(r"\nabla \cdot \vec{F} < 0", tex_to_color_map={
-                           r"\nabla": YELLOW})
+        title2 = TexMobject(r"\text{div} \vec{\text{F}} < 0", tex_to_color_map={
+            r"\text{div}": YELLOW})
         title2.scale(2)
         title2.to_edge(UP)
         title2.add_background_rectangle()
 
         self.play(Transform(field, field2), Transform(title, title2))
         self.wait()
+
+
+class DivergenceEq(Scene):
+    def construct(self):
+        eq = TexMobject(
+            r"""
+        \text{div} \vec{\text{F}} = \nabla \cdot \vec{\text{F}} = 
+        \begin{bmatrix}
+        \frac{\partial}{\partial x} \\
+        \frac{\partial}{\partial y} \\
+        \frac{\partial}{\partial z} \\
+        \end{bmatrix} \cdot \vec{\text{F}}
+        """, tex_to_color_map={
+                r"\text{div}": YELLOW, r"\nabla": RED}
+        )
+        eq.scale(2)
+
+        self.play(Write(eq))
+        self.wait()
+
+
+class SecondEq(Scene):
+    def construct(self):
+        
