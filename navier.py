@@ -1,23 +1,21 @@
 from manimlib.imports import *
 
+color_map = {
+    r"{u}": BLUE,
+    r"\rho": YELLOW,
+    r"{p}": RED,
+    r"\mu": GOLD
+}
+
 
 class Equations(Scene):
     def construct(self):
-        color_map = {
-            r"\nabla": RED,
-            r"{u}": YELLOW,
-            r"\rho": GOLD,
-            r"{p}": TEAL,
-            r"{g}": TEAL,
-            r"\mu": GOLD
-        }
-
         eq1 = TexMobject(r"\nabla \cdot {u} = 0", tex_to_color_map=color_map)
         eq1.scale(1.5)
         eq1.shift(1 * UP)
 
         eq2 = TexMobject(
-            r"\rho {{\partial {u} } \over {\partial {t} }} = -\nabla {p} + \mu \nabla^2 {u} + {g}", tex_to_color_map=color_map)
+            r"\rho {{\partial {u} } \over {\partial {t} }} = -\nabla {p} + \mu \nabla^2 {u} + \textbf{F}", tex_to_color_map=color_map)
         eq2.scale(1.5)
         eq2.shift(1 * DOWN)
 
@@ -200,22 +198,13 @@ class Isothermal(Scene):
 
 class Divergence(Scene):
     def construct(self):
-        color_map = {
-            r"\nabla": RED,
-            r"{u}": YELLOW,
-            r"\rho": GOLD,
-            r"{p}": TEAL,
-            r"{g}": TEAL,
-            r"\mu": GOLD
-        }
-
         eq1 = TexMobject(r"\nabla", r"\cdot",
                          r"{u}", r"=", r"0", tex_to_color_map=color_map)
         eq1.scale(1.5)
         eq1.shift(1 * UP)
 
         eq2 = TexMobject(
-            r"\rho {{\partial {u} } \over {\partial {t} }} = -\nabla {p} + \mu \nabla^2 {u} + {g}", tex_to_color_map=color_map)
+            r"\rho {{\partial {u} } \over {\partial {t} }} = -\nabla {p} + \mu \nabla^2 {u} + \textbf{F}", tex_to_color_map=color_map)
         eq2.scale(1.5)
         eq2.shift(1 * DOWN)
 
@@ -317,4 +306,82 @@ class DivergenceEq(Scene):
 
 class SecondEq(Scene):
     def construct(self):
-        
+        eq1 = TexMobject(r"\nabla", r"\cdot",
+                         r"{u}", r"=", r"0", tex_to_color_map=color_map)
+        eq1.scale(1.5)
+        eq1.shift(1 * UP)
+
+        eq2 = TexMobject(
+            r"\rho {{\partial {u} } \over {\partial {t} }} = ", r"-\nabla {p}", r" + ", r"\mu \nabla^2 {u}", r" + ", r"\textbf{F}", tex_to_color_map=color_map)
+        eq2.scale(1.5)
+        eq2.shift(1 * DOWN)
+
+        title = TextMobject("Navier-Stokes Equations", color=GREEN)
+        title.scale(1.5)
+        title.shift(3 * UP)
+
+        self.add(title, eq1, eq2)
+        self.wait()
+
+        eq3 = TexMobject(r"\text{m}", r"{a}", r"=", r"\Sigma F", tex_to_color_map={
+                         r"F": YELLOW, r"{a}": GREEN, })
+        eq3.scale(1.5)
+        eq3.shift(1.5 * UP + 2.07 * LEFT)
+
+        self.play(Uncreate(title), Uncreate(eq1))
+        self.play(ApplyMethod(eq2.shift, 0.5 * DOWN), Write(eq3))
+        self.wait()
+
+        eq2cp = TexMobject(
+            r"\rho {{\partial {u} } \over {\partial {t} }}", r" = ", r"-\nabla {p} + \mu \nabla^2 {u} + ", r"\textbf{F}", tex_to_color_map=color_map)
+        eq2cp.scale(1.5)
+        eq2cp.shift(1.5 * UP)
+
+        self.play(Transform(eq3[0], eq2cp[0]))
+        self.wait()
+
+        self.play(Transform(eq3[1], eq2cp[1:4]))
+        self.wait()
+
+        br_config = {
+            "buff": 0.1875,
+            "fill_opacity": 0,
+            "stroke_opacity": 1,
+            "stroke_width": 4,
+            "color": TEAL
+        }
+        r1 = BackgroundRectangle(eq2[4:6], **br_config)
+
+        t1 = TextMobject("Pressure", color=TEAL)
+        t1.move_to(r1, aligned_edge=DOWN)
+        t1.shift(0.7 * DOWN)
+
+        self.play(Write(r1))
+        self.play(FadeInFromDown(t1))
+        self.play(ApplyMethod(eq3[3:].shift, 2.5 * RIGHT),
+                  TransformFromCopy(eq2[4:7], eq2cp[5:8]))
+        self.wait()
+
+        r2 = BackgroundRectangle(eq2[7:10], **br_config)
+
+        t2 = TextMobject("Friction", color=TEAL)
+        t2.move_to(r2, aligned_edge=DOWN)
+        t2.shift(0.7 * DOWN)
+
+        self.play(Transform(r1, r2), Transform(t1, t2))
+        self.play(ApplyMethod(eq3[3:].shift, 2.75 * RIGHT),
+                  TransformFromCopy(eq2[7:11], eq2cp[8:12]))
+        self.wait()
+
+        r3 = BackgroundRectangle(eq2[11:], **br_config)
+
+        t3 = TextMobject("External", color=TEAL)
+        t3.move_to(r3, aligned_edge=DOWN)
+        t3.shift(0.7 * DOWN)
+
+        self.play(Transform(r1, r3), Transform(t1, t3))
+        self.play(Transform(eq3[3:], eq2cp[12:]))
+        self.wait()
+
+        self.play(Uncreate(r1), Uncreate(t1))
+        self.wait()
