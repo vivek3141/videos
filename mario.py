@@ -444,3 +444,43 @@ class NeuroEvolution(Scene):
                   Write(rep)
                   )
         self.wait(0.25)
+
+
+class PartOneTitle(Scene):
+    def construct(self):
+        part = TextMobject("Part 1")
+        part.scale(1.5)
+        part.shift(2 * UP)
+
+        title = TextMobject("Building on From Linear Regresssion", color=RED)
+        title.scale(1.5)
+
+        self.play(Write(part))
+        self.play(Write(title))
+        self.wait()
+
+class PartTwoTitle(Scene):
+    def construct(self):
+        part = TextMobject("Part 2")
+        part.scale(1.5)
+        part.shift(2 * UP)
+
+        title = TextMobject("Still too simple :(", color=PURPLE)
+        title.scale(1.5)
+
+        self.play(Write(part))
+        self.play(Write(title))
+        self.wait()
+
+class PartThreeTitle(Scene):
+    def construct(self):
+        part = TextMobject("Part 3")
+        part.scale(1.5)
+        part.shift(2 * UP)
+
+        title = TextMobject("Applications of NEAT", color=BLUE)
+        title.scale(1.5)
+
+        self.play(Write(part))
+        self.play(Write(title))
+        self.wait()

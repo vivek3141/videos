@@ -4,8 +4,41 @@ color_map = {
     r"{u}": BLUE,
     r"\rho": YELLOW,
     r"{p}": RED,
-    r"\mu": GOLD
+    r"\mu": GOLD,
+    r"{g}": GOLD
 }
+
+
+class NumberedList(BulletedList):
+    CONFIG = {
+        "dot_scale_factor": 1,
+        "num_color": BLUE,
+    }
+
+    def __init__(self, *items, **kwargs):
+        line_separated_items = [s + "\\\\" for s in items]
+        TextMobject.__init__(self, *line_separated_items, **kwargs)
+        for num, part in enumerate(self):
+            dot = TexMobject(f"{num+1})", color=self.dot_color,
+                             tex_to_color_map={f"{num+1}": self.num_color}).scale(
+                self.dot_scale_factor)
+            dot.next_to(part[0], LEFT, MED_SMALL_BUFF)
+            part.add_to_back(dot)
+        self.arrange(
+            DOWN,
+            aligned_edge=LEFT,
+            buff=self.buff
+        )
+
+
+class Intro(Scene):
+    def construct(self):
+        v = VGroup(
+            *[Vector([0, 1, 0], color=PURPLE).shift([x, y, 0])
+              for x in np.arange(-9, 8, 0.75)
+              for y in np.arange(-4, 4, 1.5)])
+        self.play(Write(v))
+        self.wait()
 
 
 class Equations(Scene):
@@ -15,11 +48,11 @@ class Equations(Scene):
         eq1.shift(1 * UP)
 
         eq2 = TexMobject(
-            r"\rho {{\partial {u} } \over {\partial {t} }} = -\nabla {p} + \mu \nabla^2 {u} + \textbf{F}", tex_to_color_map=color_map)
+            r"\rho {{d {u} } \over {d {t} }} = -\nabla {p} + \mu \nabla^2 {u} + \textbf{F}", tex_to_color_map=color_map)
         eq2.scale(1.5)
         eq2.shift(1 * DOWN)
 
-        title = TextMobject("Navier-Stokes Equations", color=GREEN)
+        title = Text("Navier-Stokes Equations", color=GREEN)
         title.scale(1.5)
         title.shift(3 * UP)
 
@@ -29,10 +62,56 @@ class Equations(Scene):
         self.wait()
 
 
+class MilleniumPrize(Scene):
+    def construct(self):
+        title = Text(
+            "Millenium Prize Problems", color=PURPLE)
+        title.scale(1.25)
+        title.shift(3 * UP)
+
+        l = NumberedList(
+            *"""Yang–Mills and Mass Gap
+Riemann Hypothesis
+P vs NP Problem
+Existence and smoothness of the Navier-Stokes equation
+Hodge Conjecture
+Poincare Conjecture
+Birch and Swinnerton-Dyer Conjecture""".split("\n")
+        )
+        l.scale(0.75)
+        l.shift(0.5 * DOWN)
+        self.play(FadeInFromDown(title))
+        self.play(Write(l))
+        self.wait()
+
+        self.play(l.fade_all_but, 3)
+        self.wait()
+
+
+class ApplicationsOne(Scene):
+    def construct(self):
+        rect1 = ScreenRectangle(height=3.5)
+        rect2 = ScreenRectangle(height=3.5)
+        rect3 = ScreenRectangle(height=3.5)
+
+        rect1.shift(2 * UP + 3.5 * LEFT)
+        rect2.shift(2 * UP + 3.5 * RIGHT)
+        rect3.shift(2 * DOWN)
+
+        self.play(Write(rect1))
+        self.wait()
+
+        self.play(Write(rect2))
+        self.wait()
+
+        self.play(Write(rect3))
+        self.wait()
+
+
 class Assumptions(Scene):
     def construct(self):
-        title = TextMobject(
-            "Assumptions for Navier-Stokes equations", color=PURPLE)
+        title = Text(
+            "Assumptions for this video", color=PURPLE)
         title.scale(1.25)
         title.shift(3 * UP)
 
@@ -57,7 +136,7 @@ class Assumptions(Scene):
 
 class Newtonian(Scene):
     def construct(self):
-        title = TextMobject("Newtonian Fluid", color=GOLD)
+        title = Text("Newtonian Fluid", color=GOLD)
         title.scale(1.5)
         title.shift(3.25 * UP)
 
@@ -74,25 +153,29 @@ class Newtonian(Scene):
         f1 = FunctionGraph(self.f1, x_min=0, x_max=6, color=TEAL)
         f2 = FunctionGraph(self.f2, x_min=1/25, x_max=6, color=RED)
 
-        xlbl = TextMobject("Shear Rate")
+        xlbl = Text("Shear Rate")
         xlbl.shift(3 * DOWN)
 
-        grp = VGroup(axes, f1, f2)
-        grp.center()
+        grpp = VGroup(axes, f1, f2)
+        grpp.center()
 
-        ylbl = TextMobject("Viscosity")
+        f2.shift(2.75 * LEFT)
+
+        grp = VGroup(axes, f1)
+
+        ylbl = Text("Viscosity")
         ylbl.rotate(PI/2)
         ylbl.shift(3.5 * LEFT + 0 * UP)
 
         grp1 = VGroup(grp, xlbl, ylbl)
         grp1.shift(0.25 * DOWN)
 
-        lbl1 = TextMobject("Newtonian", color=TEAL)
+        lbl1 = Text("Newtonian", color=TEAL)
         lbl1.scale(0.75)
         lbl1.move_to(f1, RIGHT)
         lbl1.shift(3 * LEFT + 0.5 * UP)
 
-        lbl2 = TextMobject("Non-Newtonian", color=RED)
+        lbl2 = Text("Non-Newtonian", color=RED)
         lbl2.scale(0.75)
         lbl2.shift(1.5 * DOWN + 1 * LEFT)
 
@@ -122,7 +205,7 @@ class Newtonian(Scene):
 
 class Incompressible(Scene):
     def construct(self):
-        title = TextMobject("Incompressible", color=PURPLE)
+        title = Text("Incompressible", color=PURPLE)
         title.scale(1.5)
         title.shift(3.25 * UP)
 
@@ -185,7 +268,7 @@ class Incompressible(Scene):
 
 class Isothermal(Scene):
     def construct(self):
-        title = TextMobject("Incompressible", color=ORANGE)
+        title = Text("Incompressible", color=ORANGE)
         title.scale(1.5)
         title.shift(3.25 * UP)
 
@@ -204,11 +287,11 @@ class Divergence(Scene):
         eq1.shift(1 * UP)
 
         eq2 = TexMobject(
-            r"\rho {{\partial {u} } \over {\partial {t} }} = -\nabla {p} + \mu \nabla^2 {u} + \textbf{F}", tex_to_color_map=color_map)
+            r"\rho {{d {u} } \over {d {t} }} = -\nabla {p} + \mu \nabla^2 {u} + \textbf{F}", tex_to_color_map=color_map)
         eq2.scale(1.5)
         eq2.shift(1 * DOWN)
 
-        title = TextMobject("Navier-Stokes Equations", color=GREEN)
+        title = Text("Navier-Stokes Equations", color=GREEN)
         title.scale(1.5)
         title.shift(3 * UP)
 
@@ -232,7 +315,7 @@ class Divergence(Scene):
         self.wait()
 
 
-class VectorFieldDemo(MovingCameraScene):
+class VectorFieldDemo(Scene):
     def construct(self):
         plane = NumberPlane()
         plane.set_opacity(0.5)
@@ -242,7 +325,7 @@ class VectorFieldDemo(MovingCameraScene):
             lambda t: 1.5*np.array([np.cos(t[0]), np.sin(t[1]), 0])
         )
 
-        title = TextMobject("Vector Field")
+        title = Text("Vector Field")
         title.scale(2)
         title.to_edge(UP)
         title.add_background_rectangle()
@@ -312,11 +395,12 @@ class SecondEq(Scene):
         eq1.shift(1 * UP)
 
         eq2 = TexMobject(
-            r"\rho {{\partial {u} } \over {\partial {t} }} = ", r"-\nabla {p}", r" + ", r"\mu \nabla^2 {u}", r" + ", r"\textbf{F}", tex_to_color_map=color_map)
+            r"\rho {{d {u} } \over {d {t} }} = ", r"-\nabla {p}", r" + ", r"\mu \nabla^2 {u}", r" + ", r"\textbf{F}", tex_to_color_map=color_map)
         eq2.scale(1.5)
         eq2.shift(1 * DOWN)
 
-        title = TextMobject("Navier-Stokes Equations", color=GREEN)
+        title = Text("Navier-Stokes Equations",
+                     color=GREEN, font='Berlin Sans FB')
         title.scale(1.5)
         title.shift(3 * UP)
 
@@ -333,14 +417,32 @@ class SecondEq(Scene):
         self.wait()
 
         eq2cp = TexMobject(
-            r"\rho {{\partial {u} } \over {\partial {t} }}", r" = ", r"-\nabla {p} + \mu \nabla^2 {u} + ", r"\textbf{F}", tex_to_color_map=color_map)
+            r"\rho {{d {u} } \over {d {t} }}", r" = ", r"-\nabla {p} + \mu \nabla^2 {u} + ", r"\textbf{F}", tex_to_color_map=color_map)
         eq2cp.scale(1.5)
         eq2cp.shift(1.5 * UP)
+
+        eq2cp2 = TexMobject(
+            r"\rho {{d {u} } \over {d {t} }}", r" = ", r"-\nabla {p} + \mu \nabla^2 {u} + ", r"\rho {g}", tex_to_color_map=color_map)
+        eq2cp2.scale(1.5)
+        eq2cp2.shift(1.5 * UP)
 
         self.play(Transform(eq3[0], eq2cp[0]))
         self.wait()
 
         self.play(Transform(eq3[1], eq2cp[1:4]))
+        self.wait()
+
+        legend = Rectangle(height=2, width=5, color=RED)
+        eqq = TexMobject(r"{{d {u} } \over {d {t} }} = ", r"{{\partial {u} } \over {\partial {t} }}",
+                         r" + {u} \cdot \nabla {u}", tex_to_color_map=color_map)
+
+        grp = VGroup(legend, eqq)
+        grp.shift(3 * RIGHT + 1.5 * UP)
+
+        self.play(Write(grp))
+        self.wait()
+
+        self.play(FadeOut(grp))
         self.wait()
 
         br_config = {
@@ -352,7 +454,7 @@ class SecondEq(Scene):
         }
         r1 = BackgroundRectangle(eq2[4:6], **br_config)
 
-        t1 = TextMobject("Pressure", color=TEAL)
+        t1 = Text("Pressure", color=TEAL)
         t1.move_to(r1, aligned_edge=DOWN)
         t1.shift(0.7 * DOWN)
 
@@ -364,7 +466,7 @@ class SecondEq(Scene):
 
         r2 = BackgroundRectangle(eq2[7:10], **br_config)
 
-        t2 = TextMobject("Friction", color=TEAL)
+        t2 = Text("Friction", color=TEAL)
         t2.move_to(r2, aligned_edge=DOWN)
         t2.shift(0.7 * DOWN)
 
@@ -375,7 +477,7 @@ class SecondEq(Scene):
 
         r3 = BackgroundRectangle(eq2[11:], **br_config)
 
-        t3 = TextMobject("External", color=TEAL)
+        t3 = Text("External", color=TEAL)
         t3.move_to(r3, aligned_edge=DOWN)
         t3.shift(0.7 * DOWN)
 
@@ -385,3 +487,62 @@ class SecondEq(Scene):
 
         self.play(Uncreate(r1), Uncreate(t1))
         self.wait()
+
+        self.play(Transform(eq3[3:], eq2cp2[12:]))
+        self.wait()
+
+
+class Smooth(MovingCameraScene):
+    CONFIG = {
+        "x1": -0.4,
+        "x2": -4,
+        "down": 0
+    }
+
+    def construct(self):
+        plane = NumberPlane()
+        plane.set_opacity(0.25)
+        f = FunctionGraph(lambda x: self.f_s(x) - self.down,
+                          color=GOLD, stroke_opacity=0.8)
+        self.add(plane)
+
+        title = Text("Smooth Solution")
+        title.scale(2)
+        title.to_edge(UP)
+        title.add_background_rectangle()
+
+        self.play(Write(f), FadeInFromDown(title))
+        self.wait()
+        p1 = Dot(fill_opacity=1, color=YELLOW)
+        p1.shift([self.x1, self.f_s(self.x1) - self.down, 0])
+
+        t = ValueTracker(self.x2)
+
+        p2 = Dot(fill_opacity=1, color=YELLOW)
+        p2.shift([t.get_value(), self.f_s(t.get_value()) - self.down, 0])
+        p2.add_updater(lambda x: x.become(
+            Dot(fill_opacity=1, color=YELLOW).shift(
+                [t.get_value(), self.f_s(t.get_value()) - self.down, 0])
+        ))
+
+        line = Line([self.x1, self.f_s(self.x1) - self.down, 0],
+                    [t.get_value(), self.f_s(t.get_value()) - self.down, 0])
+        line.scale(100)
+
+        def line_update(l):
+            line = Line([self.x1, self.f_s(self.x1) - self.down, 0],
+                        [t.get_value(), self.f_s(t.get_value()) - self.down, 0])
+            line.scale(100)
+            l.become(line)
+
+        line.add_updater(line_update)
+
+        self.play(Write(line), Write(p1), Write(p2))
+        self.wait()
+
+        self.play(t.increment_value, (self.x1-self.x2) - 0.1,
+                  run_time=3, rate_func=linear)
+        self.wait()
+
+    def f_s(self, x, scale=17):
+        return -0.3 * x**2 + 1.5

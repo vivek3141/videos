@@ -589,3 +589,42 @@ class QandA(Scene):
         text = TextMobject(r"Q and A")
         text.scale(3)
         self.play(Write(text))
+
+
+class SpecialAxes(Scene):
+    CONFIG = {
+        "x_max": 6,
+        "x_min": 0,
+        "y_min": 0,
+        "y_max": 6,
+        "tip_scale_factor": 0.25
+    }
+
+    def construct(self):
+        axes = Axes(
+            x_min=self.x_min,
+            x_max=self.x_max,
+            y_min=self.y_min,
+            y_max=self.y_max,
+            axis_config={
+                "include_tip": False,
+                "include_ticks": False
+            }
+        )
+        NumberLine
+        tip = VGroup(
+            *[Line(
+                [self.x_max, 0, 0],
+                np.array([self.x_max, 0, 0]) + self.tip_scale_factor *
+                np.array([- np.sqrt(2)/2, i * np.sqrt(2)/2, 0]),
+                color=LIGHT_GRAY) for i in [-1, 1]],
+            *[Line(
+                [0, self.y_max, 0],
+                np.array([0, self.y_max, 0]) + self.tip_scale_factor *
+                np.array([i * np.sqrt(2)/2,  - np.sqrt(2)/2, 0]),
+                color=LIGHT_GRAY) for i in [-1, 1]],
+        )
+        axes = VGroup(axes, tip)
+        axes.center()
+
+        self.add(axes)
