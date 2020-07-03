@@ -102,3 +102,30 @@ class Problems(Scene):
 
         self.play(l.fade_all_but, 1)
         self.wait()
+
+
+class HigherDim(ThreeDScene):
+    def construct(self):
+        axis_config = {
+            "x_min": -5,
+            "x_max": 5,
+            "y_min": -5,
+            "y_max": 5,
+            "z_min": -3.5,
+            "z_max": 3.5,
+        }
+        axes = ThreeDAxes(**axis_config)
+        cubes = VGroup()
+
+        for x in np.arange(axis_config["x_min"], axis_config["x_max"]+0.1, 0.5):
+            for y in np.arange(axis_config["y_min"], axis_config["y_max"]+0.1, 0.5):
+                z = np.sin(x) + np.cos(y)
+                p = Prism(dimensions=[0.5, 0.5, z])
+                p.shift([x, y, z/2])
+                cubes.add(p)
+            
+        self.move_camera(0.8 * np.pi / 2, -0.45 * np.pi)
+        self.play(Write(axes))
+        self.play(Write(cubes))
+        self.begin_ambient_camera_rotation(rate=0.08)
+        self.wait(30)
