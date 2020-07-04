@@ -117,15 +117,35 @@ class HigherDim(ThreeDScene):
         axes = ThreeDAxes(**axis_config)
         cubes = VGroup()
 
-        for x in np.arange(axis_config["x_min"], axis_config["x_max"]+0.1, 0.5):
-            for y in np.arange(axis_config["y_min"], axis_config["y_max"]+0.1, 0.5):
+        for x in np.arange(-5, 5.1, 0.5):
+            for y in np.arange(-5, 5.1, 0.5):
                 z = np.sin(x) + np.cos(y)
                 p = Prism(dimensions=[0.5, 0.5, z])
                 p.shift([x, y, z/2])
                 cubes.add(p)
-            
+
         self.move_camera(0.8 * np.pi / 2, -0.45 * np.pi)
         self.play(Write(axes))
         self.play(Write(cubes))
         self.begin_ambient_camera_rotation(rate=0.08)
         self.wait(30)
+
+
+class PieceWise(Scene):
+    def construct(self):
+        axes = Axes(
+            x_min=-1,
+            x_max=5,
+            y_min=-1,
+            y_max=5,
+            axis_config={
+                "include_tip": False
+            }
+        )
+        f = VGroup(
+            FunctionGraph(lambda x: 2, x_min=0, x_max=2.5),
+            FunctionGraph(lambda x: 4, x_min=2.5, x_max=5)
+        )
+        grp = VGroup(axes, f)
+        grp.center()
+        self.add(grp)
