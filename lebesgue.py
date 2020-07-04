@@ -146,6 +146,43 @@ class PieceWise(Scene):
             FunctionGraph(lambda x: 2, x_min=0, x_max=2.5),
             FunctionGraph(lambda x: 4, x_min=2.5, x_max=5)
         )
-        grp = VGroup(axes, f)
+        r1 = self.get_riemann_sums(lambda x: 2)
+
+        grp = VGroup(axes, f, r1)
         grp.center()
-        self.add(grp)
+
+        self.play(Write(axes), Write(f))
+        self.wait()
+
+        self.play(Write(r1))
+        self.wait()
+
+        r = Rectangle(height=1.9, width=1, stroke_opacity=1,
+                      fill_opacity=1, stroke_color=DARK_BLUE, fill_color=BLUE,)
+        r.next_to(r1[-1], RIGHT).shift(0.25 * LEFT)
+
+        h = ValueTracker(1.9)
+
+        def update(rect):
+            r = Rectangle(height=h.get_value(), width=1, stroke_opacity=1,
+                          fill_opacity=1, stroke_color=DARK_BLUE, fill_color=BLUE,)
+            r.next_to(r1[-1], RIGHT).shift(0.25 * LEFT +
+                                           (h.get_value() - 1.9)/2 * UP)
+            rect.become(r)
+
+        r.add_updater(update)
+
+        self.play(Write(r))
+        self.play(h.increment_value, 2, rate_func=there_and_back, run_time=3)
+        self.wait()
+
+    def get_riemann_sums(self, func, dx=1, x=(0.5, 2.5), color=RED):
+        rects = VGroup()
+        for i in np.arange(x[0], x[1], dx):
+            h = func(i)
+            rect = Rectangle(height=h-0.1, width=dx, stroke_color=DARK_BLUE, fill_color=BLUE,
+                             stroke_opacity=1, fill_opacity=1)
+            rect.shift(i * RIGHT + (h / 2) * UP)
+            rects.add(rect)
+
+        return rects
