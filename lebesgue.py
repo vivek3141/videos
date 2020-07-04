@@ -299,3 +299,13 @@ class LebesguePart(Scene):
 
         self.play(Write(title))
         self.wait()
+
+
+class HenriLebeck(Scene):
+    def construct(self):
+        img = ImageMobject("./henri.jpg")
+        eq = TextMobject(r"Henri Lebesgue").scale(1.5).shift(2.5 * DOWN)
+        
+        self.play(FadeInFromDown(img))
+        self.play(Write(eq))
+        self.wait()
