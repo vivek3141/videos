@@ -186,3 +186,116 @@ class PieceWise(Scene):
             rects.add(rect)
 
         return rects
+
+
+class IRFunc(Scene):
+    def construct(self):
+        eq = TexMobject(
+            r"f(x) = \begin{cases} 0 & x \text{ is rational} \\ 1 & x \text{ is irrational} \end{cases}")
+        eq.scale(1.5)
+
+        self.play(Write(eq))
+        self.wait()
+
+        self.play(eq.scale, 0.5)
+        self.play(eq.shift, 3 * UP)
+        self.wait()
+
+
+class IRGraph(GraphScene):
+    CONFIG = {
+        "x_min": 0,
+        "x_max": 1,
+        "x_labeled_nums": list(range(0, 2)),
+        "y_min": 0,
+        "y_max": 2,
+        "y_tick_frequency": 1,
+        "y_labeled_nums": list(range(0, 2)),
+        "func": lambda x: 1,
+        "y_axis_label": "",
+    }
+
+    def construct(self):
+        self.setup_axes(animate=True)
+        graph = self.get_graph(self.func)
+        self.wait()
+
+        dx = 0.005
+        rects = self.get_riemann_rectangles(
+            graph,
+            x_min=0,
+            x_max=1,
+            dx=dx,
+            stroke_width=2,
+        )
+
+        self.play(
+            DrawBorderThenFill(
+                rects,
+                run_time=2,
+                rate_func=smooth,
+                lag_ratio=0.5,
+            ),
+        )
+        self.wait()
+
+
+class IRExp(Scene):
+    def construct(self):
+        num = TexMobject("0.", "123", "123123...")
+        num.scale(3)
+
+        self.play(FadeInFromDown(num[0]))
+        self.wait()
+
+        self.play(FadeInFromDown(num[1]))
+        self.wait()
+
+        b = Brace(num[2], color=YELLOW)
+        t = b.get_tex("P = (0.1)^n")
+
+        br = VGroup(b, t)
+
+        self.play(Write(num[2]))
+        self.play(Write(br))
+        self.wait()
+
+        axes = Axes(
+            x_min=-1,
+            x_max=1,
+            y_min=0,
+            y_max=1,
+            axis_config={
+                "include_tip": False
+            }
+        )
+        f = FunctionGraph(lambda x: 0.1 * math.pow(0.1, x),
+                          x_min=-1, x_max=1, color=TEAL)
+
+        func = VGroup(axes, f)
+        func.shift(2 * UP + 3 * LEFT)
+        func.scale(2)
+
+        eq = TexMobject(r"\lim_{n \rightarrow \infty} 0.1^n = 0")
+        eq.scale(1.5)
+        eq.shift(2 * UP + 3 * RIGHT)
+
+        self.play(Write(func))
+        self.play(Write(eq))
+        self.wait()
+
+
+class Integ(Scene):
+    def construct(self):
+        eq = TexMobject(r"\int_0^1 f(x) dx = 1")
+        eq.scale(2)
+        self.play(Write(eq))
+
+
+class LebesguePart(Scene):
+    def construct(self):
+        title = TextMobject("Lebesgue Integration", color=GOLD)
+        title.scale(2)
+
+        self.play(Write(title))
+        self.wait()
