@@ -301,11 +301,13 @@ class LebesguePart(Scene):
         self.wait()
 
 
-class HenriLebeck(Scene):
+class HenriLebesgue(Scene):
     def construct(self):
-        img = ImageMobject("./henri.jpg")
+        img = ImageMobject("./img/henri.jpg")
+        img.scale(2.5)
+        img.shift(1 * UP)
         eq = TextMobject(r"Henri Lebesgue").scale(1.5).shift(2.5 * DOWN)
-        
+
         self.play(FadeInFromDown(img))
         self.play(Write(eq))
         self.wait()
