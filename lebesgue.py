@@ -323,21 +323,25 @@ class LebesgueIntegral(Scene):
             x_min=0,
             x_max=5,
             y_min=0,
-            y_max=5,
+            y_max=3,
             axis_config={
                 "include_tip": False
             }
         )
         f = FunctionGraph(self.func, x_min=0.833, x_max=4.167,
                           color=WHITE, stroke_width=2)
-        func = VGroup(axes, f)
         rects = self.get_lebesgue_rectangles()
-        self.add(axes, rects, f)
+        grp = VGroup(axes, f, rects)
+        grp.center()
+        grp.scale(2)
+        self.play(Write(axes), Write(func))
+        self.play(Write(rects))
+        self.wait()
 
-    def get_lebesgue_rectangles(self, dx=0.2, y=(0, 2.75)):
+    def get_lebesgue_rectangles(self, dx=0.2, y=(0, 2.4)):
         rects = VGroup()
         y_range = np.arange(y[0], y[1], dx)
-        colors = color_gradient([WHITE, RED], len(y_range))
+        colors = color_gradient([BLUE, GREEN], len(y_range))
         for color, y in zip(colors, y_range):
             x = abs(2.5 - ((((y + dx) - 2.5)/(-0.9))**(1/2) + 2.5))
             rect = Rectangle(height=dx, width=2*x, stroke_color=BLACK,  fill_color=color,
@@ -346,3 +350,5 @@ class LebesgueIntegral(Scene):
             rects.add(rect)
 
         return rects
+
+
