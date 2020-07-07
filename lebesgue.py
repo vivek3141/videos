@@ -157,15 +157,20 @@ class PieceWise(Scene):
         self.play(Write(r1))
         self.wait()
 
+        colors = color_gradient([BLUE, GREEN], 3)
+
+        for i in range(2):
+            r1[i].set_fill(color=colors[i])
+
         r = Rectangle(height=1.9, width=1, stroke_opacity=1,
-                      fill_opacity=1, stroke_color=DARK_BLUE, fill_color=BLUE,)
+                      fill_opacity=1, stroke_color=BLACK, fill_color=colors[-1])
         r.next_to(r1[-1], RIGHT).shift(0.25 * LEFT)
 
         h = ValueTracker(1.9)
 
         def update(rect):
             r = Rectangle(height=h.get_value(), width=1, stroke_opacity=1,
-                          fill_opacity=1, stroke_color=DARK_BLUE, fill_color=BLUE,)
+                          fill_opacity=1, stroke_color=BLACK, fill_color=colors[-1])
             r.next_to(r1[-1], RIGHT).shift(0.25 * LEFT +
                                            (h.get_value() - 1.9)/2 * UP)
             rect.become(r)
@@ -180,7 +185,7 @@ class PieceWise(Scene):
         rects = VGroup()
         for i in np.arange(x[0], x[1], dx):
             h = func(i)
-            rect = Rectangle(height=h-0.1, width=dx, stroke_color=DARK_BLUE, fill_color=BLUE,
+            rect = Rectangle(height=h-0.1, width=dx, stroke_color=BLACK, fill_color=BLACK,
                              stroke_opacity=1, fill_opacity=1)
             rect.shift(i * RIGHT + (h / 2) * UP)
             rects.add(rect)
@@ -297,7 +302,7 @@ class LebesguePart(Scene):
         title = TextMobject("Lebesgue Integration", color=GOLD)
         title.scale(2)
 
-        self.play(Write(title))
+        self.play(Write(title), run_time=3)
         self.wait()
 
 
