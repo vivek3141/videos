@@ -73,7 +73,7 @@ class FTC(GraphScene):
             )
             self.wait()
 
-        t = Text("Riemann Integration")
+        t = TextMobject("Riemann Integration")
         t.scale(1.5)
         t.shift(3 * UP)
 
@@ -83,7 +83,7 @@ class FTC(GraphScene):
 
 class Problems(Scene):
     def construct(self):
-        title = Text(
+        title = TextMobject(
             "Problems with Riemann Integration", color=PURPLE)
         title.scale(1.25)
         title.shift(3 * UP)
@@ -330,13 +330,20 @@ class LebesgueIntegral(Scene):
         )
         f = FunctionGraph(self.func, x_min=0.833, x_max=4.167,
                           color=WHITE, stroke_width=2)
-        rects = self.get_lebesgue_rectangles()
+        rects = VGroup(
+            *[self.get_lebesgue_rectangles(dx=dx) for dx in np.arange(0.5, 0.1, -0.1)]
+        )
         grp = VGroup(axes, f, rects)
         grp.center()
         grp.scale(2)
-        self.play(Write(axes), Write(func))
-        self.play(Write(rects))
-        self.wait()
+
+        self.play(Write(axes), Write(f))
+        self.play(Write(rects[0]))
+        self.wait(1)
+
+        for rect in rects[1:]:
+            self.play(Transform(rects[0], rect))
+            self.wait(1)
 
     def get_lebesgue_rectangles(self, dx=0.2, y=(0, 2.4)):
         rects = VGroup()
@@ -410,4 +417,30 @@ class IRLebesgue(Scene):
 
         self.play(Write(soln))
         self.play(Write(brect))
+        self.wait()
+
+
+class LebesgueEq(Scene):
+    def construct(self):
+        title = TextMobject("Lebesgue Integral", color=PURPLE)
+        title.scale(1.5)
+        title.shift(3 * UP)
+
+        self.play(FadeInFromDown(title))
+        self.wait()
+
+        eq1 = TexMobject(r"\int_{a}^{b} f(x) \mathrm{d} \mu =\sum_{i=1}^{n} y_{i} \cdot \mu \left(A_{y_{i}}\right)",
+                         tex_to_color_map={r"A_{y_{i}}": BLUE, r"\mu": GOLD})
+        eq1.scale(1.5)
+        eq1.shift(1 * UP)
+
+        self.play(Write(eq1))
+        self.wait()
+
+        eq2 = TexMobject(r"\int_{a}^{b} f(x) d \mu =\lim _{n \rightarrow \infty} \int_{a}^{b} f_{n}(x) d \mu",
+                         tex_to_color_map={r"f_{n}": BLUE, r"\mu": GOLD})
+        eq2.scale(1.5)
+        eq2.shift(2 * DOWN)
+
+        self.play(Write(eq2))
         self.wait()
