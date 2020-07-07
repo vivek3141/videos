@@ -352,3 +352,62 @@ class LebesgueIntegral(Scene):
         return rects
 
 
+class IRLebesgue(Scene):
+    def construct(self):
+        eq1 = TexMobject("f(x), x \in [0, 1]")
+        eq1.scale(1.5)
+        eq1.shift(3.25 * UP)
+
+        arr1 = Arrow(2.75 * UP, 2 * UP + 4 * LEFT, color=YELLOW)
+        arr2 = Arrow(2.75 * UP, 2 * UP + 4 * RIGHT, color=YELLOW)
+
+        a0 = TexMobject("A_0", color=BLUE)
+        a0.scale(1.5)
+        a0.shift(1.25 * UP + 4 * LEFT)
+
+        a1 = TexMobject("A_1", color=BLUE)
+        a1.scale(1.5)
+        a1.shift(1.25 * UP + 4 * RIGHT)
+
+        eq2 = TextMobject(r"\(f(x) = 0 \) \\ \(x\) is rational",
+                          tex_to_color_map={"rational": GREEN})
+        eq2.shift(0 * UP + 4 * LEFT)
+
+        eq3 = TextMobject(r"\( f(x) = 1 \) \\ \(x\) is irrational",
+                          tex_to_color_map={"irrational": GREEN})
+        eq3.shift(0 * UP + 4 * RIGHT)
+
+        integ = TexMobject(r"\int_0^1 f(x) \mathrm{d}\mu = 0 \cdot \mu (A_0) + 1 \cdot \mu (A_1)",
+                           tex_to_color_map={r"A_0": BLUE, r"A_1": BLUE, r"\mu": GOLD})
+        integ.shift(2 * DOWN)
+        integ.scale(1.5)
+
+        self.play(Write(eq1))
+        self.play(Write(arr1), Write(arr2))
+        self.play(Write(a0), Write(eq2))
+        self.play(Write(a1), Write(eq3))
+        self.wait()
+
+        self.play(Write(integ))
+        self.wait()
+
+        self.play(Uncreate(VGroup(eq1, arr1, arr2, a0, eq2, a1, eq3)))
+        self.play(integ.shift, 3 * UP)
+        self.wait()
+
+        soln = TexMobject(r"= 0 \cdot 0 + 1 \cdot 1 = ", r"1")
+        soln.scale(1.5)
+        soln.shift(1 * DOWN + 1 * RIGHT)
+
+        brect = BackgroundRectangle(
+            soln[-1],
+            color=YELLOW,
+            fill_opacity=0,
+            stroke_width=4,
+            stroke_opacity=1,
+            buff=0.25
+        )
+
+        self.play(Write(soln))
+        self.play(Write(brect))
+        self.wait()
