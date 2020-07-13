@@ -88,7 +88,7 @@ class Problems(Scene):
         title.scale(1.25)
         title.shift(3 * UP)
 
-        l = BulletedList("Higher Dimensions", "Continuitiy",
+        l = BulletedList("Higher Dimensions", "Continuity",
                          dot_color=BLUE, buff=0.75*LARGE_BUFF)
         l.scale(1.5)
         l.shift(0.25*DOWN)
@@ -154,13 +154,13 @@ class PieceWise(Scene):
         self.play(Write(axes), Write(f))
         self.wait()
 
-        self.play(Write(r1))
-        self.wait()
-
         colors = color_gradient([BLUE, GREEN], 3)
 
         for i in range(2):
             r1[i].set_fill(color=colors[i])
+        
+        self.play(Write(r1))
+        self.wait()
 
         r = Rectangle(height=1.9, width=1, stroke_opacity=1,
                       fill_opacity=1, stroke_color=BLACK, fill_color=colors[-1])
@@ -290,11 +290,12 @@ class IRExp(Scene):
         self.wait()
 
 
-class Integ(Scene):
+class Integ2(Scene):
     def construct(self):
         eq = TexMobject(r"\int_0^1 f(x) dx = 1")
         eq.scale(2)
         self.play(Write(eq))
+        self.wait()
 
 
 class LebesguePart(Scene):
@@ -449,3 +450,148 @@ class LebesgueEq(Scene):
 
         self.play(Write(eq2))
         self.wait()
+
+
+class Electric(Scene):
+    def construct(self):
+        f = FunctionGraph(self.func, color=RED, x_min=-6)
+
+        axes = Axes(
+            x_min=0,
+            x_max=15,
+            y_min=-2,
+            y_max=2,
+            axis_config={
+                "include_tip": False
+            }
+        )
+        lbl = TextMobject(r"Electric Current \( E(t) \)")
+        lbl.shift([-4, 3, 0])
+        axes.shift(6 * LEFT)
+        self.play(Write(axes), Write(lbl))
+        self.play(Write(f), rate_func=smooth, run_time=4)
+        self.wait()
+    
+    def func(self, x):
+        if -4 <= x <= -2.5 or 0 <= x <= 1.5 or x >= 4:
+            return 1
+        return 0
+
+
+class ExpectedProb(Scene):
+    def construct(self):
+        f = ParametricFunction(
+            function=self.func,
+            t_min=-3,
+            t_max=3,
+            color=WHITE
+        )
+
+        axes = Axes(
+            x_min=-3,
+            x_max=3,
+            y_min=0,
+            y_max=2,
+            number_line_config={
+                "color": LIGHT_GREY,
+                "include_tip": False,
+                "exclude_zero_from_default_numbers": True,
+            }
+        )
+
+        rect = self.get_riemann_sums(self.func)
+        rect.scale(1.95)
+        rect.shift(2.4 * DOWN)
+
+        func = VGroup(axes, f)
+        func.scale(2)
+        func.shift(2 * DOWN)
+
+
+        eq2 = TexMobject(r"E[x] = \int_{-\infty}^{\infty} P(x) \mathrm{d} x")
+        eq2.scale(1.5)
+        eq2.shift(2.5 * UP)
+
+        self.play(Write(func))
+        self.wait()
+
+        self.play(Write(eq2))
+        self.play(Write(rect))
+        self.wait()
+
+    @staticmethod
+    def get_riemann_sums(func, dx=0.01, x=(-3, 3), color=RED):
+        rects = VGroup()
+        x_range = np.arange(x[0], x[1], dx)
+        for i in x_range:
+            h = func(i)[1]
+            rect = Rectangle(height=h, width=dx, color=BLACK, stroke_width=0,
+                             stroke_opacity=0, fill_opacity=1)
+            rect.shift(i * RIGHT + (h / 2) * UP)
+            rects.add(rect)
+        
+        colors = color_gradient([BLUE, PURPLE], len(x_range))
+        for i in range(len(x_range)):
+            rects[i].set_fill(color=colors[i])
+
+        return rects
+
+    def func(self, t):
+        return np.array([t, np.exp(-t**2), 0])
+
+
+class Expected(Scene):
+    def construct(self):
+        eq = TexMobject(r"E[x] = \int X \mathrm{d} P",
+        tex_to_color_map={r"E": GOLD, "x": BLUE, "P": YELLOW})
+        eq.scale(2)
+        self.play(Write(eq))
+        self.wait()
+
+class T2(Scene):
+    def construct(self):
+        eq = TexMobject(r"\int f(x) d \mu",
+        tex_to_color_map={r"\mu": GOLD, "x": BLUE, "f": RED})
+        eq.scale(4)
+        self.play(Write(eq))
+        self.wait()
+
+class Thumbnail(Scene):
+    CONFIG = {
+        "func": lambda x: -0.9 * (x - 2.5) ** 2 + 2.5,
+    }
+
+    def construct(self):
+        axes = Axes(
+            x_min=-10,
+            x_max=12,
+            y_min=-123,
+            y_max=122,
+            axis_config={
+                "include_tip": False
+            }
+        )
+        f = FunctionGraph(self.func, x_min=0.833, x_max=4.167,
+                          color=WHITE, stroke_width=2)
+        rects = self.get_lebesgue_rectangles(dx=0.3)
+        grp = VGroup(axes, f, rects)
+        grp.scale(1.75)
+        grp.shift(3.5 * LEFT + 3.5 * DOWN)
+
+        self.play(Write(axes), Write(f))
+        self.play(Write(rects))
+        self.wait(1)
+
+
+    def get_lebesgue_rectangles(self, dx=0.2, y=(0, 2.4)):
+        rects = VGroup()
+        y_range = np.arange(y[0], y[1], dx)
+        colors = color_gradient([BLUE, GREEN], len(y_range))
+        for color, y in zip(colors, y_range):
+            x = abs(2.5 - ((((y + dx) - 2.5)/(-0.9))**(1/2) + 2.5))
+            rect = Rectangle(height=dx, width=2*x, stroke_color=BLACK,  fill_color=color,
+                             stroke_opacity=1, fill_opacity=1, stroke_width=2*dx)
+            rect.shift([2.5, y+dx/2, 0])
+            rects.add(rect)
+
+        return rects
