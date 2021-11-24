@@ -68,7 +68,7 @@ class NormalDerivative(Scene):
             Write(d)
         )
         self.wait()
-        
+
         self.play(v.increment_value, 5, run_time=10, rate_func=linear)
         self.wait()
         self.embed()
@@ -79,11 +79,10 @@ class NormalDerivative(Scene):
                  tex_to_color_map={r"f": BLUE}, **kwargs)
 
         n = DecimalNumber(float(f_prime), color=self.LINE_COLOR)
-        # n.move_to(eq)
+        
         n.scale(1.5)
         n.shift(2.5 * UP + 2 * RIGHT)
 
-        #eq = VGroup(eq, n)
         eq.scale(1.5)
         eq.shift(2.5 * UP)
 
