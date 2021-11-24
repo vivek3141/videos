@@ -177,3 +177,64 @@ class IntroduceComplexFunction(Scene):
         new_t = 3*t**2 + t + 2
         new_r = 3 * np.sin(r + 6)**2 * np.cos(3 * r + 2)
         return new_r * (np.cos(new_t) + np.sin(new_t) * 1j)
+
+
+class ComplexGraph1_1(Scene):
+    def construct(self):
+        frame = self.camera.frame
+        frame.set_phi(PI/4)
+        frame.set_theta(PI/4)
+
+        axes = ThreeDAxes()
+        surf = ParametricSurface(
+            self.func, u_range=(-4, 4), v_range=(-4, 4), color=PURPLE, opacity=0.75)
+
+        self.play(Write(axes), ShowCreation(surf))
+        frame.add_updater(lambda f, dt: f.increment_theta(0.2 * dt))
+        self.wait(10)
+
+        self.embed()
+
+    def func(self, u, v):
+        return [u, v, np.sin(u) * v]
+
+
+class ComplexGraph1_2(Scene):
+    def construct(self):
+        frame = self.camera.frame
+        frame.set_phi(PI/4)
+        frame.set_theta(3*PI/4)
+
+        axes = ThreeDAxes()
+        surf = ParametricSurface(
+            self.func, u_range=(-4, 4), v_range=(-4, 4), color=GREEN, opacity=0.75)
+
+        self.play(Write(axes), ShowCreation(surf))
+        frame.add_updater(lambda f, dt: f.increment_theta(0.2 * dt))
+        self.embed()
+        self.wait(10)
+
+    def func(self, u, v):
+        return [u, v, 0.5*((0.5 * v) ** 2 + (0.5 * u) ** 3)]
+
+
+class ComplexGraph2(Scene):
+    def construct(self):
+        n = NumberPlane(background_line_style={"stroke_opacity": 0.5})
+        n.axes.set_opacity(0.5)
+
+        v = VectorField(lambda x, y: [np.cos(
+            x)*np.sin(y), np.sin(y) + np.cos(x), 0], n)
+
+        eq = Tex(r"f(x+y{i}) = \cos(x) \sin(y) + (\sin(y) + \cos(x){i}",
+                 tex_to_color_map={r"{i}": BLUE})
+        beq = BackgroundRectangle(eq, buff=0.2, opacity=1)
+
+        grp = VGroup(beq, eq)
+        grp.scale(1.25)
+        grp.shift(3 * UP)
+
+        self.play(Write(n))
+        self.play(Write(v), Write(grp))
+        self.wait()
+        self.embed()
