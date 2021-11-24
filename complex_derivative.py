@@ -1,5 +1,7 @@
 from manimlib import *
 
+YELLOW_Z = "#e2e1a4"
+
 
 class Scene(Scene):
     def interact(self):
@@ -18,6 +20,7 @@ class ComplexTest(Scene):
         a = Sphere()
         self.add(a)
         n = NumberPlane()
+        Dot
         # n.prep
         # n.apply_complex_function
         self.embed()
@@ -25,7 +28,7 @@ class ComplexTest(Scene):
 
 
 class NormalDerivative(Scene):
-    LINE_COLOR = "#e2e1a4"
+    LINE_COLOR = YELLOW_Z
 
     def construct(self):
         axes = Axes(x_range=(-2, 5), y_range=(0, 5))
@@ -79,7 +82,7 @@ class NormalDerivative(Scene):
                  tex_to_color_map={r"f": BLUE}, **kwargs)
 
         n = DecimalNumber(float(f_prime), color=self.LINE_COLOR)
-        
+
         n.scale(1.5)
         n.shift(2.5 * UP + 2 * RIGHT)
 
@@ -112,6 +115,65 @@ class NormalDerivative(Scene):
 
 
 class IntroduceComplexFunction(Scene):
+    plane_opacity = 0.65
+
     def construct(self):
+        c = ComplexPlane()
+        c.add_coordinate_labels()
+
+        complex_kwargs = {
+            "background_line_style": {
+                "stroke_opacity": self.plane_opacity
+            }
+        }
+        c1 = ComplexPlane(x_range=(-3, 3), y_range=(-3, 3), **complex_kwargs)
+        c1.add_coordinate_labels()
+        c1.axes.set_opacity(self.plane_opacity)
+        c1.shift(FRAME_WIDTH/4 * LEFT + 0.5 * DOWN)
+
+        c2 = ComplexPlane(x_range=(-3, 3), y_range=(-3, 3), **complex_kwargs)
+        c2.add_coordinate_labels()
+        c2.axes.set_opacity(self.plane_opacity)
+        c2.shift(FRAME_WIDTH/4 * RIGHT + 0.5 * DOWN)
+
+        input_text = TexText("Input Space", color=YELLOW_Z)
+        input_text.scale(1.5)
+        input_text.shift(-FRAME_WIDTH/4 * RIGHT + 3.25 * UP)
+
+        output_text = TexText("Output Space", color=YELLOW_Z)
+        output_text.scale(1.5)
+        output_text.shift(FRAME_WIDTH/4 * RIGHT + 3.25 * UP)
+
+        input_dot = Dot(c1.c2p(1.2, 2.3), color=PURPLE)
+        input_dot.set_color(PURPLE)
+        input_dot_text = Tex("z")
+        input_dot_text.add_updater(
+            lambda t: t.become(t.next_to(input_dot, DOWN)))
+
+        output_dot = Dot(c2.c2p(0, 0), color=GREEN)
+
+        def dot_updater(d):
+            input_coors = c1.p2c(input_dot.get_center())
+            output_coors = self.func(input_coors[0] + input_coors[1]*1j)
+            return d.become(Dot(c2.c2p(output_coors.real, output_coors.imag, 0), color=GREEN))
+
+        output_dot.add_updater(dot_updater)
+        output_dot_text = Tex("f(z)")
+        output_dot_text.add_updater(
+            lambda t: t.become(t.next_to(output_dot, DOWN)))
+
+        # self.add(c)
+        # self.wait()
+
+        # self.play(Transform(c, c1))
+
+        self.add(c1, c2, input_text, output_text, input_dot,
+                 output_dot, input_dot_text, output_dot_text)
         self.embed()
-        ComplexPlane
+
+    def func(self, z):
+        r = abs(z)
+        t = PI/2 if z.real == 0 else np.arctan(z.imag/z.real)
+        new_t = 3*t**2 + t + 2
+        new_r = 3 * np.sin(r + 6)**2 * np.cos(3 * r + 2)
+        return new_r * (np.cos(new_t) + np.sin(new_t) * 1j)
