@@ -40,32 +40,57 @@ class NormalDerivative(Scene):
         eq_kwargs = {
 
         }
+        dot_kwargs = {
+            "color": self.LINE_COLOR
+        }
         self.len_of_line = 2
 
         v = ValueTracker(-1)
         l = self.get_line(-1, **line_kwargs)
         eq = self.get_eq(-1, **eq_kwargs)
+        d = self.get_point(-1, **dot_kwargs)
 
-        l.add_updater(lambda l: l.become(self.get_line(v.get_value(), **line_kwargs)))
-        eq.add_updater(lambda e: e.become(self.get_eq(v.get_value(), **eq_kwargs)))
+        l.add_updater(lambda l: l.become(
+            self.get_line(v.get_value(), **line_kwargs)))
+        eq.add_updater(lambda e: e.become(
+            self.get_eq(v.get_value(), **eq_kwargs)))
+        d.add_updater(lambda d: d.become(
+            self.get_point(v.get_value(), **dot_kwargs)))
 
-        self.add(axes, func, label, l, eq)
+        self.play(
+            Write(axes),
+            Write(func),
+            Write(label)
+        )
+        self.play(
+            Write(l),
+            Write(eq),
+            Write(d)
+        )
+        self.wait()
+        
+        self.play(v.increment_value, 5, run_time=10, rate_func=linear)
+        self.wait()
         self.embed()
-    
+
     def get_eq(self, t, **kwargs):
         f_prime = "{:.2f}".format(round(self.deriv(t), 2))
-        eq = Tex(r"{{df} \over {dx}} = ", tex_to_color_map={r"f": BLUE}, **kwargs)
+        eq = Tex(r"{{df} \over {dx}} = ",
+                 tex_to_color_map={r"f": BLUE}, **kwargs)
 
         n = DecimalNumber(float(f_prime), color=self.LINE_COLOR)
-        n.move_to(eq)
-        n.shift(1.25 * RIGHT)
+        # n.move_to(eq)
+        n.scale(1.5)
+        n.shift(2.5 * UP + 2 * RIGHT)
 
-        eq = VGroup(eq, n)
+        #eq = VGroup(eq, n)
         eq.scale(1.5)
         eq.shift(2.5 * UP)
 
-        return eq
-        
+        return VGroup(eq, n)
+
+    def get_point(self, t, **kwargs):
+        return Dot(self.axes.c2p(*np.array([t, self.func(t), 0])), **kwargs)
 
     def get_line(self, t, **kwargs):
         f_prime = self.deriv(t)
@@ -85,3 +110,9 @@ class NormalDerivative(Scene):
 
     def deriv(self, x):
         return 0.5 + 0.6 * x - 1.5 * x**2 + 0.4 * x**3
+
+
+class IntroduceComplexFunction(Scene):
+    def construct(self):
+        self.embed()
+        ComplexPlane
