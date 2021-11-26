@@ -14,6 +14,26 @@ class Scene(Scene):
             self.unlock_mobject_data()
 
 
+class PartScene(Scene):
+    CONFIG = {
+        "n": 1,
+        "title": "",
+        "title_color": RED
+    }
+
+    def construct(self):
+        part = TextMobject(f"Part {self.n}")
+        part.scale(1.5)
+        part.shift(2 * UP)
+
+        title = TextMobject(self.title, color=self.title_color)
+        title.scale(1.5)
+
+        self.play(Write(part))
+        self.play(Write(title))
+        self.wait()
+
+
 class ComplexTest(Scene):
     def construct(self):
 
@@ -254,5 +274,13 @@ class ComplexGraph3(Scene):
         frame.set_theta(5.084)
         frame.set_phi(1.018)
 
-        self.play(Write(axes), Write(t_surf))
+        self.play(Write(axes), ShowCreation(t_surf))
         self.wait(15)
+
+
+class Part1(PartScene):
+    CONFIG = {
+        "n": 1,
+        "title": "The Real Derivative, revisited",
+        "title_color": RED
+    }
