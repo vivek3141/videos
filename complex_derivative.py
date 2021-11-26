@@ -238,3 +238,21 @@ class ComplexGraph2(Scene):
         self.play(Write(v), Write(grp))
         self.wait()
         self.embed()
+
+
+class ComplexGraph3(Scene):
+    def construct(self):
+        axes = ThreeDAxes()
+
+        surf = ParametricSurface(
+            lambda u, v: [u, v, abs(0.5 * (u+v*1j)**2)], u_range=(-4, 4), v_range=(-4, 4))
+        surf.set_opacity(0.75)
+        t_surf = TexturedSurface(surf, "img/z_squared.png")
+
+        frame = self.camera.frame
+        frame.add_updater(lambda f, dt: f.increment_theta(0.2 * dt))
+        frame.set_theta(5.084)
+        frame.set_phi(1.018)
+
+        self.play(Write(axes), Write(t_surf))
+        self.wait(15)
