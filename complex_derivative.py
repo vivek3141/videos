@@ -34,19 +34,6 @@ class PartScene(Scene):
         self.wait()
 
 
-class ComplexTest(Scene):
-    def construct(self):
-
-        a = Sphere()
-        self.add(a)
-        n = NumberPlane()
-        Dot
-        # n.prep
-        # n.apply_complex_function
-        self.embed()
-        n.add_updater
-
-
 class NormalDerivative(Scene):
     LINE_COLOR = YELLOW_Z
 
@@ -284,3 +271,127 @@ class Part1(PartScene):
         "title": "The Real Derivative, revisited",
         "title_color": RED
     }
+
+
+class RealDerivative(NormalDerivative):
+    LINE_COLOR = YELLOW_Z
+
+    def construct(self):
+        axes = Axes(x_range=(-2, 5), y_range=(0, 5))
+        self.axes = axes
+
+        func = axes.get_graph(self.func, color=BLUE)
+        label = axes.get_graph_label(func, label=r"f(x)")
+
+        line_kwargs = {
+            "color": self.LINE_COLOR
+        }
+        dx_line_kwargs = {
+
+        }
+        dy_line_kwargs = {
+
+        }
+        eq_kwargs = {
+
+        }
+        dot_kwargs = {
+            "color": self.LINE_COLOR
+        }
+        self.len_of_line = 2
+
+        v = ValueTracker(1.5)
+        dx = ValueTracker(1)
+
+        def dx_line_updater(line):
+            x, dx_v = v.get_value(), dx.get_value()
+            p1 = axes.c2p(x, self.func(x))
+            p2 = axes.c2p(x+dx_v, self.func(x))
+            return line.become(Line(p1, p2, **dx_line_kwargs))
+
+        def dy_line_updater(line):
+            x, dx_v = v.get_value(), dx.get_value()
+            p1 = axes.c2p(x+dx_v, self.func(x))
+            p2 = axes.c2p(x+dx_v, self.func(x+dx_v))
+            return line.become(Line(p1, p2, **dy_line_kwargs))
+
+        p1, p2 = VMobject(), VMobject()
+        p1.add_updater(lambda p: p.become(
+            self.get_point(v.get_value(), **dot_kwargs)))
+        p2.add_updater(lambda p: p.become(self.get_point(
+            v.get_value() + dx.get_value(), **dot_kwargs)))
+
+        dx_line, dy_line = VMobject(), VMobject()
+        dx_line.add_updater(dx_line_updater)
+        dy_line.add_updater(dy_line_updater)
+
+        dx_text = Tex("dx").next_to(dx_line, UP)
+        dy_text = Tex("dy", tex_to_color_map={
+                      "y": BLUE}).next_to(dy_line, RIGHT)
+        dx_text.add_updater(lambda d: d.next_to(dx_line, UP))
+        dy_text.add_updater(lambda d: d.next_to(dy_line, RIGHT))
+
+        eq = Tex("f'(x) = {{dy} \over {dx}}")
+        eq.scale(1.5)
+        eq.shift(2.5 * UP)
+
+        self.play(
+            Write(axes),
+            Write(func),
+            Write(label)
+        )
+        self.play(
+            Write(dx_line),
+            Write(dx_text),
+            Write(p1)
+        )
+        self.wait()
+
+        self.play(
+            Write(dy_line),
+            Write(dy_text),
+            Write(p2)
+        )
+        self.wait()
+
+        self.play(
+            Write(eq)
+        )
+
+        self.play(dx.increment_value, -1, run_time=10, rate_func=linear)
+        self.wait()
+        self.embed()
+
+    def get_eq(self, t, **kwargs):
+        f_prime = "{:.2f}".format(round(self.deriv(t), 2))
+        eq = Tex(r"{{d {y}} \over {d {x}}} = ",
+                 tex_to_color_map={r"{y}": BLUE, r"{x}": YELLOW}, **kwargs)
+
+        n = DecimalNumber(float(f_prime), color=self.LINE_COLOR)
+
+        n.scale(1.5)
+        n.shift(2.5 * UP + 2 * RIGHT)
+
+        eq.scale(1.5)
+        eq.shift(2.5 * UP)
+
+        return VGroup(eq, n)
+
+    def get_point(self, t, **kwargs):
+        return Dot(self.axes.c2p(*np.array([t, self.func(t), 0])), **kwargs)
+
+    def get_line(self, t, **kwargs):
+        f_prime = self.deriv(t)
+        theta = np.arctan(f_prime)
+        center = np.array([t, self.func(t), 0])
+
+        p1 = self.len_of_line/2 * \
+            np.array([np.cos(theta), np.sin(theta), 0]) + center
+        p2 = -self.len_of_line/2 * \
+            np.array([np.cos(theta), np.sin(theta), 0]) + center
+
+        return Line(self.axes.c2p(*p1), self.axes.c2p(*p2), **kwargs)
+
+    def func(self, x):
+        x -= 1
+        return 0.1 * (x**4 - x**3 - 6*x**2) + 2.5
