@@ -1,6 +1,8 @@
 from manimlib import *
 
 YELLOW_Z = "#e2e1a4"
+INPUT_C = PURPLE
+OUTPUT_C = GREEN
 
 
 class Scene(Scene):
@@ -277,6 +279,10 @@ class RealDerivative(NormalDerivative):
     LINE_COLOR = YELLOW_Z
 
     def construct(self):
+        def check(obj):
+            self.remove(obj)
+            self.wait(0.5)
+            self.add(obj)
         axes = Axes(x_range=(-2, 5), y_range=(0, 5))
         self.axes = axes
 
@@ -287,10 +293,10 @@ class RealDerivative(NormalDerivative):
             "color": self.LINE_COLOR
         }
         dx_line_kwargs = {
-
+            "color": INPUT_C
         }
         dy_line_kwargs = {
-
+            "color": OUTPUT_C
         }
         eq_kwargs = {
 
@@ -326,12 +332,10 @@ class RealDerivative(NormalDerivative):
         dy_line.add_updater(dy_line_updater)
 
         dx_text = Tex("dx").next_to(dx_line, UP)
-        dy_text = Tex("dy", tex_to_color_map={
-                      "y": BLUE}).next_to(dy_line, RIGHT)
-        dx_text.add_updater(lambda d: d.next_to(dx_line, UP))
-        dy_text.add_updater(lambda d: d.next_to(dy_line, RIGHT))
+        dy_text = Tex("dy").next_to(dy_line, RIGHT)
 
-        eq = Tex("f'(x) = {{dy} \over {dx}}")
+        eq = Tex(r"f'(x) = {{dy} \over {dx}}",
+                 isolate=["f'(x)", "{dy}", "{dx}"])
         eq.scale(1.5)
         eq.shift(2.5 * UP)
 
@@ -358,8 +362,82 @@ class RealDerivative(NormalDerivative):
             Write(eq)
         )
 
+        dx_text.add_updater(lambda d: d.next_to(dx_line, UP))
+        dy_text.add_updater(lambda d: d.next_to(dy_line, RIGHT))
+
         self.play(dx.increment_value, -1, run_time=10, rate_func=linear)
         self.wait()
+
+        eq2 = Tex("dy = f'(x) \cdot {dx}", isolate=["f'(x)", "{dy}", "{dx}"])
+        eq2.shift(2.5 * UP)
+        eq2.scale(1.5)
+
+        self.play(TransformMatchingTex(eq, eq2))
+        self.wait()
+
+        grp = VGroup(*[i for i in self.mobjects if i not in [eq2,
+                     axes] and isinstance(i, VMobject)])
+        self.play(Uncreate(grp))
+        self.wait()
+
+        eq3 = Tex("dy = f'(x) \cdot {dx}", tex_to_color_map={
+                  "x": YELLOW, "f'": BLUE, "y": GREEN})
+        eq3.shift(2.75 * UP)
+        eq3.scale(1.5)
+
+        input_line = NumberLine()
+        input_line.shift(1 * UP)
+        input_line.add_numbers(font_size=36)
+
+        x_label = Tex("x", color=YELLOW)
+        x_label.move_to([-6.5, 1.5, 0])
+
+        output_line = NumberLine()
+        output_line.shift(2 * DOWN)
+        output_line.add_numbers(font_size=36)
+
+        y_label = Tex("y=f(x)", tex_to_color_map={"f": BLUE, "y": GREEN})
+        y_label.move_to([-5.75, -1.5, 0])
+
+        x_vals = [[x, input_line.n2p(0)[1], 0]
+                  for x in np.linspace(-FRAME_WIDTH/2, FRAME_WIDTH/2, 100)]
+        y_vals = [[x[0]**2, output_line.n2p(0)[1], 0] for x in x_vals]
+
+        input_dot, output_dot = Dot(color=YELLOW), Dot(color=GREEN)
+        output_dot.add_updater(lambda d: d.become(
+            Dot(output_line.n2p(self.t_func(input_line.p2n(
+                input_dot.get_center()))), color=GREEN)
+        ))
+        input_dot.move_to(input_line.n2p(-6))
+
+        self.play(
+            ReplacementTransform(axes.x_axis, input_line),
+            ReplacementTransform(axes.y_axis, output_line)
+        )
+        self.play(
+            ReplacementTransform(eq2, eq3),
+            Write(x_label),
+            Write(y_label)
+        )
+        self.wait()
+
+        self.play(
+            Write(input_dot),
+            Write(output_dot)
+        )
+        self.play(
+            ApplyMethod(input_dot.move_to, input_line.n2p(6)),
+            run_time=10,
+            rate_func=linear
+        )
+        self.wait()
+
+        self.play(
+            Uncreate(input_dot),
+            Uncreate(output_dot)
+        )
+        self.wait()
+
         self.embed()
 
     def get_eq(self, t, **kwargs):
@@ -395,3 +473,6 @@ class RealDerivative(NormalDerivative):
     def func(self, x):
         x -= 1
         return 0.1 * (x**4 - x**3 - 6*x**2) + 2.5
+
+    def t_func(self, x):
+        return np.sin(2*x + 3) * np.cos(x**2) + 0.5*x
