@@ -5,17 +5,6 @@ INPUT_C = PURPLE
 OUTPUT_C = GREEN
 
 
-class Scene(Scene):
-    def interact(self):
-        self.quit_interaction = False
-        self.lock_static_mobject_data()
-        try:
-            while True:
-                self.update_frame()
-        except KeyboardInterrupt:
-            self.unlock_mobject_data()
-
-
 class PartScene(Scene):
     CONFIG = {
         "n": 1,
@@ -417,6 +406,14 @@ class RealDerivative(NormalDerivative):
         )
         self.wait()
 
+        dx_vec = Vector([1, 0], stroke_color=YELLOW, stroke_width=8)
+        dx_vec.move_to(input_line.n2p(1.5), aligned_edge=LEFT)
+
+        dy_vec = Vector([1.5 * 2 * 1, 0], stroke_color=GREEN, stroke_width=8)
+        dy_vec.move_to(output_line.n2p(1.5**2), aligned_edge=LEFT)
+
+        self.embed()
+
         self.play(
             Write(input_dot),
             Write(output_dot)
@@ -453,7 +450,7 @@ class RealDerivative(NormalDerivative):
 
         for i in range(100):
             lines.add(Line(x_vals[i], y_vals[i], color=YELLOW))
-        
+
         lines.set_opacity(0.3)
         lines.set_color(grad)
 
