@@ -399,10 +399,6 @@ class RealDerivative(NormalDerivative):
         y_label = Tex("y=f(x)", tex_to_color_map={"f": BLUE, "y": GREEN})
         y_label.move_to([-5.75, -1.5, 0])
 
-        x_vals = [[x, input_line.n2p(0)[1], 0]
-                  for x in np.linspace(-FRAME_WIDTH/2, FRAME_WIDTH/2, 100)]
-        y_vals = [[x[0]**2, output_line.n2p(0)[1], 0] for x in x_vals]
-
         input_dot, output_dot = Dot(color=YELLOW), Dot(color=GREEN)
         output_dot.add_updater(lambda d: d.become(
             Dot(output_line.n2p(self.t_func(input_line.p2n(
@@ -427,7 +423,7 @@ class RealDerivative(NormalDerivative):
         )
         self.play(
             ApplyMethod(input_dot.move_to, input_line.n2p(6)),
-            run_time=10,
+            run_time=5,
             rate_func=linear
         )
         self.wait()
@@ -436,6 +432,33 @@ class RealDerivative(NormalDerivative):
             Uncreate(input_dot),
             Uncreate(output_dot)
         )
+        self.wait()
+
+        x_vals = [[x, input_line.n2p(0)[1], 0]
+                  for x in np.linspace(-FRAME_WIDTH/2, FRAME_WIDTH/2, 100)]
+        y_vals = [[x[0]**2, output_line.n2p(0)[1], 0] for x in x_vals]
+
+        input_c = DotCloud(x_vals, color=YELLOW)
+        output_c = DotCloud(y_vals, color=GREEN)
+
+        self.play(ShowCreation(input_c))
+        self.wait()
+
+        self.play(TransformFromCopy(input_c, output_c), run_time=5)
+        self.wait()
+
+        grad = color_gradient([YELLOW, GREEN], 10)
+
+        lines = VGroup()
+
+        for i in range(100):
+            lines.add(Line(x_vals[i], y_vals[i], color=YELLOW))
+        
+        lines.set_opacity(0.3)
+        lines.set_color(grad)
+
+        self.bring_to_back(lines)
+        self.play(ShowCreation(lines), run_time=5)
         self.wait()
 
         self.embed()
