@@ -406,13 +406,38 @@ class RealDerivative(NormalDerivative):
         )
         self.wait()
 
+        dx = ValueTracker(1)
+
         dx_vec = Vector([1, 0], stroke_color=YELLOW, stroke_width=8)
         dx_vec.move_to(input_line.n2p(1.5), aligned_edge=LEFT)
+        dx_vec.add_updater(
+            lambda v: v.become(
+                Vector(
+                    [dx.get_value(), 0], stroke_color=YELLOW, stroke_width=8
+                ).move_to(input_line.n2p(1.5), aligned_edge=LEFT)
+            )
+        )
 
-        dy_vec = Vector([1.5 * 2 * 1, 0], stroke_color=GREEN, stroke_width=8)
-        dy_vec.move_to(output_line.n2p(1.5**2), aligned_edge=LEFT)
+        dx_label = Tex("dx", tex_to_color_map={"x": YELLOW})
+        dx_label.add_updater(lambda l: l.move_to(dx_vec, DOWN).shift(0.3 * UP))
 
-        self.embed()
+        dy_vec = Vector([1.5 * 2 * dx.get_value(), 0],
+                        stroke_color=GREEN, stroke_width=8)
+        dy_vec.add_updater(
+            lambda v: v.become(
+                Vector(
+                    [1.5*2*dx.get_value(), 0], stroke_color=GREEN, stroke_width=8
+                ).move_to(output_line.n2p(1.5**2), aligned_edge=LEFT)
+            )
+        )
+
+        dy_label = Tex(
+            "dy = f'(x) \cdot {dx}",
+            tex_to_color_map={"x": YELLOW, "f'": BLUE, "y": GREEN}
+        )
+        dy_label.add_updater(lambda l: l.move_to(dy_vec, DOWN).shift(0.3 * UP))
+
+        # self.embed()
 
         self.play(
             Write(input_dot),
