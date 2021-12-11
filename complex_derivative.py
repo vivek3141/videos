@@ -320,11 +320,18 @@ class RealDerivative(NormalDerivative):
         dx_line.add_updater(dx_line_updater)
         dy_line.add_updater(dy_line_updater)
 
-        dx_text = Tex("dx").next_to(dx_line, UP)
-        dy_text = Tex("dy").next_to(dy_line, RIGHT)
+        dx_text = Tex("dx", tex_to_color_map={
+                      "x": YELLOW}).next_to(dx_line, UP)
+        dy_text = Tex("dy", tex_to_color_map={
+                      "y": GREEN}).next_to(dy_line, RIGHT)
 
-        eq = Tex(r"f'(x) = {{dy} \over {dx}}",
-                 isolate=["f'(x)", "{dy}", "{dx}"])
+        eq = Tex(
+            r"f'(x) = {{d}y \over {d}x}",
+            isolate=["{d}", "'(x)"],
+            tex_to_color_map={"x": YELLOW, "f'": BLUE, "y": GREEN}
+        )
+        # isolate=["f'(x)", "{dy}", "{dx}"])
+
         eq.scale(1.5)
         eq.shift(2.5 * UP)
 
@@ -357,7 +364,11 @@ class RealDerivative(NormalDerivative):
         self.play(dx.increment_value, -1, run_time=10, rate_func=linear)
         self.wait()
 
-        eq2 = Tex("dy = f'(x) \cdot {dx}", isolate=["f'(x)", "{dy}", "{dx}"])
+        eq2 = Tex(
+            "{d}y = f'(x) \cdot {d}x",
+            isolate=["{d}", "'(x)"],
+            tex_to_color_map={"x": YELLOW, "f'": BLUE, "y": GREEN}
+        )
         eq2.shift(2.5 * UP)
         eq2.scale(1.5)
 
@@ -368,11 +379,6 @@ class RealDerivative(NormalDerivative):
                      axes] and isinstance(i, VMobject)])
         self.play(Uncreate(grp))
         self.wait()
-
-        eq3 = Tex("dy = f'(x) \cdot {dx}", tex_to_color_map={
-                  "x": YELLOW, "f'": BLUE, "y": GREEN})
-        eq3.shift(2.75 * UP)
-        eq3.scale(1.5)
 
         input_line = NumberLine()
         input_line.shift(1 * UP)
@@ -385,7 +391,8 @@ class RealDerivative(NormalDerivative):
         output_line.shift(2 * DOWN)
         output_line.add_numbers(font_size=36)
 
-        y_label = Tex("y=f(x)", tex_to_color_map={"f": BLUE, "y": GREEN})
+        y_label = Tex("y=f(x)", tex_to_color_map={
+                      "f": BLUE, "y": GREEN, "x": YELLOW})
         y_label.move_to([-5.75, -1.5, 0])
 
         input_dot, output_dot = Dot(color=YELLOW), Dot(color=GREEN)
@@ -400,7 +407,7 @@ class RealDerivative(NormalDerivative):
             ReplacementTransform(axes.y_axis, output_line)
         )
         self.play(
-            ReplacementTransform(eq2, eq3),
+            ApplyMethod(eq2.shift, 0.25 * UP),
             Write(x_label),
             Write(y_label)
         )
@@ -437,8 +444,23 @@ class RealDerivative(NormalDerivative):
         )
         dy_label.add_updater(lambda l: l.move_to(dy_vec, DOWN).shift(0.3 * UP))
 
-        # self.embed()
+        self.play(
+            Write(dx_vec), Write(dx_label)
+        )
+        self.play(
+            Write(dy_vec), Write(dy_label)
+        )
+        self.wait()
 
+        self.play(
+            dx.increment_value, -0.9, run_time=7.5, rate_func=linear
+        )
+        self.wait()
+
+        self.play(
+            Uncreate(dx_vec), Uncreate(dx_label),
+            Uncreate(dy_vec), Uncreate(dy_label)
+        )
         self.play(
             Write(input_dot),
             Write(output_dot)
@@ -463,6 +485,25 @@ class RealDerivative(NormalDerivative):
         input_c = DotCloud(x_vals, color=YELLOW)
         output_c = DotCloud(y_vals, color=GREEN)
 
+        eq32 = Tex("dy = 2x \cdot {dx}", tex_to_color_map={
+            "x": YELLOW, "f'": BLUE, "y": GREEN})
+        eq32.shift(2.75 * UP)
+        eq32.scale(1.5)
+
+        x_label2 = Tex("x^2", tex_to_color_map={"x": YELLOW})
+        x_label2.move_to([-6.5, 1.5, 0])
+
+        y_label2 = Tex("y=x^2", tex_to_color_map={
+                       "f": BLUE, "y": GREEN, "x": YELLOW})
+        y_label2.move_to([-6.25, -1.5, 0])
+
+        self.play(
+            Transform(eq2, eq32),
+            Transform(x_label, x_label2),
+            Transform(y_label, y_label2)
+        )
+        self.wait()
+
         self.play(ShowCreation(input_c))
         self.wait()
 
@@ -484,6 +525,14 @@ class RealDerivative(NormalDerivative):
         self.wait()
 
         self.embed()
+
+    def create_vector_dot_cloud(self, points, **kwargs):
+        dot_cloud = VGroup()
+
+        for point in points:
+            dot_cloud.add(Dot(point, **kwargs))
+
+        return dot_cloud
 
     def get_eq(self, t, **kwargs):
         f_prime = "{:.2f}".format(round(self.deriv(t), 2))
