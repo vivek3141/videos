@@ -570,3 +570,85 @@ class RealDerivative(NormalDerivative):
 
     def t_func(self, x):
         return np.sin(2*x + 3) * np.cos(x**2) + 0.5*x
+
+
+class IntroComplexDeriv(Scene):
+    plane_opacity = 0.65
+
+    def construct(self):
+        c = ComplexPlane()
+        c.add_coordinate_labels()
+
+        complex_kwargs = {
+            "background_line_style": {
+                "stroke_opacity": self.plane_opacity
+            }
+        }
+        c1 = ComplexPlane(x_range=(-3, 3), y_range=(-3, 3), **complex_kwargs)
+        c1.add_coordinate_labels()
+        c1.axes.set_opacity(self.plane_opacity)
+        c1.shift(FRAME_WIDTH/4 * LEFT + 0.5 * DOWN)
+
+        c2 = ComplexPlane(x_range=(-3, 3), y_range=(-3, 3), **complex_kwargs)
+        c2.add_coordinate_labels()
+        c2.axes.set_opacity(self.plane_opacity)
+        c2.shift(FRAME_WIDTH/4 * RIGHT + 0.5 * DOWN)
+
+        input_text = TexText("Input Space", color=YELLOW_Z)
+        input_text.scale(1.5)
+        input_text.shift(-FRAME_WIDTH/4 * RIGHT + 3.25 * UP)
+
+        output_text = TexText("Output Space", color=YELLOW_Z)
+        output_text.scale(1.5)
+        output_text.shift(FRAME_WIDTH/4 * RIGHT + 3.25 * UP)
+
+        input_dot = Dot(c1.c2p(1.2, 1.3), color=PURPLE)
+        input_dot.set_color(PURPLE)
+        input_dot_text = Tex("z")
+        input_dot_text.add_updater(
+            lambda t: t.become(t.next_to(input_dot, DOWN)))
+
+        output_dot = Dot(c2.c2p(0, 0), color=GREEN)
+
+        def dot_updater(d):
+            input_coors = c1.p2c(input_dot.get_center())
+            output_coors = self.func(input_coors[0] + input_coors[1]*1j)
+            return d.become(Dot(c2.c2p(output_coors.real, output_coors.imag, 0), color=GREEN))
+
+        output_dot.add_updater(dot_updater)
+        output_dot_text = Tex("f(z)")
+        output_dot_text.add_updater(
+            lambda t: t.become(t.next_to(output_dot, DOWN)))
+
+        ParametricCurve
+
+        # self.add(c)
+        # self.wait()
+
+        # self.play(Transform(c, c1))
+        MoveAlongPath
+
+        self.play(
+            Write(c1), Write(input_text)
+        )
+        self.play(
+            Write(c2), Write(output_text)
+        )
+        self.wait()
+
+        self.play(
+            Write(input_dot), Write(input_dot_text)
+        )
+        self.play(
+            Write(output_dot), Write(output_dot_text)
+        )
+        self.wait()
+
+        self.embed()
+
+    def func(self, z):
+        r = abs(z)
+        t = PI/2 if z.real == 0 else np.arctan(z.imag/z.real)
+        new_t = 3*t**2 + t + 2
+        new_r = 3 * np.sin(r + 6)**2 * np.cos(3 * r + 2)
+        return new_r * (np.cos(new_t) + np.sin(new_t) * 1j)
