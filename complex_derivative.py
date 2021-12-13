@@ -574,11 +574,9 @@ class RealDerivative(NormalDerivative):
 
 class IntroComplexDeriv(Scene):
     plane_opacity = 0.65
+    x, y = 1.5, 2
 
     def construct(self):
-        c = ComplexPlane()
-        c.add_coordinate_labels()
-
         complex_kwargs = {
             "background_line_style": {
                 "stroke_opacity": self.plane_opacity
@@ -586,11 +584,13 @@ class IntroComplexDeriv(Scene):
         }
         c1 = ComplexPlane(x_range=(-3, 3), y_range=(-3, 3), **complex_kwargs)
         c1.add_coordinate_labels()
+        c1.coordinate_labels.set_opacity(self.plane_opacity)
         c1.axes.set_opacity(self.plane_opacity)
         c1.shift(FRAME_WIDTH/4 * LEFT + 0.5 * DOWN)
 
         c2 = ComplexPlane(x_range=(-3, 3), y_range=(-3, 3), **complex_kwargs)
         c2.add_coordinate_labels()
+        c2.coordinate_labels.set_opacity(self.plane_opacity)
         c2.axes.set_opacity(self.plane_opacity)
         c2.shift(FRAME_WIDTH/4 * RIGHT + 0.5 * DOWN)
 
@@ -602,9 +602,11 @@ class IntroComplexDeriv(Scene):
         output_text.scale(1.5)
         output_text.shift(FRAME_WIDTH/4 * RIGHT + 3.25 * UP)
 
-        input_dot = Dot(c1.c2p(1.2, 1.3), color=PURPLE)
+        input_dot = Dot(c1.c2p(self.x, self.y), color=PURPLE)
         input_dot.set_color(PURPLE)
+
         input_dot_text = Tex("z")
+        input_dot_text.add_background_rectangle()
         input_dot_text.add_updater(
             lambda t: t.become(t.next_to(input_dot, DOWN)))
 
@@ -616,17 +618,11 @@ class IntroComplexDeriv(Scene):
             return d.become(Dot(c2.c2p(output_coors.real, output_coors.imag, 0), color=GREEN))
 
         output_dot.add_updater(dot_updater)
+
         output_dot_text = Tex("f(z)")
+        output_dot_text.add_background_rectangle()
         output_dot_text.add_updater(
             lambda t: t.become(t.next_to(output_dot, DOWN)))
-
-        ParametricCurve
-
-        # self.add(c)
-        # self.wait()
-
-        # self.play(Transform(c, c1))
-        MoveAlongPath
 
         self.play(
             Write(c1), Write(input_text)
@@ -644,7 +640,40 @@ class IntroComplexDeriv(Scene):
         )
         self.wait()
 
+        z = [self.x, self.y]
+        z_deriv = self.f_deriv(self.x + self.y*1j)
+
+        f_z = self.func(self.x + self.y*1j)
+        f_z = [f_z.real, f_z.imag]
+
+        img_vecs = VGroup()
+        vecs = VGroup()
+
+        for t in np.linspace(0, 2*PI, 15):
+            z_0 = np.exp(t*1j)
+            x_0, y_0 = 0.75* z_0.real, 0.75 * z_0.imag
+
+            f_z0 = 0.3 * z_0 * z_deriv
+            f_x0, f_y0 = f_z0.real, f_z0.imag
+            
+            v_0 = self.get_vec(c1, [x_0, y_0], stroke_color=PURPLE)
+            f_v0 = self.get_vec(c2, [f_x0, f_y0], stroke_color=GREEN)
+
+            v_0.move_to(c1.c2p(*z), aligned_edge=[-x_0, -y_0, 0])
+            f_v0.move_to(c2.c2p(*f_z), aligned_edge=[-f_x0, -f_y0, 0])
+
+            vecs.add(v_0)
+            img_vecs.add(f_v0)
+
         self.embed()
+
+    def get_vec(self, plane, coors, **kwargs):
+        x, y = coors[0], coors[1]
+        z = plane.c2p(x, y)
+        return Arrow(plane.c2p(0, 0), z, buff=0, **kwargs)
+
+    def f_deriv(self, z, dz=1e-6+1e-6*1j):
+        return (self.func(z+dz)-self.func(z))/dz
 
     def func(self, z):
         r = abs(z)
