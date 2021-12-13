@@ -573,8 +573,12 @@ class RealDerivative(NormalDerivative):
 
 
 class IntroComplexDeriv(Scene):
-    plane_opacity = 0.65
-    x, y = 1.5, 2
+    CONFIG = {
+        "plane_opacity": 0.65,
+        "x": 1.5,
+        "y": 2,
+        "vec_opacity": 0.75
+    }
 
     def construct(self):
         complex_kwargs = {
@@ -649,21 +653,33 @@ class IntroComplexDeriv(Scene):
         img_vecs = VGroup()
         vecs = VGroup()
 
-        for t in np.linspace(0, 2*PI, 15):
+        for t in np.linspace(0, 2*PI, 15)[:-1]:
             z_0 = np.exp(t*1j)
-            x_0, y_0 = 0.75* z_0.real, 0.75 * z_0.imag
+            x_0, y_0 = 0.75 * z_0.real, 0.75 * z_0.imag
 
             f_z0 = 0.3 * z_0 * z_deriv
             f_x0, f_y0 = f_z0.real, f_z0.imag
-            
-            v_0 = self.get_vec(c1, [x_0, y_0], stroke_color=PURPLE)
-            f_v0 = self.get_vec(c2, [f_x0, f_y0], stroke_color=GREEN)
+
+            v_0 = self.get_vec(
+                c1, [x_0, y_0], stroke_color=PURPLE, stroke_opacity=self.vec_opacity)
+            f_v0 = self.get_vec(
+                c2, [f_x0, f_y0], stroke_color=GREEN, stroke_opacity=self.vec_opacity)
 
             v_0.move_to(c1.c2p(*z), aligned_edge=[-x_0, -y_0, 0])
             f_v0.move_to(c2.c2p(*f_z), aligned_edge=[-f_x0, -f_y0, 0])
 
             vecs.add(v_0)
             img_vecs.add(f_v0)
+
+        self.bring_to_front(input_dot_text)
+        self.play(Write(vecs))
+        self.bring_to_front(input_dot_text)
+        self.wait()
+
+        self.bring_to_front(output_dot_text)
+        self.play(TransformFromCopy(vecs, img_vecs), run_time=7)
+        self.bring_to_front(output_dot_text)
+        self.wait()
 
         self.embed()
 
