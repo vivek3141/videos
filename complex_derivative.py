@@ -13,11 +13,11 @@ class PartScene(Scene):
     }
 
     def construct(self):
-        part = TextMobject(f"Part {self.n}")
+        part = TexText(f"Part {self.n}")
         part.scale(1.5)
         part.shift(2 * UP)
 
-        title = TextMobject(self.title, color=self.title_color)
+        title = TexText(self.title, color=self.title_color)
         title.scale(1.5)
 
         self.play(Write(part))
@@ -283,7 +283,7 @@ class RealDerivative(NormalDerivative):
         }
         dx_line_kwargs = {
             "color": INPUT_C
-        }
+        } 
         dy_line_kwargs = {
             "color": OUTPUT_C
         }
@@ -644,6 +644,18 @@ class IntroComplexDeriv(Scene):
         )
         self.wait()
 
+        # TODO: Add input_dot moving around
+
+        def path_func(t): return c1.c2p(1.5*np.sin((3*PI)/4*t), -t)
+        path = ParametricCurve(path_func, t_range=(-2, 2))
+
+        self.play(
+            MoveAlongPath(input_dot, path), run_time=10, rate_func=there_and_back
+        )
+        self.wait()
+
+        # self.embed()
+
         z = [self.x, self.y]
         z_deriv = self.f_deriv(self.x + self.y*1j)
 
@@ -657,7 +669,7 @@ class IntroComplexDeriv(Scene):
             z_0 = np.exp(t*1j)
             x_0, y_0 = 0.75 * z_0.real, 0.75 * z_0.imag
 
-            f_z0 = 0.3 * z_0 * z_deriv
+            f_z0 = 0.5 * z_0 * z_deriv
             f_x0, f_y0 = f_z0.real, f_z0.imag
 
             v_0 = self.get_vec(
@@ -692,6 +704,7 @@ class IntroComplexDeriv(Scene):
         return (self.func(z+dz)-self.func(z))/dz
 
     def func(self, z):
+        return (1*z + np.sin(z)) * 0.3 - 1
         r = abs(z)
         t = PI/2 if z.real == 0 else np.arctan(z.imag/z.real)
         new_t = 3*t**2 + t + 2
