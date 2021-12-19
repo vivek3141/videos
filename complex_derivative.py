@@ -1,8 +1,12 @@
 from manimlib import *
 
 YELLOW_Z = "#e2e1a4"
-INPUT_C = PURPLE
-OUTPUT_C = GREEN
+A_PINK = "#fccde5"
+A_AQUA = "#8dd3c7"
+A_GREEN = "#b3de69"
+
+INPUT_C = A_PINK
+OUTPUT_C = A_GREEN
 
 
 class PartScene(Scene):
@@ -283,7 +287,7 @@ class RealDerivative(NormalDerivative):
         }
         dx_line_kwargs = {
             "color": INPUT_C
-        } 
+        }
         dy_line_kwargs = {
             "color": OUTPUT_C
         }
@@ -321,14 +325,14 @@ class RealDerivative(NormalDerivative):
         dy_line.add_updater(dy_line_updater)
 
         dx_text = Tex("dx", tex_to_color_map={
-                      "x": YELLOW}).next_to(dx_line, UP)
+                      "x": INPUT_C}).next_to(dx_line, UP)
         dy_text = Tex("dy", tex_to_color_map={
-                      "y": GREEN}).next_to(dy_line, RIGHT)
+                      "y": OUTPUT_C}).next_to(dy_line, RIGHT)
 
         eq = Tex(
             r"f'(x) = {{d}y \over {d}x}",
             isolate=["{d}", "'(x)"],
-            tex_to_color_map={"x": YELLOW, "f'": BLUE, "y": GREEN}
+            tex_to_color_map={"x": INPUT_C, "f'": BLUE, "y": OUTPUT_C}
         )
         # isolate=["f'(x)", "{dy}", "{dx}"])
 
@@ -367,7 +371,7 @@ class RealDerivative(NormalDerivative):
         eq2 = Tex(
             "{d}y = f'(x) \cdot {d}x",
             isolate=["{d}", "'(x)"],
-            tex_to_color_map={"x": YELLOW, "f'": BLUE, "y": GREEN}
+            tex_to_color_map={"x": INPUT_C, "f'": BLUE, "y": OUTPUT_C}
         )
         eq2.shift(2.5 * UP)
         eq2.scale(1.5)
@@ -384,7 +388,7 @@ class RealDerivative(NormalDerivative):
         input_line.shift(1 * UP)
         input_line.add_numbers(font_size=36)
 
-        x_label = Tex("x", color=YELLOW)
+        x_label = Tex("x", color=INPUT_C)
         x_label.move_to([-6.5, 1.5, 0])
 
         output_line = NumberLine()
@@ -392,7 +396,7 @@ class RealDerivative(NormalDerivative):
         output_line.add_numbers(font_size=36)
 
         y_label = Tex("y=f(x)", tex_to_color_map={
-                      "f": BLUE, "y": GREEN, "x": YELLOW})
+                      "f": BLUE, "y": OUTPUT_C, "x": INPUT_C})
         y_label.move_to([-5.75, -1.5, 0])
 
         input_dot, output_dot = Dot(color=YELLOW), Dot(color=GREEN)
@@ -415,32 +419,32 @@ class RealDerivative(NormalDerivative):
 
         dx = ValueTracker(1)
 
-        dx_vec = Vector([1, 0], stroke_color=YELLOW, stroke_width=8)
+        dx_vec = Vector([1, 0], stroke_color=INPUT_C, stroke_width=8)
         dx_vec.move_to(input_line.n2p(1.5), aligned_edge=LEFT)
         dx_vec.add_updater(
             lambda v: v.become(
                 Vector(
-                    [dx.get_value(), 0], stroke_color=YELLOW, stroke_width=8
+                    [dx.get_value(), 0], stroke_color=INPUT_C, stroke_width=8
                 ).move_to(input_line.n2p(1.5), aligned_edge=LEFT)
             )
         )
 
-        dx_label = Tex("dx", tex_to_color_map={"x": YELLOW})
+        dx_label = Tex("dx", tex_to_color_map={"x": INPUT_C})
         dx_label.add_updater(lambda l: l.move_to(dx_vec, DOWN).shift(0.3 * UP))
 
         dy_vec = Vector([1.5 * 2 * dx.get_value(), 0],
-                        stroke_color=GREEN, stroke_width=8)
+                        stroke_color=OUTPUT_C, stroke_width=8)
         dy_vec.add_updater(
             lambda v: v.become(
                 Vector(
-                    [1.5*2*dx.get_value(), 0], stroke_color=GREEN, stroke_width=8
+                    [1.5*2*dx.get_value(), 0], stroke_color=OUTPUT_C, stroke_width=8
                 ).move_to(output_line.n2p(1.5**2), aligned_edge=LEFT)
             )
         )
 
         dy_label = Tex(
             "dy = f'(x) \cdot {dx}",
-            tex_to_color_map={"x": YELLOW, "f'": BLUE, "y": GREEN}
+            tex_to_color_map={"x": INPUT_C, "f'": BLUE, "y": OUTPUT_C}
         )
         dy_label.add_updater(lambda l: l.move_to(dy_vec, DOWN).shift(0.3 * UP))
 
@@ -482,19 +486,19 @@ class RealDerivative(NormalDerivative):
                   for x in np.linspace(-FRAME_WIDTH/2, FRAME_WIDTH/2, 100)]
         y_vals = [[x[0]**2, output_line.n2p(0)[1], 0] for x in x_vals]
 
-        input_c = DotCloud(x_vals, color=YELLOW)
-        output_c = DotCloud(y_vals, color=GREEN)
+        input_c = DotCloud(x_vals, color=INPUT_C)
+        output_c = DotCloud(y_vals, color=OUTPUT_C)
 
         eq32 = Tex("dy = 2x \cdot {dx}", tex_to_color_map={
-            "x": YELLOW, "f'": BLUE, "y": GREEN})
+            "x": INPUT_C, "f'": BLUE, "y": OUTPUT_C})
         eq32.shift(2.75 * UP)
         eq32.scale(1.5)
 
-        x_label2 = Tex("x^2", tex_to_color_map={"x": YELLOW})
+        x_label2 = Tex("x^2", tex_to_color_map={"x": INPUT_C})
         x_label2.move_to([-6.5, 1.5, 0])
 
         y_label2 = Tex("y=x^2", tex_to_color_map={
-                       "f": BLUE, "y": GREEN, "x": YELLOW})
+                       "f": BLUE, "y": OUTPUT_C, "x": INPUT_C})
         y_label2.move_to([-6.25, -1.5, 0])
 
         self.play(
@@ -510,12 +514,12 @@ class RealDerivative(NormalDerivative):
         self.play(TransformFromCopy(input_c, output_c), run_time=5)
         self.wait()
 
-        grad = color_gradient([YELLOW, GREEN], 10)
+        grad = color_gradient([INPUT_C, OUTPUT_C], 10)
 
         lines = VGroup()
 
         for i in range(100):
-            lines.add(Line(x_vals[i], y_vals[i], color=YELLOW))
+            lines.add(Line(x_vals[i], y_vals[i], color=INPUT_C))
 
         lines.set_opacity(0.3)
         lines.set_color(grad)
@@ -607,23 +611,24 @@ class IntroComplexDeriv(Scene):
         output_text.shift(FRAME_WIDTH/4 * RIGHT + 3.25 * UP)
 
         input_dot = Dot(c1.c2p(self.x, self.y), color=PURPLE)
-        input_dot.set_color(PURPLE)
+        input_dot.set_color(A_PINK)
 
-        input_dot_text = Tex("z")
+        input_dot_text = Tex("z", color=A_PINK)
         input_dot_text.add_background_rectangle()
         input_dot_text.add_updater(
             lambda t: t.become(t.next_to(input_dot, DOWN)))
 
-        output_dot = Dot(c2.c2p(0, 0), color=GREEN)
+        output_dot = Dot(c2.c2p(0, 0), color=A_GREEN)
 
         def dot_updater(d):
             input_coors = c1.p2c(input_dot.get_center())
             output_coors = self.func(input_coors[0] + input_coors[1]*1j)
-            return d.become(Dot(c2.c2p(output_coors.real, output_coors.imag, 0), color=GREEN))
+            return d.become(Dot(c2.c2p(output_coors.real, output_coors.imag, 0), color=A_GREEN))
 
         output_dot.add_updater(dot_updater)
 
-        output_dot_text = Tex("f(z)")
+        output_dot_text = Tex("f(z)", tex_to_color_map={
+                              r"z": A_PINK, "f": A_GREEN})
         output_dot_text.add_background_rectangle()
         output_dot_text.add_updater(
             lambda t: t.become(t.next_to(output_dot, DOWN)))
@@ -673,9 +678,9 @@ class IntroComplexDeriv(Scene):
             f_x0, f_y0 = f_z0.real, f_z0.imag
 
             v_0 = self.get_vec(
-                c1, [x_0, y_0], stroke_color=PURPLE, stroke_opacity=self.vec_opacity)
+                c1, [x_0, y_0], stroke_color=A_PINK, stroke_opacity=self.vec_opacity)
             f_v0 = self.get_vec(
-                c2, [f_x0, f_y0], stroke_color=GREEN, stroke_opacity=self.vec_opacity)
+                c2, [f_x0, f_y0], stroke_color=A_GREEN, stroke_opacity=self.vec_opacity)
 
             v_0.move_to(c1.c2p(*z), aligned_edge=[-x_0, -y_0, 0])
             f_v0.move_to(c2.c2p(*f_z), aligned_edge=[-f_x0, -f_y0, 0])
@@ -691,6 +696,37 @@ class IntroComplexDeriv(Scene):
         self.bring_to_front(output_dot_text)
         self.play(TransformFromCopy(vecs, img_vecs), run_time=7)
         self.bring_to_front(output_dot_text)
+        self.wait()
+
+        self.play(
+            Uncreate(vecs[:4]), Uncreate(vecs[5:]),
+            Uncreate(img_vecs[:4]), Uncreate(img_vecs[5:]),
+            ApplyMethod(vecs[4].set_opacity, 1), ApplyMethod(
+                img_vecs[4].set_opacity, 1)
+        )
+
+        dz_label = Tex("dz", tex_to_color_map={"z": A_PINK})
+        dz_label.add_background_rectangle()
+        dz_label.move_to(vecs[4], UP)
+        dz_label.shift(0.5 * RIGHT)
+
+        df_label = Tex("df", tex_to_color_map={"f": A_GREEN})
+        df_label.add_background_rectangle()
+        df_label.move_to(img_vecs[4])
+        df_label.shift(0.6 * UP)
+
+        self.play(
+            Write(dz_label), Write(df_label)
+        )
+        self.wait()
+
+        eq = Tex("df = f'(z) \cdot dz", tex_to_color_map={
+                 "f": A_GREEN, "z": A_PINK, "'": A_GREEN})
+        eq.add_background_rectangle()
+        eq.scale(1.5)
+        eq.shift(2.75 * DOWN)
+
+        self.play(Write(eq))
         self.wait()
 
         self.embed()
