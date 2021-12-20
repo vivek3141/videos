@@ -399,10 +399,10 @@ class RealDerivative(NormalDerivative):
                       "f": BLUE, "y": OUTPUT_C, "x": INPUT_C})
         y_label.move_to([-5.75, -1.5, 0])
 
-        input_dot, output_dot = Dot(color=YELLOW), Dot(color=GREEN)
+        input_dot, output_dot = Dot(color=INPUT_C), Dot(color=OUTPUT_C)
         output_dot.add_updater(lambda d: d.become(
             Dot(output_line.n2p(self.t_func(input_line.p2n(
-                input_dot.get_center()))), color=GREEN)
+                input_dot.get_center()))), color=OUTPUT_C)
         ))
         input_dot.move_to(input_line.n2p(-6))
 
@@ -746,3 +746,8 @@ class IntroComplexDeriv(Scene):
         new_t = 3*t**2 + t + 2
         new_r = 3 * np.sin(r + 6)**2 * np.cos(3 * r + 2)
         return new_r * (np.cos(new_t) + np.sin(new_t) * 1j)
+
+
+class ComplexMul(Scene):
+    def construct(self):
+        self.embed()
