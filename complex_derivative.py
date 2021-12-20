@@ -1,9 +1,19 @@
 from manimlib import *
 
 YELLOW_Z = "#e2e1a4"
-A_PINK = "#fccde5"
+
 A_AQUA = "#8dd3c7"
+A_YELLOW = "#ffffb3"
+A_LAVENDER = "#bebada"
+A_RED = "#fb8072"
+A_BLUE = "#80b1d3"
+A_ORANGE = "#fdb462"
 A_GREEN = "#b3de69"
+A_PINK = "#fccde5"
+A_GREY = "#d9d9d9"
+A_VIOLET = "#bc80bd"
+A_UNKA = "#ccebc5"
+A_UNKB = "#ffed6f"
 
 INPUT_C = A_PINK
 OUTPUT_C = A_GREEN
