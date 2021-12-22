@@ -760,4 +760,124 @@ class IntroComplexDeriv(Scene):
 
 class ComplexMul(Scene):
     def construct(self):
-        self.embed()
+        plane = ComplexPlane(faded_line_ratio=2, background_line_style={
+                             "stroke_opacity": 0.65})
+        plane.axes.set_opacity(0.65)
+        plane.add_coordinate_labels()
+
+        v_0 = 0.7 * np.array([3, 1, 0])
+        v0 = 0.7 * (3 + 1j)
+        theta1 = np.arctan2(1, 3)
+
+        w_0 = 0.7 * np.array([-2, 2, 0])
+        w0 = 0.7 * (-2 + 2j)
+        theta2 = np.arctan2(2, -2)
+
+        v = Line(ORIGIN, v_0, color=A_GREEN)
+        v_dot = Dot(v_0, color=A_GREEN)
+        angle1 = Arc(0, theta1, color=A_YELLOW)
+
+        v_label = Tex("z", color=A_GREEN)
+        v_label.add_background_rectangle()
+        v_label.move_to(v, v_0)
+        v_label.shift([0.45, 0.15, 0])
+
+        w = Line(ORIGIN, w_0, color=A_VIOLET)
+        w_dot = Dot(w_0, color=A_VIOLET)
+        angle2 = Arc(0, theta2, radius=0.75, color=A_YELLOW)
+
+        w_label = Tex("w", color=A_VIOLET)
+        w_label.add_background_rectangle()
+        w_label.move_to(w, w_0)
+        w_label.shift([-0.5, 0.5, 0])
+
+        r1_label = Tex("r_1", color=A_GREEN)
+        r1_label.add_background_rectangle()
+        r1_label.move_to(v, UP)
+        r1_label.shift([0.3, 0.3, 0])
+
+        r2_label = Tex("r_2", color=A_VIOLET)
+        r2_label.add_background_rectangle()
+        r2_label.move_to(w, UP)
+
+        eq1 = Tex(r"z = r_1 e^{i \theta_1}", tex_to_color_map={
+                  "z": A_GREEN, "r_1": A_GREEN, r"\theta_1": A_YELLOW})
+        eq1.add_background_rectangle()
+        eq1.scale(1.5)
+        eq1.move_to([-FRAME_WIDTH/4, -4/3, 0])
+
+        eq2 = Tex(r"w = r_2 e^{i \theta_2}", tex_to_color_map={
+                  "w": A_VIOLET, "r_2": A_VIOLET, r"\theta_2": A_YELLOW})
+        eq2.add_background_rectangle()
+        eq2.scale(1.5)
+        eq2.move_to([-FRAME_WIDTH/4, -8/3, 0])
+
+        eq3 = Tex(
+            r"z \cdot w = r_1 r_2 e^{i (\theta_1 + \theta_2)}",
+            tex_to_color_map={
+                "z": A_GREEN,
+                "r_1": A_GREEN,
+                "w": A_VIOLET,
+                "r_2": A_VIOLET,
+                r"\theta_1": A_YELLOW,
+                r"\theta_2": A_YELLOW
+            })
+        eq3.add_background_rectangle()
+        eq3.scale(1.5)
+        eq3.move_to([FRAME_WIDTH/4, -2, 0])
+
+        t1_label = Tex(r"\theta_1", color=A_YELLOW)
+        t1_label.add_background_rectangle()
+        t1_label.move_to(angle1)
+        t1_label.shift(0.5 * RIGHT)
+
+        t2_label = Tex(r"\theta_2", color=A_YELLOW)
+        t2_label.add_background_rectangle()
+        t2_label.shift(1.25 * UP)
+
+        v0 = 2.1 + 0.7 * 1j
+        w0 = -1.4 + 1.4 * 1j
+        vw0 = v0 * w0
+
+        vw = Line(ORIGIN, [-3.92, 1.96, 0], color=A_AQUA)
+        vw_dot = Dot([-3.92, 1.96, 0], color=A_AQUA)
+
+        vw_label = Tex("z \cdot w", tex_to_color_map={
+                       "z": A_GREEN, "w": A_VIOLET})
+        vw_label.add_background_rectangle()
+        vw_label.move_to(vw, [-3.92, 1.96, 0])
+        vw_label.shift(0.3 * np.array([-3.92, 1.96, 0]))
+
+        dtheta = Arc(theta2, theta1, color=A_RED, radius=0.75)
+
+        self.play(Write(plane))
+        self.play(
+            Write(v), Write(v_label), Write(v_dot),
+            Write(w), Write(w_label), Write(w_dot)
+        )
+        self.wait()
+
+        self.play(
+            Write(eq1), Write(r1_label),
+            Write(angle1), Write(t1_label)
+        )
+        self.wait()
+
+        self.play(
+            Write(eq2), Write(r2_label),
+            Write(angle2), Write(t2_label)
+        )
+        self.wait()
+
+        self.play(
+            Write(eq3)
+        )
+        self.wait()
+
+        self.play(
+            TransformFromCopy(angle1, dtheta)
+        )
+        self.play(
+            Write(vw), Write(vw_dot), Write(vw_label)
+        )
+        self.wait()
