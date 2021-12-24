@@ -717,13 +717,13 @@ class IntroComplexDeriv(Scene):
         self.bring_to_front(output_dot_text)
         self.wait()
 
-        self.embed()
-
         self.play(
             Uncreate(vecs[:4]), Uncreate(vecs[5:]),
             Uncreate(img_vecs[:4]), Uncreate(img_vecs[5:]),
             ApplyMethod(vecs[4].set_opacity, 1), ApplyMethod(
-                img_vecs[4].set_opacity, 1)
+                img_vecs[4].set_opacity, 1),
+            ApplyMethod(output_dot_text.shift, 0.3 * UP),
+            ApplyMethod(input_dot_text.shift, 0.5 * UP)
         )
 
         dz_label = Tex("dz", tex_to_color_map={"z": A_PINK})
@@ -759,7 +759,8 @@ class IntroComplexDeriv(Scene):
         self.bring_to_front(dz_label, input_dot_text)
         self.play(
             Write(vecs2), Uncreate(vecs),
-            ApplyMethod(dz_label.shift, [0.5, 0.25, 0])
+            ApplyMethod(dz_label.shift, [0.5, 0.25, 0]),
+            ApplyMethod(input_dot_text.shift, 0.5 * DOWN)
         )
         self.bring_to_front(dz_label, input_dot_text)
         self.wait()
@@ -769,6 +770,7 @@ class IntroComplexDeriv(Scene):
             TransformFromCopy(vecs2, img_vecs2),
             Uncreate(img_vecs),
             ApplyMethod(df_label.shift, 0.1 * UP),
+            ApplyMethod(output_dot_text.shift, 0.3 * DOWN),
             run_time=5
         )
         self.bring_to_front(output_dot_text, df_label)
