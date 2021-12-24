@@ -694,8 +694,8 @@ class IntroComplexDeriv(Scene):
             vecs.add(v_0)
             img_vecs.add(f_v0)
 
-        vecs2 = vecs.copy()
-        img_vecs2 = img_vecs.copy()
+        vecs_cp = vecs.copy()
+        img_vecs_cp = img_vecs.copy()
 
         input_dot_text.non_time_updaters, output_dot_text.non_time_updaters = [], []
 
@@ -754,7 +754,7 @@ class IntroComplexDeriv(Scene):
 
         self.bring_to_front(dz_label, input_dot_text)
         self.play(
-            Write(vecs2), Uncreate(vecs),
+            Write(vecs_cp), Uncreate(vecs),
             ApplyMethod(dz_label.shift, [0.5, 0.25, 0]),
             ApplyMethod(input_dot_text.shift, 0.5 * DOWN)
         )
@@ -763,7 +763,7 @@ class IntroComplexDeriv(Scene):
 
         self.bring_to_front(output_dot_text, df_label)
         self.play(
-            TransformFromCopy(vecs2, img_vecs2),
+            TransformFromCopy(vecs_cp, img_vecs_cp),
             Uncreate(img_vecs),
             ApplyMethod(df_label.shift, 0.1 * UP),
             ApplyMethod(output_dot_text.shift, 0.3 * DOWN),
@@ -801,9 +801,38 @@ class IntroComplexDeriv(Scene):
         eq3.shift(2.75 * DOWN)
 
         self.play(
-            TransformMatchingTex(eq2, eq3)
+            Transform(eq2, eq3)
         )
         self.wait()
+
+        self.play(Uncreate(eq2), ApplyMethod(eq.shift, 1.25 * DOWN))
+
+        img_vecs2 = VGroup()
+
+        # f_M = np.array([
+        #     [1/2, -np.sqrt(3)],
+        #     [np.sqrt(3)/2, 1]
+        # ])
+        f_M = np.array([
+            [1/2, -np.sqrt(3)],
+            [np.sqrt(3)/2, 1]
+        ])
+
+        for t in np.linspace(0, 2*PI, 15)[:-1]:
+            z_0 = np.exp(t*1j)
+            x_0, y_0 = 0.75 * z_0.real, 0.75 * z_0.imag
+
+            f_z0 = np.dot(f_M, np.array([[x_0], [y_0]]))
+            f_x0, f_y0 = f_z0[0][0], f_z0[1][0]
+
+            f_v0 = self.get_vec(
+                c2, [f_x0, f_y0], stroke_color=A_GREEN, stroke_opacity=self.vec_opacity)
+
+            #v_0.move_to(c1.c2p(*z), aligned_edge=[-x_0, -y_0, 0])
+            f_v0.move_to(c2.c2p(1, 1), aligned_edge=[-f_x0, -f_y0, 0])
+
+            #vecs.add(v_0)
+            img_vecs2.add(f_v0)
 
         self.embed()
 
