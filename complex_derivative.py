@@ -659,8 +659,6 @@ class IntroComplexDeriv(Scene):
         )
         self.wait()
 
-        # TODO: Add input_dot moving around
-
         def path_func(t): return c1.c2p(1.5*np.sin((3*PI)/4*t), -t)
         path = ParametricCurve(path_func, t_range=(-2, 2))
 
@@ -668,8 +666,6 @@ class IntroComplexDeriv(Scene):
             MoveAlongPath(input_dot, path), run_time=10, rate_func=there_and_back
         )
         self.wait()
-
-        # self.embed()
 
         z = [self.x, self.y]
         z_deriv = self.f_deriv(self.x + self.y*1j)
