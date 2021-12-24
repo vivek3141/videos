@@ -698,6 +698,9 @@ class IntroComplexDeriv(Scene):
             vecs.add(v_0)
             img_vecs.add(f_v0)
 
+        vecs2 = vecs.copy()
+        img_vecs2 = img_vecs.copy()
+
         self.bring_to_front(input_dot_text)
         self.play(Write(vecs))
         self.bring_to_front(input_dot_text)
@@ -736,7 +739,31 @@ class IntroComplexDeriv(Scene):
         eq.scale(1.5)
         eq.shift(2.75 * DOWN)
 
+        cp = img_vecs[4].copy()
+
         self.play(Write(eq))
+        self.wait()
+
+        self.play(TransformFromCopy(vecs[4], cp), run_time=5)
+        self.remove(cp)
+        self.wait()
+
+        self.bring_to_front(dz_label, input_dot_text)
+        self.play(
+            Write(vecs2), Uncreate(vecs),
+            ApplyMethod(dz_label.shift, [0.5, 0.25, 0])
+        )
+        self.bring_to_front(dz_label, input_dot_text)
+        self.wait()
+
+        self.bring_to_front(output_dot_text, df_label)
+        self.play(
+            TransformFromCopy(vecs2, img_vecs2),
+            Uncreate(img_vecs),
+            ApplyMethod(df_label.shift, 0.1 * UP),
+            run_time=5
+        )
+        self.bring_to_front(output_dot_text, df_label)
         self.wait()
 
         self.embed()
