@@ -716,8 +716,8 @@ class IntroComplexDeriv(Scene):
         self.play(
             Uncreate(vecs[:4]), Uncreate(vecs[5:]),
             Uncreate(img_vecs[:4]), Uncreate(img_vecs[5:]),
-            ApplyMethod(vecs[4].set_opacity, 1), ApplyMethod(
-                img_vecs[4].set_opacity, 1),
+            ApplyMethod(vecs[4].set_opacity, 1),
+            ApplyMethod(img_vecs[4].set_opacity, 1),
             ApplyMethod(output_dot_text.shift, 0.3 * UP),
             ApplyMethod(input_dot_text.shift, 0.5 * UP)
         )
@@ -770,6 +770,39 @@ class IntroComplexDeriv(Scene):
             run_time=5
         )
         self.bring_to_front(output_dot_text, df_label)
+        self.wait()
+
+        eq2 = Tex(
+            r"f'(z) = 1.15 e^{\frac{2 \pi}{5} i}",
+            tex_to_color_map={
+                "f'": A_GREEN,
+                "z": A_PINK,
+                r"\frac{2 \pi}{5}": A_YELLOW,
+                "1.15": A_YELLOW}
+        )
+        eq2.scale(1.5)
+        eq2.add_background_rectangle()
+        eq2.shift(2.75 * DOWN)
+
+        self.play(
+            ApplyMethod(eq.shift, 1.25 * UP),
+            Write(eq2)
+        )
+        self.wait()
+
+        eq3 = Tex(
+            "f'(z) = 0.38 - 1.09i",
+            tex_to_color_map={
+                "f'": A_GREEN, "z": A_PINK,
+                "0.38": A_YELLOW, "1.09": A_YELLOW}
+        )
+        eq3.add_background_rectangle()
+        eq3.scale(1.5)
+        eq3.shift(2.75 * DOWN)
+
+        self.play(
+            TransformMatchingTex(eq2, eq3)
+        )
         self.wait()
 
         self.embed()
