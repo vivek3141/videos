@@ -701,15 +701,23 @@ class IntroComplexDeriv(Scene):
         vecs2 = vecs.copy()
         img_vecs2 = img_vecs.copy()
 
+        input_dot_text.non_time_updaters, output_dot_text.non_time_updaters = [], []
+
         self.bring_to_front(input_dot_text)
-        self.play(Write(vecs))
+        self.play(Write(vecs), ApplyMethod(input_dot_text.shift, 0.5 * DOWN))
         self.bring_to_front(input_dot_text)
         self.wait()
 
         self.bring_to_front(output_dot_text)
-        self.play(TransformFromCopy(vecs, img_vecs), run_time=7)
+        self.play(
+            TransformFromCopy(vecs, img_vecs),
+            ApplyMethod(output_dot_text.shift, 0.3 * DOWN),
+            run_time=7
+        )
         self.bring_to_front(output_dot_text)
         self.wait()
+
+        self.embed()
 
         self.play(
             Uncreate(vecs[:4]), Uncreate(vecs[5:]),
