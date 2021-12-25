@@ -809,10 +809,6 @@ class IntroComplexDeriv(Scene):
 
         img_vecs2 = VGroup()
 
-        # f_M = np.array([
-        #     [1/2, -np.sqrt(3)],
-        #     [np.sqrt(3)/2, 1]
-        # ])
         f_M = np.array([
             [1/2, -np.sqrt(3)],
             [np.sqrt(3)/2, 1]
@@ -828,11 +824,44 @@ class IntroComplexDeriv(Scene):
             f_v0 = self.get_vec(
                 c2, [f_x0, f_y0], stroke_color=A_GREEN, stroke_opacity=self.vec_opacity)
 
-            #v_0.move_to(c1.c2p(*z), aligned_edge=[-x_0, -y_0, 0])
             f_v0.move_to(c2.c2p(1, 1), aligned_edge=[-f_x0, -f_y0, 0])
 
-            #vecs.add(v_0)
             img_vecs2.add(f_v0)
+
+        output_dot.non_time_updaters = []
+
+        eq_g = Tex("dg = g'(z) \cdot dz", tex_to_color_map={
+            "g": A_GREEN, "z": A_PINK, "'": A_GREEN})
+        eq_g.add_background_rectangle()
+        eq_g.scale(1.5)
+        eq_g.shift(2.75 * DOWN)
+
+        g_dot_text = Tex("g(z)", tex_to_color_map={
+            r"z": A_PINK, "g": A_GREEN})
+        g_dot_text.add_background_rectangle()
+        g_dot_text.move_to(
+            output_dot_text.get_center() + c2.c2p(1, 1) - c2.c2p(*f_z) + 0.4 * DOWN
+        )
+
+        dg_label = Tex("dg", tex_to_color_map={"g": A_GREEN})
+        dg_label.add_background_rectangle()
+        dg_label.move_to(
+            df_label.get_center() + c2.c2p(1, 1) - c2.c2p(*f_z) + 0.3 * UP
+        )
+
+        self.play(
+            Uncreate(img_vecs_cp),
+            ApplyMethod(output_dot.move_to, c2.c2p(1, 1)),
+            Transform(output_dot_text, g_dot_text),
+            Transform(df_label, dg_label),
+            Transform(eq, eq_g)
+        )
+        self.wait(0.5)
+
+        self.play(
+            TransformFromCopy(vecs_cp, img_vecs2), run_time=5
+        )
+        self.wait()
 
         self.embed()
 
