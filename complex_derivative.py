@@ -777,8 +777,8 @@ class IntroComplexDeriv(Scene):
             tex_to_color_map={
                 "f'": A_GREEN,
                 "z": A_PINK,
-                r"\frac{2 \pi}{5}": A_YELLOW,
-                "1.15": A_YELLOW}
+                r"\frac{2 \pi}{5}": YELLOW_Z,
+                "1.15": YELLOW_Z}
         )
         eq2.scale(1.5)
         eq2.add_background_rectangle()
@@ -794,7 +794,7 @@ class IntroComplexDeriv(Scene):
             "f'(z) = 0.38 - 1.09i",
             tex_to_color_map={
                 "f'": A_GREEN, "z": A_PINK,
-                "0.38": A_YELLOW, "1.09": A_YELLOW}
+                "0.38": YELLOW_Z, "1.09": YELLOW_Z}
         )
         eq3.add_background_rectangle()
         eq3.scale(1.5)
@@ -806,6 +806,7 @@ class IntroComplexDeriv(Scene):
         self.wait()
 
         self.play(Uncreate(eq2), ApplyMethod(eq.shift, 1.25 * DOWN))
+        self.wait()
 
         img_vecs2 = VGroup()
 
@@ -1021,25 +1022,17 @@ class Holomorphic(Scene):
                 "stroke_opacity": self.plane_opacity
             }
         }
-        c1 = ComplexPlane(x_range=(-3, 3), y_range=(-3, 3), **complex_kwargs)
+        c1 = ComplexPlane(x_range=(-3, 3), y_range=(0, 3), **complex_kwargs)
         c1.add_coordinate_labels()
         c1.coordinate_labels.set_opacity(self.plane_opacity)
         c1.axes.set_opacity(self.plane_opacity)
         c1.shift(FRAME_WIDTH/4 * LEFT + 0.5 * DOWN)
 
-        c2 = ComplexPlane(x_range=(-3, 3), y_range=(-3, 3), **complex_kwargs)
+        c2 = ComplexPlane(x_range=(-3, 3), y_range=(0, 3), **complex_kwargs)
         c2.add_coordinate_labels()
         c2.coordinate_labels.set_opacity(self.plane_opacity)
         c2.axes.set_opacity(self.plane_opacity)
         c2.shift(FRAME_WIDTH/4 * RIGHT + 0.5 * DOWN)
-
-        input_text = TexText("Input Space", color=YELLOW_Z)
-        input_text.scale(1.5)
-        input_text.shift(-FRAME_WIDTH/4 * RIGHT + 3.25 * UP)
-
-        output_text = TexText("Output Space", color=YELLOW_Z)
-        output_text.scale(1.5)
-        output_text.shift(FRAME_WIDTH/4 * RIGHT + 3.25 * UP)
 
         input_dot = Dot(c1.c2p(self.x, self.y), color=PURPLE)
         input_dot.set_color(A_PINK)
@@ -1047,7 +1040,8 @@ class Holomorphic(Scene):
         input_dot_text = Tex("z", color=A_PINK)
         input_dot_text.add_background_rectangle()
         input_dot_text.next_to(input_dot, DOWN)
-    
+        input_dot_text.shift(0.5 * DOWN)
+
         f_z = self.func(self.x + self.y * 1j)
         f_z = np.array([f_z.real, f_z.imag, 0])
 
@@ -1056,22 +1050,7 @@ class Holomorphic(Scene):
                               r"z": A_PINK, "f": A_GREEN})
         output_dot_text.add_background_rectangle()
         output_dot_text.next_to(output_dot, DOWN)
-
-        self.play(
-            Write(c1), Write(input_text)
-        )
-        self.play(
-            Write(c2), Write(output_text)
-        )
-        self.wait()
-
-        self.play(
-            Write(input_dot), Write(input_dot_text)
-        )
-        self.play(
-            Write(output_dot), Write(output_dot_text)
-        )
-        self.wait()
+        #output_dot_text.shift(0.8 * DOWN)
 
         z = [self.x, self.y]
         z_deriv = self.f_deriv(self.x + self.y*1j)
@@ -1100,8 +1079,20 @@ class Holomorphic(Scene):
             vecs.add(v_0)
             img_vecs.add(f_v0)
 
+        grp = VGroup(
+            c1, c2, input_dot, vecs, output_dot, img_vecs, input_dot_text, 
+            output_dot_text, 
+        )
+
+        self.play(
+            Write(c1), Write(c2), Write(input_dot), Write(input_dot_text),
+            Write(output_dot), Write(output_dot_text), Write(vecs)
+        )
+
+        DoubleArrow
+
         self.embed()
-    
+
     def get_vec(self, plane, coors, **kwargs):
         x, y = coors[0], coors[1]
         z = plane.c2p(x, y)
