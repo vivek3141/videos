@@ -1005,3 +1005,110 @@ class ComplexMul(Scene):
             Write(vw), Write(vw_dot), Write(vw_label)
         )
         self.wait()
+
+
+class Holomorphic(Scene):
+    CONFIG = {
+        "plane_opacity": 0.65,
+        "x": 0.7,
+        "y": 2,
+        "vec_opacity": 0.75
+    }
+
+    def construct(self):
+        complex_kwargs = {
+            "background_line_style": {
+                "stroke_opacity": self.plane_opacity
+            }
+        }
+        c1 = ComplexPlane(x_range=(-3, 3), y_range=(-3, 3), **complex_kwargs)
+        c1.add_coordinate_labels()
+        c1.coordinate_labels.set_opacity(self.plane_opacity)
+        c1.axes.set_opacity(self.plane_opacity)
+        c1.shift(FRAME_WIDTH/4 * LEFT + 0.5 * DOWN)
+
+        c2 = ComplexPlane(x_range=(-3, 3), y_range=(-3, 3), **complex_kwargs)
+        c2.add_coordinate_labels()
+        c2.coordinate_labels.set_opacity(self.plane_opacity)
+        c2.axes.set_opacity(self.plane_opacity)
+        c2.shift(FRAME_WIDTH/4 * RIGHT + 0.5 * DOWN)
+
+        input_text = TexText("Input Space", color=YELLOW_Z)
+        input_text.scale(1.5)
+        input_text.shift(-FRAME_WIDTH/4 * RIGHT + 3.25 * UP)
+
+        output_text = TexText("Output Space", color=YELLOW_Z)
+        output_text.scale(1.5)
+        output_text.shift(FRAME_WIDTH/4 * RIGHT + 3.25 * UP)
+
+        input_dot = Dot(c1.c2p(self.x, self.y), color=PURPLE)
+        input_dot.set_color(A_PINK)
+
+        input_dot_text = Tex("z", color=A_PINK)
+        input_dot_text.add_background_rectangle()
+        input_dot_text.next_to(input_dot, DOWN)
+    
+        f_z = self.func(self.x + self.y * 1j)
+        f_z = np.array([f_z.real, f_z.imag, 0])
+
+        output_dot = Dot(c2.c2p(*f_z), color=A_GREEN)
+        output_dot_text = Tex("f(z)", tex_to_color_map={
+                              r"z": A_PINK, "f": A_GREEN})
+        output_dot_text.add_background_rectangle()
+        output_dot_text.next_to(output_dot, DOWN)
+
+        self.play(
+            Write(c1), Write(input_text)
+        )
+        self.play(
+            Write(c2), Write(output_text)
+        )
+        self.wait()
+
+        self.play(
+            Write(input_dot), Write(input_dot_text)
+        )
+        self.play(
+            Write(output_dot), Write(output_dot_text)
+        )
+        self.wait()
+
+        z = [self.x, self.y]
+        z_deriv = self.f_deriv(self.x + self.y*1j)
+
+        f_z = self.func(self.x + self.y*1j)
+        f_z = [f_z.real, f_z.imag]
+
+        img_vecs = VGroup()
+        vecs = VGroup()
+
+        for t in np.linspace(0, 2*PI, 15)[:-1]:
+            z_0 = np.exp(t*1j)
+            x_0, y_0 = 0.75 * z_0.real, 0.75 * z_0.imag
+
+            f_z0 = 0.5 * z_0 * z_deriv
+            f_x0, f_y0 = f_z0.real, f_z0.imag
+
+            v_0 = self.get_vec(
+                c1, [x_0, y_0], stroke_color=A_PINK, stroke_opacity=self.vec_opacity)
+            f_v0 = self.get_vec(
+                c2, [f_x0, f_y0], stroke_color=A_GREEN, stroke_opacity=self.vec_opacity)
+
+            v_0.move_to(c1.c2p(*z), aligned_edge=[-x_0, -y_0, 0])
+            f_v0.move_to(c2.c2p(*f_z), aligned_edge=[-f_x0, -f_y0, 0])
+
+            vecs.add(v_0)
+            img_vecs.add(f_v0)
+
+        self.embed()
+    
+    def get_vec(self, plane, coors, **kwargs):
+        x, y = coors[0], coors[1]
+        z = plane.c2p(x, y)
+        return Arrow(plane.c2p(0, 0), z, buff=0, **kwargs)
+
+    def f_deriv(self, z, dz=1e-6+1e-6*1j):
+        return (self.func(z+dz)-self.func(z))/dz
+
+    def func(self, z):
+        return np.exp(z)
