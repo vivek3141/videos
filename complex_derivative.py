@@ -1120,7 +1120,7 @@ class Holomorphic(Scene):
         )
         self.play(
             TransformFromCopy(vecs, img_vecs),
-            ApplyMethod(output_dot_text.shift, 0.8 * DOWN)
+            ApplyMethod(output_dot_text.shift, 0.8 * DOWN),
             run_time=5
         )
         self.wait()
