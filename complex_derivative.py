@@ -1080,16 +1080,50 @@ class Holomorphic(Scene):
             img_vecs.add(f_v0)
 
         grp = VGroup(
-            c1, c2, input_dot, vecs, output_dot, img_vecs, input_dot_text, 
-            output_dot_text, 
+            c1, c2, input_dot, vecs, output_dot, img_vecs, input_dot_text,
+            output_dot_text,
         )
+        grp.shift(DOWN)
 
+        eq = Tex("f(z) = e^z", tex_to_color_map={
+                 "f": A_GREEN, "z": A_PINK, "e": YELLOW_Z})
+        eq.scale(1.5)
+        eq.shift(UP)
+
+        text1 = TexText("Complex Differentiable", color=A_GREY)
+        text1.scale(1.5)
+        text1.move_to(2.5 * UP + 3 * LEFT)
+
+        text2 = TexText("Holomorphic", color=A_GREY)
+        text2.scale(1.5)
+        text2.move_to(2.5 * UP + 4.5 * RIGHT)
+
+        d = Line(ORIGIN, RIGHT, color=RED, stroke_width=6)
+        d.add_tip()
+        d.add_tip(at_start=True)
+        d.move_to(2.5 * UP + 1.55 * RIGHT)
+
+        self.play(
+            Write(text1)
+        )
+        self.play(
+            Write(d), Write(text2)
+        )
+        self.wait()
+
+        self.play(
+            Write(eq)
+        )
         self.play(
             Write(c1), Write(c2), Write(input_dot), Write(input_dot_text),
             Write(output_dot), Write(output_dot_text), Write(vecs)
         )
-
-        DoubleArrow
+        self.play(
+            TransformFromCopy(vecs, img_vecs),
+            ApplyMethod(output_dot_text.shift, 0.8 * DOWN)
+            run_time=5
+        )
+        self.wait()
 
         self.embed()
 
