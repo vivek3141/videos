@@ -864,6 +864,20 @@ class IntroComplexDeriv(Scene):
         )
         self.wait()
 
+        self.play(
+            Indicate(vecs_cp[0], scale_factor=2),
+            Indicate(img_vecs2[0], scale_factor=2),
+            run_time=3
+        )
+        self.wait()
+
+        self.play(
+            Indicate(vecs_cp[4], scale_factor=2),
+            Indicate(img_vecs2[4], scale_factor=2),
+            run_time=3
+        )
+        self.wait()
+
         self.embed()
 
     def get_vec(self, plane, coors, **kwargs):
@@ -1050,7 +1064,6 @@ class Holomorphic(Scene):
                               r"z": A_PINK, "f": A_GREEN})
         output_dot_text.add_background_rectangle()
         output_dot_text.next_to(output_dot, DOWN)
-        #output_dot_text.shift(0.8 * DOWN)
 
         z = [self.x, self.y]
         z_deriv = self.f_deriv(self.x + self.y*1j)
@@ -1137,3 +1150,8 @@ class Holomorphic(Scene):
 
     def func(self, z):
         return np.exp(z)
+
+
+class TransformationVisual(Scene):
+    def construct(self):
+        self.embed()
