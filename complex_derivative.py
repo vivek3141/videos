@@ -1152,6 +1152,31 @@ class Holomorphic(Scene):
         return np.exp(z)
 
 
+class IntroTransformVis(Scene):
+    def construct(self):
+        n = ComplexPlane()
+        n.add_coordinate_labels()
+
+        self.play(Write(n))
+        self.wait(0.5)
+
+        self.play(Uncreate(n.coordinate_labels))
+
+        n.prepare_for_nonlinear_transform()
+
+        self.play(ApplyMethod(
+            n.apply_complex_function,
+            self.func),
+            run_time=7
+        )
+        self.wait()
+
+        self.embed()
+
+    def func(self, z):
+        return (1*z + np.sin(z)) * 0.3
+
+
 class TransformationVisual(Scene):
     def construct(self):
         self.embed()
