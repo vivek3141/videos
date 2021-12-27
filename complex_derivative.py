@@ -1158,7 +1158,7 @@ class IntroTransformVis(Scene):
         n.add_coordinate_labels()
 
         self.play(Write(n))
-        self.wait(0.5)
+        self.wait()
 
         self.play(Uncreate(n.coordinate_labels))
 
@@ -1179,4 +1179,54 @@ class IntroTransformVis(Scene):
 
 class TransformationVisual(Scene):
     def construct(self):
+        n, n2 = ComplexPlane(), ComplexPlane()
+        n.add_coordinate_labels()
+
+        n2.apply_complex_function(self.func1)
+        n2.add_coordinate_labels()
+        n2.coordinate_labels[:10].shift(0.1 * np.array([-np.sqrt(3), 1, 0]))
+
+        eq = Tex(
+            r"f(z) = (1 + \sqrt{3} i) z",
+            tex_to_color_map={"f": A_GREEN, "z": A_PINK,
+                              "1": YELLOW_Z, r"\sqrt{3}": YELLOW_Z}
+        )
+
+        eq.add_background_rectangle(buff=0.25)
+        eq.scale(1.5)
+        eq.shift(3 * UP)
+
+        d = Dot(RIGHT, color=RED)
+
+        d_lbl = Tex("0 + i", color=A_RED)
+        d_lbl.add_background_rectangle(buff=0.15)
+        d_lbl.next_to(d, DOWN)
+
+        d2 = Dot([1, np.sqrt(3), 0], color=RED)
+
+        d_lbl2 = Tex(r"1 + \sqrt{3}i", color=A_RED)
+        d_lbl2.add_background_rectangle(buff=0.15)
+        d_lbl2.next_to(d2, DOWN)
+
+        self.play(Write(n), Write(eq))
+        self.play(Write(d), Write(d_lbl))
+        self.wait()
+
+        self.play(Uncreate(n.coordinate_labels))
+        self.bring_to_back(n)
+        self.play(
+            ApplyMethod(n.apply_complex_function, self.func1, foreground_mobjects=[eq]),
+            Transform(d, d2),
+            Transform(d_lbl, d_lbl2),
+            run_time=7
+        )
+        self.bring_to_back(n)
+        self.play(Write(n2.coordinate_labels))
+        self.bring_to_back(n, n2.coordinate_labels)
+        self.wait()
+
         self.embed()
+
+    def func1(self, z):
+        Animation
+        return (1+np.sqrt(3)*1j)*z
