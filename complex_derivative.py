@@ -1179,12 +1179,12 @@ class IntroTransformVis(Scene):
 
 class TransformationVisual(Scene):
     def construct(self):
-        n, n2 = ComplexPlane(), ComplexPlane()
+        n, _n = ComplexPlane(), ComplexPlane()
         n.add_coordinate_labels()
 
-        n2.apply_complex_function(self.func1)
-        n2.add_coordinate_labels()
-        n2.coordinate_labels[:10].shift(0.1 * np.array([-np.sqrt(3), 1, 0]))
+        _n.apply_complex_function(self.func1)
+        _n.add_coordinate_labels()
+        _n.coordinate_labels[:10].shift(0.1 * np.array([-np.sqrt(3), 1, 0]))
 
         eq = Tex(
             r"f(z) = (1 + \sqrt{3} i) z",
@@ -1215,15 +1215,95 @@ class TransformationVisual(Scene):
         self.play(Uncreate(n.coordinate_labels))
         self.bring_to_back(n)
         self.play(
-            ApplyMethod(n.apply_complex_function, self.func1, foreground_mobjects=[eq]),
+            ApplyMethod(n.apply_complex_function, self.func1,
+                        foreground_mobjects=[eq]),
             Transform(d, d2),
             Transform(d_lbl, d_lbl2),
             run_time=7
         )
         self.bring_to_back(n)
-        self.play(Write(n2.coordinate_labels))
-        self.bring_to_back(n, n2.coordinate_labels)
+        self.play(Write(_n.coordinate_labels))
+        self.bring_to_back(n, _n.coordinate_labels)
         self.wait()
+
+        eq2 = Tex(r"f(z) = (2e^{\frac{\pi}{3}i}) z",
+                  tex_to_color_map={"f": A_GREEN, "z": A_PINK,
+                                    "2": YELLOW_Z, r"\frac{\pi}{3}": YELLOW_Z}
+                  )
+        eq2.scale(1.5)
+        eq2.shift(3 * UP)
+        eq2.add_background_rectangle()
+
+        self.play(Transform(eq, eq2))
+        self.wait()
+
+        n2 = ComplexPlane()
+
+        eq3 = Tex(
+            r"f(z) = z^2",
+            tex_to_color_map={"f": A_GREEN, "z": A_PINK}
+        )
+        eq3.scale(1.5)
+        eq3.shift(3 * UP)
+        eq3.add_background_rectangle()
+
+        self.bring_to_back(n)
+        self.play(
+            Uncreate(_n.coordinate_labels),
+            Uncreate(d), Uncreate(d_lbl),
+            Transform(eq, eq3),
+            Transform(n, n2)
+        )
+        self.bring_to_back(n)
+
+        def g(z): return z**2
+
+        n.prepare_for_nonlinear_transform()
+
+        d1 = Dot([1, 0, 0], color=RED)
+        d1_lbl = Tex("1", color=RED)
+        d1_lbl.add_background_rectangle(buff=0.15)
+        d1_lbl.next_to(d1, DOWN)
+
+        d2 = Dot([0, 1, 0], color=RED)
+        d2_lbl = Tex("i", color=RED)
+        d2_lbl.add_background_rectangle(buff=0.15)
+        d2_lbl.next_to(d2, DOWN)
+
+        d3 = Dot([2, 0, 0], color=RED)
+        d3_lbl = Tex("2", color=RED)
+        d3_lbl.add_background_rectangle(buff=0.15)
+        d3_lbl.next_to(d3, DOWN)
+
+        d1_n = Dot([1, 0, 0], color=RED)
+        d1_n_lbl = Tex("1", color=RED)
+        d1_n_lbl.add_background_rectangle(buff=0.15)
+        d1_n_lbl.next_to(d1_n, DOWN)
+
+        d2_n = Dot([-1, 0, 0], color=RED)
+        d2_n_lbl = Tex("-1", color=RED)
+        d2_n_lbl.add_background_rectangle(buff=0.15)
+        d2_n_lbl.next_to(d2_n, DOWN)
+
+        d3_n = Dot([4, 0, 0], color=RED)
+        d3_n_lbl = Tex("4", color=RED)
+        d3_n_lbl.add_background_rectangle(buff=0.15)
+        d3_n_lbl.next_to(d3_n, DOWN)
+
+        self.play(
+            Write(d1), Write(d1_lbl),
+            Write(d2), Write(d2_lbl),
+            Write(d3), Write(d3_lbl)
+        )
+        self.bring_to_back(n)
+
+        self.play(
+            ApplyMethod(n.apply_complex_function, g),
+            Transform(d1, d1_n), Transform(d1_lbl, d1_n_lbl),
+            Transform(d2, d2_n), Transform(d2_lbl, d2_n_lbl),
+            Transform(d3, d3_n), Transform(d3_lbl, d3_n_lbl),
+            run_time=7
+        )
 
         self.embed()
 
