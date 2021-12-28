@@ -1261,19 +1261,28 @@ class TransformationVisual(Scene):
         n.prepare_for_nonlinear_transform()
 
         d1 = Dot([1, 0, 0], color=RED)
+        d1_c = d1.copy()
+
         d1_lbl = Tex("1", color=RED)
         d1_lbl.add_background_rectangle(buff=0.15)
         d1_lbl.next_to(d1, DOWN)
+        d1_lbl_c = d1_lbl.copy()
 
         d2 = Dot([0, 1, 0], color=RED)
+        d2_c = d2.copy()
+
         d2_lbl = Tex("i", color=RED)
         d2_lbl.add_background_rectangle(buff=0.15)
         d2_lbl.next_to(d2, DOWN)
+        d2_lbl_c = d2_lbl.copy()
 
         d3 = Dot([2, 0, 0], color=RED)
+        d3_c = d3.copy()
+
         d3_lbl = Tex("2", color=RED)
         d3_lbl.add_background_rectangle(buff=0.15)
         d3_lbl.next_to(d3, DOWN)
+        d3_lbl_c = d3_lbl.copy()
 
         d1_n = Dot([1, 0, 0], color=RED)
         d1_n_lbl = Tex("1", color=RED)
@@ -1295,6 +1304,7 @@ class TransformationVisual(Scene):
             Write(d2), Write(d2_lbl),
             Write(d3), Write(d3_lbl)
         )
+        self.wait()
         self.bring_to_back(n)
 
         self.play(
@@ -1304,6 +1314,40 @@ class TransformationVisual(Scene):
             Transform(d3, d3_n), Transform(d3_lbl, d3_n_lbl),
             run_time=7
         )
+        self.bring_to_back(n)
+
+        n_ = ComplexPlane()
+
+        self.play(
+            Transform(n, n_),
+            Transform(d1, d1_c), Transform(d1_lbl, d1_lbl_c),
+            Transform(d2, d2_c), Transform(d2_lbl, d2_lbl_c),
+            Transform(d3, d3_c), Transform(d3_lbl, d3_lbl_c),
+            run_time=3
+        )
+        self.bring_to_back(n)
+        self.wait(2)
+
+        self.play(
+            ApplyMethod(n.apply_complex_function, g),
+            Transform(d1, d1_n), Transform(d1_lbl, d1_n_lbl),
+            Transform(d2, d2_n), Transform(d2_lbl, d2_n_lbl),
+            Transform(d3, d3_n), Transform(d3_lbl, d3_n_lbl),
+            run_time=5
+        )
+        self.bring_to_back(n)
+        self.wait()
+
+        self.play(
+            Transform(n, n_),
+            Uncreate(d1), Uncreate(d1_lbl), 
+            Uncreate(d2), Uncreate(d2_lbl),
+            Uncreate(d3), Uncreate(d3_lbl),
+            run_time=2
+        )
+        self.wait(0.5)
+
+
 
         self.embed()
 
