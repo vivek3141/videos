@@ -1371,7 +1371,7 @@ class TransformationVisual(Scene):
         for i in eq:
             if i is not eq.background_rectangle:
                 obj.add(i)
-        
+
         eq5 = Tex(
             r"f(-1+2i) = -3-4i",
             tex_to_color_map={
@@ -1392,11 +1392,11 @@ class TransformationVisual(Scene):
 
         z_lbl = Tex("-1+2i", color=A_ORANGE)
         z_lbl.add_background_rectangle(buff=0.15)
-        z_lbl.next_to(z_rect, DOWN)
+        z_lbl.next_to(z_rect, LEFT + DOWN)
 
         z_lbl2 = Tex("-3-4i", color=A_ORANGE)
         z_lbl2.add_background_rectangle(buff=0.15)
-        z_lbl2.next_to(f_rect, UP)
+        z_lbl2.next_to(f_rect, LEFT + UP)
 
         z_rect_points = z_rect.get_vertices()
         f_rect_points = f_rect.get_vertices()
@@ -1430,7 +1430,7 @@ class TransformationVisual(Scene):
 
         self.play(Transform(br, br2))
         self.play(
-            Write(eq5), Write(eq6),  
+            Write(eq5), Write(eq6),
         )
         self.wait()
 
@@ -1438,7 +1438,7 @@ class TransformationVisual(Scene):
             ApplyMethod(n.apply_complex_function, g),
             Transform(z_rect, f_rect),
             Transform(z_lbl, z_lbl2),
-            Transform(dash_1, dash_1f), Transform(dash_2, dash_2f)
+            Transform(dash_1, dash_1f), Transform(dash_2, dash_2f),
             run_time=10
         )
         self.wait()
