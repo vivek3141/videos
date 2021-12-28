@@ -1340,20 +1340,20 @@ class TransformationVisual(Scene):
 
         self.play(
             Transform(n, n_),
-            Uncreate(d1), Uncreate(d1_lbl), 
+            Uncreate(d1), Uncreate(d1_lbl),
             Uncreate(d2), Uncreate(d2_lbl),
             Uncreate(d3), Uncreate(d3_lbl),
             run_time=2
         )
         self.wait(0.5)
 
-        r = Rectangle(height=3, width=4, fill_color=BLACK, fill_opacity=1)
+        r = Rectangle(height=3, width=4, fill_color=BLACK,
+                      fill_opacity=1, stroke_color=A_ORANGE)
         r.move_to([4, 2, 0])
 
-        #eq.move_to([-5.5, 3.5, 0])
-        eq4 = Tex(r"f'(z) = 2z", tex_to_color_map={r"f'": A_GREEN, "z": A_PINK})
+        eq4 = Tex(r"f'(z) = 2z", tex_to_color_map={
+                  r"f'": A_GREEN, "z": A_PINK})
         eq4.move_to([-5.5, 2.5, 0])
-
 
         br2 = Rectangle(height=2, width=12, fill_opacity=0.75, color=BLACK)
         br2.move_to([-5, 3, 0])
@@ -1361,10 +1361,10 @@ class TransformationVisual(Scene):
         br = Rectangle(height=2, width=3, fill_opacity=0.75, color=BLACK)
         br.move_to([-5.5, 3, 0])
 
-        s_rect = Rectangle(height=0.2, width=0.2)
-        s_rect.move_to([-1, 2, 0])
+        z_rect = Rectangle(height=0.2, width=0.2, color=A_ORANGE)
+        z_rect.move_to([-1, 2, 0])
 
-        f_rect = Rectangle(height=0.2, width=0.2)
+        f_rect = Rectangle(height=0.2, width=0.2, color=A_ORANGE)
         f_rect.move_to([-3, -4, 0])
 
         obj = VMobject()
@@ -1382,11 +1382,48 @@ class TransformationVisual(Scene):
             ApplyMethod(eq.move_to, 5.5 * LEFT + 3.5 * UP),
             Write(eq4)
         )
+        self.play(Transform(br, br2))
 
-        #self.play(ApplyMethod(n.apply_complex_function, lambda z:z**2), Transform(s_rect, f_rect))
+        eq5 = Tex(
+            r"f(-1+2i) = -3-4i",
+            tex_to_color_map={
+                "1": YELLOW_Z, "2": YELLOW_Z,
+                "3": YELLOW_Z, "4": YELLOW_Z,
+                "f": A_GREEN}
+        )
+        eq5.move_to([-1.5, 3.5, 0])
 
+        eq6 = Tex(
+            r"f'(-1+2i) = -2+4i",
+            tex_to_color_map={
+                "1": YELLOW_Z, "2": YELLOW_Z,
+                "4": YELLOW_Z, "f'": A_GREEN
+            }
+        )
+        eq6.move_to([-1.5, 2.5, 0])
 
+        z_lbl = Tex("-1+2i", color=A_ORANGE)
+        z_lbl.add_background_rectangle(buff=0.15)
+        z_lbl.next_to(z_rect, DOWN)
 
+        z_lbl2 = Tex("-3-4i", color=A_ORANGE)
+        z_lbl2.add_background_rectangle(buff=0.15)
+        z_lbl2.next_to(f_rect, UP)
+
+        self.play(
+            Write(eq5), Write(eq6),
+            Write(z_rect), Write(z_lbl),
+            Write(r)
+        )
+        self.wait()
+
+        self.play(
+            ApplyMethod(n.apply_complex_function, g),
+            Transform(z_rect, f_rect),
+            Transform(z_lbl, z_lbl2),
+            run_time=10
+        )
+        self.wait()
         self.embed()
 
     def func1(self, z):
