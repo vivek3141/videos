@@ -1347,6 +1347,44 @@ class TransformationVisual(Scene):
         )
         self.wait(0.5)
 
+        r = Rectangle(height=3, width=4, fill_color=BLACK, fill_opacity=1)
+        r.move_to([4, 2, 0])
+
+        #eq.move_to([-5.5, 3.5, 0])
+        eq4 = Tex(r"f'(z) = 2z", tex_to_color_map={r"f'": A_GREEN, "z": A_PINK})
+        eq4.move_to([-5.5, 2.5, 0])
+
+
+        br2 = Rectangle(height=2, width=12, fill_opacity=0.75, color=BLACK)
+        br2.move_to([-5, 3, 0])
+
+        br = Rectangle(height=2, width=3, fill_opacity=0.75, color=BLACK)
+        br.move_to([-5.5, 3, 0])
+
+        s_rect = Rectangle(height=0.2, width=0.2)
+        s_rect.move_to([-1, 2, 0])
+
+        f_rect = Rectangle(height=0.2, width=0.2)
+        f_rect.move_to([-3, -4, 0])
+
+        obj = VMobject()
+        for i in eq:
+            if i is not eq.background_rectangle:
+                obj.add(i)
+
+        self.play(
+            Write(br),
+            ApplyMethod(obj.scale, 1/1.5),
+            Uncreate(eq.background_rectangle)
+        )
+        self.bring_to_front(eq)
+        self.play(
+            ApplyMethod(eq.move_to, 5.5 * LEFT + 3.5 * UP),
+            Write(eq4)
+        )
+
+        #self.play(ApplyMethod(n.apply_complex_function, lambda z:z**2), Transform(s_rect, f_rect))
+
 
 
         self.embed()
