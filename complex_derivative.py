@@ -1371,19 +1371,7 @@ class TransformationVisual(Scene):
         for i in eq:
             if i is not eq.background_rectangle:
                 obj.add(i)
-
-        self.play(
-            Write(br),
-            ApplyMethod(obj.scale, 1/1.5),
-            Uncreate(eq.background_rectangle)
-        )
-        self.bring_to_front(eq)
-        self.play(
-            ApplyMethod(eq.move_to, 5.5 * LEFT + 3.5 * UP),
-            Write(eq4)
-        )
-        self.play(Transform(br, br2))
-
+        
         eq5 = Tex(
             r"f(-1+2i) = -3-4i",
             tex_to_color_map={
@@ -1410,10 +1398,39 @@ class TransformationVisual(Scene):
         z_lbl2.add_background_rectangle(buff=0.15)
         z_lbl2.next_to(f_rect, UP)
 
+        z_rect_points = z_rect.get_vertices()
+        f_rect_points = f_rect.get_vertices()
+        r_points = r.get_vertices()
+
+        dash_1 = DashedLine(z_rect_points[0], r_points[1])
+        dash_2 = DashedLine(z_rect_points[3], r_points[2])
+
+        dash_1f = DashedLine(f_rect_points[0], r_points[1])
+        dash_2f = DashedLine(f_rect_points[3], r_points[2])
+
         self.play(
-            Write(eq5), Write(eq6),
-            Write(z_rect), Write(z_lbl),
-            Write(r)
+            Write(br),
+            ApplyMethod(obj.scale, 1/1.5),
+            Uncreate(eq.background_rectangle)
+        )
+        self.bring_to_front(eq)
+        self.play(
+            ApplyMethod(eq.move_to, 5.5 * LEFT + 3.5 * UP),
+            Write(eq4)
+        )
+        self.play(
+            Write(r),
+            Write(z_rect),
+            Write(dash_1), Write(dash_2)
+        )
+        self.play(Write(z_lbl))
+        self.bring_to_front(br)
+        self.bring_to_front(eq, eq4)
+        self.wait()
+
+        self.play(Transform(br, br2))
+        self.play(
+            Write(eq5), Write(eq6),  
         )
         self.wait()
 
@@ -1421,6 +1438,7 @@ class TransformationVisual(Scene):
             ApplyMethod(n.apply_complex_function, g),
             Transform(z_rect, f_rect),
             Transform(z_lbl, z_lbl2),
+            Transform(dash_1, dash_1f), Transform(dash_2, dash_2f)
             run_time=10
         )
         self.wait()
