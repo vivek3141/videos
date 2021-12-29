@@ -1222,8 +1222,6 @@ class TransformationVisual(Scene):
             run_time=7
         )
         self.bring_to_back(n)
-        self.play(Write(_n.coordinate_labels))
-        self.bring_to_back(n, _n.coordinate_labels)
         self.wait()
 
         eq2 = Tex(r"f(z) = (2e^{\frac{\pi}{3}i}) z",
@@ -1249,7 +1247,6 @@ class TransformationVisual(Scene):
 
         self.bring_to_back(n)
         self.play(
-            Uncreate(_n.coordinate_labels),
             Uncreate(d), Uncreate(d_lbl),
             Transform(eq, eq3),
             Transform(n, n2)
@@ -1506,6 +1503,51 @@ class TransformationVisual(Scene):
         )
         self.wait()
 
+        eq9 = Tex(
+            r"f({{z}}) = \bar{z} \cdot \sin{({{z}})}",
+            tex_to_color_map={
+                r"\bar{z}": A_PINK,
+                "{{z}}": A_PINK, "f": A_GREEN}
+        )
+        eq9.add_background_rectangle(buff=0.15)
+        eq9.scale(1.5)
+        eq9.move_to([-4.25, 3.25, 0])
+
+        f_rect3 = Rectangle(height=0.2, width=0.2, color=A_ORANGE)
+        f_rect3.move_to([1.26992, -2.59691, 0])
+        f_rect_points3 = f_rect3.get_vertices()
+
+        z3_lbl = Tex("1+i", color=A_ORANGE)
+        z3_lbl.add_background_rectangle(buff=0.15)
+        z3_lbl.next_to(z_rect2, LEFT)
+
+        z3_lbl2 = Tex("1.27 - 2.59i", color=A_ORANGE)
+        z3_lbl2.add_background_rectangle(buff=0.15)
+        z3_lbl2.next_to(f_rect3, LEFT)
+
+        dash1f_3 = DashedLine(f_rect_points3[0], r_points[1])
+        dash2f_3 = DashedLine(f_rect_points3[3], r_points[2])
+
+        self.play(
+            Uncreate(VGroup(eq, eq4, eq5, eq6, br)),
+            Transform(n, n_),
+            Transform(z_rect, z_rect2),
+            Transform(dash_1, dash1_2),
+            Transform(dash_2, dash2_2),
+            Transform(z_lbl, z3_lbl),
+        )
+        self.play(Write(eq9))
+        self.embed()
+
+        n.prepare_for_nonlinear_transform()
+        self.play(
+            ApplyMethod(n.apply_complex_function, self.func2),
+            Transform(z_rect, f_rect3),
+            Transform(dash_1, dash1f_3),
+            Transform(dash_2, dash2f_3),
+            Transform(z_lbl, z3_lbl2),
+            run_time=10
+        )
         self.embed()
 
     def func1(self, z):
