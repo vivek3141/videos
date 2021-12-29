@@ -1400,7 +1400,7 @@ class TransformationVisual(Scene):
 
         z_rect_points = z_rect.get_vertices()
         f_rect_points = f_rect.get_vertices()
-        r_points = r.get_vertices()
+        r_points = deepcopy(r.get_vertices())
 
         dash_1 = DashedLine(z_rect_points[0], r_points[1])
         dash_2 = DashedLine(z_rect_points[3], r_points[2])
@@ -1414,15 +1414,18 @@ class TransformationVisual(Scene):
             Uncreate(eq.background_rectangle)
         )
         self.bring_to_front(eq)
+
         self.play(
             ApplyMethod(eq.move_to, 5.5 * LEFT + 3.5 * UP),
             Write(eq4)
         )
+
         self.play(
             Write(r),
             Write(z_rect),
             Write(dash_1), Write(dash_2)
         )
+
         self.play(Write(z_lbl))
         self.bring_to_front(br)
         self.bring_to_front(eq, eq4)
@@ -1442,8 +1445,49 @@ class TransformationVisual(Scene):
             run_time=10
         )
         self.wait()
+
+        eq7 = Tex(
+            r"f(1+i) = 2i",
+            tex_to_color_map={
+                "1": YELLOW_Z, "2": YELLOW_Z,
+                "f": A_GREEN}
+        )
+        eq7.move_to([-1.5, 3.5, 0])
+
+        eq8 = Tex(
+            r"f'(1+i) = 2+2i",
+            tex_to_color_map={
+                "1": YELLOW_Z, "2": YELLOW_Z,
+                "f'": A_GREEN
+            }
+        )
+        eq8.move_to([-1.5, 2.5, 0])
+
+        z_rect2 = Rectangle(height=0.2, width=0.2, color=A_ORANGE)
+        z_rect2.move_to([1, 1, 0])
+        z_rect_points2 = z_rect2.get_vertices()
+
+        f_rect2 = Rectangle(height=0.2, width=0.2, color=A_ORANGE)
+        f_rect2.move_to([0, 2, 0])
+        f_rect_points2 = f_rect2.get_vertices()
+
+        dash1_2 = DashedLine(z_rect_points2[0], r_points[1])
+        dash2_2 = DashedLine(z_rect_points2[3], r_points[2])
+
+        dash1f_2 = DashedLine(f_rect_points2[0], r_points[1])
+        dash2f_2 = DashedLine(f_rect_points2[3], r_points[2])
+
+        self.play(
+            Transform(n, n_),
+            Transform(dash_1, dash1_2),
+            Transform(dash_2, dash2_2),
+            Transform(z_rect, z_rect2),
+            Transform(eq5, eq7),
+            Transform(eq6, eq8),
+            run_time=2
+        )
+
         self.embed()
 
     def func1(self, z):
-        Animation
         return (1+np.sqrt(3)*1j)*z
