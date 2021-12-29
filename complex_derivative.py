@@ -1651,12 +1651,14 @@ class Conformal(IntroComplexDeriv):
         ocu1 = ParametricCurve(output_f1, t_min=-1, t_max=2.5, color=A_GREEN)
         ocu2 = ParametricCurve(output_f2, t_min=0.5, t_max=-2.5, color=A_GREEN)
 
-        arc1 = Arc(0.8, 1.6, arc_center=c1.c2p(self.x, self.y), radius=0.5, color=A_YELLOW)
+        arc1 = Arc(0.8, 1.6, arc_center=c1.c2p(
+            self.x, self.y), radius=0.5, color=A_YELLOW)
         a1_lbl = Tex(r"\theta", color=A_YELLOW)
         a1_lbl.add_background_rectangle()
         a1_lbl.next_to(arc1, UP)
 
-        arc2 = Arc(3.55, 1.45, arc_center=c2.c2p(-0.75, 0.25), radius=0.5, color=A_YELLOW)
+        arc2 = Arc(3.55, 1.45, arc_center=c2.c2p(-0.75, 0.25),
+                   radius=0.5, color=A_YELLOW)
         a2_lbl = Tex(r"\phi", color=A_YELLOW)
         a2_lbl.add_background_rectangle()
         a2_lbl.next_to(arc2, DOWN)
@@ -1664,25 +1666,75 @@ class Conformal(IntroComplexDeriv):
         self.play(Write(cu1), Write(cu2))
         self.play(Write(arc1), Write(a1_lbl))
         self.wait()
-        
+
         self.play(
-            TransformFromCopy(cu1, ocu1), 
+            TransformFromCopy(cu1, ocu1),
             TransformFromCopy(cu2, ocu2),
             run_time=4
-            )
+        )
         self.play(Write(arc2), Write(a2_lbl))
+        self.wait()
+
+        img_vecs = VGroup()
+        vecs = VGroup()
+
+        for t in np.linspace(0, 2*PI, 15)[:-1]:
+            z_0 = np.exp(t*1j)
+            x_0, y_0 = 0.75 * z_0.real, 0.75 * z_0.imag
+
+            f_z0 = np.dot(M, np.array([[x_0], [y_0]]))
+            f_x0, f_y0 = f_z0[0][0], f_z0[1][0]
+
+            v_0 = self.get_vec(
+                c1, [x_0, y_0], stroke_color=A_PINK, stroke_opacity=self.vec_opacity)
+            f_v0 = self.get_vec(
+                c2, [f_x0, f_y0], stroke_color=A_GREEN, stroke_opacity=self.vec_opacity)
+
+            v_0.move_to(c1.c2p(self.x, self.y), aligned_edge=[-x_0, -y_0, 0])
+            f_v0.move_to(c2.c2p(-0.75, 0.25), aligned_edge=[-f_x0, -f_y0, 0])
+
+            vecs.add(v_0)
+            img_vecs.add(f_v0)
+
+        self.play(
+            Write(vecs)
+        )
+        self.wait(0.5)
+
+        self.play(
+            TransformFromCopy(vecs, img_vecs),
+            run_time=4
+        )
+        self.wait()
+
+        self.play(Uncreate(vecs), Uncreate(img_vecs))
+        self.wait()
+
+        self.play(
+            Uncreate(input_text),
+            Uncreate(output_text)
+        )
+        self.wait(0.5)
+
+        t1 = TexText("Angle-Preserving", color=A_AQUA)
+        t1.scale(1.5)
+        t1.shift(2.5 * LEFT)
+
+        t2 = TexText("Conformal", color=A_AQUA)
+        t2.scale(1.5)
+        t2.shift(4 * RIGHT)
+
+        d = Line(ORIGIN, RIGHT, color=RED, stroke_width=6)
+        d.add_tip()
+        d.add_tip(at_start=True)
+        d.move_to(1.25 * RIGHT)
+
+        v = VGroup(t1, t2, d)
+        v.center()
+        v.shift(3.25 * UP)
+
+        self.play(Write(t1))
+        self.play(Write(d), Write(t2))
+        self.wait()
 
         self.embed()
-
-    # def func(self, z):
-    #     z0 = np.array([
-    #         [z.real],
-    #         [z.imag]
-    #     ])
-    #     M = 0.5 * np.array([
-    #         [-1.5, -1],
-    #         [0.5, 1.5]
-    #     ])
-    #     prod = np.dot(M, z0)
-    #     x, y = prod[0][0], prod[1][0]
-    #     return x + y*1j
