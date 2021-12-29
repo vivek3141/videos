@@ -890,11 +890,11 @@ class IntroComplexDeriv(Scene):
 
     def func(self, z):
         return (1*z + np.sin(z)) * 0.3 - 1
-        r = abs(z)
-        t = PI/2 if z.real == 0 else np.arctan(z.imag/z.real)
-        new_t = 3*t**2 + t + 2
-        new_r = 3 * np.sin(r + 6)**2 * np.cos(3 * r + 2)
-        return new_r * (np.cos(new_t) + np.sin(new_t) * 1j)
+        # r = abs(z)
+        # t = PI/2 if z.real == 0 else np.arctan(z.imag/z.real)
+        # new_t = 3*t**2 + t + 2
+        # new_r = 3 * np.sin(r + 6)**2 * np.cos(3 * r + 2)
+        # return new_r * (np.cos(new_t) + np.sin(new_t) * 1j)
 
 
 class ComplexMul(Scene):
@@ -1559,3 +1559,130 @@ class TransformationVisual(Scene):
     def lin_func(self, z, dz=1e-6):
         x = 1+1j
         return (self.func2(z*dz + x) - self.func2(x))/dz
+
+
+class Conformal(IntroComplexDeriv):
+    CONFIG = {
+        "plane_opacity": 0.65,
+        "x": 1,
+        "y": 1,
+        "vec_opacity": 0.75
+    }
+
+    def construct(self):
+        M = 0.5 * np.array([
+            [-1.5, -1],
+            [0.5, -1.5]
+        ])
+
+        complex_kwargs = {
+            "background_line_style": {
+                "stroke_opacity": self.plane_opacity
+            }
+        }
+
+        c1 = ComplexPlane(x_range=(-3, 3), y_range=(-3, 3), **complex_kwargs)
+        c1.add_coordinate_labels()
+        c1.coordinate_labels.set_opacity(self.plane_opacity)
+        c1.axes.set_opacity(self.plane_opacity)
+        c1.shift(FRAME_WIDTH/4 * LEFT + 0.5 * DOWN)
+
+        c2 = ComplexPlane(x_range=(-3, 3), y_range=(-3, 3), **complex_kwargs)
+        c2.add_coordinate_labels()
+        c2.coordinate_labels.set_opacity(self.plane_opacity)
+        c2.axes.set_opacity(self.plane_opacity)
+        c2.shift(FRAME_WIDTH/4 * RIGHT + 0.5 * DOWN)
+
+        input_text = TexText("Input Space", color=YELLOW_Z)
+        input_text.scale(1.5)
+        input_text.shift(-FRAME_WIDTH/4 * RIGHT + 3.25 * UP)
+
+        output_text = TexText("Output Space", color=YELLOW_Z)
+        output_text.scale(1.5)
+        output_text.shift(FRAME_WIDTH/4 * RIGHT + 3.25 * UP)
+
+        input_dot = Dot(c1.c2p(self.x, self.y), color=PURPLE)
+        input_dot.set_color(A_PINK)
+
+        input_dot_text = Tex("z", color=A_PINK)
+        input_dot_text.add_background_rectangle()
+        input_dot_text.next_to(input_dot, DOWN)
+
+        output_dot = Dot(c2.c2p(-0.75, 0.25), color=A_GREEN)
+        output_dot_text = Tex("f(z)", tex_to_color_map={
+                              r"z": A_PINK, "f": A_GREEN})
+        output_dot_text.add_background_rectangle()
+        output_dot_text.next_to(output_dot, UP + LEFT)
+
+        self.play(
+            Write(c1), Write(input_text),
+            Write(c2), Write(output_text)
+        )
+        self.play(
+            Write(input_dot), Write(input_dot_text),
+            Write(output_dot), Write(output_dot_text)
+        )
+        self.wait()
+
+        def f1(t): return c1.c2p(t, 2*np.log(-(t-1)/2 + 1) + 1)
+        cu1 = ParametricCurve(f1, t_min=-1, t_max=2.5, color=A_PINK)
+
+        def f2(t): return c1.c2p(-t, 2*np.log(-(t+1)/2 + 1) + 1)
+        cu2 = ParametricCurve(f2, t_min=0.5, t_max=-2.5, color=A_PINK)
+
+        def output_f1(t):
+            x0 = np.array([
+                [t],
+                [2*np.log(-(t-1)/2 + 1)]
+            ])
+            prod = np.dot(M, x0)
+            x, y = prod[0][0], prod[1][0]
+            return c2.c2p(x, y)
+
+        def output_f2(t):
+            x0 = np.array([
+                [-t],
+                [2*np.log(-(t+1)/2 + 1)]
+            ])
+            prod = np.dot(M, x0)
+            x, y = prod[0][0], prod[1][0]
+            return c2.c2p(x, y)
+
+        ocu1 = ParametricCurve(output_f1, t_min=-1, t_max=2.5, color=A_GREEN)
+        ocu2 = ParametricCurve(output_f2, t_min=0.5, t_max=-2.5, color=A_GREEN)
+
+        arc1 = Arc(0.8, 1.6, arc_center=c1.c2p(self.x, self.y), radius=0.5, color=A_YELLOW)
+        a1_lbl = Tex(r"\theta", color=A_YELLOW)
+        a1_lbl.add_background_rectangle()
+        a1_lbl.next_to(arc1, UP)
+
+        arc2 = Arc(3.55, 1.45, arc_center=c2.c2p(-0.75, 0.25), radius=0.5, color=A_YELLOW)
+        a2_lbl = Tex(r"\phi", color=A_YELLOW)
+        a2_lbl.add_background_rectangle()
+        a2_lbl.next_to(arc2, DOWN)
+
+        self.play(Write(cu1), Write(cu2))
+        self.play(Write(arc1), Write(a1_lbl))
+        self.wait()
+        
+        self.play(
+            TransformFromCopy(cu1, ocu1), 
+            TransformFromCopy(cu2, ocu2),
+            run_time=4
+            )
+        self.play(Write(arc2), Write(a2_lbl))
+
+        self.embed()
+
+    # def func(self, z):
+    #     z0 = np.array([
+    #         [z.real],
+    #         [z.imag]
+    #     ])
+    #     M = 0.5 * np.array([
+    #         [-1.5, -1],
+    #         [0.5, 1.5]
+    #     ])
+    #     prod = np.dot(M, z0)
+    #     x, y = prod[0][0], prod[1][0]
+    #     return x + y*1j
