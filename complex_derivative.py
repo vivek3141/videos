@@ -1477,6 +1477,14 @@ class TransformationVisual(Scene):
         dash1f_2 = DashedLine(f_rect_points2[0], r_points[1])
         dash2f_2 = DashedLine(f_rect_points2[3], r_points[2])
 
+        z2_lbl = Tex("1+i", color=A_ORANGE)
+        z2_lbl.add_background_rectangle(buff=0.15)
+        z2_lbl.next_to(z_rect2, LEFT + DOWN)
+
+        z2_lbl2 = Tex("2i", color=A_ORANGE)
+        z2_lbl2.add_background_rectangle(buff=0.15)
+        z2_lbl2.next_to(f_rect2, LEFT + DOWN)
+
         self.play(
             Transform(n, n_),
             Transform(dash_1, dash1_2),
@@ -1484,7 +1492,17 @@ class TransformationVisual(Scene):
             Transform(z_rect, z_rect2),
             Transform(eq5, eq7),
             Transform(eq6, eq8),
+            Transform(z_lbl, z2_lbl),
             run_time=2
+        )
+        self.wait()
+
+        self.play(
+            ApplyMethod(n.apply_complex_function, g),
+            Transform(z_rect, f_rect2),
+            Transform(z_lbl, z2_lbl2),
+            Transform(dash_1, dash1f_2), Transform(dash_2, dash2f_2),
+            run_time=10
         )
 
         self.embed()
