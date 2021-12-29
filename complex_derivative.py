@@ -1504,8 +1504,16 @@ class TransformationVisual(Scene):
             Transform(dash_1, dash1f_2), Transform(dash_2, dash2f_2),
             run_time=10
         )
+        self.wait()
 
         self.embed()
 
     def func1(self, z):
         return (1+np.sqrt(3)*1j)*z
+
+    def func2(self, z):
+        return (z.conjugate()**2) * np.sin(z)
+
+    def lin_func(self, z, dz=1e-6):
+        x = 1+1j
+        return (self.func2(z*dz + x) - self.func2(x))/dz
