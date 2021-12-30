@@ -1848,7 +1848,45 @@ class Jacobian(IntroComplexDeriv):
         du_lbl.add_background_rectangle()
         du_lbl.next_to(du, UP)
 
+        Matrix
+
         self.add(dz, dy, dx, dy_lbl, dx_lbl, dz_lbl)
         self.add(du, df, dv, du_lbl, dv_lbl, df_lbl)
+
+        c1_grp = VGroup(c1, input_dot, input_dot_text, dx, dy,
+                        x_lbl, y_lbl, dz, dz_lbl, dy_lbl, dx_lbl)
+        c1_grp.scale(0.5)
+        c1_grp.move_to(4 * LEFT + 1 * UP)
+
+        input_text.scale(0.5)
+        input_text.next_to(c1_grp, LEFT)
+
+        c2_grp = VGroup(c2, output_dot, output_dot_text, du, dv,
+                        du_lbl, u_lbl, v_lbl, df, df_lbl, dv_lbl)
+        c2_grp.scale(0.5)
+        c2_grp.move_to(4 * LEFT + 2 * DOWN)
+
+        output_text.scale(0.45)
+        output_text.next_to(c2_grp, LEFT)
+
+        eq1 = Tex(r"df = \textbf{\textit{J}}", r"\cdot ", r"dz",
+                  tex_to_color_map={"f": A_GREEN, "z": A_PINK, r"\textbf{\textit{J}}": A_AQUA})
+        eq1.scale(1.5)
+        eq1.move_to(1 * UP + 2 * RIGHT)
+
+        m1 = Matrix([["dx"], ["dy"]], element_to_mobject=lambda m: Tex(
+            m, tex_to_color_map={"x": A_ORANGE, "y": A_ORANGE}))
+        m1.scale(1.5)
+        m1.move_to(eq1[0])
+        m1.shift(0.5 * LEFT)
+        #self.play(Transform(eq1[0:2], m))
+
+        m2 = Matrix([["du"], ["dv"]], element_to_mobject=lambda m: Tex(
+            m, tex_to_color_map={"u": A_YELLOW, "v": A_YELLOW}))
+        m2.scale(1.5)
+        m2.move_to(m1)
+        m2.shift(4 * RIGHT)
+
+        self.add(eq1, m1, m2)
 
         self.embed()
