@@ -90,8 +90,8 @@ class NormalDerivative(Scene):
 
     def get_eq(self, t, **kwargs):
         f_prime = "{:.2f}".format(round(self.deriv(t), 2))
-        eq = Tex(r"{{df} \over {dx}} = ",
-                 tex_to_color_map={r"f": BLUE}, **kwargs)
+        eq = Tex(r"{{d}f \over {d}x} = ",
+                 tex_to_color_map={r"f": BLUE, r"x": A_PINK}, **kwargs)
 
         n = DecimalNumber(float(f_prime), color=self.LINE_COLOR)
 
@@ -1736,5 +1736,119 @@ class Conformal(IntroComplexDeriv):
         self.play(Write(t1))
         self.play(Write(d), Write(t2))
         self.wait()
+
+        self.embed()
+
+
+class Jacobian(IntroComplexDeriv):
+    CONFIG = {
+        "plane_opacity": 0.65,
+        "x": 1,
+        "y": 1,
+        "vec_opacity": 0.75
+    }
+
+    def construct(self):
+        eq = Tex("f(x+yi) = u+vi", tex_to_color_map={
+                 "f": A_GREEN, "x": A_PINK, "y": A_PINK, "u": A_YELLOW, "v": A_YELLOW})
+        eq.scale(1.5)
+        eq.move_to(3.25 * UP)
+
+        complex_kwargs = {
+            "background_line_style": {
+                "stroke_opacity": self.plane_opacity
+            }
+        }
+
+        c1 = ComplexPlane(x_range=(-3, 3), y_range=(-3, 3), **complex_kwargs)
+        c1.axes.set_opacity(self.plane_opacity)
+        c1.shift(FRAME_WIDTH/4 * LEFT + 0.5 * DOWN)
+        c1.scale(0.9)
+        c1.shift(0.25 * UP)
+
+        c2 = ComplexPlane(x_range=(-3, 3), y_range=(-3, 3), **complex_kwargs)
+        c2.axes.set_opacity(self.plane_opacity)
+        c2.shift(FRAME_WIDTH/4 * RIGHT + 0.5 * DOWN)
+        c2.scale(0.9)
+        c2.shift(0.25 * UP)
+
+        input_text = TexText("Input Space", color=A_YELLOW)
+        input_text.move_to(-FRAME_WIDTH/4 * RIGHT + 3.5 * DOWN)
+
+        output_text = TexText("Output Space", color=A_YELLOW)
+        output_text.move_to(FRAME_WIDTH/4 * RIGHT + 3.5 * DOWN)
+
+        x_lbl = Tex("x", color=A_ORANGE)
+        x_lbl.add_background_rectangle()
+        x_lbl.move_to(c1.c2p(2.75, 0))
+        x_lbl.shift(0.3 * UP)
+
+        y_lbl = Tex("y", color=A_ORANGE)
+        y_lbl.add_background_rectangle()
+        y_lbl.move_to(c1.c2p(0, 2.75))
+        y_lbl.shift(0.3 * RIGHT)
+
+        u_lbl = Tex("u", color=A_YELLOW)
+        u_lbl.add_background_rectangle()
+        u_lbl.move_to(c2.c2p(2.75, 0))
+        u_lbl.shift(0.3 * UP)
+
+        v_lbl = Tex("v", color=A_YELLOW)
+        v_lbl.add_background_rectangle()
+        v_lbl.move_to(c2.c2p(0, 2.75))
+        v_lbl.shift(0.3 * RIGHT)
+
+        input_dot = Dot(c1.c2p(self.x, self.y), color=PURPLE)
+        input_dot.set_color(A_PINK)
+
+        input_dot_text = Tex("z", color=A_PINK)
+        input_dot_text.add_background_rectangle()
+        input_dot_text.next_to(input_dot, DOWN)
+        input_dot_text.shift(0.3 * LEFT + 0.4 * UP)
+
+        output_dot = Dot(c2.c2p(-0.75, 0.25), color=A_GREEN)
+        output_dot_text = Tex("f(z)", tex_to_color_map={
+                              r"z": A_PINK, "f": A_GREEN})
+        output_dot_text.add_background_rectangle()
+        output_dot_text.next_to(output_dot, DOWN)
+
+        self.add(c1, c2, input_text, output_text, input_dot, input_dot_text, output_dot, output_dot_text,
+                 eq, x_lbl, y_lbl, v_lbl, u_lbl)
+
+        dz = Arrow(c1.c2p(1, 1), c1.c2p(2, 2.5), stroke_color=A_PINK, buff=0)
+        dz_lbl = Tex("dz", tex_to_color_map={"z": A_PINK})
+        dz_lbl.add_background_rectangle()
+        dz_lbl.move_to(dz)
+        dz_lbl.shift(0.4 * (LEFT + UP))
+
+        dx = DashedLine(c1.c2p(1, 1), c1.c2p(2, 1))
+        dx_lbl = Tex("dx", tex_to_color_map={"x": A_ORANGE})
+        dx_lbl.add_background_rectangle()
+        dx_lbl.next_to(dx, DOWN)
+
+        dy = DashedLine(c1.c2p(2, 1), c1.c2p(2, 2.5))
+        dy_lbl = Tex("dy", tex_to_color_map={"y": A_ORANGE})
+        dy_lbl.add_background_rectangle()
+        dy_lbl.next_to(dy, RIGHT)
+
+        df = Arrow(c2.c2p(-0.75, 0.25), c2.c2p(-2, 2),
+                   buff=0, stroke_color=A_GREEN)
+        df_lbl = Tex("df", tex_to_color_map={"f": A_GREEN})
+        df_lbl.add_background_rectangle()
+        df_lbl.move_to(df)
+        df_lbl.shift(0.4 * (LEFT + DOWN))
+
+        dv = DashedLine(c2.c2p(-0.75, 0.25), c2.c2p(-0.75, 2))
+        dv_lbl = Tex("dv", tex_to_color_map={"v": A_YELLOW})
+        dv_lbl.add_background_rectangle()
+        dv_lbl.next_to(dv, RIGHT)
+
+        du = DashedLine(c2.c2p(-0.75, 2), c2.c2p(-2, 2))
+        du_lbl = Tex("du", tex_to_color_map={"u": A_YELLOW})
+        du_lbl.add_background_rectangle()
+        du_lbl.next_to(du, UP)
+
+        self.add(dz, dy, dx, dy_lbl, dx_lbl, dz_lbl)
+        self.add(du, df, dv, du_lbl, dv_lbl, df_lbl)
 
         self.embed()
