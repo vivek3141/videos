@@ -140,11 +140,13 @@ class IntroduceComplexFunction(Scene):
         }
         c1 = ComplexPlane(x_range=(-3, 3), y_range=(-3, 3), **complex_kwargs)
         c1.add_coordinate_labels()
+        c1.coordinate_labels.set_opacity(self.plane_opacity)
         c1.axes.set_opacity(self.plane_opacity)
         c1.shift(FRAME_WIDTH/4 * LEFT + 0.5 * DOWN)
 
         c2 = ComplexPlane(x_range=(-3, 3), y_range=(-3, 3), **complex_kwargs)
         c2.add_coordinate_labels()
+        c2.coordinate_labels.set_opacity(self.plane_opacity)
         c2.axes.set_opacity(self.plane_opacity)
         c2.shift(FRAME_WIDTH/4 * RIGHT + 0.5 * DOWN)
 
@@ -156,32 +158,43 @@ class IntroduceComplexFunction(Scene):
         output_text.scale(1.5)
         output_text.shift(FRAME_WIDTH/4 * RIGHT + 3.25 * UP)
 
-        input_dot = Dot(c1.c2p(1.2, 2.3), color=PURPLE)
-        input_dot.set_color(PURPLE)
-        input_dot_text = Tex("z")
+        input_dot = Dot(c1.c2p(1, 1), color=PURPLE)
+        input_dot.set_color(A_PINK)
+
+        input_dot_text = Tex("z", color=A_PINK)
+        input_dot_text.add_background_rectangle()
         input_dot_text.add_updater(
             lambda t: t.become(t.next_to(input_dot, DOWN)))
 
-        output_dot = Dot(c2.c2p(0, 0), color=GREEN)
+        output_dot = Dot(c2.c2p(0.75, 2), color=A_GREEN)
 
-        def dot_updater(d):
-            input_coors = c1.p2c(input_dot.get_center())
-            output_coors = self.func(input_coors[0] + input_coors[1]*1j)
-            return d.become(Dot(c2.c2p(output_coors.real, output_coors.imag, 0), color=GREEN))
-
-        output_dot.add_updater(dot_updater)
-        output_dot_text = Tex("f(z)")
+        output_dot_text = Tex("f(z)", tex_to_color_map={
+                              r"z": A_PINK, "f": A_GREEN})
+        output_dot_text.add_background_rectangle()
         output_dot_text.add_updater(
             lambda t: t.become(t.next_to(output_dot, DOWN)))
 
-        # self.add(c)
-        # self.wait()
+        self.play(
+            Write(c)
+        )
+        self.wait(1)
 
-        # self.play(Transform(c, c1))
+        self.play(
+            Transform(c, c1),
+            Write(input_text)
+        )
+        self.play(
+            Write(c2), Write(output_text)
+        )
+        self.wait()
 
-        self.add(c1, c2, input_text, output_text, input_dot,
-                 output_dot, input_dot_text, output_dot_text)
-        self.embed()
+        self.play(
+            Write(input_dot), Write(input_dot_text)
+        )
+        self.play(
+            Write(output_dot), Write(output_dot_text)
+        )
+        self.wait()
 
     def func(self, z):
         r = abs(z)
@@ -492,9 +505,8 @@ class RealDerivative(NormalDerivative):
         )
         self.wait()
 
-        x_vals = [[x, input_line.n2p(0)[1], 0]
-                  for x in np.linspace(-FRAME_WIDTH/2, FRAME_WIDTH/2, 100)]
-        y_vals = [[x[0]**2, output_line.n2p(0)[1], 0] for x in x_vals]
+        x_vals = [input_line.n2p(x) for x in np.linspace(-8, 8, 129)]
+        y_vals = [output_line.n2p(x**2) for x in np.linspace(-8, 8, 129)]
 
         input_c = DotCloud(x_vals, color=INPUT_C)
         output_c = DotCloud(y_vals, color=OUTPUT_C)
@@ -528,7 +540,7 @@ class RealDerivative(NormalDerivative):
 
         lines = VGroup()
 
-        for i in range(100):
+        for i in range(129):
             lines.add(Line(x_vals[i], y_vals[i], color=INPUT_C))
 
         lines.set_opacity(0.3)
@@ -536,6 +548,87 @@ class RealDerivative(NormalDerivative):
 
         self.bring_to_back(lines)
         self.play(ShowCreation(lines), run_time=5)
+        self.wait()
+
+        r = Rectangle(height=2, width=4, fill_color=BLACK,
+                      fill_opacity=1, stroke_color=WHITE)
+        r.move_to([4.5, 2.5, 0])
+
+        x_rect = Rectangle(height=0.2, width=0.2)
+        x_rect.move_to(input_line.n2p(1))
+
+        d1 = DashedLine(x_rect.get_vertices()[1], r.get_vertices()[2])
+        d2 = DashedLine(x_rect.get_vertices()[0], r.get_vertices()[3])
+
+        f_rect = Rectangle(width=0.2, height=0.2)
+        f_rect.move_to(output_line.n2p(1))
+
+        d1_f = DashedLine(f_rect.get_vertices()[1], r.get_vertices()[2])
+        d2_f = DashedLine(f_rect.get_vertices()[0], r.get_vertices()[3])
+
+        self.play(Write(x_rect), Write(VGroup(d1, d2)), Write(r))
+        self.wait()
+
+        self.play(
+            Transform(x_rect, f_rect),
+            Transform(d1, d1_f),
+            Transform(d2, d2_f),
+            run_time=7
+        )
+        self.wait()
+
+        x_rect2 = Rectangle(height=0.2, width=0.2)
+        x_rect2.move_to(input_line.n2p(2))
+
+        d1_2 = DashedLine(x_rect2.get_vertices()[1], r.get_vertices()[2])
+        d2_2 = DashedLine(x_rect2.get_vertices()[0], r.get_vertices()[3])
+
+        f_rect2 = Rectangle(width=0.2, height=0.2)
+        f_rect2.move_to(output_line.n2p(4))
+
+        d1_2_f = DashedLine(f_rect2.get_vertices()[1], r.get_vertices()[2])
+        d2_2_f = DashedLine(f_rect2.get_vertices()[0], r.get_vertices()[3])
+
+        self.play(
+            ApplyMethod(x_rect.move_to, input_line.n2p(2)),
+            Transform(d1, d1_2),
+            Transform(d2, d2_2)
+        )
+        self.wait()
+
+        self.play(
+            Transform(x_rect, f_rect2),
+            Transform(d1, d1_2_f),
+            Transform(d2, d2_2_f),
+            run_time=7
+        )
+        self.wait()
+
+        x_rect3 = Rectangle(height=0.2, width=0.2)
+        x_rect3.move_to(input_line.n2p(-1))
+
+        d1_3 = DashedLine(x_rect3.get_vertices()[1], r.get_vertices()[2])
+        d2_3 = DashedLine(x_rect3.get_vertices()[0], r.get_vertices()[3])
+
+        f_rect3 = Rectangle(width=0.2, height=0.2)
+        f_rect3.move_to(output_line.n2p(1))
+
+        d1_3_f = DashedLine(f_rect3.get_vertices()[1], r.get_vertices()[2])
+        d2_3_f = DashedLine(f_rect3.get_vertices()[0], r.get_vertices()[3])
+
+        self.play(
+            ApplyMethod(x_rect.move_to, input_line.n2p(-1)),
+            Transform(d1, d1_3),
+            Transform(d2, d2_3)
+        )
+        self.wait()
+
+        self.play(
+            Transform(x_rect, f_rect3),
+            Transform(d1, d1_3_f),
+            Transform(d2, d2_3_f),
+            run_time=7
+        )
         self.wait()
 
         self.embed()
