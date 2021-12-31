@@ -2050,12 +2050,12 @@ class Jacobian(IntroComplexDeriv):
 class MatrixComplex(Scene):
     def construct(self):
         eq = Tex("(a+bi)(x+yi)", tex_to_color_map={
-                 "f": A_GREEN, "x": A_PINK, "y": A_PINK, "a": A_YELLOW, "b": A_YELLOW})
+                 "f": A_GREEN, "x": A_ORANGE, "y": A_ORANGE, "a": A_YELLOW, "b": A_YELLOW})
         eq.scale(1.5)
         eq.move_to(3 * UP + 2 * LEFT)
 
-        color_map = {"f": A_GREEN, "x": A_PINK,
-                     "y": A_PINK, "a": A_YELLOW, "b": A_YELLOW}
+        color_map = {"f": A_GREEN, "x": A_ORANGE,
+                     "y": A_ORANGE, "a": A_YELLOW, "b": A_YELLOW}
         eq2 = Tex("(ax-by)", " + ", "(bx+ay)i", tex_to_color_map=color_map)
         eq2.scale(1.5)
         eq2.move_to(eq, LEFT)
@@ -2176,7 +2176,7 @@ class MatrixComplex(Scene):
         eq1.move_to(5.65 * LEFT + 3 * UP)
 
         eq2 = Tex("f(x+yi) = ", "(x^2 - y^2)", "+", "(2xy)", "i",
-                  tex_to_color_map={"f": A_GREEN, "x": A_PINK, "y": A_PINK, "2": A_YELLOW})
+                  tex_to_color_map={"f": A_GREEN, "x": A_ORANGE, "y": A_ORANGE, "2": A_YELLOW})
         eq2.shift(3.5 * LEFT + 2 * UP)
 
         b1 = Brace(eq2[6:13])
@@ -2187,6 +2187,99 @@ class MatrixComplex(Scene):
         bt2 = Tex("v", color=A_YELLOW)
         b2.put_at_tip(bt2)
 
-        self.add(eq1, eq2, b1, bt1, b2, bt2)
+        color_map2 = {"{v}": A_YELLOW, "{u}": A_YELLOW,
+                      "{x}": A_ORANGE, "{y}": A_ORANGE}
+
+        eq3 = Tex(r"{\partial {u} \over \partial {x}} = 2{x}",
+                  tex_to_color_map=color_map2)
+        eq3.move_to(5.75 * LEFT + 0.5 * DOWN)
+
+        eq4 = Tex(r"{\partial {v} \over \partial {y}} = 2{x}",
+                  tex_to_color_map=color_map2)
+        eq4.move_to(5.75 * LEFT + 2.5 * DOWN)
+
+        eq5 = Tex(r"{\partial {u} \over \partial {y}} = -2{y}",
+                  tex_to_color_map=color_map2)
+        eq5.move_to(2.25 * LEFT + 0.5 * DOWN)
+
+        eq6 = Tex(r"{\partial {v} \over \partial {x}} = 2{y}",
+                  tex_to_color_map=color_map2)
+        eq6.move_to(2.25 * LEFT + 2.5 * DOWN)
+
+        self.play(Write(eq1))
+        self.wait(1)
+
+        self.play(Write(eq2))
+        self.play(Write(VGroup(b1, bt1)), Write(VGroup(b2, bt2)))
+        self.wait()
+
+        self.play(Write(eq3))
+        self.play(1)
+
+        self.play(Write(eq4))
+        self.wait(1)
+
+        self.play(Write(eq5))
+        self.wait(1)
+
+        self.play(Write(eq6))
+        self.wait()
+
+        self.play(Uncreate(VGroup(eq1, eq2, eq3, eq4, eq5, b1, bt1, b2, bt2)))
+        self.wait()
+
+        eq1 = Tex(r"f(z) = \bar{z}", tex_to_color_map={
+                  "f": A_GREEN, "z": A_PINK})
+        eq1.move_to(5.65 * LEFT + 3 * UP)
+
+        eq2 = Tex("f(x+yi) = ", "x", "-", "y", "i",
+                  tex_to_color_map={"f": A_GREEN, "x": A_ORANGE, "y": A_ORANGE, "2": A_YELLOW})
+        eq2.shift(4.7 * LEFT + 2 * UP)
+
+        b1 = Brace(eq2[6])
+        bt1 = Tex("u", color=A_YELLOW)
+        b1.put_at_tip(bt1)
+
+        b2 = Brace(eq2[7:9])
+        bt2 = Tex("v", color=A_YELLOW)
+        b2.put_at_tip(bt2)
+
+        color_map2 = {"{v}": A_YELLOW, "{u}": A_YELLOW,
+                      "{x}": A_ORANGE, "{y}": A_ORANGE}
+
+        eq3 = Tex("{\partial {u} \over \partial {x}} = 1",
+                  tex_to_color_map=color_map2)
+        eq3.move_to(5.75 * LEFT + 0.5 * DOWN)
+
+        eq4 = Tex("{\partial {v} \over \partial {y}} = -1",
+                  tex_to_color_map=color_map2)
+        eq4.move_to(5.75 * LEFT + 2.5 * DOWN)
+
+        eq5 = Tex("{\partial {u} \over \partial {y}} = 0",
+                  tex_to_color_map=color_map2)
+        eq5.move_to(2.25 * LEFT + 0.5 * DOWN)
+
+        eq6 = Tex("{\partial {v} \over \partial {x}} = 0",
+                  tex_to_color_map=color_map2)
+        eq6.move_to(2.25 * LEFT + 2.5 * DOWN)
+
+        self.play(Write(eq1))
+        self.wait(1)
+
+        self.play(Write(eq2))
+        self.play(Write(VGroup(b1, bt1)), Write(VGroup(b2, bt2)))
+        self.wait()
+
+        self.play(Write(eq3))
+        self.play(1)
+
+        self.play(Write(eq4))
+        self.wait(1)
+
+        self.play(Write(eq5))
+        self.wait(1)
+
+        self.play(Write(eq6))
+        self.wait()
 
         self.embed()
