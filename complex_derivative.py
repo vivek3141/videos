@@ -1924,18 +1924,6 @@ class Jacobian(IntroComplexDeriv):
         )
         self.wait(1)
 
-        # c1_grp.scale(0.5)
-        # c1_grp.move_to(4 * LEFT + 1 * UP)
-
-        # input_text.scale(0.5)
-        # input_text.next_to(c1_grp, LEFT)
-
-        # c2_grp.scale(0.5)
-        # c2_grp.move_to(4 * LEFT + 2 * DOWN)
-
-        # output_text.scale(0.45)
-        # output_text.next_to(c2_grp, LEFT)
-
         eq1 = Tex(r"df = \textbf{\textit{J}}", r"\cdot ", r"dz",
                   tex_to_color_map={"f": A_GREEN, "z": A_PINK, r"\textbf{\textit{J}}": A_AQUA})
         eq1.scale(1.5)
@@ -2043,15 +2031,15 @@ class Jacobian(IntroComplexDeriv):
         equals = eq1[2].copy()
         equals.shift(3.15 * DOWN)
 
-        self.play(Transform(VGroup(eq2[7:9], eq3[7:9]), m3[0][0]))
-        self.play(Transform(VGroup(eq2[-2:], eq3[-2:]), m3[0][1]))
+        self.play(Transform(VGroup(eq4[7:9], eq4[14:]), m3[0][0]))
+        self.play(Transform(VGroup(eq5[7:9], eq5[14:]), m3[0][1]))
         self.play(Write(m3.brackets))
         self.wait(0.5)
 
         self.play(Transform(eq2[3:7], J[0][0]), Transform(
-            eq2[10:14], J[0][1]), Uncreate(eq2[9]))
+            eq2[8:], J[0][1]), Uncreate(eq2[7]))
         self.play(Transform(eq3[3:7], J[0][2]), Transform(
-            eq3[10:14], J[0][3]), Uncreate(eq3[9]))
+            eq3[8:], J[0][3]), Uncreate(eq3[7]))
         self.play(Write(J.brackets))
         self.wait(0.5)
 
