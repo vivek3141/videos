@@ -2283,3 +2283,57 @@ class MatrixComplex(Scene):
         self.wait()
 
         self.embed()
+
+
+class ExpDeriv(Scene):
+    def construct(self):
+        c = ComplexPlane()
+        c.add_coordinate_labels()
+        c.prepare_for_nonlinear_transform()
+
+        r = Rectangle(height=3, width=4, fill_color=BLACK,
+                      fill_opacity=1, stroke_color=A_ORANGE)
+        r.move_to([-4, 2, 0])
+
+        z_rect = Rectangle(width=0.2, height=0.2, stroke_color=A_ORANGE)
+        z_rect.move_to([1, 1, 0])
+
+        z_lbl = Tex("1+1i", color=A_ORANGE)
+        z_lbl.add_background_rectangle(buff=0.15)
+        z_lbl.next_to(z_rect, DOWN)
+
+        f_rect = Rectangle(width=0.2, height=0.2, stroke_color=A_ORANGE)
+        f_rect.move_to([1.47, 2.29, 0])
+
+        f_lbl = Tex("1.47+2.29i", color=A_ORANGE)
+        f_lbl.add_background_rectangle(buff=0.15)
+        f_lbl.next_to(f_rect, DOWN)
+
+        r_vertices = r.get_vertices()
+        f_vertices = f_rect.get_vertices()
+        z_vertices = z_rect.get_vertices()
+
+        l1 = DashedLine(r_vertices[0], z_vertices[1])
+        l2 = DashedLine(r_vertices[3], z_vertices[2])
+
+        l1_f = DashedLine(r_vertices[0], f_vertices[1])
+        l2_f = DashedLine(r_vertices[3], f_vertices[2])
+
+        self.play(Write(c))
+        self.play(Write(z_rect), Write(l1), Write(l2), Write(r))
+        self.play(Write(z_lbl))
+        self.wait()
+
+        self.play(Uncreate(c.coordinate_labels))
+        self.bring_to_back(c)
+        self.play(
+            ApplyMethod(c.apply_complex_function, np.exp),
+            Transform(z_rect, f_rect),
+            Transform(z_lbl, f_lbl),
+            Transform(l1, l1_f),
+            Transform(l2, l2_f),
+            run_time=10
+        )
+        self.wait()
+
+        self.embed()
