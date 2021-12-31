@@ -1817,23 +1817,13 @@ class Jacobian(IntroComplexDeriv):
 
         self.play(
             Write(c1), Write(input_text),
-            # Write(input_dot), Write(input_dot_text),
             Write(x_lbl), Write(y_lbl)
         )
         self.play(
             Write(c2), Write(output_text),
-            # Write(output_dot), Write(output_dot_text),
             Write(u_lbl), Write(v_lbl)
         )
         self.wait()
-
-        # self.play(
-        #     Write(c1), Write(c2), Write(input_text),
-        # Write(output_text), Write(input_dot), Write(output_dot), Write(input_dot_text),
-        # Write(output_dot_text), Write(input_dot_text))
-
-        # self.add(c1, c2, input_text, output_text, input_dot, input_dot_text, output_dot, output_dot_text,
-        #          eq, x_lbl, y_lbl, v_lbl, u_lbl)
 
         dz = Arrow(c1.c2p(1, 1), c1.c2p(2, 2.5), stroke_color=A_PINK, buff=0)
         dz_lbl = Tex("dz", tex_to_color_map={"z": A_PINK})
@@ -2059,4 +2049,55 @@ class Jacobian(IntroComplexDeriv):
 
 class MatrixComplex(Scene):
     def construct(self):
+        eq = Tex("(a+bi)(x+yi)", tex_to_color_map={
+                 "f": A_GREEN, "x": A_PINK, "y": A_PINK, "a": A_YELLOW, "b": A_YELLOW})
+        eq.scale(1.5)
+        eq.move_to(3 * UP + 2 * LEFT)
+
+        color_map = {"f": A_GREEN, "x": A_PINK,
+                     "y": A_PINK, "a": A_YELLOW, "b": A_YELLOW}
+        eq2 = Tex("(ax-by)", " + ", "(bx+ay)i", tex_to_color_map=color_map)
+        eq2.scale(1.5)
+        eq2.move_to(eq, LEFT)
+        eq2.shift(1.5 * DOWN)
+
+        equals = Tex("=")
+        equals.scale(1.5)
+        equals.next_to(eq2, LEFT)
+
+        m1 = Matrix([["a", "-b"], ["b", "a"]],
+                    element_to_mobject=lambda m: Tex(m, tex_to_color_map=color_map))
+        m1 = Matrix([["a", "-b"], ["b", "a"]], element_to_mobject=lambda m: Tex(m,
+                    tex_to_color_map={"a": A_YELLOW, "b": A_YELLOW}))
+        m1.scale(1.5)
+        m1.shift(0.75 * DOWN + 2.5 * LEFT)
+
+        m2 = Matrix([["x"], ["y"]],
+                    element_to_mobject=lambda m: Tex(m, color=A_PINK))
+        m2.scale(1.5)
+        m2.move_to(m1)
+        m2.shift(2.75 * RIGHT)
+
+        self.play(
+            Write(eq)
+        )
+        self.wait()
+
+        self.play(
+            Write(equals), Write(eq2)
+        )
+        self.wait()
+
+        self.play(TransformFromCopy(eq2[1], m1[0][0]),
+                  TransformFromCopy(eq2[3:5], m1[0][1]))
+        self.play(TransformFromCopy(eq2[9], m1[0][2]),
+                  TransformFromCopy(eq2[12], m1[0][3]))
+        self.play(Write(m1.brackets))
+        self.wait()
+
+        self.play(TransformFromCopy(VGroup(eq2[2], eq2[10]), m2[0][0]))
+        self.play(TransformFromCopy(VGroup(eq2[6], eq2[13]), m2[0][1]))
+        self.play(Write(m2.brackets))
+        self.wait()
+
         self.embed()
