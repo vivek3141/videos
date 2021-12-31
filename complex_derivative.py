@@ -2100,4 +2100,63 @@ class MatrixComplex(Scene):
         self.play(Write(m2.brackets))
         self.wait()
 
+        J = Matrix(
+            [[r"{\partial {"+i+r"} \over \partial {"+j+r"}}" for j in ["x", "y"]]
+             for i in ["u", "v"]],
+            element_to_mobject=lambda m: Tex(
+                m, tex_to_color_map={"{v}": A_YELLOW, "{u}": A_YELLOW, "{x}": A_ORANGE, "{y}": A_ORANGE}),
+            v_buff=1.25
+        )
+        J.move_to(2 * UP + 3 * RIGHT)
+
+        equals2 = Tex("=")
+        equals2.scale(1.5)
+        equals2.shift(2 * UP)
+
+        self.play(Uncreate(VGroup(m2, eq, equals, eq2)))
+        self.play(ApplyMethod(m1.move_to, 2 * UP + 3 * LEFT))
+
+        self.play(Write(J))
+        self.play(Write(equals2))
+        self.wait()
+
+        self.play(
+            *[Indicate(obj, scale_factor=1.5)
+              for obj in [m1[0][0], m1[0][3], J[0][0], J[0][3]]]
+        )
+        self.wait()
+
+        eq3 = Tex("{\partial {u} \over \partial {x}}", "=", "{\partial {v} \over \partial {y}}",
+                  tex_to_color_map={"{v}": A_YELLOW, "{u}": A_YELLOW, "{x}": A_ORANGE, "{y}": A_ORANGE})
+        eq3.scale(1.5)
+        eq3.shift(0.5 * DOWN)
+
+        self.play(TransformFromCopy(J[0][0], eq3[:4]))
+        self.play(Write(eq3[4]))
+        self.play(TransformFromCopy(J[0][3], eq3[5:]))
+        self.wait()
+
+        eq4 = Tex(
+            "{\partial {u} \over \partial {y}}", "=", " -", "{\partial {v} \over \partial {x}}",
+            tex_to_color_map={"{v}": A_YELLOW, "{u}": A_YELLOW, "{x}": A_ORANGE, "{y}": A_ORANGE})
+        eq4.scale(1.5)
+        eq4.shift(2.5 * DOWN)
+
+        self.play(
+            *[Indicate(obj, scale_factor=1.5)
+              for obj in [m1[0][1], m1[0][2], J[0][1], J[0][2]]]
+        )
+        self.wait()
+
+        self.play(TransformFromCopy(J[0][1], eq4[:4]))
+        self.play(Write(eq4[4]))
+        self.play(TransformFromCopy(J[0][2], eq4[6:]), Write(eq4[5]))
+        self.wait()
+
         self.embed()
+        # remove(eq3[0])
+        # remove(eq3[:5])
+        # remove(eq3[:4])
+        # add(eq3)
+        # remove(eq3[:4])
+        # remove(eq3[5:])
