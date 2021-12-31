@@ -2036,10 +2036,16 @@ class Jacobian(IntroComplexDeriv):
         self.play(Write(m3.brackets))
         self.wait(0.5)
 
-        self.play(Transform(eq2[3:7], J[0][0]), Transform(
-            eq2[8:], J[0][1]), Uncreate(eq2[7]))
-        self.play(Transform(eq3[3:7], J[0][2]), Transform(
-            eq3[8:], J[0][3]), Uncreate(eq3[7]))
+        self.play(
+            Transform(eq2[3:7], J[0][0]),
+            Transform(eq2[8:], J[0][1]),
+            Uncreate(eq2[7])
+        )
+        self.play(
+            Transform(eq3[3:7], J[0][2]),
+            Transform(eq3[8:], J[0][3]),
+            Uncreate(eq3[7])
+        )
         self.play(Write(J.brackets))
         self.wait(0.5)
 
