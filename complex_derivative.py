@@ -2162,4 +2162,31 @@ class MatrixComplex(Scene):
         self.play(Write(title))
         self.wait()
 
+        eqs = VGroup(eq3, eq4)
+        l = Line(10 * UP, 10 * DOWN)
+
+        self.play(
+            Uncreate(title),
+            ApplyMethod(eqs.move_to, FRAME_WIDTH/4 * RIGHT),
+            Write(l)
+        )
+        self.wait()
+
+        eq1 = Tex("f(z) = z^2", tex_to_color_map={"f": A_GREEN, "z": A_PINK})
+        eq1.move_to(5.65 * LEFT + 3 * UP)
+
+        eq2 = Tex("f(x+yi) = ", "(x^2 - y^2)", "+", "(2xy)", "i",
+                  tex_to_color_map={"f": A_GREEN, "x": A_PINK, "y": A_PINK, "2": A_YELLOW})
+        eq2.shift(3.5 * LEFT + 2 * UP)
+
+        b1 = Brace(eq2[6:13])
+        bt1 = Tex("u", color=A_YELLOW)
+        b1.put_at_tip(bt1)
+
+        b2 = Brace(eq2[14:19])
+        bt2 = Tex("v", color=A_YELLOW)
+        b2.put_at_tip(bt2)
+
+        self.add(eq1, eq2, b1, bt1, b2, bt2)
+
         self.embed()
