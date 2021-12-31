@@ -1907,14 +1907,14 @@ class Jacobian(IntroComplexDeriv):
         eq3.move_to(2 * RIGHT + 3 * DOWN)
 
         eq4 = Tex(
-            r"du = { \partial u \over \partial x}", r"dx", r" + { \partial u \over \partial y }", r"dy",
+            r"du = ", r"{ \partial u \over \partial x}", r"dx", r" + ", r"{ \partial u \over \partial y }", r"dy",
             tex_to_color_map={"u": A_YELLOW, "x": A_ORANGE, "y": A_ORANGE}
         )
         eq4.move_to(eq2)
         eq4.scale(1.5)
 
         eq5 = Tex(
-            r"d{v} = { \partial {v} \over \partial x}", r"dx", r" + { \partial {v} \over \partial y}", r"dy",
+            r"d{v} = ", r"{ \partial {v} \over \partial x}", r"dx", r" + ", r"{ \partial {v} \over \partial y}", r"dy",
             tex_to_color_map={r"{v}": A_YELLOW, "x": A_ORANGE, "y": A_ORANGE}
         )
         eq5.move_to(eq3)
@@ -1931,109 +1931,34 @@ class Jacobian(IntroComplexDeriv):
         m4 = m1.deepcopy()
         m4.shift(3.15 * DOWN)
 
-        J = Matrix([[r"{\partial "+i+r" \over \partial "+j+"}" for j in ["x", "y"]]
-                   for i in ["u", "v"]], element_to_mobject=Tex, v_buff=1.25)
+        J = Matrix(
+            [[r"{\partial {"+i+r"} \over \partial {"+j+r"}}" for j in ["x", "y"]]
+             for i in ["u", "v"]],
+            element_to_mobject=lambda m: Tex(
+                m, tex_to_color_map={"{v}": A_YELLOW, "{u}": A_YELLOW, "{x}": A_ORANGE, "{y}": A_ORANGE}),
+            v_buff=1.25
+        )
         J.move_to(m4)
-        J.shift(3.3 * RIGHT)
+        J.shift(3.45 * RIGHT)
 
-        self.play(Transform(eq2[6:8], m3[0][0]), Transform(eq2[-2:], m3[0][0]))
-        self.embed()
+        equals = eq1[2].copy()
+        equals.shift(3.15 * DOWN)
 
-        # remove(m3.brackets)
-        # add(m3.brackets)
-        # remove(m3)
-        # remove(eq4[4:6])
-        # remove(eq2[4:6])
-        # add(eq2[4:6])
-        # remove(eq2[6:8])
-        # add(eq2[6:8])
-        # remove(eq2[-2:])
-        # add(eq2[-2]:)
-        # add(eq2[-2:])
-        m4 = m1.deepcopy()
-        m1.shift(DOWN)
-        m1.shift(UP)
-        add(m4)
-        m4.shift(DOWN)
-        m4.shift(DOWN)
-        m4.shift(DOWN)
-        m4.shift(0.15 * DOWN)
-        remove(eq2, eq3)
-        add(m3)
-        J = Matrix([[r"{\partial "+i+r" \over \partial "+j for j in ["x", "y"]]
-                   for i in ["u", "v"]], element_to_mobject=Tex)
-        add(J)
-        J.move_to(m3)
-        J.shift(LEFT)
-        J.shift(LEFT)
-        J.scale(1.5)
-        remove(J)
-        J = Matrix([[r"{\partial "+i+r" \over \partial "+j+"}" for j in ["x", "y"]]
-                   for i in ["u", "v"]], element_to_mobject=Tex, h_buff=1.65)
-        add(J)
-        remove(J)
-        J = Matrix([[r"{\partial "+i+r" \over \partial "+j+"}" for j in ["x", "y"]]
-                   for i in ["u", "v"]], element_to_mobject=Tex, h_buff=2)
-        add(J)
-        remove(J)
-        J = Matrix([[r"{\partial "+i+r" \over \partial "+j+"}" for j in ["x", "y"]]
-                   for i in ["u", "v"]], element_to_mobject=Tex, v_buff=2)
-        add(J)
-        remove(J)
-        J = Matrix([[r"{\partial "+i+r" \over \partial "+j+"}" for j in ["x", "y"]]
-                   for i in ["u", "v"]], element_to_mobject=Tex, v_buff=1.5)
-        add(J)
-        remove(J)
-        J = Matrix([[r"{\partial "+i+r" \over \partial "+j+"}" for j in ["x", "y"]]
-                   for i in ["u", "v"]], element_to_mobject=Tex, v_buff=1)
-        add(J)
-        remove(J)
-        J = Matrix([[r"{\partial "+i+r" \over \partial "+j+"}" for j in ["x", "y"]]
-                   for i in ["u", "v"]], element_to_mobject=Tex, v_buff=1.25)
-        add(J)
-        J.move_to(m4)
-        J.shift(RIGHT)
-        J.shift(RIGHT)
-        J.shift(RIGHT)
-        J.shift(RIGHT)
-        J.shift(0.5 * LEFT)
-        J.shift(0.1 * LEFT)
-        J.shift(0.1 * LEFT)
-        m4.shift(0.1 * RIGHT)
-        m4.shift(0.1 * LEFT)
-        m3.shift(0.1 * RIGHT)
-        m3.shift(0.1 * RIGHT)
-        m3.shift(0.1 * RIGHT)
-        m3.shift(0.1 * RIGHT)
-        m3.shift(0.1 * RIGHT)
-        m3.shift(0.1 * RIGHT)
-        m3.shift(0.1 * RIGHT)
-        m3.shift(0.1 * RIGHT)
-        m3.shift(0.1 * RIGHT)
-        m3.shift(0.1 * RIGHT)
-        Equals
-        equals = Tex("=")
-        add(equals)
-        equals.scale(1.5)
-        equals.move_to(m4)
-        equals.shift(0.5 * RIGHT)
-        equals.shift(0.5 * RIGHT)
-        equals.shift(0.5 * RIGHT)
-        equals.shift(0.25 * LEFT)
-        equals.shift(0.125 * RIGHT)
-        grp = VGroup()
-        for i in self.mobjects:
-            if isinstance(i, Tex):
-                grp.add(i)
-        grp.shift(0.5 * LEFT)
-        grp.shift(0.5 * LEFT)
-        grp.shift(1 * RIGHT)
-        grp = VGroup()
-        for i in self.mobjects:
-            if isinstance(i, Matrix):
-                grp.add(i)
-        grp.shift(LEFT)
-        grp.shift(0.5 * RIGHT)
-        grp.shift(0.25 * LEFT)
+        self.play(Transform(VGroup(eq2[7:9], eq3[7:9]), m3[0][0]))
+        self.play(Transform(VGroup(eq2[-2:], eq3[-2:]), m3[0][1]))
+        self.play(Write(m3.brackets))
+        self.wait(0.5)
+
+        self.play(Transform(eq2[3:7], J[0][0]), Transform(
+            eq2[10:14], J[0][1]), Uncreate(eq2[9]))
+        self.play(Transform(eq3[3:7], J[0][2]), Transform(
+            eq3[10:14], J[0][3]), Uncreate(eq3[9]))
+        self.play(Write(J.brackets))
+        self.wait(0.5)
+
+        self.play(Transform(VGroup(eq2[2], eq3[2]), equals))
+        self.play(Transform(eq2[:2], m4[0][0]), Transform(eq3[:2], m4[0][1]))
+        self.play(Write(m4.brackets))
+        self.wait()
 
         self.embed()
