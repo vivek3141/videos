@@ -1961,7 +1961,7 @@ class Jacobian(IntroComplexDeriv):
         self.wait()
 
         eq2 = Tex(
-            r"du = {\Delta u}_{d}  {}_{x} + {\Delta u}_{d} {}_{y}",
+            r"du = ", r"{\Delta u}_{d}  {}_{x}", r" + ", r"{\Delta u}_{d} {}_{y}",
             tex_to_color_map={
                 "u": A_YELLOW,
                 "{}_{x}": A_ORANGE, "{}_{y}": A_ORANGE}
@@ -1970,7 +1970,7 @@ class Jacobian(IntroComplexDeriv):
         eq2.move_to(2 * RIGHT + 1.25 * DOWN)
 
         eq3 = Tex(
-            r"dv = {\Delta v}_{d}  {}_{x} + {\Delta v}_{d} {}_{y}",
+            r"dv = ", r"{\Delta v}_{d}  {}_{x} +  ", r"{\Delta v}_{d} {}_{y}",
             tex_to_color_map={"v": A_YELLOW, "{}_{x}": A_ORANGE, "{}_{y}": A_ORANGE})
         eq3.scale(1.5)
         eq3.move_to(2 * RIGHT + 3 * DOWN)
@@ -1995,7 +1995,14 @@ class Jacobian(IntroComplexDeriv):
         self.wait()
 
         self.play(
-            Transform(eq2, eq4)
+            Transform(eq2[3:7], eq4[3:7]),
+            Write(eq4[7:9])
+        )
+        self.wait()
+        self.play(
+            Transform(eq2[7], eq4[9]),
+            Transform(eq2[8:], eq4[10:14]),
+            Write(eq4[14:])
         )
         self.wait()
 
@@ -2005,7 +2012,15 @@ class Jacobian(IntroComplexDeriv):
         self.wait()
 
         self.play(
-            Transform(eq3, eq5)
+            Transform(eq3[3:7], eq5[3:7]),
+            Write(eq5[7:9])
+        )
+        self.wait()
+
+        self.play(
+            Transform(eq3[7], eq5[9]),
+            Transform(eq3[8:], eq5[10:14]),
+            Write(eq5[14:])
         )
         self.wait()
 
