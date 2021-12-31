@@ -2153,10 +2153,13 @@ class MatrixComplex(Scene):
         self.play(TransformFromCopy(J[0][2], eq4[6:]), Write(eq4[5]))
         self.wait()
 
+        title = TexText("Cauchy-Riemann Equations", color=A_RED)
+        title.scale(1.5)
+        title.move_to(3 * UP)
+
+        self.play(Uncreate(VGroup(equals2, m1, J)),
+                  ApplyMethod(VGroup(eq3, eq4).center))
+        self.play(Write(title))
+        self.wait()
+
         self.embed()
-        # remove(eq3[0])
-        # remove(eq3[:5])
-        # remove(eq3[:4])
-        # add(eq3)
-        # remove(eq3[:4])
-        # remove(eq3[5:])
