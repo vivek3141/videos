@@ -1812,8 +1812,28 @@ class Jacobian(IntroComplexDeriv):
         output_dot_text.add_background_rectangle()
         output_dot_text.next_to(output_dot, DOWN)
 
-        self.add(c1, c2, input_text, output_text, input_dot, input_dot_text, output_dot, output_dot_text,
-                 eq, x_lbl, y_lbl, v_lbl, u_lbl)
+        self.play(Write(eq))
+        self.wait()
+
+        self.play(
+            Write(c1), Write(input_text),
+            # Write(input_dot), Write(input_dot_text),
+            Write(x_lbl), Write(y_lbl)
+        )
+        self.play(
+            Write(c2), Write(output_text),
+            # Write(output_dot), Write(output_dot_text),
+            Write(u_lbl), Write(v_lbl)
+        )
+        self.wait()
+
+        # self.play(
+        #     Write(c1), Write(c2), Write(input_text),
+        # Write(output_text), Write(input_dot), Write(output_dot), Write(input_dot_text),
+        # Write(output_dot_text), Write(input_dot_text))
+
+        # self.add(c1, c2, input_text, output_text, input_dot, input_dot_text, output_dot, output_dot_text,
+        #          eq, x_lbl, y_lbl, v_lbl, u_lbl)
 
         dz = Arrow(c1.c2p(1, 1), c1.c2p(2, 2.5), stroke_color=A_PINK, buff=0)
         dz_lbl = Tex("dz", tex_to_color_map={"z": A_PINK})
@@ -1848,26 +1868,73 @@ class Jacobian(IntroComplexDeriv):
         du_lbl.add_background_rectangle()
         du_lbl.next_to(du, UP)
 
-        Matrix
+        self.play(
+            Write(input_dot), Write(input_dot_text)
+        )
+        self.play(
+            TransformFromCopy(input_dot, output_dot),
+            Write(output_dot_text)
+        )
+        self.play(
+            Write(dz), Write(dz_lbl)
+        )
+        self.play(
+            TransformFromCopy(dz, df),
+            Write(df_lbl)
+        )
+        self.wait()
 
-        self.add(dz, dy, dx, dy_lbl, dx_lbl, dz_lbl)
-        self.add(du, df, dv, du_lbl, dv_lbl, df_lbl)
+        self.play(
+            Write(dx), Write(dx_lbl)
+        )
+        self.play(
+            Write(dy), Write(dy_lbl)
+        )
+        self.bring_to_front(input_dot)
+        self.wait()
+
+        self.play(
+            Write(du), Write(du_lbl)
+        )
+        self.play(
+            Write(dv), Write(dv_lbl)
+        )
+        self.bring_to_front(output_dot)
+        self.wait()
 
         c1_grp = VGroup(c1, input_dot, input_dot_text, dx, dy,
                         x_lbl, y_lbl, dz, dz_lbl, dy_lbl, dx_lbl)
-        c1_grp.scale(0.5)
-        c1_grp.move_to(4 * LEFT + 1 * UP)
-
-        input_text.scale(0.5)
-        input_text.next_to(c1_grp, LEFT)
 
         c2_grp = VGroup(c2, output_dot, output_dot_text, du, dv,
                         du_lbl, u_lbl, v_lbl, df, df_lbl, dv_lbl)
-        c2_grp.scale(0.5)
-        c2_grp.move_to(4 * LEFT + 2 * DOWN)
 
-        output_text.scale(0.45)
-        output_text.next_to(c2_grp, LEFT)
+        self.play(
+            ApplyMethod(c1_grp.scale, 0.5),
+            ApplyMethod(c2_grp.scale, 0.5),
+            ApplyMethod(input_text.scale, 0.5),
+            ApplyMethod(output_text.scale, 0.5)
+        )
+        self.play(
+            ApplyMethod(c1_grp.move_to, 4 * LEFT + 1 * UP),
+            ApplyMethod(c2_grp.move_to, 4 * LEFT + 2 * DOWN)
+        )
+        self.play(
+            ApplyMethod(input_text.next_to, c1_grp, LEFT),
+            ApplyMethod(output_text.next_to, c2_grp, LEFT)
+        )
+        self.wait(1)
+
+        # c1_grp.scale(0.5)
+        # c1_grp.move_to(4 * LEFT + 1 * UP)
+
+        # input_text.scale(0.5)
+        # input_text.next_to(c1_grp, LEFT)
+
+        # c2_grp.scale(0.5)
+        # c2_grp.move_to(4 * LEFT + 2 * DOWN)
+
+        # output_text.scale(0.45)
+        # output_text.next_to(c2_grp, LEFT)
 
         eq1 = Tex(r"df = \textbf{\textit{J}}", r"\cdot ", r"dz",
                   tex_to_color_map={"f": A_GREEN, "z": A_PINK, r"\textbf{\textit{J}}": A_AQUA})
@@ -1886,10 +1953,12 @@ class Jacobian(IntroComplexDeriv):
         m2.move_to(m1)
         m2.shift(4 * RIGHT)
 
-        self.add(eq1, m1, m2)
+        self.play(Write(eq1))
+        self.wait()
 
-        self.remove(eq1[:2])
-        self.remove(eq1[-2:])
+        self.play(ReplacementTransform(eq1[:2], m1))
+        self.play(ReplacementTransform(eq1[-2:], m2))
+        self.wait()
 
         eq2 = Tex(
             r"du = {\Delta u}_{d}  {}_{x} + {\Delta u}_{d} {}_{y}",
@@ -1920,10 +1989,25 @@ class Jacobian(IntroComplexDeriv):
         eq5.move_to(eq3)
         eq5.scale(1.5)
 
-        self.add(eq2, eq3)
+        self.play(
+            Write(eq2)
+        )
+        self.wait()
 
-        self.play(Transform(eq2, eq4))
-        self.play(Transform(eq3, eq5))
+        self.play(
+            Transform(eq2, eq4)
+        )
+        self.wait()
+
+        self.play(
+            Write(eq3)
+        )
+        self.wait()
+
+        self.play(
+            Transform(eq3, eq5)
+        )
+        self.wait()
 
         m3 = m2.deepcopy()
         m3.shift(3.15 * DOWN + 2 * RIGHT)
@@ -1961,4 +2045,9 @@ class Jacobian(IntroComplexDeriv):
         self.play(Write(m4.brackets))
         self.wait()
 
+        self.embed()
+
+
+class MatrixComplex(Scene):
+    def construct(self):
         self.embed()
