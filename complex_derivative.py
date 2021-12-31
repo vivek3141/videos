@@ -2073,7 +2073,7 @@ class MatrixComplex(Scene):
         m1.shift(0.75 * DOWN + 2.5 * LEFT)
 
         m2 = Matrix([["x"], ["y"]],
-                    element_to_mobject=lambda m: Tex(m, color=A_PINK))
+                    element_to_mobject=lambda m: Tex(m, color=A_ORANGE))
         m2.scale(1.5)
         m2.move_to(m1)
         m2.shift(2.75 * RIGHT)
@@ -2214,7 +2214,7 @@ class MatrixComplex(Scene):
         self.wait()
 
         self.play(Write(eq3))
-        self.play(1)
+        self.wait(1)
 
         self.play(Write(eq4))
         self.wait(1)
@@ -2225,7 +2225,7 @@ class MatrixComplex(Scene):
         self.play(Write(eq6))
         self.wait()
 
-        self.play(Uncreate(VGroup(eq1, eq2, eq3, eq4, eq5, b1, bt1, b2, bt2)))
+        self.play(Uncreate(VGroup(eq1, eq2, eq3, eq4, eq5, eq6, b1, bt1, b2, bt2)))
         self.wait()
 
         eq1 = Tex(r"f(z) = \bar{z}", tex_to_color_map={
@@ -2271,7 +2271,7 @@ class MatrixComplex(Scene):
         self.wait()
 
         self.play(Write(eq3))
-        self.play(1)
+        self.wait(1)
 
         self.play(Write(eq4))
         self.wait(1)
