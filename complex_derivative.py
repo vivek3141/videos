@@ -19,6 +19,11 @@ INPUT_C = A_PINK
 OUTPUT_C = A_GREEN
 
 
+"""
+
+"""
+
+
 class PartScene(Scene):
     CONFIG = {
         "n": 1,
@@ -1664,8 +1669,8 @@ class Conformal(IntroComplexDeriv):
 
     def construct(self):
         M = 0.5 * np.array([
-            [-1.5, -1],
-            [0.5, -1.5]
+            [1, -np.sqrt(3)],
+            [np.sqrt(3), 1]
         ])
 
         complex_kwargs = {
@@ -1685,37 +1690,6 @@ class Conformal(IntroComplexDeriv):
         c2.coordinate_labels.set_opacity(self.plane_opacity)
         c2.axes.set_opacity(self.plane_opacity)
         c2.shift(FRAME_WIDTH/4 * RIGHT + 0.5 * DOWN)
-
-        input_text = TexText("Input Space", color=YELLOW_Z)
-        input_text.scale(1.5)
-        input_text.shift(-FRAME_WIDTH/4 * RIGHT + 3.25 * UP)
-
-        output_text = TexText("Output Space", color=YELLOW_Z)
-        output_text.scale(1.5)
-        output_text.shift(FRAME_WIDTH/4 * RIGHT + 3.25 * UP)
-
-        input_dot = Dot(c1.c2p(self.x, self.y), color=PURPLE)
-        input_dot.set_color(A_PINK)
-
-        input_dot_text = Tex("z", color=A_PINK)
-        input_dot_text.add_background_rectangle()
-        input_dot_text.next_to(input_dot, DOWN)
-
-        output_dot = Dot(c2.c2p(-0.75, 0.25), color=A_GREEN)
-        output_dot_text = Tex("f(z)", tex_to_color_map={
-                              r"z": A_PINK, "f": A_GREEN})
-        output_dot_text.add_background_rectangle()
-        output_dot_text.next_to(output_dot, UP + LEFT)
-
-        self.play(
-            Write(c1), Write(input_text),
-            Write(c2), Write(output_text)
-        )
-        self.play(
-            Write(input_dot), Write(input_dot_text),
-            Write(output_dot), Write(output_dot_text)
-        )
-        self.wait()
 
         def f1(t): return c1.c2p(t, 2*np.log(-(t-1)/2 + 1) + 1)
         cu1 = ParametricCurve(f1, t_min=-1, t_max=2.5, color=A_PINK)
@@ -1741,6 +1715,37 @@ class Conformal(IntroComplexDeriv):
             x, y = prod[0][0], prod[1][0]
             return c2.c2p(x, y)
 
+        input_text = TexText("Input Space", color=YELLOW_Z)
+        input_text.scale(1.5)
+        input_text.shift(-FRAME_WIDTH/4 * RIGHT + 3.25 * UP)
+
+        output_text = TexText("Output Space", color=YELLOW_Z)
+        output_text.scale(1.5)
+        output_text.shift(FRAME_WIDTH/4 * RIGHT + 3.25 * UP)
+
+        input_dot = Dot(c1.c2p(self.x, self.y), color=PURPLE)
+        input_dot.set_color(A_PINK)
+
+        input_dot_text = Tex("z", color=A_PINK)
+        input_dot_text.add_background_rectangle()
+        input_dot_text.next_to(input_dot, DOWN)
+
+        output_dot = Dot(output_f1(1), color=A_GREEN)
+        output_dot_text = Tex("f(z)", tex_to_color_map={
+                              r"z": A_PINK, "f": A_GREEN})
+        output_dot_text.add_background_rectangle()
+        output_dot_text.move_to(output_dot).shift(0.7 * DOWN + 0.4 * LEFT)
+
+        self.play(
+            Write(c1), Write(input_text),
+            Write(c2), Write(output_text)
+        )
+        self.play(
+            Write(input_dot), Write(input_dot_text),
+            Write(output_dot), Write(output_dot_text)
+        )
+        self.wait()
+
         ocu1 = ParametricCurve(output_f1, t_min=-1, t_max=2.5, color=A_GREEN)
         ocu2 = ParametricCurve(output_f2, t_min=0.5, t_max=-2.5, color=A_GREEN)
 
@@ -1750,11 +1755,11 @@ class Conformal(IntroComplexDeriv):
         a1_lbl.add_background_rectangle()
         a1_lbl.next_to(arc1, UP)
 
-        arc2 = Arc(3.55, 1.45, arc_center=c2.c2p(-0.75, 0.25),
+        arc2 = Arc(1.875, 1.45, arc_center=output_f1(1),
                    radius=0.5, color=A_YELLOW)
         a2_lbl = Tex(r"\phi", color=A_YELLOW)
         a2_lbl.add_background_rectangle()
-        a2_lbl.next_to(arc2, DOWN)
+        a2_lbl.move_to(arc2).shift(0.4 * LEFT + 0.4 * UP)
 
         self.play(Write(cu1), Write(cu2))
         self.play(Write(arc1), Write(a1_lbl))
@@ -1784,7 +1789,7 @@ class Conformal(IntroComplexDeriv):
                 c2, [f_x0, f_y0], stroke_color=A_GREEN, stroke_opacity=self.vec_opacity)
 
             v_0.move_to(c1.c2p(self.x, self.y), aligned_edge=[-x_0, -y_0, 0])
-            f_v0.move_to(c2.c2p(-0.75, 0.25), aligned_edge=[-f_x0, -f_y0, 0])
+            f_v0.move_to(output_f1(1), aligned_edge=[-f_x0, -f_y0, 0])
 
             vecs.add(v_0)
             img_vecs.add(f_v0)
