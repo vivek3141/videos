@@ -52,6 +52,14 @@ class PartOne(PartScene):
     }
 
 
+class PartTwo(PartScene):
+    CONFIG = {
+        "n": 1,
+        "title": "Extending to the Complex Derivative",
+        "title_color": A_YELLOW
+    }
+
+
 class NormalDerivative(Scene):
     LINE_COLOR = YELLOW_Z
 
@@ -713,6 +721,55 @@ class RealDerivative(NormalDerivative):
 
     def t_func(self, x):
         return np.sin(2*x + 3) * np.cos(x**2) + 0.5*x
+
+
+class ZoomRealScene(Scene):
+    CONFIG = {
+        "f_deriv": 2,
+        "n_points": 12,
+        "x_color": A_PINK,
+        "y_color": A_GREEN,
+        "run_time": 7,
+        "radius": 10*DEFAULT_DOT_RADIUS,
+    }
+
+    def construct(self):
+        n = NumberLine(include_ticks=False, stroke_width=16)
+
+        s = np.linspace(-FRAME_WIDTH/2, FRAME_WIDTH/2, self.n_points)
+        x_vals = [n.n2p(i) for i in s]
+        y_vals = [n.n2p(self.f_deriv * i) for i in s]
+
+        x_dot = DotCloud(x_vals, color=self.x_color, radius=self.radius)
+        cp = x_dot.copy()
+        y_dot = DotCloud(y_vals, color=self.y_color, radius=self.radius)
+
+        self.play(Write(n), ShowCreation(x_dot))
+        self.wait()
+
+        self.play(Transform(x_dot, y_dot), run_time=self.run_time)
+        self.wait()
+
+        self.play(Transform(x_dot, cp))
+        self.wait()
+
+
+class Zoom1Deriv(ZoomRealScene):
+    CONFIG = {
+        "f_deriv": 2
+    }
+
+
+class Zoom2Deriv(ZoomRealScene):
+    CONFIG = {
+        "f_deriv": 4
+    }
+
+
+class Zoom3Deriv(ZoomRealScene):
+    CONFIG = {
+        "f_deriv": -2
+    }
 
 
 class IntroComplexDeriv(Scene):
