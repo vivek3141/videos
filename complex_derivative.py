@@ -44,6 +44,14 @@ class PartScene(Scene):
         self.wait()
 
 
+class PartOne(PartScene):
+    CONFIG = {
+        "n": 1,
+        "title": "The Real Derivative, Revisited",
+        "title_color": A_RED
+    }
+
+
 class NormalDerivative(Scene):
     LINE_COLOR = YELLOW_Z
 
@@ -246,6 +254,29 @@ class ComplexGraph1_2(Scene):
 
     def func(self, u, v):
         return [u, v, 0.5*((0.5 * v) ** 2 + (0.5 * u) ** 3)]
+
+
+class ComplexGraphScene1(Scene):
+    def construct(self):
+        l = Line(10 * UP, 10 * DOWN)
+        title1 = Tex(
+            r"\mathrm{Re}(f(z))",
+            tex_to_color_map={r"\mathrm{Re}": A_ORANGE,
+                              "f": A_GREEN, "z": A_PINK}
+        )
+        title1.scale(1.5)
+        title1.shift(FRAME_WIDTH/4 * LEFT + 3.25 * UP)
+
+        title2 = Tex(
+            r"\mathrm{Im}(f(z))",
+            tex_to_color_map={r"\mathrm{Im}": A_ORANGE,
+                              "f": A_GREEN, "z": A_PINK}
+        )
+        title2.scale(1.5)
+        title2.shift(FRAME_WIDTH/4 * RIGHT + 3.25 * UP)
+
+        self.play(Write(title1), Write(title2), Write(l))
+        self.wait()
 
 
 class ComplexGraph2(Scene):
