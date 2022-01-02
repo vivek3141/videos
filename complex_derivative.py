@@ -54,7 +54,7 @@ class PartOne(PartScene):
 
 class PartTwo(PartScene):
     CONFIG = {
-        "n": 1,
+        "n": 2,
         "title": "Extending to the Complex Derivative",
         "title_color": A_YELLOW
     }
@@ -1384,7 +1384,7 @@ class TransformationVisual(Scene):
 
         d = Dot(RIGHT, color=RED)
 
-        d_lbl = Tex("0 + i", color=A_RED)
+        d_lbl = Tex("1", color=A_RED)
         d_lbl.add_background_rectangle(buff=0.15)
         d_lbl.next_to(d, DOWN)
 
@@ -1745,6 +1745,50 @@ class TransformationVisual(Scene):
     def lin_func(self, z, dz=1e-6):
         x = 1+1j
         return (self.func2(z*dz + x) - self.func2(x))/dz
+
+
+class ZoomComplexScene(Scene):
+    CONFIG = {
+        "f_deriv": 1,
+        "plane_color": A_LAVENDER,
+        "start_run_time": 10,
+        "end_run_time": 2,
+        "radius": 10*DEFAULT_DOT_RADIUS,
+    }
+
+    def construct(self):
+        c = ComplexPlane(background_line_style={
+            "stroke_color": self.plane_color,
+            "stroke_width": 8,
+            "stroke_opacity": 1},
+            faded_line_ratio=4, x_range=[-8, 8, 2], y_range=[-4, 4, 2]
+        )
+        cp = c.copy()
+
+        self.play(Write(c))
+        self.wait()
+
+        self.play(ApplyMethod(c.apply_complex_function, self.func),
+                  run_time=self.start_run_time)
+        self.wait()
+
+        self.play(Transform(c, cp), run_time=self.end_run_time)
+        self.wait()
+
+    def func(self, z):
+        return self.f_deriv * z
+
+
+class ZoomComplex1(ZoomComplexScene):
+    CONFIG = {
+        "f_deriv": -2 + 4j,
+    }
+
+
+class ZoomComplex2(ZoomComplexScene):
+    CONFIG = {
+        "f_deriv": 2 + 2j,
+    }
 
 
 class Conformal(IntroComplexDeriv):
