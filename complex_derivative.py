@@ -19,11 +19,6 @@ INPUT_C = A_PINK
 OUTPUT_C = A_GREEN
 
 
-"""
-
-"""
-
-
 class PartScene(Scene):
     CONFIG = {
         "n": 1,
@@ -1690,7 +1685,7 @@ class TransformationVisual(Scene):
         self.wait()
 
         eq9 = Tex(
-            r"f({{z}}) = \bar{z} \cdot \sin{({{z}})}",
+            r"f({{z}}) = \bar{z}^2 \cdot \sin{({{z}})}",
             tex_to_color_map={
                 r"\bar{z}": A_PINK,
                 "{{z}}": A_PINK, "f": A_GREEN}
@@ -1761,7 +1756,7 @@ class ZoomComplexScene(Scene):
             "stroke_color": self.plane_color,
             "stroke_width": 8,
             "stroke_opacity": 1},
-            faded_line_ratio=4, x_range=[-8, 8, 2], y_range=[-4, 4, 2]
+            faded_line_ratio=4, x_range=[-16, 16, 2], y_range=[-16, 16, 2]
         )
         cp = c.copy()
 
@@ -1789,6 +1784,18 @@ class ZoomComplex2(ZoomComplexScene):
     CONFIG = {
         "f_deriv": 2 + 2j,
     }
+
+
+class ZoomComplex3(ZoomComplexScene):
+    CONFIG = {
+        "z": 1+1j
+    }
+
+    def func2(self, z):
+        return (z.conjugate()**2) * np.sin(z)
+
+    def func(self, z, dz=1e-6):
+        return (self.func2(z*dz + self.z) - self.func2(self.z))/dz
 
 
 class Conformal(IntroComplexDeriv):
@@ -2564,6 +2571,35 @@ class ExpDeriv(Scene):
             Transform(l2, l2_f),
             run_time=10
         )
+        self.wait()
+
+        self.embed()
+
+
+class ComplexDiffRules(Scene):
+    def construct(self):
+        color_map = {"z": A_PINK, "f'": A_GREEN, "g'": A_AQUA, "f": A_GREEN, "g": A_AQUA,
+                     "{1}": A_YELLOW, "{n}": A_YELLOW}
+
+        eq1 = Tex(r"[f(g(z))]' = f'(g(z)) \cdot g(z))",
+                  tex_to_color_map=color_map)
+        eq1.scale(1.5)
+        eq1.shift(1.5 * UP)
+        eq2 = Tex(r"[f(z)g(z)]' = f'(z)g(z) + f(z)g'(z)",
+                  tex_to_color_map=color_map)
+        eq2.scale(1.5)
+
+        eq3 = Tex(r"[z^{n}]' = {z^{n} {}^{+} {}^{1} \over {n}+{1}}",
+                  tex_to_color_map=color_map)
+        eq3.scale(1.5)
+        eq3.move_to(2 * DOWN)
+
+        title = TexText("Complex Differentiation", color=A_LAVENDER)
+        title.scale(1.5)
+        title.move_to(3 * UP)
+
+        self.play(Write(title))
+        self.play(Write(eq1), Write(eq2), Write(eq3))
         self.wait()
 
         self.embed()
