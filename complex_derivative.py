@@ -55,6 +55,14 @@ class PartTwo(PartScene):
     }
 
 
+class PartThree(PartScene):
+    CONFIG = {
+        "n": 3,
+        "title": "The Cauchy-Riemann Equations",
+        "title_color": A_ORANGE
+    }
+
+
 class NormalDerivative(Scene):
     LINE_COLOR = YELLOW_Z
 
@@ -2603,3 +2611,35 @@ class ComplexDiffRules(Scene):
         self.wait()
 
         self.embed()
+
+
+class TitleScene(Scene):
+    CONFIG = {
+        "color": None,
+        "text": None
+    }
+
+    def construct(self):
+        if self.text is None:
+            raise NotImplementedError
+
+        brect = Rectangle(height=FRAME_HEIGHT, width=FRAME_WIDTH,
+                          fill_opacity=1, color=self.color)
+
+        title = TexText(self.text)
+        title.scale(1.5)
+        title.to_edge(UP)
+
+        rect = ScreenRectangle(height=6)
+        rect.next_to(title, DOWN)
+
+        self.add(brect)
+        self.play(FadeIn(rect, DOWN), Write(title), run_time=2)
+        self.wait()
+
+
+class TitleC(TitleScene):
+    CONFIG = {
+        "color": PURPLE_E,
+        "text": "Complex Differentiation"
+    }
