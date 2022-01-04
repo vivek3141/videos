@@ -20,18 +20,29 @@ class Outro(Scene):
         plogo[-2].set_color("#f86754")
         plogo[-1].set_color(BLUE_E)
 
+        t = ImageMobject("img/twitter.png")
+        t.scale(0.35)
+        t.shift(3 * DOWN + 1.5 * RIGHT)
+
+        i = ImageMobject("img/instagram.png")
+        i.scale(0.35)
+        i.next_to(t, RIGHT)
+
+        t_text = TexText("@vcubingx")
+        t_text.next_to(i, RIGHT)
+
         self.play(Write(line))
-        self.play(Write(btxt), Write(plogo))
+        self.play(Write(btxt), Write(plogo), FadeIn(t), FadeIn(i), Write(t_text))
 
         old_patreons = None
         list_of_patreons = open("patreon.txt").read().split("\n")
 
-        for i in split_into(list_of_patreons, 10):
+        for i in split_into(list_of_patreons, 15):
             patreons = VGroup()
 
-            for name, pos in zip(i, np.linspace(FRAME_HEIGHT/2, -FRAME_HEIGHT/2, num=15)):
+            for name, pos in zip(i, np.linspace(FRAME_HEIGHT/2, -FRAME_HEIGHT/2, num=18)):
                 patreons.add(
-                    TexText(name, tex_to_color_map={} if name != "3blue1brown" else {"blue": BLUE, "brown": "#CD853F"}).move_to([0, pos, 0])
+                    TexText(name, tex_to_color_map={} if name != "3blue1brown" else {"blue": BLUE, "brown": "#CD853F"}).move_to([0, pos, 0]).scale(0.75)
                 )
 
             patreons.center()

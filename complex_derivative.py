@@ -1806,6 +1806,12 @@ class ZoomComplex3(ZoomComplexScene):
         return (self.func2(z*dz + self.z) - self.func2(self.z))/dz
 
 
+class ZoomComplex4(ZoomComplexScene):
+    CONFIG = {
+        "f_deriv": np.exp(1+1j),
+    }
+
+
 class Conformal(IntroComplexDeriv):
     CONFIG = {
         "plane_opacity": 0.65,
@@ -2638,8 +2644,114 @@ class TitleScene(Scene):
         self.wait()
 
 
+class TitleU(TitleScene):
+    CONFIG = {
+        "color": BLUE_E,
+        "text": "Upcoming"
+    }
+
+
 class TitleC(TitleScene):
     CONFIG = {
         "color": PURPLE_E,
         "text": "Complex Differentiation"
     }
+
+
+class Thumbnail(Scene):
+    CONFIG = {
+        "plane_opacity": 0.65,
+        "x": 0.5,
+        "y": 0.5,
+        "vec_opacity": 0.75
+    }
+
+    def construct(self):
+        complex_kwargs = {
+            "background_line_style": {
+                "stroke_opacity": self.plane_opacity
+            }
+        }
+        c1 = ComplexPlane(x_range=(-3, 3), y_range=(-3, 3), **complex_kwargs)
+        c1.axes.set_opacity(self.plane_opacity)
+        c1.shift(FRAME_WIDTH/4 * LEFT)
+
+        c2 = ComplexPlane(x_range=(-3, 3), y_range=(-3, 3), **complex_kwargs)
+        c2.shift(FRAME_WIDTH/4 * RIGHT)
+
+        input_dot = Dot(c1.c2p(self.x, self.y), color=PURPLE)
+        input_dot.set_color(A_PINK)
+
+        input_dot_text = Tex("z", color=A_PINK)
+        input_dot_text.add_background_rectangle()
+        input_dot_text.next_to(input_dot, DOWN)
+        input_dot_text.shift(0.5 * DOWN)
+
+        f_z = self.func(self.x + self.y * 1j)
+        f_z = np.array([f_z.real, f_z.imag, 0])
+
+        output_dot = Dot(c2.c2p(*f_z), color=A_GREEN)
+        output_dot_text = Tex("f(z)", tex_to_color_map={
+                              r"z": A_PINK, "f": A_GREEN})
+        output_dot_text.add_background_rectangle()
+        output_dot_text.next_to(output_dot, DOWN)
+
+        z = [self.x, self.y]
+        z_deriv = self.f_deriv(self.x + self.y*1j)
+
+        f_z = self.func(self.x + self.y*1j)
+        f_z = [f_z.real, f_z.imag]
+
+        img_vecs = VGroup()
+        vecs = VGroup()
+
+        for t in np.linspace(0, 2*PI, 15)[:-1]:
+            z_0 = np.exp(t*1j)
+            x_0, y_0 = 0.75 * z_0.real, 0.75 * z_0.imag
+
+            f_z0 = 0.5 * z_0 * z_deriv
+            f_x0, f_y0 = f_z0.real, f_z0.imag
+
+            v_0 = self.get_vec(
+                c1, [x_0, y_0], stroke_color=A_PINK, stroke_opacity=self.vec_opacity, stroke_width=10, width_to_tip_len=0.0075*4)
+            f_v0 = self.get_vec(
+                c2, [f_x0, f_y0], stroke_color=A_GREEN, stroke_opacity=self.vec_opacity, stroke_width=10, width_to_tip_len=0.0075*4)
+
+            v_0.move_to(c1.c2p(*z), aligned_edge=[-x_0, -y_0, 0])
+            f_v0.move_to(c2.c2p(*f_z), aligned_edge=[-f_x0, -f_y0, 0])
+
+            vecs.add(v_0)
+            img_vecs.add(f_v0)
+
+        vecs.scale(3)
+        #vecs.shift(1.5 * DOWN +  0.5 * LEFT)
+        img_vecs.scale(5)
+
+        dz_lbl = Tex("dz", tex_to_color_map={"z": A_PINK})
+        dz_lbl.add_background_rectangle(buff=0.1)
+        dz_lbl.scale(2)
+        dz_lbl.next_to(vecs, DOWN)
+
+        df_lbl = Tex("df", tex_to_color_map={"f": A_GREEN})
+        df_lbl.add_background_rectangle(buff=0.1)
+        df_lbl.scale(2)
+        df_lbl.next_to(img_vecs, DOWN)
+
+        c2.prepare_for_nonlinear_transform()
+        c2.apply_complex_function(self.func)
+        c2.shift(FRAME_WIDTH/4 * RIGHT)
+
+        self.add(c1, c2, input_dot, output_dot, vecs, img_vecs, dz_lbl, df_lbl)
+        self.wait(1)
+        self.embed()
+
+    def get_vec(self, plane, coors, **kwargs):
+        x, y = coors[0], coors[1]
+        z = plane.c2p(x, y)
+        return Arrow(plane.c2p(0, 0), z, buff=0, **kwargs)
+
+    def f_deriv(self, z, dz=1e-6+1e-6*1j):
+        return (self.func(z+dz)-self.func(z))/dz
+
+    def func(self, z):
+        return (1*z + np.sin(z)) * 0.3 - 1
