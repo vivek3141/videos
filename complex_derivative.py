@@ -2737,7 +2737,7 @@ class Thumbnail(Scene):
         df_lbl = Tex("df", tex_to_color_map={"f": A_GREEN})
         df_lbl.add_background_rectangle(buff=0.1)
         df_lbl.scale(2)
-        df_lbl.next_to(img_vecs, DOWN)  
+        df_lbl.next_to(img_vecs, DOWN)
 
         c2.prepare_for_nonlinear_transform()
         c2.apply_complex_function(self.func)
@@ -2757,7 +2757,8 @@ class Thumbnail(Scene):
         grp1.shift(FRAME_WIDTH/4 * LEFT)
         grp2.shift(FRAME_WIDTH/4 * RIGHT)
 
-        n = NumberPlane(axis_config={"stroke_opacity": 0.35}, background_line_style={"stroke_color": GREY, "stroke_opacity":0.35}, faded_line_style={"stroke_width":0})
+        n = NumberPlane(axis_config={"stroke_opacity": 0.35}, background_line_style={
+                        "stroke_color": GREY, "stroke_opacity": 0.35}, faded_line_style={"stroke_width": 0})
         self.bring_to_back(n)
 
         # dz_lbl.shift(LEFT)
@@ -2770,7 +2771,6 @@ class Thumbnail(Scene):
         # df_lbl.shift(0.25 * LEFT)
 
         # self.remove(dz_lbl, df_lbl)
-
 
         self.wait(1)
         self.embed()
@@ -2809,7 +2809,6 @@ class BrilliantAnim(Scene):
 
         self.play(TransformFromCopy(sp, sp2), run_time=7)
         self.wait(10)
-    
 
     def func2(self, u, v):
         x, y, z = 2 * np.array([np.cos(u)*np.sin(v),
