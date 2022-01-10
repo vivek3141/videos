@@ -298,7 +298,7 @@ class ComplexGraph2(Scene):
         v = VectorField(lambda x, y: [np.cos(
             x)*np.sin(y), np.sin(y) + np.cos(x), 0], n)
 
-        eq = Tex(r"f(x+y{i}) = \cos(x) \sin(y) + (\sin(y) + \cos(x){i}",
+        eq = Tex(r"f(x+y{i}) = \cos(x) \sin(y) + [\sin(y) + \cos(x)]{i}",
                  tex_to_color_map={r"{i}": BLUE})
         beq = BackgroundRectangle(eq, buff=0.2, opacity=1)
 
@@ -1407,7 +1407,7 @@ class TransformationVisual(Scene):
             ApplyMethod(n.apply_complex_function, self.func1,
                         foreground_mobjects=[eq]),
             Transform(d, d2),
-            Transform(d_lbl, d_lbl2),
+            FadeTransform(d_lbl, d_lbl2),
             run_time=7
         )
         self.bring_to_back(n)
@@ -1436,7 +1436,7 @@ class TransformationVisual(Scene):
 
         self.bring_to_back(n)
         self.play(
-            Uncreate(d), Uncreate(d_lbl),
+            Uncreate(d), Uncreate(d_lbl2),
             Transform(eq, eq3),
             Transform(n, n2)
         )
@@ -1495,9 +1495,9 @@ class TransformationVisual(Scene):
 
         self.play(
             ApplyMethod(n.apply_complex_function, g),
-            Transform(d1, d1_n), Transform(d1_lbl, d1_n_lbl),
-            Transform(d2, d2_n), Transform(d2_lbl, d2_n_lbl),
-            Transform(d3, d3_n), Transform(d3_lbl, d3_n_lbl),
+            Transform(d1, d1_n), FadeTransform(d1_lbl, d1_n_lbl),
+            Transform(d2, d2_n), FadeTransform(d2_lbl, d2_n_lbl),
+            Transform(d3, d3_n), FadeTransform(d3_lbl, d3_n_lbl),
             run_time=7
         )
         self.bring_to_back(n)
@@ -1506,9 +1506,9 @@ class TransformationVisual(Scene):
 
         self.play(
             Transform(n, n_),
-            Transform(d1, d1_c), Transform(d1_lbl, d1_lbl_c),
-            Transform(d2, d2_c), Transform(d2_lbl, d2_lbl_c),
-            Transform(d3, d3_c), Transform(d3_lbl, d3_lbl_c),
+            Transform(d1, d1_c), FadeTransform(d1_n_lbl, d1_lbl_c),
+            Transform(d2, d2_c), FadeTransform(d2_n_lbl, d2_lbl_c),
+            Transform(d3, d3_c), FadeTransform(d3_n_lbl, d3_lbl_c),
             run_time=3
         )
         self.bring_to_back(n)
@@ -1516,9 +1516,9 @@ class TransformationVisual(Scene):
 
         self.play(
             ApplyMethod(n.apply_complex_function, g),
-            Transform(d1, d1_n), Transform(d1_lbl, d1_n_lbl),
-            Transform(d2, d2_n), Transform(d2_lbl, d2_n_lbl),
-            Transform(d3, d3_n), Transform(d3_lbl, d3_n_lbl),
+            Transform(d1, d1_n), FadeTransform(d1_lbl_c, d1_n_lbl),
+            Transform(d2, d2_n), FadeTransform(d2_lbl_c, d2_n_lbl),
+            Transform(d3, d3_n), FadeTransform(d3_lbl_c, d3_n_lbl),
             run_time=5
         )
         self.bring_to_back(n)
@@ -1526,9 +1526,9 @@ class TransformationVisual(Scene):
 
         self.play(
             Transform(n, n_),
-            Uncreate(d1), Uncreate(d1_lbl),
-            Uncreate(d2), Uncreate(d2_lbl),
-            Uncreate(d3), Uncreate(d3_lbl),
+            Uncreate(d1), Uncreate(d1_n_lbl),
+            Uncreate(d2), Uncreate(d2_n_lbl),
+            Uncreate(d3), Uncreate(d3_n_lbl),
             run_time=2
         )
         self.wait(0.5)
@@ -1626,7 +1626,7 @@ class TransformationVisual(Scene):
         self.play(
             ApplyMethod(n.apply_complex_function, g),
             Transform(z_rect, f_rect),
-            Transform(z_lbl, z_lbl2),
+            FadeTransform(z_lbl, z_lbl2),
             Transform(dash_1, dash_1f), Transform(dash_2, dash_2f),
             run_time=10
         )
@@ -1678,7 +1678,7 @@ class TransformationVisual(Scene):
             Transform(z_rect, z_rect2),
             Transform(eq5, eq7),
             Transform(eq6, eq8),
-            Transform(z_lbl, z2_lbl),
+            FadeTransform(z_lbl2, z2_lbl),
             run_time=2
         )
         self.wait()
@@ -1686,7 +1686,7 @@ class TransformationVisual(Scene):
         self.play(
             ApplyMethod(n.apply_complex_function, g),
             Transform(z_rect, f_rect2),
-            Transform(z_lbl, z2_lbl2),
+            FadeTransform(z2_lbl, z2_lbl2),
             Transform(dash_1, dash1f_2), Transform(dash_2, dash2f_2),
             run_time=10
         )
@@ -1723,7 +1723,7 @@ class TransformationVisual(Scene):
             Transform(z_rect, z_rect2),
             Transform(dash_1, dash1_2),
             Transform(dash_2, dash2_2),
-            Transform(z_lbl, z3_lbl),
+            FadeTransform(z2_lbl2, z3_lbl),
         )
         self.play(Write(eq9))
         self.embed()
@@ -1734,7 +1734,7 @@ class TransformationVisual(Scene):
             Transform(z_rect, f_rect3),
             Transform(dash_1, dash1f_3),
             Transform(dash_2, dash2f_3),
-            Transform(z_lbl, z3_lbl2),
+            FadeTransform(z3_lbl, z3_lbl2),
             run_time=10
         )
         self.embed()
@@ -2580,7 +2580,7 @@ class ExpDeriv(Scene):
         self.play(
             ApplyMethod(c.apply_complex_function, np.exp),
             Transform(z_rect, f_rect),
-            Transform(z_lbl, f_lbl),
+            FadeTransform(z_lbl, f_lbl),
             Transform(l1, l1_f),
             Transform(l2, l2_f),
             run_time=10
@@ -2595,7 +2595,7 @@ class ComplexDiffRules(Scene):
         color_map = {"z": A_PINK, "f'": A_GREEN, "g'": A_AQUA, "f": A_GREEN, "g": A_AQUA,
                      "{1}": A_YELLOW, "{n}": A_YELLOW}
 
-        eq1 = Tex(r"[f(g(z))]' = f'(g(z)) \cdot g(z))",
+        eq1 = Tex(r"[f(g(z))]' = f'(g(z)) \cdot g'(z)",
                   tex_to_color_map=color_map)
         eq1.scale(1.5)
         eq1.shift(1.5 * UP)
@@ -2663,13 +2663,15 @@ class Thumbnail(Scene):
         "plane_opacity": 0.65,
         "x": 0.5,
         "y": 0.5,
-        "vec_opacity": 0.75
+        "vec_opacity": 1
     }
 
     def construct(self):
+        NumberPlane
         complex_kwargs = {
             "background_line_style": {
-                "stroke_opacity": self.plane_opacity
+                "stroke_opacity": self.plane_opacity,
+                "stroke_width": 8
             }
         }
         c1 = ComplexPlane(x_range=(-3, 3), y_range=(-3, 3), **complex_kwargs)
@@ -2679,7 +2681,7 @@ class Thumbnail(Scene):
         c2 = ComplexPlane(x_range=(-3, 3), y_range=(-3, 3), **complex_kwargs)
         c2.shift(FRAME_WIDTH/4 * RIGHT)
 
-        input_dot = Dot(c1.c2p(self.x, self.y), color=PURPLE)
+        input_dot = Dot(c1.c2p(-self.x, self.y), color=PURPLE)
         input_dot.set_color(A_PINK)
 
         input_dot_text = Tex("z", color=A_PINK)
@@ -2696,7 +2698,7 @@ class Thumbnail(Scene):
         output_dot_text.add_background_rectangle()
         output_dot_text.next_to(output_dot, DOWN)
 
-        z = [self.x, self.y]
+        z = [-self.x, self.y]
         z_deriv = self.f_deriv(self.x + self.y*1j)
 
         f_z = self.func(self.x + self.y*1j)
@@ -2735,13 +2737,41 @@ class Thumbnail(Scene):
         df_lbl = Tex("df", tex_to_color_map={"f": A_GREEN})
         df_lbl.add_background_rectangle(buff=0.1)
         df_lbl.scale(2)
-        df_lbl.next_to(img_vecs, DOWN)
+        df_lbl.next_to(img_vecs, DOWN)  
 
         c2.prepare_for_nonlinear_transform()
         c2.apply_complex_function(self.func)
         c2.shift(FRAME_WIDTH/4 * RIGHT)
 
         self.add(c1, c2, input_dot, output_dot, vecs, img_vecs, dz_lbl, df_lbl)
+
+        grp1 = VGroup(c1, input_dot, vecs, dz_lbl)
+        grp1.scale(0.5)
+        grp1.scale(1/0.5)
+        grp1.scale(0.85)
+        grp2 = VGroup(c2, output_dot, img_vecs, df_lbl)
+        grp2.scale(0.85)
+        grp2.move_to(FRAME_WIDTH/4 * RIGHT)
+        grp1.center()
+        grp2.center()
+        grp1.shift(FRAME_WIDTH/4 * LEFT)
+        grp2.shift(FRAME_WIDTH/4 * RIGHT)
+
+        n = NumberPlane(axis_config={"stroke_opacity": 0.35}, background_line_style={"stroke_color": GREY, "stroke_opacity":0.35}, faded_line_style={"stroke_width":0})
+        self.bring_to_back(n)
+
+        # dz_lbl.shift(LEFT)
+        # dz_lbl.shift(LEFT)
+        # dz_lbl.shift(UP)
+        # df_lbl.shift(RIGHT)
+        # df_lbl.shift(UP)
+        # df_lbl.shift(0.5 * RIGHT)
+        # df_lbl.shift(0.5 * RIGHT)
+        # df_lbl.shift(0.25 * LEFT)
+
+        # self.remove(dz_lbl, df_lbl)
+
+
         self.wait(1)
         self.embed()
 
@@ -2755,3 +2785,40 @@ class Thumbnail(Scene):
 
     def func(self, z):
         return (1*z + np.sin(z)) * 0.3 - 1
+
+
+class BrilliantAnim(Scene):
+    def construct(self):
+        p = Sphere(radius=2)
+        p.shift(3 * OUT)
+
+        p2 = ParametricSurface(self.func2, u_range=(
+            0, 2 * PI), v_range=(0, 1), fill_opacity=1, resolution=(101, 101))
+
+        sp = TexturedSurface(p, "img/earth_texture.jpeg")
+        sp2 = TexturedSurface(p2, "img/earth_texture.jpeg")
+
+        self.camera.frame.shift(2 * OUT)
+        self.camera.frame.set_euler_angles(-9.96354167,  1.35,  0)
+
+        self.camera.frame.add_updater(
+            lambda f, dt: f.become(f.increment_theta(0.2 * dt)))
+
+        self.play(ShowCreation(sp))
+        self.wait(3)
+
+        self.play(TransformFromCopy(sp, sp2), run_time=7)
+        self.wait(10)
+    
+
+    def func2(self, u, v):
+        x, y, z = 2 * np.array([np.cos(u)*np.sin(v),
+                               np.sin(u)*np.sin(v), np.cos(v)])
+        return np.array([x/(1-z), y/(1-z), 0])
+
+
+class TitleBrilliant(TitleScene):
+    CONFIG = {
+        "color": GREY_E,
+        "text": "https://brilliant.org/vcubingx"
+    }
