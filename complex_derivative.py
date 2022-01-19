@@ -2805,7 +2805,7 @@ class BrilliantAnim(Scene):
             lambda f, dt: f.become(f.increment_theta(0.2 * dt)))
 
         self.play(ShowCreation(sp))
-        self.wait(3)
+        self.wait(2)
 
         self.play(TransformFromCopy(sp, sp2), run_time=7)
         self.wait(10)
