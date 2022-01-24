@@ -2821,3 +2821,122 @@ class TitleBrilliant(TitleScene):
         "color": GREY_E,
         "text": "https://brilliant.org/vcubingx"
     }
+
+
+class TwitchTweet(Thumbnail):
+    def construct(self):
+        complex_kwargs = {
+            "background_line_style": {
+                "stroke_opacity": self.plane_opacity,
+                "stroke_width": 8
+            }
+        }
+        c1 = ComplexPlane(x_range=(-3, 3), y_range=(-3, 3), **complex_kwargs)
+        c1.axes.set_opacity(self.plane_opacity)
+        c1.shift(FRAME_WIDTH/4 * LEFT)
+
+        c2 = ComplexPlane(x_range=(-3, 3), y_range=(-3, 3), **complex_kwargs)
+        c2.shift(FRAME_WIDTH/4 * RIGHT)
+
+        input_dot = Dot(c1.c2p(-self.x, self.y), color=PURPLE)
+        input_dot.set_color(A_PINK)
+
+        input_dot_text = Tex("z", color=A_PINK)
+        input_dot_text.add_background_rectangle()
+        input_dot_text.next_to(input_dot, DOWN)
+        input_dot_text.shift(0.5 * DOWN)
+
+        f_z = self.func(self.x + self.y * 1j)
+        f_z = np.array([f_z.real, f_z.imag, 0])
+
+        output_dot = Dot(c2.c2p(*f_z), color=A_GREEN)
+        output_dot_text = Tex("f(z)", tex_to_color_map={
+                              r"z": A_PINK, "f": A_GREEN})
+        output_dot_text.add_background_rectangle()
+        output_dot_text.next_to(output_dot, DOWN)
+
+        z = [-self.x, self.y]
+        z_deriv = self.f_deriv(self.x + self.y*1j)
+
+        f_z = self.func(self.x + self.y*1j)
+        f_z = [f_z.real, f_z.imag]
+
+        img_vecs = VGroup()
+        vecs = VGroup()
+
+        for t in np.linspace(0, 2*PI, 15)[:-1]:
+            z_0 = np.exp(t*1j)
+            x_0, y_0 = 0.75 * z_0.real, 0.75 * z_0.imag
+
+            f_z0 = (0.3 + 1j) * 0.5 * z_0 * z_deriv
+            f_x0, f_y0 = f_z0.real, f_z0.imag
+
+            v_0 = self.get_vec(
+                c1, [x_0, y_0], stroke_color=A_PINK, stroke_opacity=self.vec_opacity, stroke_width=10, width_to_tip_len=0.0075*4)
+            f_v0 = self.get_vec(
+                c2, [f_x0, f_y0], stroke_color=A_GREEN, stroke_opacity=self.vec_opacity, stroke_width=10, width_to_tip_len=0.0075*4)
+
+            v_0.move_to(c1.c2p(*z), aligned_edge=[-x_0, -y_0, 0])
+            f_v0.move_to(c2.c2p(*f_z), aligned_edge=[-f_x0, -f_y0, 0])
+
+            vecs.add(v_0)
+            img_vecs.add(f_v0)
+
+        vecs.scale(3)
+        #vecs.shift(1.5 * DOWN +  0.5 * LEFT)
+        img_vecs.scale(5)
+
+        dz_lbl = Tex("dz", tex_to_color_map={"z": A_PINK})
+        dz_lbl.add_background_rectangle(buff=0.1)
+        dz_lbl.scale(2)
+        dz_lbl.next_to(vecs, DOWN)
+
+        df_lbl = Tex("df", tex_to_color_map={"f": A_GREEN})
+        df_lbl.add_background_rectangle(buff=0.1)
+        df_lbl.scale(2)
+        df_lbl.next_to(img_vecs, DOWN)
+
+        c2.prepare_for_nonlinear_transform()
+        c2.apply_complex_function(self.func)
+        c2.shift(FRAME_WIDTH/4 * RIGHT)
+
+        grp1 = VGroup(c1, input_dot, vecs, dz_lbl)
+        grp1.scale(0.5)
+        grp1.scale(1/0.5)
+        grp1.scale(0.85)
+        grp2 = VGroup(c2, output_dot, img_vecs, df_lbl)
+        grp2.scale(0.85)
+        grp2.move_to(FRAME_WIDTH/4 * RIGHT)
+        grp1.center()
+        grp2.center()
+        grp1.shift(FRAME_WIDTH/4 * LEFT)
+        grp2.shift(FRAME_WIDTH/4 * RIGHT)
+
+        n = NumberPlane(axis_config={"stroke_opacity": 0.35}, background_line_style={
+                        "stroke_color": GREY, "stroke_opacity": 0.35}, faded_line_style={"stroke_width": 0})
+
+        self.add(c1, c2)
+        self.bring_to_back(n)
+
+        self.play(Write(vecs), Write(input_dot), Write(dz_lbl))
+        self.play(TransformFromCopy(vecs, img_vecs), TransformFromCopy(input_dot, output_dot),
+                  TransformFromCopy(dz_lbl, df_lbl), run_time=5)
+        self.wait(1)
+
+        self.play(
+            Uncreate(VGroup(*[i for i in self.mobjects if isinstance(i, VMobject)])))
+
+        twitch = SVGMobject("img/twitch.svg")
+        twitch.set_color(PURPLE)
+        twitch.shift(UP)
+        text = TexText("twitch.tv/vcubingx")
+        text.scale(2)
+        text.shift(DOWN)
+        text.shift(DOWN)
+        text.shift(UP)
+        grp = VGroup(text, twitch)
+        grp.center()
+
+        self.play(Write(twitch), Write(text))
+        self.wait()
+
