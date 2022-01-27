@@ -192,14 +192,15 @@ class ModularIntro(Scene):
         eq6 = Tex("a+", "(-a)", "=", "0", tex_to_color_map={"a": A_PINK})
         eq6.scale(1.5)
         eq6.move_to(eq5, LEFT)
-        eq6.shift(2 * DOWN)
+        eq6.shift(DOWN)
 
         b = Brace(eq6[2:5])
         t_b = b.get_text("Additive inverse", color=A_GREEN)
         t_b.scale(1.5)
         t_b.shift(0.25 * DOWN)
 
-        eq7 = Tex("a+", "(-a)", "\equiv", "0", tex_to_color_map={"a": A_PINK})
+        eq7 = Tex("a+", "(-a)", "\equiv", "0 \mod 5",
+                  tex_to_color_map={"a": A_PINK, "5": A_AQUA})
         eq7.scale(1.5)
         eq7.move_to(eq6, LEFT)
 
@@ -207,7 +208,7 @@ class ModularIntro(Scene):
         self.play(Write(eq6))
         self.wait()
 
-        self.play(Write(b), Write(b_t))
+        self.play(Write(b), Write(t_b))
         self.wait()
 
         self.play(TransformMatchingTex(eq6, eq7))
