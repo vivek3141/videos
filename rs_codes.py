@@ -160,6 +160,7 @@ class ModularIntro(Scene):
         eq4.move_to(eq3, LEFT)
 
         self.play(FadeOut(eq3, UP), FadeIn(eq4, UP), Uncreate(b1))
+        self.wait()
 
         b1 = SurroundingRectangle(eq4[0], color="#f5fd62", buff=0.15)
 
@@ -171,5 +172,45 @@ class ModularIntro(Scene):
             self.wait(0.5)
 
         self.wait(1)
+
+        self.play(Uncreate(b1))
+        self.wait()
+
+        eq5 = Tex(
+            "1 + (-3) \equiv 3 \mod 5",
+            tex_to_color_map={
+                "1": A_ORANGE, "3": A_ORANGE,
+                "5": A_AQUA
+            }
+        )
+        eq5.scale(1.5)
+        eq5.move_to(eq4, LEFT)
+
+        self.play(TransformMatchingTex(eq4, eq5))
+        self.wait()
+
+        eq6 = Tex("a+", "(-a)", "=", "0", tex_to_color_map={"a": A_PINK})
+        eq6.scale(1.5)
+        eq6.move_to(eq5, LEFT)
+        eq6.shift(2 * DOWN)
+
+        b = Brace(eq6[2:5])
+        t_b = b.get_text("Additive inverse", color=A_GREEN)
+        t_b.scale(1.5)
+        t_b.shift(0.25 * DOWN)
+
+        eq7 = Tex("a+", "(-a)", "\equiv", "0", tex_to_color_map={"a": A_PINK})
+        eq7.scale(1.5)
+        eq7.move_to(eq6, LEFT)
+
+        self.play(ApplyMethod(eq5.shift, UP))
+        self.play(Write(eq6))
+        self.wait()
+
+        self.play(Write(b), Write(b_t))
+        self.wait()
+
+        self.play(TransformMatchingTex(eq6, eq7))
+        self.wait()
 
         self.embed()
