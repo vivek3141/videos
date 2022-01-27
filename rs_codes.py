@@ -1,4 +1,3 @@
-from ast import SetComp
 from manimlib import *
 
 A_AQUA = "#8dd3c7"
@@ -113,338 +112,64 @@ class ModularIntro(Scene):
         self.play(*anims, run_time=5)
         self.wait()
 
+        self.play(
+            Uncreate(s),
+            ApplyMethod(
+                VGroup(c, c_nums).move_to, 4 * RIGHT + 0.5 * DOWN)
+        )
+
+        BackgroundRectangle
+
+        eq3 = Tex(
+            "4 + 3 \equiv 2 \mod 5",
+            tex_to_color_map={
+                "2": A_ORANGE, "3": A_ORANGE,
+                "4": A_ORANGE, "5": A_AQUA
+            }
+        )
+        eq3.scale(1.5)
+        eq3.move_to(eq2, LEFT)
+
+        self.play(FadeOut(eq2, UP), FadeIn(eq3, UP))
+
+        b_rects = VGroup()
+
+        for num in c_nums:
+            b = SurroundingRectangle(num, color="#f5fd62", buff=0.15)
+            b_rects.add(b)
+
+        b1 = SurroundingRectangle(eq3[0], color="#f5fd62", buff=0.15)
+
+        self.play(Write(b1))
+        self.wait()
+
+        for i in range(4, 8):
+            self.play(Transform(b1, b_rects[i % 5]))
+            self.wait(0.5)
+
+        self.wait(1)
+
+        eq4 = Tex(
+            "1 - 3 \equiv 3 \mod 5",
+            tex_to_color_map={
+                "1": A_ORANGE, "3": A_ORANGE,
+                "5": A_AQUA
+            }
+        )
+        eq4.scale(1.5)
+        eq4.move_to(eq3, LEFT)
+
+        self.play(FadeOut(eq3, UP), FadeIn(eq4, UP), Uncreate(b1))
+
+        b1 = SurroundingRectangle(eq4[0], color="#f5fd62", buff=0.15)
+
+        self.play(Write(b1))
+        self.wait()
+
+        for i in range(6, 2, -1):
+            self.play(Transform(b1, b_rects[i % 5]))
+            self.wait(0.5)
+
+        self.wait(1)
+
         self.embed()
-        # s.move_to(UP)
-        # eq1 = Tex("3 + 3 \equiv 1 \mod 5",
-        #           tex_to_color_map={"3": A_ORANGE, "1": A_ORANGE, "5": A_AQUA})
-        # eq1.move_to(0 * UP + 0.5 * LEFT, RIGHT)
-        # add(eq1)
-        # eq1.scale(1.5)
-        # eq1.move_to(0 * UP + 0.5 * LEFT, RIGHT)
-        # t.move_to(1.5 * UP)
-        # s.move_to(1.5 * UP)
-        # remove(s[0])
-        # add(s[0])
-        # remove(s[1])
-        # add(s[1])
-        # remove(eq1)
-        # eq1 = Tex(
-        #     "3 + 3 = 6", tex_to_color_map={"3": A_ORANGE, "6": A_ORANGE, "5": A_AQUA})
-        # eq1.scale(1.5)
-        # eq1.move_to(0 * UP + 0.5 * LEFT, RIGHT)
-        # add(eq1)
-        # eq2 = Tex("3 + 3 \equiv 1 \mod 5",
-        #           tex_to_color_map={"3": A_ORANGE, "1": A_ORANGE, "5": A_AQUA})
-        # add(eq2)
-        # eq2.scale(1.5)
-        # eq2.move_to(0 * UP + 0.5 * LEFT, RIGHT)
-        # eq1.move_to(eq2, LEFT)
-        # remove(eq2)
-        # cp = eq1.copy()
-        # play(TransformMatchingTex(eq1, eq2))
-        # remove(eq1[3])
-        # remove(eq1[2])
-        # remove(eq2[2])
-        # remove(eq2[3])
-        # add(eq2[2])
-        # play(Indicate(eq2[3]))
-        # play(Indicate(eq2[3], scale_factor=2))
-        # play(Indicate(eq2[3], scale_factor=1.5))
-        # play(s.move_to, 4 * RIGHT + UP)
-        # c = Circle(radius=2)
-        # add(c)
-        # c.next_to(t, DOWN)
-        # c.next_to(s, DOWN)
-        # play(s.move_to, 4 * RIGHT + 1.5 * UP)
-        # c.next_to(s, DOWN)
-        # c.set_color(A_GREY)
-        # np.linspace(90, 450)
-        # np.linspace(90, 450, 5)
-        # np.linspace(90, 450, 6)
-        # for t in np.linspace(90, 450, 6):
-        #     x = 2 * np.cos(t)
-        # for i, t in enumerate(np.linspace(-3 * PI/2, PI/2, 6)[:-1]):
-        #     x, y = 2 * np.cos(t), 2 * np.sin(t)
-        #     grp.add(Tex(str(i)).move_to([x, y, 0]))
-        # grp = VGroup()
-        # for i, t in enumerate(np.linspace(-3 * PI/2, PI/2, 6)[:-1]):
-        #     x, y = 2 * np.cos(t), 2 * np.sin(t)
-        #     grp.add(Tex(str(i)).move_to([x, y, 0]))
-        # add(grp)
-        # grp.move_to(c.get_center())
-        # for i, t in enumerate(np.linspace(-3 * PI/2, PI/2, 6)[:-1]):
-        #     x, y = 1.5 * np.cos(t), 1.5 * np.sin(t)
-        #     grp.add(Tex(str(i), color=A_ORANGE).scale(1.5).move_to([x, y, 0]))
-        # remove(grp)
-        # grp = VGroup()
-        # for i, t in enumerate(np.linspace(-3 * PI/2, PI/2, 6)[:-1]):
-        #     x, y = 1.5 * np.cos(t), 1.5 * np.sin(t)
-        #     grp.add(Tex(str(i), color=A_ORANGE).scale(1.5).move_to([x, y, 0]))
-        # add(grp)
-        # grp.move_to(c.get_center())
-        # cent = c.get_center()
-        # remove(grp)
-        # grp = VGroup()
-        # for i, t in enumerate(np.linspace(-3 * PI/2, PI/2, 6)[:-1]):
-        #     x, y = 1.5 * np.cos(t), 1.5 * np.sin(t)
-        #     grp.add(Tex(str(i), color=A_ORANGE).scale(
-        #         1.5).move_to(cent).shift([x, y, 0]))
-        # add(grp)
-        # for i, t in enumerate(np.linspace(PI/2, PI/2 + 2*PI, 6)[:-1]):
-        #     x, y = 1.5 * np.cos(t), 1.5 * np.sin(t)
-        #     grp.add(Tex(str(i), color=A_ORANGE).scale(
-        #         1.5).move_to(cent).shift([x, y, 0]))
-        # remove(grp)
-        # grp = VGroup()
-        # for i, t in enumerate(np.linspace(PI/2, PI/2 + 2*PI, 6)[:-1]):
-        #     x, y = 1.5 * np.cos(t), 1.5 * np.sin(t)
-        #     grp.add(Tex(str(i), color=A_ORANGE).scale(
-        #         1.5).move_to(cent).shift([x, y, 0]))
-        # add(grp)
-        # for i, t in enumerate(np.linspace(PI/2, PI/2 - 2*PI, 6)[:-1]):
-        #     x, y = 1.5 * np.cos(t), 1.5 * np.sin(t)
-        #     grp.add(Tex(str(i), color=A_ORANGE).scale(
-        #         1.5).move_to(cent).shift([x, y, 0]))
-        # remove(grp)
-        # grp = VGroup()
-        # for i, t in enumerate(np.linspace(PI/2, PI/2 - 2*PI, 6)[:-1]):
-        #     x, y = 1.5 * np.cos(t), 1.5 * np.sin(t)
-        #     grp.add(Tex(str(i), color=A_ORANGE).scale(
-        #         1.5).move_to(cent).shift([x, y, 0]))
-        # add(grp)
-        # remove(s[1])
-        # add(s[1])
-        # for i in range(1, 10, 2):
-        #     remove(s[i])
-        # remove(s[3])
-        # remove(s[2])
-        # remove(s[3])
-        # remove(s[4])
-        # remove(s[5])
-        # remove(s[6])
-        # remove(s[7])
-        # 1, 4
-        # remove(s[8])
-        # add(s)
-        # for i in range(1, 17, 3):
-        #     remove(s[i])
-        # add(s)
-        # for i in range(1, 16, 3):
-        #     remove(s[i])
-        # add(s)
-        # remove(s[13])
-        # remove(s[10])
-        # add(s)
-        # add(s)
-        # for i in range(1, 14, 3):
-        #     remove(s[i])
-        # add(s)
-        # remove(grp)
-        # s_num = list(range(1, 14, 3))
-        # anims = []
-        # for i in range(4):
-        #     anims.append(TransformFromCopy(s[s_num[i]], grp[i]))
-        # play(Transform(*anims), run_time=5)
-        # play(*anims, run_time=5)
-        # remove(grp)
-        # s_num
-        # for i in range(5):
-        #     anims.append(TransformFromCopy(s[s_num[i]], grp[i]))
-        # anims = []
-        # for i in range(5):
-        #     anims.append(TransformFromCopy(s[s_num[i]], grp[i]))
-        # anims
-        # play(*anims, run_time=5)
-        # self.embed()
-# eq1 = Tex(r"(+, -, \cross, \olddiv)")
-# add(eq1)
-# eq1.scale(2)
-# eq1 = Tex(r"(+, -, \cross, \olddiv) \mod {p}", tex_to_color_map={"{p}": A_AQUA})
-# remove(self.mobjects[-1])
-# add(eq1)
-# eq1.scale(1.5)
-# eq1.shift(UP)
-# eq1.move_to(1 * UP + 1 * RIGHT, LEFT)
-# eq1.move_to(1 * UP + 1 * RIGHT, RIGH)
-# eq1.move_to(1 * UP + 1 * RIGHT, RIGHT)
-# title.shift(LEFT)
-# title.shift(LEFT)
-# title.shift(LEFT)
-# eq1.next_to(title, RIGHT)
-# eq1.shift(0.5 * RIGHT)
-# title.shift(0.5 * LEFT)
-# eq1.shift(0.5 * LEFT)
-# arrow = Arrow(ORIGIN, 0.25 * RIGHT)
-# add(arrow)
-# remove(arrow)
-# s = Tex("{0, 1, 2, 3, 4}", tex_to_color_map={str(i): A_ORANGE for i in range(5)})
-# add(s)
-# s = Tex(r"\{ 0, 1, 2, 3, 4 \}", tex_to_color_map={str(i): A_ORANGE for i in range(5)})
-# remove(self.mobjects[-1])
-# s = Tex(r"\{0, 1, 2, 3, 4\}", tex_to_color_map={str(i): A_ORANGE for i in range(5)})
-# s1 = Tex(r"\{")
-# s1 = Tex(r"\{ \}")
-# add(s1)
-# s1 = Tex(r"\{")
-# remove(self.mobjects[-1])
-# Set
-# Matrix
-# List
-# eq = Tex(r"\{", *3*["\\quad \\\\"], r"\}")
-# eq = Tex(r"\{" + 3*"\\quad \\\\" + "\}")
-# add(eq)
-# eq = Tex(r"\{" + 3*"\\quad \\" + "\}")
-# remove(self.mobjects[-1])
-# eq = Tex(r"\{" + 3*r"\quad" + r"\}")
-# add(eq)
-# eq1 = Tex("3")
-# eq1 = Tex("3,")
-# eq1.next_to(eq[0])
-# add(eq1)
-# eq1.next_to(eq[-1])
-# eq1.next_to(eq[0])
-# remove(eq1)
-# remove(eq)
-# s = Tex(r"\{")
-# s = TexTextr(r"\{")
-# s = TexText(r"\{")
-# s = TexText(r"$\{$")
-# s = TexText(r"$\{ \}$")
-# add(s)
-# remove(s)
-# s = Tex()
-# Brakcet
-# Bracket
-# GavinBelson
-# s = Tex("negros123")
-# s = Tex("{")
-# add(s)
-# s = Tex("\{")
-# s = Tex(r"\{")
-# %clear
-# s = Tex(r"\{ \}")
-# add(s)
-# remove(s)
-# %clear
-# s = TexText(r"{0, 1, 2, 3, 4}", tex_to_color_map={str(i): A_ORANGE for i in range(5)})
-# add(s)
-# s = TexText(r"\{ 0, 1, 2, 3, 4 \\}", tex_to_color_map={str(i): A_ORANGE for i in range(5)})
-# s = TexText(r"\{ 0, 1, 2, 3, 4 \}", tex_to_color_map={str(i): A_ORANGE for i in range(5)})
-# s = TexText("{1, 2, 3, 4}")
-# add(s)
-# remove(s)
-# remove(s)
-# remove(self.mobjects[-1])
-# s = TexText(r"\{ 0, 1, 2, 3, 4 \}", tex_to_color_map={str(i): A_ORANGE for i in range(5)})
-# s1 = SingleStringTex("{")
-# add(s1)
-# s1 = SingleStringTex(r"\{")
-# %clear
-# %clear
-# t = Text("{")
-# add(t)
-# t = Text("{ 0, 1, 2, 3, 4 }")
-# add(t)
-# remove(self.mobjects[-1])
-# remove(self.mobjects[-1])
-# add(t)
-# t = Text("{0, 1, 2, 3, 4}")
-# remove(self.mobjects[-1])
-# add(t)
-# t = Text("{0, 1, 2, 3, 4}", tex_to_color_map={})
-# t = Text("{0, 1, 2, 3, 4}", tex_to_color_map={"1": A_ORANGE})
-# add(t)
-# remove(t)
-# remove(self.mobjects[-1])
-# add(t)
-# remove(t)
-# t = Text("{0, 1, 2, 3, 4}", t2c={"1": A_ORANGE})
-# add(t)
-# t = Text("{0, 1, 2, 3, 4}", t2c={str(i): A_ORANGE for i in range(5)})
-# add(t)
-# remove(t)
-# remove(t)
-# remove(self.mobjects[-1])
-# add(t)
-# t = Text("{0, 1, 2, 3, 4}", t2c={str(i): A_ORANGE for i in range(5)})
-# remove(self.mobjects[-1])
-# add(t)
-# t.scale(1.5)
-# t.move_to(RIGHT + UP)
-# t.move_to(2 * RIGHT + UP)
-# t.move_to(3 * RIGHT + UP)
-# t.move_to(4 * RIGHT + UP)
-# c = Circle(radius=3)
-# add(c)
-# remove(c)
-# c = Circle(radius=2)
-# add(c)
-# c.next_to(t, DOWN)
-# t.move_to(4 * RIGHT + 1.5 * UP)
-# c.next_to(t, DOWN)
-# remove(c)
-# t.move_to(1.5 * UP)
-# eq1
-# eq1 = Tex("3 + 3 \equiv 1 \mod 5")
-# add(eq1)
-# eq1.scale(1.5)
-# eq1.move_to(0 * UP + 2 * LEFT, RIGHT)
-# eq1.move_to(0 * UP + 3 * LEFT, RIGHT)
-# eq1.move_to(0 * UP + 1 * LEFT, RIGHT)
-# eq1.move_to(0 * UP + 0.5 * LEFT, RIGHT)
-# remove(eq1)
-# eq1 = Tex("3 + 3 \equiv 1 \mod 5", tex_to_color_map={"3": A_ORANGE, "1": A_ORANGE, "5": A_AQUA})
-# eq1.move_to(0 * UP + 0.5 * LEFT, RIGHT)
-# add(eq1)
-# eq1.scale(1.5)
-# eq1.move_to(0 * UP + 0.5 * LEFT, RIGHT)
-# np.linspace(0, 2 * PI, 5)
-# for t in np.linspace(0, 2*PI, 5):
-#     z = np.exp(t*1j)
-#     x, y = z.real, z.imag
-# for t in np.linspace(0, 2*PI, 5):
-#     z = np.exp(t*1j)
-#     x, y = z.real, z.imag
-# for t in np.linspace(0, 2*PI, 5):
-#     z = np.exp(t*1j)
-#     x, y = z.real, z.imag
-# for t in np.linspace(0, 2*PI, 5):
-#     z = np.exp(t*1j)
-#     x, y = z.real, z.imag
-# for t in np.linspace(0, 2*PI, 5):
-#     z = np.exp(t*1j)
-#     x, y = z.real, z.imag
-# grp = VGroup()
-# for i, t in enumerate(np.linspace(0, 2*PI, 5)):
-#     z = np.exp(t*1j)
-#     x, y = z.real, z.imag
-#     grp.add(Tex(str(i)).move_to([x, y, 0]))
-# add(grp)
-# grp.shift(RIGHT)
-# grp.shift(RIGHT)
-# grp.shift(RIGHT)
-# grp.shift(RIGHT)
-# for i, t in enumerate(np.linspace(0, 2*PI, 6))[:-1]:
-#     z = np.exp(t*1j)
-#     x, y = z.real, z.imag
-#     grp.add(Tex(str(i)).move_to([x, y, 0]))
-# for i, t in enumerate(np.linspace(0, 2*PI, 6)[:-1]):
-#     z = np.exp(t*1j)
-#     x, y = z.real, z.imag
-#     grp.add(Tex(str(i)).move_to([x, y, 0]))
-# remove(self.mobjects[-1])
-# grp = VGroup()
-# for i, t in enumerate(np.linspace(0, 2*PI, 6)[:-1]):
-#     z = np.exp(t*1j)
-#     x, y = z.real, z.imag
-#     grp.add(Tex(str(i)).move_to([x, y, 0]))
-# add(grp)
-# grp.shift(RIGHT)
-# grp.shift(RIGHT)
-# grp.shift(RIGHT)
-# grp.shift(RIGHT)
-# grp.shift(RIGHT)
-# remove(grp)
-# np.linspace(90, 450, 5)
-# np.linspace(90, 450, 6)
-#         self.embed()
