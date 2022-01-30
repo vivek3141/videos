@@ -118,8 +118,6 @@ class ModularIntro(Scene):
                 VGroup(c, c_nums).move_to, 4 * RIGHT + 0.5 * DOWN)
         )
 
-        BackgroundRectangle
-
         eq3 = Tex(
             "4 + 3 \equiv 2 \mod 5",
             tex_to_color_map={
@@ -250,6 +248,54 @@ class ModularIntro(Scene):
         cp.move_to(grp)
 
         self.play(Transform(grp, cp), TransformFromCopy(n, cp))
+        self.play(Uncreate(VGroup(eq8, grp2, eq8_2)),
+                  ApplyMethod(VGroup(eq5, cp).shift, DOWN))
         self.wait()
+
+        self.play(FadeOut(VGroup(eq5, cp), UP))
+        self.wait()
+
+        eq10 = Tex(
+            "2 \cdot 3 = 6", tex_to_color_map={"2": A_ORANGE, "3": A_ORANGE, "6": A_ORANGE, "5": A_AQUA})
+        eq10.scale(1.5)
+
+        eq11 = Tex("2 \cdot 3 \equiv 1 \mod 5",
+                   tex_to_color_map={"2": A_ORANGE, "3": A_ORANGE, "1": A_ORANGE, "5": A_AQUA})
+        eq11.scale(1.5)
+
+        eq11.move_to(0 * UP + 0.5 * LEFT, RIGHT)
+        eq10.move_to(eq11, LEFT)
+
+        self.play(Write(eq10))
+        self.wait()
+
+        self.play(TransformMatchingTex(eq10, eq11))
+        self.wait()
+
+        eq12 = Tex(r"2+2+2 \equiv 1 \mod 5",
+                   tex_to_color_map={"2": A_ORANGE, "1": A_ORANGE, "5": A_AQUA})
+        eq12.scale(1.5)
+        eq12.move_to(eq11, LEFT)
+        eq12.shift(1 * DOWN)
+
+        self.play(ApplyMethod(eq11.shift, 0.5 * UP))
+        self.wait(0.5)
+
+        b1 = SurroundingRectangle(eq11[0], color="#f5fd62", buff=0.15)
+
+        self.play(TransformFromCopy(eq11[0:3], eq12[:5]), Write(eq12[5:]))
+        self.wait()
+
+        self.play(Write(b1))
+        self.wait()
+
+        self.play(Indicate(eq12[0], scale_factor=1.5))
+        self.play(Transform(b1, b_rects[2]))
+
+        for i in range(1, 3):
+            self.play(Indicate(eq12[2*(i-1)+1:2*i+1], scale_factor=1.5))
+            for j in range(3):
+                self.play(Transform(b1, b_rects[(2*i + j) % 5]))
+            self.wait()
 
         self.embed()
