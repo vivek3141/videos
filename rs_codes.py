@@ -189,7 +189,7 @@ class ModularIntro(Scene):
         self.play(TransformMatchingTex(eq4, eq5))
         self.wait()
 
-        eq6 = Tex("a+", "(-a)", "=", "0", tex_to_color_map={"a": A_PINK})
+        eq6 = Tex("a", "+", "(-a)", "=", "0", tex_to_color_map={"a": A_PINK})
         eq6.scale(1.5)
         eq6.move_to(eq5, LEFT)
         eq6.shift(DOWN)
@@ -199,7 +199,7 @@ class ModularIntro(Scene):
         t_b.scale(1.5)
         t_b.shift(0.25 * DOWN)
 
-        eq7 = Tex("a+", "(-a)", "\equiv", "0 \mod 5",
+        eq7 = Tex("a", "+", "(-a)", "\equiv", "0", "\mod 5",
                   tex_to_color_map={"a": A_PINK, "5": A_AQUA})
         eq7.scale(1.5)
         eq7.move_to(eq6, LEFT)
@@ -212,6 +212,44 @@ class ModularIntro(Scene):
         self.wait()
 
         self.play(TransformMatchingTex(eq6, eq7))
+        self.wait()
+
+        eq8 = Tex("3", "+", "(-3)", "\equiv", r"0 \mod 5",
+                  tex_to_color_map={"3": A_ORANGE, "5": A_AQUA})
+        eq8.scale(1.5)
+        eq8.move_to(eq7, LEFT)
+
+        eq9 = Tex("3", "+", "2", "\equiv", r"0 \mod 5",
+                  tex_to_color_map={"3": A_ORANGE, "2": A_ORANGE, "5": A_AQUA})
+        eq9.scale(1.5)
+        eq9.move_to(eq7, LEFT)
+
+        n = Tex("2", color=A_ORANGE)
+        n.scale(1.5)
+        n.move_to([-4.09011112, -0.94835368, 0])
+
+        self.play(FadeOut(VGroup(eq7, t_b, b), DOWN))
+        self.wait()
+
+        grp = VGroup(eq5[1][2], eq5[2])
+        grp2 = VGroup(eq8[2][1], eq8[3])
+
+        eq8_2 = eq8[2]
+        eq8.remove(eq8[2], eq8[3])
+
+        self.play(TransformFromCopy(grp, grp2))
+        self.wait()
+
+        self.play(Write(VGroup(eq8_2[0], eq8)))
+        self.wait()
+
+        self.play(Transform(grp2, n))
+        self.wait()
+
+        cp = n.copy()
+        cp.move_to(grp)
+
+        self.play(Transform(grp, cp), TransformFromCopy(n, cp))
         self.wait()
 
         self.embed()
