@@ -276,7 +276,7 @@ class ModularIntro(Scene):
                    tex_to_color_map={"2": A_ORANGE, "1": A_ORANGE, "5": A_AQUA})
         eq12.scale(1.5)
         eq12.move_to(eq11, LEFT)
-        eq12.shift(1 * DOWN)
+        eq12.shift(1.5 * DOWN)
 
         self.play(ApplyMethod(eq11.shift, 0.5 * UP))
         self.wait(0.5)
