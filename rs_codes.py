@@ -298,4 +298,53 @@ class ModularIntro(Scene):
                 self.play(Transform(b1, b_rects[(2*i + j) % 5]))
             self.wait()
 
+        self.play(Uncreate(VGroup(b1, eq11, eq12)))
+        self.wait()
+
+        eq13 = Tex(r"a", r" \cdot ", r"a^{-1} ", r"\equiv 1 \mod 5",
+                   tex_to_color_map={"a": A_PINK, "5": A_AQUA, "1": A_ORANGE})
+        eq13.scale(1.5)
+        eq13.move_to(0.25 * LEFT, RIGHT)
+
+        b = Brace(eq13[2:5])
+
+        b_t = b.get_text("Multiplicative Inverse", color=A_GREEN)
+        b_t.scale(1.25)
+        b_t.shift(0.5 * DOWN + 1.5 * RIGHT)
+
+        self.play(Write(eq13))
+        self.wait()
+
+        self.play(Write(b), Write(b_t))
+        self.wait()
+
+        self.play(ApplyMethod(VGroup(eq13, b, b_t).shift, DOWN))
+        self.wait()
+
+        eq14 = Tex("4", r" \olddiv", "2 \equiv 4 \cdot 2^{-1} \mod 5", tex_to_color_map={
+                   "5": A_AQUA, "4": A_ORANGE, "2": A_ORANGE, "1": A_ORANGE})
+        eq14.scale(1.5)
+        eq14.move_to(eq13, LEFT)
+        eq14.shift(2 * UP)
+
+        eq15 = Tex("4", r" \olddiv", "2 \equiv 4 \cdot 3 \mod 5", tex_to_color_map={
+                   "5": A_AQUA, "4": A_ORANGE, "2": A_ORANGE, "3": A_ORANGE})
+        eq15.scale(1.5)
+        eq15.move_to(eq14, LEFT)
+        eq15.shift(0.07 * DOWN)
+
+        eq16 = Tex("4", r" \olddiv", "2 \equiv 2 \mod 5", tex_to_color_map={
+            "5": A_AQUA, "4": A_ORANGE, "2": A_ORANGE, "3": A_ORANGE})
+        eq16.scale(1.5)
+        eq16.move_to(eq15, LEFT)
+
+        self.play(Write(eq14))
+        self.wait()
+
+        self.play(Transform(eq14[5:], eq15[5:]))
+        self.wait()
+
+        self.play(Transform(eq14[4:], eq16[4:]))
+        self.wait()
+
         self.embed()
