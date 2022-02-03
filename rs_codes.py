@@ -347,4 +347,60 @@ class ModularIntro(Scene):
         self.play(Transform(eq14[4:], eq16[4:]))
         self.wait()
 
+        self.play(Uncreate(VGroup(c, eq14, b, b_t, eq13, c, c_nums)))
+        self.wait()
+
+        l1 = Line(10 * LEFT, 10 * RIGHT)
+        l1.move_to(2 * UP)
+
+        l2 = Line(2 * UP, 10 * DOWN)
+
+        l3 = Line(10 * LEFT, 10 * RIGHT)
+        l3.move_to(0.75 * UP)
+
+        title1 = TexText("Addition", color=A_GREEN)
+        title1.scale(1.25)
+        title1.move_to(FRAME_WIDTH/4 * LEFT + 1.375 * UP)
+
+        title2 = TexText("Multiplication", color=A_GREEN)
+        title2.scale(1.25)
+        title2.move_to(FRAME_WIDTH/4 * RIGHT + 1.3 * UP)
+
+        m = {"a": A_PINK, "b": A_PINK, "p": A_AQUA}
+
+        def create_eq(eq, n, direction):
+            return Tex(eq, tex_to_color_map=m if n < 3 else {**m, "c": A_PINK}).shift(FRAME_WIDTH/4 * direction + (n-1) * 0.75 * DOWN)
+
+        add_eqs = VGroup()
+        add_tex = [
+            "(a + b) + c \equiv a + (b + c)",
+            "a + b \equiv b + a",
+            "a(b+c) \equiv ab+ac",
+            "a + 0 \equiv a \equiv 0 + a",
+            "a + (-a) \equiv 0 \equiv (-a) + a"
+        ]
+
+        mul_eqs = VGroup()
+        mul_tex = [
+            "(ab)c \equiv a(bc)",
+            "ab \equiv ba",
+            "(a+b)c \equiv ac + bc",
+            r"a \cdot 1 \equiv a \equiv 1 \cdot a",
+            r"aa^{-1} \equiv 1 \equiv a^{-1} a; a \neq 0",
+        ]
+
+        for i in range(5):
+            add_eqs.add(create_eq(add_tex[i] + r" \mod p", i+1, LEFT))
+            mul_eqs.add(create_eq(mul_tex[i] + r" \mod p", i+1, RIGHT))
+
+        self.play(Write(l1), Write(l2), Write(l3))
+
+        self.play(Write(title1))
+        self.play(Write(add_eqs))
+
+        self.play(Write(title2))
+        self.play(Write(mul_eqs))
+
+        self.wait()
+
         self.embed()
