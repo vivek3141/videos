@@ -404,3 +404,62 @@ class ModularIntro(Scene):
         self.wait()
 
         self.embed()
+
+
+class LagrangeIntro(Scene):
+    def construct(self):
+        coors = [(1, 2), (3, 2), (4, -1)]
+
+        axes = Axes(
+            x_range=(0, 5),
+            y_range=(-3, 3),
+            axis_config={"include_tip": False},
+            x_axis_config={"stroke_width": 6},
+            y_axis_config={"stroke_width": 6}
+        )
+
+        points = VGroup()
+        labels = VGroup()
+        offsets = [0.5 * RIGHT, 0.5 * LEFT, 0.75 * LEFT]
+
+        for i, (x, y) in enumerate(coors):
+            d = Dot(
+                axes.c2p(x, y),
+                radius=2 * DEFAULT_DOT_RADIUS, color=A_GREEN
+            )
+
+            t = Tex(f"({x}, {y})")
+            t.next_to(d, DOWN)
+            t.shift(offsets[i])
+
+            points.add(d)
+            labels.add(t)
+
+        c = ParametricCurve(
+            lambda t: axes.c2p(t, self.func(t)),
+            t_range=(0, 5), stroke_width=6, color=A_GREEN
+        )
+
+        eq = Tex(
+            "p(x) = -x^2 + 4x - 1",
+            tex_to_color_map={"p": A_GREEN, "x": A_PINK}
+        )
+        eq.scale(1.5)
+        eq.shift(3.25 * UP)
+
+        grp = VGroup(axes, c, points, labels)
+
+        self.play(Write(axes), Write(points), Write(labels))
+        self.wait()
+
+        self.play(Write(c))
+        self.wait()
+
+        self.play(ApplyMethod(grp.shift, 0.5 * DOWN))
+        self.play(Write(eq))
+        self.wait()
+
+        self.embed()
+
+    def func(self, x):
+        return -x**2 + 4*x - 1
