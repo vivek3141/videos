@@ -459,6 +459,57 @@ class LagrangeIntro(Scene):
         self.play(Write(eq))
         self.wait()
 
+        self.play(Uncreate(VGroup(eq, c)), ApplyMethod(grp.shift, 0.5 * UP))
+
+        def l1(x): return (x-3)*(x-4)/6
+        l1_c = ParametricCurve(
+            lambda t: axes.c2p(t, l1(t)),
+            t_range=(0, 5), color=A_RED, stroke_width=6,
+        )
+        l1_cp = l1_c.copy()
+        l1_cp.set_stroke(opacity=0.25)
+
+        def l2(x): return (x-1)*(x-4)/-2
+        l2_c = ParametricCurve(
+            lambda t: axes.c2p(t, l2(t)),
+            t_range=(0, 5), color=A_YELLOW, stroke_width=6,
+        )
+        l2_cp = l2_c.copy()
+        l2_cp.set_stroke(opacity=0.25)
+
+        def l3(x): return (x-1)*(x-3)/3
+        l3_c = ParametricCurve(
+            lambda t: axes.c2p(t, l3(t)),
+            t_range=(0, 5), color=A_BLUE, stroke_width=6,
+        )
+        l3_cp = l3_c.copy()
+        l3_cp.set_stroke(opacity=0.25)
+
+        l_c = VGroup(l1_c, l2_c, l3_c)
+        l_cp = l_c.deepcopy()
+        l_faded = VGroup(l1_cp, l2_cp, l3_cp)
+
+        self.play(
+            Write(l_c),
+        )
+
+        def hide_all_but(idx):
+            anims = []
+
+            for i in range(3):
+                if i != idx:
+                    anims.append(Transform(l_c[i], l_faded[i]))
+
+            self.play(*anims)
+
+        def show_all():
+            anims = []
+
+            for i in range(3):
+                anims.append(Transform([i], l_cp[i]))
+
+            self.play(*anims)
+
         self.embed()
 
     def func(self, x):
