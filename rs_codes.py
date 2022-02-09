@@ -1,3 +1,4 @@
+import xdrlib
 from manimlib import *
 
 A_AQUA = "#8dd3c7"
@@ -407,8 +408,14 @@ class ModularIntro(Scene):
 
 
 class LagrangeIntro(Scene):
+    CONFIG = {
+        "fade_opacity": 0.15
+    }
+
     def construct(self):
-        coors = [(1, 2), (3, 2), (4, -1)]
+        x_vals = [1, 3, 4]
+        y_vals = [2, 2, -1]
+        coors = [(x_vals[i], y_vals[i]) for i in range(3)]
 
         axes = Axes(
             x_range=(0, 5),
@@ -467,7 +474,7 @@ class LagrangeIntro(Scene):
             t_range=(0, 5), color=A_RED, stroke_width=6,
         )
         l1_cp = l1_c.copy()
-        l1_cp.set_stroke(opacity=0.25)
+        l1_cp.set_stroke(opacity=self.fade_opacity)
 
         def l2(x): return (x-1)*(x-4)/-2
         l2_c = ParametricCurve(
@@ -475,7 +482,7 @@ class LagrangeIntro(Scene):
             t_range=(0, 5), color=A_YELLOW, stroke_width=6,
         )
         l2_cp = l2_c.copy()
-        l2_cp.set_stroke(opacity=0.25)
+        l2_cp.set_stroke(opacity=self.fade_opacity)
 
         def l3(x): return (x-1)*(x-3)/3
         l3_c = ParametricCurve(
@@ -483,7 +490,7 @@ class LagrangeIntro(Scene):
             t_range=(0, 5), color=A_BLUE, stroke_width=6,
         )
         l3_cp = l3_c.copy()
-        l3_cp.set_stroke(opacity=0.25)
+        l3_cp.set_stroke(opacity=self.fade_opacity)
 
         l_c = VGroup(l1_c, l2_c, l3_c)
         l_cp = l_c.deepcopy()
@@ -506,9 +513,34 @@ class LagrangeIntro(Scene):
             anims = []
 
             for i in range(3):
-                anims.append(Transform([i], l_cp[i]))
+                anims.append(Transform(l_c[i], l_cp[i]))
 
             self.play(*anims)
+
+        def one_hot(x, i):
+            return 1 if x == x_vals[i] else 0
+
+        def show_curve(curve_index):
+            points.set_opacity(self.fade_opacity)
+
+            hide_all_but(curve_index)
+
+            points_0 = VGroup()
+            for x in x_vals:
+                points_0.add(
+                    Dot(axes.c2p(x, one_hot(x, 0)),
+                        radius=0.1, color=A_RED)
+                )
+
+            labels_0 = VGroup()
+
+            for i in range(3):
+                labels_0.add(
+                    Tex(f"({x_vals[i]}, {one_hot(curve_index, 0)})"
+                        ).next_to(points_0[i], UP)
+                )
+
+            show_all()
 
         self.embed()
 
