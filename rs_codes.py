@@ -409,7 +409,8 @@ class ModularIntro(Scene):
 
 class LagrangeIntro(Scene):
     CONFIG = {
-        "fade_opacity": 0.15
+        "fade_opacity": 0.15,
+        "curve_opacity": 1
     }
 
     def construct(self):
@@ -476,6 +477,7 @@ class LagrangeIntro(Scene):
         l1_c = ParametricCurve(
             lambda t: axes.c2p(t, l1(t)),
             t_range=(0, 5), color=colors[0], stroke_width=6,
+            stroke_opacity=self.curve_opacity
         )
         l1_cp = l1_c.copy()
         l1_cp.set_stroke(opacity=self.fade_opacity)
@@ -484,6 +486,7 @@ class LagrangeIntro(Scene):
         l2_c = ParametricCurve(
             lambda t: axes.c2p(t, l2(t)),
             t_range=(0, 5), color=colors[1], stroke_width=6,
+            stroke_opacity=self.curve_opacity
         )
         l2_cp = l2_c.copy()
         l2_cp.set_stroke(opacity=self.fade_opacity)
@@ -492,6 +495,7 @@ class LagrangeIntro(Scene):
         l3_c = ParametricCurve(
             lambda t: axes.c2p(t, l3(t)),
             t_range=(0, 5), color=colors[2], stroke_width=6,
+            stroke_opacity=self.curve_opacity
         )
         l3_cp = l3_c.copy()
         l3_cp.set_stroke(opacity=self.fade_opacity)
@@ -534,7 +538,7 @@ class LagrangeIntro(Scene):
             for x in x_vals:
                 points_0.add(
                     Dot(axes.c2p(x, one_hot(x, curve_index)),
-                        radius=0.1, color=colors[i])
+                        radius=0.1, color=colors[curve_index])
                 )
 
             labels_0 = VGroup()
@@ -548,11 +552,36 @@ class LagrangeIntro(Scene):
             self.play(Write(points_0), Transform(labels, labels_0))
             self.wait()
 
+            self.play(Indicate(labels[curve_index]))
+            self.wait()
+
             self.play(Transform(labels, labels_cp),
                       ApplyMethod(points.set_opacity, 1),
                       Uncreate(points_0))
             show_all()
+
             self.wait()
+
+        show_curve(0)
+        show_curve(1)
+
+        eq = Tex(
+            "l_1(x) = (x-3)(x-4)",
+            tex_to_color_map={"x": A_PINK, "l_1": A_RED,
+                              "3": A_ORANGE, "4": A_ORANGE}
+        )
+        eq.scale(1.5)
+        eq.shift(3 * UP)
+
+        eq2 = Tex(
+            "l_1(x) =", r"{{1} \over {6}}", "(x-3)(x-4)",
+            tex_to_color_map={"x": A_PINK, "l_1": A_RED,
+                              "{1}": A_ORANGE, "{6}": A_ORANGE}
+        )
+        eq2.scale(1.5)
+        eq2.shift(3 * UP)
+
+        #self.play(TransformFromCopy(eq2, l_cp[0]))
 
         self.embed()
 
