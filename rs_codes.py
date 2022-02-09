@@ -517,8 +517,8 @@ class LagrangeIntro(Scene):
 
             self.play(*anims)
 
-        def one_hot(x, i):
-            return 1 if x == x_vals[i] else 0
+        def one_hot(x_val, curve_index):
+            return 1 if x_val == x_vals[curve_index] else 0
 
         def show_curve(curve_index):
             points.set_opacity(self.fade_opacity)
@@ -526,9 +526,10 @@ class LagrangeIntro(Scene):
             hide_all_but(curve_index)
 
             points_0 = VGroup()
+
             for x in x_vals:
                 points_0.add(
-                    Dot(axes.c2p(x, one_hot(x, 0)),
+                    Dot(axes.c2p(x, one_hot(x, curve_index)),
                         radius=0.1, color=A_RED)
                 )
 
@@ -536,7 +537,7 @@ class LagrangeIntro(Scene):
 
             for i in range(3):
                 labels_0.add(
-                    Tex(f"({x_vals[i]}, {one_hot(curve_index, 0)})"
+                    Tex(f"({x_vals[i]}, {one_hot(x_vals[i], curve_index)})"
                         ).next_to(points_0[i], UP)
                 )
 
