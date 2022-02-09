@@ -417,6 +417,8 @@ class LagrangeIntro(Scene):
         y_vals = [2, 2, -1]
         coors = [(x_vals[i], y_vals[i]) for i in range(3)]
 
+        colors = [A_RED, A_YELLOW, A_BLUE]
+
         axes = Axes(
             x_range=(0, 5),
             y_range=(-3, 3),
@@ -441,6 +443,8 @@ class LagrangeIntro(Scene):
 
             points.add(d)
             labels.add(t)
+
+        labels_cp = labels.copy()
 
         c = ParametricCurve(
             lambda t: axes.c2p(t, self.func(t)),
@@ -471,7 +475,7 @@ class LagrangeIntro(Scene):
         def l1(x): return (x-3)*(x-4)/6
         l1_c = ParametricCurve(
             lambda t: axes.c2p(t, l1(t)),
-            t_range=(0, 5), color=A_RED, stroke_width=6,
+            t_range=(0, 5), color=colors[0], stroke_width=6,
         )
         l1_cp = l1_c.copy()
         l1_cp.set_stroke(opacity=self.fade_opacity)
@@ -479,7 +483,7 @@ class LagrangeIntro(Scene):
         def l2(x): return (x-1)*(x-4)/-2
         l2_c = ParametricCurve(
             lambda t: axes.c2p(t, l2(t)),
-            t_range=(0, 5), color=A_YELLOW, stroke_width=6,
+            t_range=(0, 5), color=colors[1], stroke_width=6,
         )
         l2_cp = l2_c.copy()
         l2_cp.set_stroke(opacity=self.fade_opacity)
@@ -487,7 +491,7 @@ class LagrangeIntro(Scene):
         def l3(x): return (x-1)*(x-3)/3
         l3_c = ParametricCurve(
             lambda t: axes.c2p(t, l3(t)),
-            t_range=(0, 5), color=A_BLUE, stroke_width=6,
+            t_range=(0, 5), color=colors[2], stroke_width=6,
         )
         l3_cp = l3_c.copy()
         l3_cp.set_stroke(opacity=self.fade_opacity)
@@ -530,7 +534,7 @@ class LagrangeIntro(Scene):
             for x in x_vals:
                 points_0.add(
                     Dot(axes.c2p(x, one_hot(x, curve_index)),
-                        radius=0.1, color=A_RED)
+                        radius=0.1, color=colors[i])
                 )
 
             labels_0 = VGroup()
@@ -541,7 +545,14 @@ class LagrangeIntro(Scene):
                         ).next_to(points_0[i], UP)
                 )
 
+            self.play(Write(points_0), Transform(labels, labels_0))
+            self.wait()
+
+            self.play(Transform(labels, labels_cp),
+                      ApplyMethod(points.set_opacity, 1),
+                      Uncreate(points_0))
             show_all()
+            self.wait()
 
         self.embed()
 
