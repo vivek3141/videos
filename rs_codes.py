@@ -420,6 +420,11 @@ class LagrangeIntro(Scene):
 
         colors = [A_RED, A_YELLOW, A_BLUE]
 
+        curve_kwargs = {
+            "stroke_width": 6,
+            "stroke_opacity": self.curve_opacity
+        }
+
         axes = Axes(
             x_range=(0, 5),
             y_range=(-3, 3),
@@ -566,7 +571,7 @@ class LagrangeIntro(Scene):
         show_curve(1)
 
         eq = Tex(
-            "l_1(x) = (x-3)(x-4)",
+            "l_1(x)", "=", "(x-3)", "(x-4)",
             tex_to_color_map={"x": A_PINK, "l_1": A_RED,
                               "3": A_ORANGE, "4": A_ORANGE}
         )
@@ -574,12 +579,94 @@ class LagrangeIntro(Scene):
         eq.shift(3 * UP)
 
         eq2 = Tex(
-            "l_1(x) =", r"{{1} \over {6}}", "(x-3)(x-4)",
+            "l_1(x)", "=", r"{{1} \over {6}}", "(x-3)", "(x-4)",
             tex_to_color_map={"x": A_PINK, "l_1": A_RED,
-                              "{1}": A_ORANGE, "{6}": A_ORANGE}
+                              "{1}": A_ORANGE, "{6}": A_ORANGE,
+                              "3": A_ORANGE, "4": A_ORANGE}
         )
         eq2.scale(1.5)
         eq2.shift(3 * UP)
+
+        def p(x): return 2*l1(x) + 2*l2(x) - 1*l3(x)
+
+        eq3 = Tex(r"p(x) =", r" 2 \cdot l_1(x)", r" + 2 \cdot ", r"l_2(x)", r" + (-1) \cdot ", r"l_3(x)",
+                  tex_to_color_map={"l_1": A_RED, "l_2": A_YELLOW, "l_3": A_BLUE, "x": A_PINK, "p": A_GREEN})
+        eq3.shift(3.25 * UP)
+        eq3.scale(1.5)
+
+        def func(t):
+            return axes.c2p(t, p(t))
+
+        self.play(Uncreate(l_c))
+        self.wait()
+
+        self.play(Write(eq))
+        self.wait()
+
+        self.play(TransformMatchingTex(eq, eq2))
+        self.wait()
+
+        self.play(TransformFromCopy(eq2, l_cp[0]))
+        self.wait()
+
+        self.play(FadeOut(VGroup(eq2[4:], l_cp[0], l_c[0])))
+
+        grp2 = VGroup(axes, points, labels)
+        c.shift(0.5 * DOWN)
+        l_cp.shift(0.5 * DOWN)
+
+        self.play(
+            ApplyMethod(grp2.shift, 0.5 * DOWN),
+            ReplacementTransform(eq2[:4], eq3[5:9])
+        )
+
+        def func_lc_1(t):
+            return axes.c2p(t, 2 * l1(t))
+
+        def func_lc_2(t):
+            return axes.c2p(t, 2*l1(t) + 2*l2(t))
+
+        def func_lc_3(t):
+            return axes.c2p(t, 2*l1(t) + 2*l2(t) + -1*l3(t))
+
+        color_avg = rgb_to_hex((hex_to_rgb(A_RED) + hex_to_rgb(A_YELLOW))/2)
+
+        lc_1 = ParametricCurve(func_lc_1, t_range=(
+            0, 5), color=colors[0], **curve_kwargs)
+        lc_2 = ParametricCurve(func_lc_2, t_range=(
+            0, 5), color=color_avg, **curve_kwargs)
+        lc_3 = ParametricCurve(func_lc_3, t_range=(
+            0, 5), color=A_GREEN, **curve_kwargs)
+
+        self.play(Write(eq3[:4]))
+        self.wait()
+
+        self.play(TransformFromCopy(eq3[5:9], l_cp[0]))
+        self.wait()
+
+        self.play(Write(eq3[4]))
+        self.bring_to_front(eq3[:9], points, labels)
+        self.play(Indicate(eq3[4]))
+        self.play(Transform(l_cp[0], lc_1), ApplyMethod(
+            points[0].set_color, A_RED), run_time=3.5)
+        self.wait()
+
+        self.play(Write(eq3[9:14]))
+        self.play(Indicate(eq3[9:14]))
+
+        self.play(Transform(l_cp[0], lc_2), ApplyMethod(
+            points[:2].set_color, rgb_to_hex(color_avg)), run_time=3.5)
+        self.wait()
+
+        self.play(Write(eq3[14:]))
+        self.play(Indicate(eq3[14:]))
+        self.play(Transform(l_cp[0], lc_3), ApplyMethod(
+            points.set_color, A_GREEN), run_time=3.5)
+        self.wait()
+
+        # self.play(Write(eq3))
+        # self.play(Write(c))
+        # self.wait()
 
         #self.play(TransformFromCopy(eq2, l_cp[0]))
 
