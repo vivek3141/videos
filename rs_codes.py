@@ -476,7 +476,7 @@ class LagrangeIntro(Scene):
         self.play(Write(eq))
         self.wait()
 
-        self.play(Uncreate(VGroup(eq, c)), ApplyMethod(grp.shift, 0.5 * UP))
+        self.play(FadeOut(VGroup(eq, c)), ApplyMethod(grp.shift, 0.5 * UP))
 
         def l1(x): return (x-3)*(x-4)/6
         l1_c = ParametricCurve(
@@ -570,13 +570,13 @@ class LagrangeIntro(Scene):
         show_curve(0)
         show_curve(1)
 
-        eq = Tex(
+        eq1 = Tex(
             "l_1(x)", "=", "(x-3)", "(x-4)",
             tex_to_color_map={"x": A_PINK, "l_1": A_RED,
                               "3": A_ORANGE, "4": A_ORANGE}
         )
-        eq.scale(1.5)
-        eq.shift(3 * UP)
+        eq1.scale(1.5)
+        eq1.shift(3 * UP)
 
         eq2 = Tex(
             "l_1(x)", "=", r"{{1} \over {6}}", "(x-3)", "(x-4)",
@@ -600,10 +600,10 @@ class LagrangeIntro(Scene):
         self.play(Uncreate(l_c))
         self.wait()
 
-        self.play(Write(eq))
+        self.play(Write(eq1))
         self.wait()
 
-        self.play(TransformMatchingTex(eq, eq2))
+        self.play(TransformMatchingTex(eq1, eq2))
         self.wait()
 
         self.play(TransformFromCopy(eq2, l_cp[0]))
@@ -655,7 +655,7 @@ class LagrangeIntro(Scene):
         self.play(Indicate(eq3[9:14]))
 
         self.play(Transform(l_cp[0], lc_2), ApplyMethod(
-            points[:2].set_color, rgb_to_hex(color_avg)), run_time=3.5)
+            points[:2].set_color, color_avg), run_time=3.5)
         self.wait()
 
         self.play(Write(eq3[14:]))
@@ -664,11 +664,8 @@ class LagrangeIntro(Scene):
             points.set_color, A_GREEN), run_time=3.5)
         self.wait()
 
-        # self.play(Write(eq3))
-        # self.play(Write(c))
-        # self.wait()
-
-        #self.play(TransformFromCopy(eq2, l_cp[0]))
+        self.play(TransformMatchingTex(eq3, eq))
+        self.wait()
 
         self.embed()
 
