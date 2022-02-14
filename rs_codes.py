@@ -512,6 +512,7 @@ class LagrangeIntro(Scene):
         self.play(
             Write(l_c),
         )
+        self.wait()
 
         def hide_all_but(idx):
             anims = []
@@ -569,6 +570,7 @@ class LagrangeIntro(Scene):
 
         show_curve(0)
         show_curve(1)
+        show_curve(2)
 
         eq1 = Tex(
             "l_1(x)", "=", "(x-3)", "(x-4)",
@@ -671,3 +673,8 @@ class LagrangeIntro(Scene):
 
     def func(self, x):
         return -x**2 + 4*x - 1
+
+
+class LagrangeUnique(Scene):
+    def construct(self):
+        self.embed()
