@@ -1,4 +1,3 @@
-import xdrlib
 from manimlib import *
 
 A_AQUA = "#8dd3c7"
@@ -22,7 +21,7 @@ class NumberSquare(VGroup):
         self.sq = Square(side_length=side_length, fill_color=color,
                          fill_opacity=opacity, **square_kwargs)
         self.num = Tex(str(number), **tex_kwargs)
-        self.num.scale(3)
+        self.num.scale(num_scale)
 
         self.add(self.sq, self.num)
 
@@ -677,4 +676,122 @@ class LagrangeIntro(Scene):
 
 class LagrangeUnique(Scene):
     def construct(self):
+        dots = Tex(r".\\.\\.\\")
+
+        p1 = Tex(
+            "(x_{1}, y_{1})",
+            tex_to_color_map={"1": A_ORANGE, "x": A_PINK, "y": A_GREEN}
+        )
+        p1.scale(1.5)
+        p1.shift(1.75 * UP)
+
+        p2 = Tex(
+            "(x_{n}, y_{n})",
+            tex_to_color_map={"n": A_ORANGE, "x": A_PINK, "y": A_GREEN}
+        )
+        p2.scale(1.5)
+        p2.shift(1.5 * DOWN)
+
+        axes = Axes(x_range=(0, 5), y_range=(-3, 3), axis_config={
+                    "include_tip": False}, x_axis_config={"stroke_width": 6}, y_axis_config={"stroke_width": 6})
+
+        coors = [[i+np.random.random(), 6*np.random.random()-3]
+                 for i in range(5)]
+
+        points = VGroup()
+        labels = VGroup()
+
+        for i, (x, y) in enumerate(coors):
+            points.add(
+                Dot(axes.c2p(x, y), color=A_ORANGE, radius=2*DEFAULT_DOT_RADIUS)
+            )
+            labels.add(
+                Tex(f"(x_{{{i+1}}}, y_{{{i+1}}})",
+                    tex_to_color_map={
+                        str(i+1): A_ORANGE,
+                        "x": A_PINK, "y": A_GREEN}
+                    ).next_to(points[i], DOWN)
+            )
+
+        self.play(Write(axes))
+        self.play(Write(points), Write(labels))
+        self.wait()
+
+        grp1 = VGroup(axes, points, labels)
+
+        grp2 = VGroup(dots, p1, p2)
+        grp2.shift(4 * RIGHT)
+
+        l = Line(10 * UP, 10 * DOWN)
+        l.shift(2 * RIGHT)
+
+        self.play(Transform(grp1, grp2))
+        self.play(Write(l))
+        self.wait()
+
+        l1 = Line(10 * LEFT, 2 * RIGHT)
+        l1.shift(2.25 * UP)
+
+        l2 = Line(10 * LEFT, 2 * RIGHT)
+        l2.shift(0.7 * DOWN)
+
+        eq1 = Tex(
+            "p(x_i)", "=", "q(x_i)", "= y_i",
+            tex_to_color_map={"p": A_LAVENDER, "q": A_AQUA,
+                              "y": A_GREEN, "i": A_ORANGE, "x": A_PINK}
+        )
+        eq1.scale(1.5)
+        eq1.move_to(2.5 * LEFT + 3 * UP)
+
+        eq2 = Tex("r(x)", "=", "p(x)", "-", "q(x)",
+                  tex_to_color_map={"x": A_PINK, "p": A_LAVENDER, "q": A_AQUA, "r": A_RED})
+        eq2.scale(1.5)
+        eq2.next_to(eq1, DOWN).shift(0.5 * DOWN)
+
+        self.play(Write(eq1))
+        self.wait()
+
+        self.play(TransformFromCopy(eq1[:4], eq2[5:9]), TransformFromCopy(
+            eq1[6:10], eq2[10:]), Write(eq2[:5]), Write(eq2[9]), run_time=2)
+        self.play(Write(l1))
+        self.wait()
+
+        eq3 = Tex(r"\mathrm{deg} \ r(x)", r"\leq n-1", tex_to_color_map={"r": A_RED,
+                  "x": A_PINK, r"\mathrm{deg}": A_YELLOW, "n": A_ORANGE, "1": A_ORANGE})
+        eq3.scale(1.5)
+        eq3.next_to(eq2, DOWN).shift(0.5 * DOWN)
+
+        self.play(TransformFromCopy(eq2[:4], eq3[1:5]), Write(
+            eq3[0]), Write(eq3[5:]), run_time=2)
+        self.wait()
+
+        eq4 = Tex(r"r(x_i) = p(x_i) - q(x_i)", tex_to_color_map={
+            "i": A_ORANGE, "p": A_LAVENDER,
+            "q": A_AQUA, "x": A_PINK, "y": A_GREEN, "r": A_RED}
+        )
+        eq4.scale(1.5)
+        eq4.next_to(eq3, DOWN).shift(0.65 * DOWN)
+
+        eq4_1 = Tex(r"r(x_i)", "= 0", tex_to_color_map={
+                    "i": A_ORANGE, "r": A_RED, "x": A_PINK})
+        eq4_1.scale(1.5)
+        eq4_1.move_to(eq4, LEFT)
+
+        self.play(Write(l2))
+        self.play(Write(eq4))
+        self.wait()
+
+        self.play(Transform(eq4[5:], eq4_1[5]))
+        self.play(ApplyMethod(eq4.shift, (eq3.get_center()
+                  [1] - eq4.get_center()[1]) * RIGHT))
+        self.wait()
+
+        eq5 = Tex(r"\mathrm{deg} \ r(x)", r"=n", tex_to_color_map={
+                  "r": A_RED, "x": A_PINK, r"\mathrm{deg}": A_YELLOW, "n": A_ORANGE, "1": A_ORANGE})
+        eq5.scale(1.5)
+        eq5.next_to(eq4, DOWN).shift(0.5 * DOWN)
+
+        self.play(Write(eq5))
+        self.wait()
+
         self.embed()
