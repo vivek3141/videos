@@ -795,3 +795,34 @@ class LagrangeUnique(Scene):
         self.wait()
 
         self.embed()
+
+
+class FinitePoly(Scene):
+    def construct(self):
+        eq = Tex(r"f(x) = x^2 + 2 \mod 5",
+                 tex_to_color_map={"5": A_ORANGE, "2": A_YELLOW, "x": A_PINK, "f": A_GREEN})
+        eq.scale(1.5)
+        eq.shift(3.25 * UP)
+
+        axes = Axes(
+            x_range=(0, 4), y_range=(0, 4),
+            axis_config={"include_tip": False}, x_axis_config={"stroke_width": 6}, y_axis_config={"stroke_width": 6}
+        )
+        axes.add_coordinate_labels()
+
+        self.play(Write(eq))
+        self.play(Write(axes))
+        self.wait()
+
+        points = VGroup()
+
+        for x in range(0, 5):
+            y = (x**2 + 2) % 5
+            obj = Dot(axes.c2p(x, y), color=A_RED,
+                      radius=2 * DEFAULT_DOT_RADIUS)
+            points.add(obj)
+
+        self.play(Write(points))
+        self.wait()
+
+        self.embed()
