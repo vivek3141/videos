@@ -26,6 +26,11 @@ class NumberSquare(VGroup):
         self.add(self.sq, self.num)
 
 
+class LabelledNumberSquare(NumberSquare):
+    def __init__(self, *args, **kwargs):
+        NumberSquare.__init__(self, *args, **kwargs)
+
+
 class RS(Scene):
     def construct(self):
         s = VGroup()
@@ -823,6 +828,42 @@ class FinitePoly(Scene):
             points.add(obj)
 
         self.play(Write(points))
+        self.wait()
+
+        self.embed()
+
+
+class RSCodes(Scene):
+    def construct(self):
+        shades = ["#fc998e", "#fb8d80", "#fb8072", "#e27367", "#c9665b"]
+        numbers = [2, 6, 1, 4, "?", "?"]
+
+        c = [2, 4, 0, 4, 1, 3]
+
+        s = VGroup()
+        for i in range(4):
+            s_i = NumberSquare(
+                numbers[i], shades[c[i]], side_length=1.5, num_scale=2)
+            s.add(s_i.shift(2*i * RIGHT))
+        s.center()
+
+        self.play(Write(s))
+        self.wait()
+
+        s2 = VGroup()
+        for i in range(6):
+            s_i = NumberSquare(
+                numbers[i], shades[c[i]], side_length=1, num_scale=1.5)
+            s2.add(s_i.shift(1.5*i * RIGHT))
+        s2.center()
+
+        b = Brace(s2[-2:])
+        t = b.get_tex("k = 2", tex_to_color_map={"k": A_YELLOW, "2": A_ORANGE})
+        t.scale(1.5)
+        t.shift(0.25 * DOWN)
+
+        self.play(ReplacementTransform(s, s2[:5]), Write(s2[5:]))
+        self.play(GrowFromCenter(b), Write(t))
         self.wait()
 
         self.embed()
