@@ -866,4 +866,38 @@ class RSCodes(Scene):
         self.play(GrowFromCenter(b), Write(t))
         self.wait()
 
+        labels = VGroup()
+        for i, obj in enumerate(s2):
+            t = Tex(str(i+1), color=A_YELLOW)
+            t.next_to(obj, UP)
+            t.scale(1.25)
+            labels.add(t)
+        labels.shift(0.25 * UP)
+
+        labels2 = VGroup()
+        for i, obj in enumerate(s2):
+            t = Tex(f"m_{str(i+1)}",
+                    tex_to_color_map={str(i+1): A_YELLOW, "m": A_PINK})
+            t.next_to(obj, UP)
+            t.scale(1.25)
+            labels2.add(t)
+        labels2.shift(0.25 * UP)
+
+        self.play(Write(labels))
+        self.wait()
+
+        self.play(Transform(labels, labels2))
+        self.wait()
+
+        b = Brace(labels, UP)
+        p = b.get_tex(r"p > m_i", tex_to_color_map={"p": A_GREEN, "m": A_PINK, "i": A_YELLOW})
+
+        self.play(GrowFromCenter(b), Write(p))
+        self.wait()
+
+        self.play(Uncreate(b), Uncreate(p))
+        self.wait()
+
+
+
         self.embed()
