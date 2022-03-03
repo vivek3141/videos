@@ -857,13 +857,14 @@ class RSCodes(Scene):
             s2.add(s_i.shift(1.5*i * RIGHT))
         s2.center()
 
-        b = Brace(s2[-2:])
-        t = b.get_tex("k = 2", tex_to_color_map={"k": A_YELLOW, "2": A_ORANGE})
-        t.scale(1.5)
-        t.shift(0.25 * DOWN)
+        b1 = Brace(s2[-2:])
+        t1 = b1.get_tex("k = 2", tex_to_color_map={
+                        "k": A_YELLOW, "2": A_ORANGE})
+        t1.scale(1.5)
+        t1.shift(0.25 * DOWN)
 
         self.play(ReplacementTransform(s, s2[:5]), Write(s2[5:]))
-        self.play(GrowFromCenter(b), Write(t))
+        self.play(GrowFromCenter(b1), Write(t1))
         self.wait()
 
         labels = VGroup()
@@ -889,15 +890,55 @@ class RSCodes(Scene):
         self.play(Transform(labels, labels2))
         self.wait()
 
-        b = Brace(labels, UP)
-        p = b.get_tex(r"p > m_i", tex_to_color_map={"p": A_GREEN, "m": A_PINK, "i": A_YELLOW})
+        b2 = Brace(labels, UP)
+        t2 = b2.get_tex(r"p > m_i", tex_to_color_map={
+                        "p": A_GREEN, "m": A_PINK, "i": A_YELLOW})
 
-        self.play(GrowFromCenter(b), Write(p))
+        self.play(GrowFromCenter(b2), Write(t2))
         self.wait()
 
-        self.play(Uncreate(b), Uncreate(p))
+        self.play(Uncreate(b2), Uncreate(t2))
         self.wait()
 
+        s_cp = s2.deepcopy()
+        for i, x in enumerate(np.linspace(3, -3, 6)):
+            s_cp[i].move_to(x * UP)
+        s_cp.shift(3 * RIGHT)
 
+        eqs = VGroup()
+        for i, x in enumerate(np.linspace(3, -3, 6)):
+            t = Tex(f"f({i}) = m_{i+1}" if i < 4 else f"m_{i+1} = f({i})", tex_to_color_map={
+                    "f": A_GREEN, "x": A_PINK, "m": A_PINK, str(i): A_YELLOW, str(i+1): A_YELLOW})
+            t.move_to(x * UP)
+            t.scale(1.25)
+            eqs.add(t)
+
+        # eqs.shift(5 * LEFT)
+
+        # self.play(Transform(s2, s_cp))
+        # self.play(Write(eqs[:4]))
+        # self.wait()
+
+        axes = Axes(
+            x_range=(0, 4), y_range=(-2, 6), axis_config={"include_tip": False},
+            width=6, x_axis_config={"stroke_width": 3}, y_axis_config={"stroke_width": 3}
+        )
+        axes.shift(3 * RIGHT)
+
+        def f(x): return 17/6 * x**3 - 13*x**2 + 85/6 * x + 2
+
+        def func(t, axes=axes, f=f):
+            return axes.c2p(t, f(t))
+        c = ParametricCurve(func, t_range=(0, 5))
+        c.set_color(A_GREEN)
+
+        dots = VGroup()
+        point_lbl = VGroup()
+
+        for i in range(4):
+            dots.add(Dot(axes.c2p(i, numbers[i]), color=A_GREEN))
+            point_lbl.add(Tex(f"({i}, {numbers[i]})", tex_to_color_map={str(i): A_ORANGE, str(
+                numbers[i]): A_ORANGE}).move_to(dots[i], DOWN).add_background_rectangle(buff=0.1))
+        point_lbl.shift(0.75 * DOWN)
 
         self.embed()
