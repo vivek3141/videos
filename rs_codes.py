@@ -968,6 +968,21 @@ class RSCodes(Scene):
         self.play(Uncreate(VGroup(axes, c, point_lbl, dots)))
 
         s_cp2.shift(2 * RIGHT)
+
+        t1, t2 = Tex("f(4)"), Tex("f(5)")
+
+        t1.move_to(s_cp2[-2])
+        t2.move_to(s_cp2[-1])
+
+        s_cp2[-1].remove(s_cp2[-1].num)
+        s_cp2[-2].remove(s_cp2[-2].num)
+
+        s_cp2[-1].num = t2
+        s_cp2[-1].add(s_cp2[-1].num)
+
+        s_cp2[-2].num = t1
+        s_cp2[-2].add(s_cp2[-2].num)
+
         labels2_cp.shift(2 * RIGHT)
 
         l = Line(10 * UP, 10 * DOWN)
