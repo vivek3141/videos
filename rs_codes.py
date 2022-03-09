@@ -935,10 +935,11 @@ class RSCodes(Scene):
 
         def f(x): return 1/3 * x**3 - 5/2 * x**2 + 25/6 * x + 2
 
-        def func(t, axes=axes, f=f):
+        def func(t):
             return axes.c2p(t, f(t))
-        c = ParametricCurve(func, t_range=(0, 5))
-        c.set_color(A_GREEN)
+        c = ParametricCurve(func, t_range=(0, 5), color=A_GREEN)
+
+        Indicate
 
         dots = VGroup()
         point_lbl = VGroup()
@@ -1000,36 +1001,40 @@ class RSCodes(Scene):
         self.play(Uncreate(VGroup(eqs, l)))
         self.play(VGroup(s2, labels2_cp).shift, 2 * LEFT)
 
+        s_cp, labels2_cp2 = s2.deepcopy(), labels2_cp.deepcopy()
 
+        for i, x in enumerate(np.linspace(3, -3, 6)):
+            labels2_cp[i].move_to(x * UP)
+            s_cp[i].move_to(x * UP)
+        
+        s2.shift(6 * LEFT)
+        labels2_cp.shift(4.5 * LEFT)
 
-        # remove(axes, c, point_lbl, dots)
-        # remove(s2_cp)
-        # remove(s2)
-        # add(s_cp2)
-        # s_cp2.shift(1 * RIGHT)
-        # s_cp2.shift(1 * RIGHT)
-        # l = Line(10 * UP, 10 * DOWN)
-        # add(l)
-        # l.shift(1 * LEFT)
-        # l.shift(1 * LEFT)
-        # l.shift(1 * LEFT)
-        # add(labels_cp)
-        # add(labels2_cp)
-        # labels2_cp.shift(1 * RIGHT)
-        # labels2_cp.shift(1 * RIGHT)
-        # 
-        # add(r)
-        # 
-        # add(r)
-        # add(r2)
-        # remove(line, eqs)
-        # remove(l, eqs)
-        # VGroup(s_cp, labels2_cp).shift(2 * LEFT)
-        # s_cp2.shift(2 * LEFT)
-        # r.shift(2 * LEFT)
-        # r2.shift(2 * LEFT)
-        # s_cp
-        # s_cp = s_cp2.copy()
-        # s_cp = s_cp2.deepcopy()
+        self.play(Transform(s2, s_cp), Transform(labels2_cp, labels2_cp2))
 
+        axes = Axes(
+            x_range=(0, 6), y_range=(-2, 6), 
+            axis_config={"include_tip": False}, x_axis_config={"stroke_width": 3},
+            y_axis_config={"stroke_width": 3}, width=9
+        )
+        axes.shift(2 * RIGHT)
+
+        r1_2 = BackgroundRectangle(VGroup(labels2_cp[-2], s2[-2]), buff=0.15)
+        r2_2 = BackgroundRectangle(VGroup(labels2_cp[1], s2[1]), buff=0.15)
+
+        coors = [(0, 2), (2, 3), (3, 1), (5, 2)]
+
+        dots, labels = VGroup(), VGroup()
+        for x, y in coors:
+            dots.add(Dot(axes.c2p(x, y),color=A_PINK))
+            labels.add(
+                Tex(f"({x}, {y})", tex_to_color_map={str(x): A_ORANGE, str(y): A_ORANGE}
+                    ).move_to(dots[-1], DOWN).shift(0.25 * DOWN).add_background_rectangle(buff=0.1))
+
+        def func(t):
+            return axes.c2p(t, f(t))
+
+        c = ParametricCurve(func, t_range=(0, 6), color=A_GREEN)
+        self.bring_to_front(labels)
+        
         self.embed()
