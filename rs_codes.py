@@ -999,34 +999,37 @@ class RSCodes(Scene):
         self.wait()
 
         self.play(Uncreate(VGroup(eqs, l)))
-        self.play(VGroup(s2, labels2_cp).shift, 2 * LEFT)
 
         s_cp, labels2_cp2 = s2.deepcopy(), labels2_cp.deepcopy()
 
         for i, x in enumerate(np.linspace(3, -3, 6)):
-            labels2_cp[i].move_to(x * UP)
+            labels2_cp2[i].move_to(x * UP)
             s_cp[i].move_to(x * UP)
-        
-        s2.shift(6 * LEFT)
-        labels2_cp.shift(4.5 * LEFT)
 
-        self.play(Transform(s2, s_cp), Transform(labels2_cp, labels2_cp2))
+        s_cp.shift(6 * LEFT)
+        labels2_cp2.shift(4.5 * LEFT)
 
         axes = Axes(
-            x_range=(0, 6), y_range=(-2, 6), 
+            x_range=(0, 6), y_range=(-2, 6),
             axis_config={"include_tip": False}, x_axis_config={"stroke_width": 3},
             y_axis_config={"stroke_width": 3}, width=9
         )
         axes.shift(2 * RIGHT)
 
-        r1_2 = BackgroundRectangle(VGroup(labels2_cp[-2], s2[-2]), buff=0.15)
-        r2_2 = BackgroundRectangle(VGroup(labels2_cp[1], s2[1]), buff=0.15)
+        r1_2 = BackgroundRectangle(VGroup(labels2_cp2[-2], s_cp[-2]), buff=0.15)
+        r2_2 = BackgroundRectangle(VGroup(labels2_cp2[1], s_cp[1]), buff=0.15)
+
+        self.play(
+            Transform(s2, s_cp),
+            Transform(labels2_cp, labels2_cp2),
+            Transform(r1, r1_2), Transform(r2, r2_2)
+        )
 
         coors = [(0, 2), (2, 3), (3, 1), (5, 2)]
 
         dots, labels = VGroup(), VGroup()
         for x, y in coors:
-            dots.add(Dot(axes.c2p(x, y),color=A_PINK))
+            dots.add(Dot(axes.c2p(x, y), color=A_PINK))
             labels.add(
                 Tex(f"({x}, {y})", tex_to_color_map={str(x): A_ORANGE, str(y): A_ORANGE}
                     ).move_to(dots[-1], DOWN).shift(0.25 * DOWN).add_background_rectangle(buff=0.1))
@@ -1035,6 +1038,6 @@ class RSCodes(Scene):
             return axes.c2p(t, f(t))
 
         c = ParametricCurve(func, t_range=(0, 6), color=A_GREEN)
-        self.bring_to_front(labels)
-        
+        # self.bring_to_front(labels)
+
         self.embed()
