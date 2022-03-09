@@ -836,7 +836,7 @@ class FinitePoly(Scene):
 class RSCodes(Scene):
     def construct(self):
         shades = ["#fc998e", "#fb8d80", "#fb8072", "#e27367", "#c9665b"]
-        numbers = [2, 6, 1, 4, "?", "?"]
+        numbers = [2, 4, 3, 1, "?", "?"]
 
         c = [2, 4, 0, 4, 1, 3]
 
@@ -933,7 +933,7 @@ class RSCodes(Scene):
         )
         axes.shift(3 * RIGHT)
 
-        def f(x): return 17/6 * x**3 - 13*x**2 + 85/6 * x + 2
+        def f(x): return 1/3 * x**3 - 5/2 * x**2 + 25/6 * x + 2
 
         def func(t, axes=axes, f=f):
             return axes.c2p(t, f(t))
@@ -948,8 +948,9 @@ class RSCodes(Scene):
             point_lbl.add(Tex(f"({i}, {numbers[i]})", tex_to_color_map={str(i): A_ORANGE, str(
                 numbers[i]): A_ORANGE}).move_to(dots[i], DOWN).add_background_rectangle(buff=0.1))
         point_lbl.shift(0.75 * DOWN)
+        eqs[-2:].shift(5 * LEFT)
 
-        self.play(VGroup(eqs, s2).shift, 5 * LEFT)
+        self.play(VGroup(eqs[:-2], s2).shift, 5 * LEFT)
         self.play(Write(axes))
         self.wait()
 
@@ -990,6 +991,16 @@ class RSCodes(Scene):
 
         self.play(Transform(s2, s_cp2), Write(labels2_cp), Write(l))
 
+        r1 = BackgroundRectangle(VGroup(labels2_cp[-2], s_cp2[-2]), buff=0.15)
+        r2 = BackgroundRectangle(VGroup(labels2_cp[1], s_cp2[1]), buff=0.15)
+
+        self.play(ShowCreation(r1), ShowCreation(r2))
+        self.wait()
+
+        self.play(Uncreate(VGroup(eqs, l)))
+        self.play(VGroup(s2, labels2_cp).shift, 2 * LEFT)
+
+
 
         # remove(axes, c, point_lbl, dots)
         # remove(s2_cp)
@@ -1006,9 +1017,9 @@ class RSCodes(Scene):
         # add(labels2_cp)
         # labels2_cp.shift(1 * RIGHT)
         # labels2_cp.shift(1 * RIGHT)
-        # r = BackgroundRectangle(VGroup(labels2_cp[-2], s_cp2[-2]), buff=0.15)
+        # 
         # add(r)
-        # r2 = BackgroundRectangle(VGroup(labels2_cp[1], s_cp2[1]), buff=0.15)
+        # 
         # add(r)
         # add(r2)
         # remove(line, eqs)
