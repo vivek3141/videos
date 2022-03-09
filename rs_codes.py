@@ -883,6 +883,7 @@ class RSCodes(Scene):
             t.scale(1.25)
             labels2.add(t)
         labels2.shift(0.25 * UP)
+        labels2_cp = labels2.deepcopy()
 
         self.play(Write(labels))
         self.wait()
@@ -900,7 +901,7 @@ class RSCodes(Scene):
         self.play(Uncreate(b2), Uncreate(t2))
         self.wait()
 
-        s_cp = s2.deepcopy()
+        s_cp, s_cp2 = s2.deepcopy(), s2.deepcopy()
         for i, x in enumerate(np.linspace(3, -3, 6)):
             s_cp[i].move_to(x * UP)
         s_cp.shift(3 * RIGHT)
@@ -915,9 +916,16 @@ class RSCodes(Scene):
 
         # eqs.shift(5 * LEFT)
 
-        # self.play(Transform(s2, s_cp))
-        # self.play(Write(eqs[:4]))
-        # self.wait()
+        self.play(Uncreate(VGroup(b1, t1, labels[-1], labels[-2])))
+        self.play(
+            Transform(s2, s_cp),
+            ReplacementTransform(
+                labels[:-2],
+                VGroup(*[eq[-2:] for eq in eqs])[:-2]
+            )
+        )
+        self.play(Write(VGroup(*[eq[:-2] for eq in eqs[:-2]])))
+        self.wait()
 
         axes = Axes(
             x_range=(0, 4), y_range=(-2, 6), axis_config={"include_tip": False},
@@ -940,5 +948,62 @@ class RSCodes(Scene):
             point_lbl.add(Tex(f"({i}, {numbers[i]})", tex_to_color_map={str(i): A_ORANGE, str(
                 numbers[i]): A_ORANGE}).move_to(dots[i], DOWN).add_background_rectangle(buff=0.1))
         point_lbl.shift(0.75 * DOWN)
+
+        self.play(VGroup(eqs, s2).shift, 5 * LEFT)
+        self.play(Write(axes))
+        self.wait()
+
+        self.play(TransformFromCopy(eqs[:-2], dots))
+        self.play(Write(point_lbl))
+        self.wait()
+
+        self.bring_to_front(point_lbl)
+        self.play(Write(c))
+        self.bring_to_front(point_lbl)
+        self.wait()
+
+        self.play(Write(eqs[-2:]))
+        self.wait()
+
+        self.play(Uncreate(VGroup(axes, c, point_lbl, dots)))
+
+        s_cp2.shift(2 * RIGHT)
+        labels2_cp.shift(2 * RIGHT)
+
+        l = Line(10 * UP, 10 * DOWN)
+        l.shift(3 * LEFT)
+
+        self.play(Transform(s2, s_cp2), Write(labels2_cp), Write(l))
+
+
+        # remove(axes, c, point_lbl, dots)
+        # remove(s2_cp)
+        # remove(s2)
+        # add(s_cp2)
+        # s_cp2.shift(1 * RIGHT)
+        # s_cp2.shift(1 * RIGHT)
+        # l = Line(10 * UP, 10 * DOWN)
+        # add(l)
+        # l.shift(1 * LEFT)
+        # l.shift(1 * LEFT)
+        # l.shift(1 * LEFT)
+        # add(labels_cp)
+        # add(labels2_cp)
+        # labels2_cp.shift(1 * RIGHT)
+        # labels2_cp.shift(1 * RIGHT)
+        # r = BackgroundRectangle(VGroup(labels2_cp[-2], s_cp2[-2]), buff=0.15)
+        # add(r)
+        # r2 = BackgroundRectangle(VGroup(labels2_cp[1], s_cp2[1]), buff=0.15)
+        # add(r)
+        # add(r2)
+        # remove(line, eqs)
+        # remove(l, eqs)
+        # VGroup(s_cp, labels2_cp).shift(2 * LEFT)
+        # s_cp2.shift(2 * LEFT)
+        # r.shift(2 * LEFT)
+        # r2.shift(2 * LEFT)
+        # s_cp
+        # s_cp = s_cp2.copy()
+        # s_cp = s_cp2.deepcopy()
 
         self.embed()
