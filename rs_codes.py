@@ -914,8 +914,6 @@ class RSCodes(Scene):
             t.scale(1.25)
             eqs.add(t)
 
-        # eqs.shift(5 * LEFT)
-
         self.play(Uncreate(VGroup(b1, t1, labels[-1], labels[-2])))
         self.play(
             Transform(s2, s_cp),
@@ -933,11 +931,8 @@ class RSCodes(Scene):
         )
         axes.shift(3 * RIGHT)
 
-        def f(x): return 1/3 * x**3 - 5/2 * x**2 + 25/6 * x + 2
-
-        def func(t):
-            return axes.c2p(t, f(t))
-        c = ParametricCurve(func, t_range=(0, 5), color=A_GREEN)
+        c = ParametricCurve(lambda t: axes.c2p(
+            t, self.f(t)), t_range=(0, 5), color=A_GREEN)
 
         Indicate
 
@@ -1016,7 +1011,8 @@ class RSCodes(Scene):
         )
         axes.shift(2 * RIGHT)
 
-        r1_2 = BackgroundRectangle(VGroup(labels2_cp2[-2], s_cp[-2]), buff=0.15)
+        r1_2 = BackgroundRectangle(
+            VGroup(labels2_cp2[-2], s_cp[-2]), buff=0.15)
         r2_2 = BackgroundRectangle(VGroup(labels2_cp2[1], s_cp[1]), buff=0.15)
 
         self.play(
@@ -1029,15 +1025,33 @@ class RSCodes(Scene):
 
         dots, labels = VGroup(), VGroup()
         for x, y in coors:
-            dots.add(Dot(axes.c2p(x, y), color=A_PINK))
+            dots.add(Dot(axes.c2p(x, y), color=A_GREEN))
             labels.add(
                 Tex(f"({x}, {y})", tex_to_color_map={str(x): A_ORANGE, str(y): A_ORANGE}
                     ).move_to(dots[-1], DOWN).shift(0.25 * DOWN).add_background_rectangle(buff=0.1))
+        labels.shift(0.5 * DOWN)
 
-        def func(t):
-            return axes.c2p(t, f(t))
+        c = ParametricCurve(lambda t: axes.c2p(
+            t, self.f(t)), t_range=(0, 6), color=A_GREEN)
 
-        c = ParametricCurve(func, t_range=(0, 6), color=A_GREEN)
-        # self.bring_to_front(labels)
+        self.play(Write(axes))
+
+        left = [0, 2, 3, 5]
+        grp = VGroup(*self.get_indices(labels2_cp, left))
+
+        self.play(TransformFromCopy(grp, dots))
+        self.play(Write(labels))
+        self.wait()
+
+        self.play(Write(c))
+        self.bring_to_front(labels)
 
         self.embed()
+
+    @staticmethod
+    def get_indices(arr, indices):
+        return [arr[i] for i in indices]
+
+    @staticmethod
+    def f(x):
+        return 1/3 * x**3 - 5/2 * x**2 + 25/6 * x + 2
