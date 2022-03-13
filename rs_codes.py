@@ -1046,6 +1046,60 @@ class RSCodes(Scene):
         self.play(Write(c))
         self.bring_to_front(labels)
 
+        x = ValueTracker(0)
+        d = Dot(radius=2*DEFAULT_DOT_RADIUS, color=A_YELLOW)
+
+        def point_updater(point):
+            new_point = point.move_to(
+                axes.c2p(x.get_value(), self.f(x.get_value())))
+            point.become(new_point)
+            # self.bring_to_front(point)
+
+        l1 = Line()
+
+        def dash_updater_x(line):
+            point = axes.c2p(x.get_value(), self.f(x.get_value()))
+            new_line = Line(axes.c2p(0, self.f(x.get_value())),
+                            point, stroke_opacity=0.5)
+            line.become(new_line)
+            self.bring_to_back(line)
+
+        l2 = Line()
+
+        def dash_updater_y(line):
+            point = axes.c2p(x.get_value(), self.f(x.get_value()))
+            new_line = Line(axes.c2p(x.get_value(), 0),
+                            point, stroke_opacity=0.5)
+            line.become(new_line)
+            self.bring_to_back(line)
+        
+        self.play(Write(d))
+        d.add_updater(point_updater)
+        l1.add_updater(dash_updater_x)
+        l2.add_updater(dash_updater_y)
+        self.wait()
+        
+        lbl = Tex(f"(1, 4)", tex_to_color_map={"1": A_ORANGE, "4": A_ORANGE}).move_to(Point(axes.c2p(1, 4)), DOWN).shift(0.25 * UP).add_background_rectangle(buff=0.1)
+        
+        self.play(Indicate(VGroup(d, labels[0][1:])))
+        self.play(TransformFromCopy(d, s_cp[0]))
+        self.wait()
+
+        self.play(x.increment_value, 1, run_time=3)
+        self.play(Write(lbl))
+        self.play(Indicate(VGroup(d, lbl[1:])))
+        self.play(TransformFromCopy(d, s_cp[1]), Uncreate(r2))
+        self.wait()
+
+        self.play(x.increment_value, 1, run_time=3)
+        self.play(Indicate(VGroup(d, labels[1][1:])))
+        self.play(TransformFromCopy(d, s_cp[2]))
+        self.wait()
+
+        self.play(x.increment_value, 1, run_time=3)
+        self.play(Indicate(VGroup(d, labels[2][1:])))
+        self.play(TransformFromCopy(d, s_cp[3]))
+
         self.embed()
 
     @staticmethod
