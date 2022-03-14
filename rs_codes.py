@@ -1129,11 +1129,15 @@ class RSCodes(Scene):
             mod_eq2.shift(i * DOWN)
             eqs2.add(mod_eq2)
 
-        remove_grp = VGroup(axes, d, curve, dots, lbl,
-                            labels2_cp2, labels, labels2_cp, s_cp, *s2[-2:])
+        remove_grp = VGroup(
+            axes, d, curve, dots, lbl,
+            labels2_cp2, labels, labels2_cp, s_cp, *s2[-2:],
+            l1, l2)
 
-        self.remove(*self.mobjects[:5])
         self.play(Uncreate(remove_grp))
+        self.remove(*self.mobjects[:2])
+        self.wait()
+
         self.play(Transform(s2[:-2], s))
         self.wait()
 
