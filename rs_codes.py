@@ -931,10 +931,8 @@ class RSCodes(Scene):
         )
         axes.shift(3 * RIGHT)
 
-        c = ParametricCurve(lambda t: axes.c2p(
+        curve = ParametricCurve(lambda t: axes.c2p(
             t, self.f(t)), t_range=(0, 5), color=A_GREEN)
-
-        Indicate
 
         dots = VGroup()
         point_lbl = VGroup()
@@ -955,14 +953,14 @@ class RSCodes(Scene):
         self.wait()
 
         self.bring_to_front(point_lbl)
-        self.play(Write(c))
+        self.play(Write(curve))
         self.bring_to_front(point_lbl)
         self.wait()
 
         self.play(Write(eqs[-2:]))
         self.wait()
 
-        self.play(Uncreate(VGroup(axes, c, point_lbl, dots)))
+        self.play(Uncreate(VGroup(axes, curve, point_lbl, dots)))
 
         s_cp2.shift(2 * RIGHT)
 
@@ -1031,7 +1029,7 @@ class RSCodes(Scene):
                     ).move_to(dots[-1], DOWN).shift(0.25 * DOWN).add_background_rectangle(buff=0.1))
         labels.shift(0.5 * DOWN)
 
-        c = ParametricCurve(lambda t: axes.c2p(
+        curve = ParametricCurve(lambda t: axes.c2p(
             t, self.f(t)), t_range=(0, 6), color=A_GREEN)
 
         self.play(Write(axes))
@@ -1043,7 +1041,7 @@ class RSCodes(Scene):
         self.play(Write(labels))
         self.wait()
 
-        self.play(Write(c))
+        self.play(Write(curve))
         self.bring_to_front(labels)
 
         x = ValueTracker(0)
@@ -1053,7 +1051,6 @@ class RSCodes(Scene):
             new_point = point.move_to(
                 axes.c2p(x.get_value(), self.f(x.get_value())))
             point.become(new_point)
-            # self.bring_to_front(point)
 
         l1 = Line()
 
@@ -1072,15 +1069,16 @@ class RSCodes(Scene):
                             point, stroke_opacity=0.5)
             line.become(new_line)
             self.bring_to_back(line)
-        
+
         self.play(Write(d))
         d.add_updater(point_updater)
         l1.add_updater(dash_updater_x)
         l2.add_updater(dash_updater_y)
         self.wait()
-        
-        lbl = Tex(f"(1, 4)", tex_to_color_map={"1": A_ORANGE, "4": A_ORANGE}).move_to(Point(axes.c2p(1, 4)), DOWN).shift(0.25 * UP).add_background_rectangle(buff=0.1)
-        
+
+        lbl = Tex(f"(1, 4)", tex_to_color_map={"1": A_ORANGE, "4": A_ORANGE}).move_to(
+            Point(axes.c2p(1, 4)), DOWN).shift(0.25 * UP).add_background_rectangle(buff=0.1)
+
         self.play(Indicate(VGroup(d, labels[0][1:])))
         self.play(TransformFromCopy(d, s_cp[0]))
         self.wait()
@@ -1099,6 +1097,62 @@ class RSCodes(Scene):
         self.play(x.increment_value, 1, run_time=3)
         self.play(Indicate(VGroup(d, labels[2][1:])))
         self.play(TransformFromCopy(d, s_cp[3]))
+
+        s = VGroup()
+        for i in range(4):
+            s_i = NumberSquare(
+                numbers[i], shades[c[i]], side_length=1, num_scale=1.5)
+            s.add(s_i.shift(1.5*i * RIGHT))
+        s.center()
+        s.move_to(3 * UP)
+
+        m = {"{5}": A_ORANGE, **{str(i): A_YELLOW for i in list(
+            range(5)) + list(range(6, 10)) + [56]}, "f": A_GREEN, "x": A_PINK}
+
+        eq = Tex(r"f(x) = 2x^3 + 2 \mod {{5}}", tex_to_color_map=m)
+        eq.scale(1.5)
+        eq.shift(1.5 * UP)
+
+        eqs, eqs2 = VGroup(), VGroup()
+        for i, y in enumerate(numbers[:-2]):
+            mod_eq = Tex(rf"f({i}) = {2*i**3 + 2} \mod {{5}}",
+                         tex_to_color_map=m)
+            mod_eq.scale(1.5)
+            mod_eq.move_to(6 * LEFT, LEFT)
+            mod_eq.shift(i * DOWN)
+            eqs.add(mod_eq)
+
+            mod_eq2 = Tex(
+                rf"f({i}) = {(2*i**3+2)%5} \mod {{5}}", tex_to_color_map=m)
+            mod_eq2.scale(1.5)
+            mod_eq2.move_to(6 * LEFT, LEFT)
+            mod_eq2.shift(i * DOWN)
+            eqs2.add(mod_eq2)
+
+        remove_grp = VGroup(axes, d, curve, dots, lbl,
+                            labels2_cp2, labels, labels2_cp, s_cp, *s2[-2:])
+
+        self.remove(*self.mobjects[:5])
+        self.play(Uncreate(remove_grp))
+        self.play(Transform(s2[:-2], s))
+        self.wait()
+
+        self.play(Write(eq))
+        self.wait()
+
+        self.play(Write(eqs[0]))
+        self.wait(1)
+
+        self.play(Write(eqs[1]))
+        self.wait(1)
+
+        self.play(Write(eqs[2]))
+        self.play(TransformMatchingTex(eqs[2], eqs2[2]))
+        self.wait(1)
+
+        self.play(Write(eqs[3]))
+        self.play(TransformMatchingTex(eqs[3], eqs2[3]))
+        self.wait(1)
 
         self.embed()
 
