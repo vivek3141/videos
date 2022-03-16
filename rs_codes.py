@@ -837,6 +837,7 @@ class RSCodes(Scene):
     def construct(self):
         shades = ["#fc998e", "#fb8d80", "#fb8072", "#e27367", "#c9665b"]
         numbers = [2, 4, 3, 1, "?", "?"]
+        numbers2 = [2, 4, 3, 1, 0, "?"]
 
         c = [2, 4, 0, 4, 1, 3]
 
@@ -1157,6 +1158,46 @@ class RSCodes(Scene):
         self.play(Write(eqs[3]))
         self.play(TransformMatchingTex(eqs[3], eqs2[3]))
         self.wait(1)
+
+        eqs_right1 = Tex(r"f(4) = 0 \mod 5", tex_to_color_map={
+                         "5": A_ORANGE, "0": A_YELLOW, "4": A_YELLOW, "f": A_GREEN})
+        eqs_right1.scale(1.5)
+        eqs_right1.move_to(6*LEFT+FRAME_WIDTH/2*RIGHT, LEFT)
+
+        eqs_right2 = Tex(r"f(5) = 2 \mod {{5}}", tex_to_color_map={
+                         r"5": A_YELLOW, "{5}": A_ORANGE, "2": A_YELLOW, "4": A_YELLOW, "f": A_GREEN})
+        eqs_right2.scale(1.5)
+        eqs_right2.move_to(6*LEFT+FRAME_WIDTH/2*RIGHT + 1 * DOWN, LEFT)
+
+        s_11 = VGroup()
+        for i in range(5):
+            s_i = NumberSquare(
+                numbers[i], shades[c[i]], side_length=1, num_scale=1.5)
+            s_11.add(s_i.shift(1.5*i * RIGHT))
+        s_11.center()
+        s_11.shift(3 * UP)
+
+        s = s2[:-2]
+        self.play(Transform(s, s_11[:-1]), Write(s_11[-1]))
+
+        s_12 = NumberSquare(0, shades[c[4]], side_length=1, num_scale=1.5)
+        s_12.move_to(s_11[-1])
+
+        self.play(TransformFromCopy(eqs_right1[4], s_12), Uncreate(s_11[-1]))
+
+        s_21 = VGroup()
+        for i in range(6):
+            s_i = NumberSquare(
+                numbers2[i], shades[c[i]], side_length=1, num_scale=1.5)
+            s_21.add(s_i.shift(1.5*i * RIGHT))
+        s_21.center()
+        s_21.shift(3 * UP)
+
+        s_22 = NumberSquare(2, shades[c[5]], side_length=1, num_scale=1.5)
+        s_22.move_to(s_21[-1])
+
+        self.play(Transform(VGroup(*s, s_12), s_21[:-1]), Write(s_21[-1]))
+        self.play(TransformFromCopy(eqs_right2[4], s_22), Uncreate(s_21[-1]))
 
         self.embed()
 
