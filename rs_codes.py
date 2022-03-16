@@ -1009,6 +1009,7 @@ class RSCodes(Scene):
             y_axis_config={"stroke_width": 3}, width=9
         )
         axes.shift(2 * RIGHT)
+        Indicate
 
         r1_2 = BackgroundRectangle(
             VGroup(labels2_cp2[-2], s_cp[-2]), buff=0.15)
@@ -1208,6 +1209,24 @@ class RSCodes(Scene):
 
         self.play(Write(eqs_right2))
         self.play(TransformFromCopy(eqs_right2[4], s_22), Uncreate(s_21[-1]))
+        self.wait()
+
+        self.play(FadeOut(eq))
+
+        r1 = BackgroundRectangle(s_21[0], buff=0.15)
+        r2 = BackgroundRectangle(s_22, buff=0.15)
+        r3 = BackgroundRectangle(eqs[0], buff=0.15)
+        r4 = BackgroundRectangle(eqs_right2, buff=0.15)
+
+        self.play(Write(VGroup(r1, r3)))
+        self.play(Write(VGroup(r2, r4)))
+        self.wait()
+
+        self.play(TransformFromCopy(VGroup(eqs[1:], eqs_right1), eq))
+        self.wait()
+
+        self.play(TransformFromCopy(eq, s[0]))
+        self.play(Uncreate(r3))
         self.wait()
 
         self.embed()
