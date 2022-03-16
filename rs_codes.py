@@ -1213,10 +1213,10 @@ class RSCodes(Scene):
 
         self.play(FadeOut(eq))
 
-        r1 = BackgroundRectangle(s_21[0], buff=0.15)
-        r2 = BackgroundRectangle(s_22, buff=0.15)
-        r3 = BackgroundRectangle(eqs[0], buff=0.15)
-        r4 = BackgroundRectangle(eqs_right2, buff=0.15)
+        r1 = BackgroundRectangle(s_21[0], buff=0.15, fill_opacity=0.85)
+        r2 = BackgroundRectangle(s_22, buff=0.15, fill_opacity=0.85)
+        r3 = BackgroundRectangle(eqs[0], buff=0.15, fill_opacity=0.85)
+        r4 = BackgroundRectangle(eqs_right2, buff=0.15, fill_opacity=0.85)
 
         self.play(Write(VGroup(r1, r3)))
         self.play(Write(VGroup(r2, r4)))
@@ -1225,7 +1225,7 @@ class RSCodes(Scene):
         self.play(TransformFromCopy(VGroup(eqs[1:], eqs_right1), eq))
         self.wait()
 
-        self.play(TransformFromCopy(eq, s[0]))
+        self.play(TransformFromCopy(eq, s_21[0]))
         self.play(Uncreate(r3))
         self.wait()
 
