@@ -1179,11 +1179,14 @@ class RSCodes(Scene):
 
         s = s2[:-2]
         self.play(Transform(s, s_11[:-1]), Write(s_11[-1]))
+        self.wait()
 
         s_12 = NumberSquare(0, shades[c[4]], side_length=1, num_scale=1.5)
         s_12.move_to(s_11[-1])
 
+        self.play(Write(eqs_right1))
         self.play(TransformFromCopy(eqs_right1[4], s_12), Uncreate(s_11[-1]))
+        self.wait()
 
         s_21 = VGroup()
         for i in range(6):
@@ -1196,8 +1199,16 @@ class RSCodes(Scene):
         s_22 = NumberSquare(2, shades[c[5]], side_length=1, num_scale=1.5)
         s_22.move_to(s_21[-1])
 
-        self.play(Transform(VGroup(*s, s_12), s_21[:-1]), Write(s_21[-1]))
+        self.play(
+            Transform(s, s_21[:-2]),
+            ApplyMethod(s_12.move_to, s_21[-2]),
+            Write(s_21[-1])
+        )
+        self.wait()
+
+        self.play(Write(eqs_right2))
         self.play(TransformFromCopy(eqs_right2[4], s_22), Uncreate(s_21[-1]))
+        self.wait()
 
         self.embed()
 
