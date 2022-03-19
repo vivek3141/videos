@@ -31,13 +31,107 @@ class LabelledNumberSquare(NumberSquare):
         NumberSquare.__init__(self, *args, **kwargs)
 
 
+class PartScene(Scene):
+    CONFIG = {
+        "n": 1,
+        "title": "",
+        "title_color": RED
+    }
+
+    def construct(self):
+        part = TexText(f"Part {self.n}")
+        part.scale(1.5)
+        part.shift(2 * UP)
+
+        title = TexText(self.title, color=self.title_color)
+        title.scale(1.5)
+
+        self.play(Write(part))
+        self.play(Write(title))
+        self.wait()
+
+
+class TitleScene(Scene):
+    CONFIG = {
+        "color": None,
+        "text": None
+    }
+
+    def construct(self):
+        if self.text is None:
+            raise NotImplementedError
+
+        brect = Rectangle(height=FRAME_HEIGHT, width=FRAME_WIDTH,
+                          fill_opacity=1, color=self.color)
+
+        title = TexText(self.text)
+        title.scale(1.5)
+        title.to_edge(UP)
+
+        rect = ScreenRectangle(height=6)
+        rect.next_to(title, DOWN)
+
+        self.add(brect)
+        self.play(FadeIn(rect, DOWN), Write(title), run_time=2)
+        self.wait()
+
+
+class TitleU(TitleScene):
+    CONFIG = {
+        "color": "#5b6190",
+        "text": "Upcoming"
+    }
+
+
 class RS(Scene):
     def construct(self):
+        shades = ["#fc998e", "#fb8d80", "#fb8072", "#e27367", "#c9665b"]
+        numbers = [2, 4, 3, 1, "?", "?"]
+        numbers2 = [2, 4, 3, 1, 0, "?"]
+
+        c = [2, 4, 0, 4, 1, 3]
+
         s = VGroup()
         for i in range(4):
-            s_i = NumberSquare(i, [RED_E, RED_D, RED_C][random.randint(0, 2)])
-            s.add(s_i.shift(3*i * RIGHT))
+            s_i = NumberSquare(
+                numbers[i], shades[c[i]], side_length=1.5, num_scale=2)
+            s.add(s_i.shift(2*i * RIGHT))
         s.center()
+
+        self.play(Write(s))
+        self.wait()
+
+        r = BackgroundRectangle(s[2], buff=0.15)
+        self.play(ShowCreation(r))
+        self.wait()
+
+        self.play(Uncreate(r))
+
+        s2 = VGroup()
+        for i in range(6):
+            s_i = NumberSquare(
+                numbers[i], shades[c[i]], side_length=1, num_scale=1.5)
+            s2.add(s_i.shift(1.5*i * RIGHT))
+        s2.center()
+
+        b1 = Brace(s2[-2:])
+        t1 = b1.get_tex("k = 2", tex_to_color_map={
+                        "k": A_YELLOW, "2": A_ORANGE})
+        t1.scale(1.5)
+        t1.shift(0.25 * DOWN)
+
+        self.play(ReplacementTransform(s, s2[:5]), Write(s2[5:]))
+        self.wait()
+
+        self.play(GrowFromCenter(b1), Write(t1))
+        self.wait()
+
+        r1 = BackgroundRectangle(s2[2], buff=0.15)
+        r2 = BackgroundRectangle(s2[-1], buff=0.15)
+
+        self.play(ShowCreation(r1), ShowCreation(r2))
+        self.wait()
+
         self.embed()
 
 
