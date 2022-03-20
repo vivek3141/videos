@@ -39,6 +39,9 @@ class PartScene(Scene):
     }
 
     def construct(self):
+        if not self.title:
+            raise NotImplementedError("Please set the title of the scene")
+
         part = TexText(f"Part {self.n}")
         part.scale(1.5)
         part.shift(2 * UP)
@@ -1142,6 +1145,7 @@ class RSCodes(Scene):
 
         x = ValueTracker(0)
         d = Dot(radius=2*DEFAULT_DOT_RADIUS, color=A_YELLOW)
+        d.move_to(axes.c2p(x.get_value(), self.f(x.get_value())))
 
         def point_updater(point):
             new_point = point.move_to(
@@ -1168,6 +1172,7 @@ class RSCodes(Scene):
 
         self.play(Write(d))
         d.add_updater(point_updater)
+
         l1.add_updater(dash_updater_x)
         l2.add_updater(dash_updater_y)
         self.wait()
@@ -1230,7 +1235,7 @@ class RSCodes(Scene):
             labels2_cp2, labels, labels2_cp, s_cp, *s2[-2:],
             l1, l2)
 
-        self.play(Uncreate(remove_grp))
+        self.play(FadeOut(remove_grp))
         self.remove(*self.mobjects[:2])
         self.wait()
 
