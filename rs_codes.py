@@ -54,6 +54,30 @@ class PartScene(Scene):
         self.wait()
 
 
+class PartOne(PartScene):
+    CONFIG = {
+        "n": 1,
+        "title": "Modular Arithmetic",
+        "title_color": A_RED
+    }
+
+
+class PartTwo(PartScene):
+    CONFIG = {
+        "n": 2,
+        "title": "Lagrange Interpolation",
+        "title_color": A_YELLOW
+    }
+
+
+class PartThree(PartScene):
+    CONFIG = {
+        "n": 3,
+        "title": "Putting it all together",
+        "title_color": A_ORANGE
+    }
+
+
 class TitleScene(Scene):
     CONFIG = {
         "color": None,
@@ -91,8 +115,14 @@ class RS(Scene):
         shades = ["#fc998e", "#fb8d80", "#fb8072", "#e27367", "#c9665b"]
         numbers = [2, 4, 3, 1, "?", "?"]
         numbers2 = [2, 4, 3, 1, 0, "?"]
-
         c = [2, 4, 0, 4, 1, 3]
+        pos = (FRAME_WIDTH/72 - 4.25)/2 + 4.25
+
+        r1 = Rectangle(height=2.5, width=2.5).shift(pos * LEFT)
+        r2 = Rectangle(height=2.5, width=2.5).shift(pos * RIGHT)
+
+        t1 = TexText("Vivek (Me)").move_to(r1).shift(2 * DOWN)
+        t2 = TexText("Tony").move_to(r2).shift(2 * DOWN)
 
         s = VGroup()
         for i in range(4):
@@ -101,7 +131,7 @@ class RS(Scene):
             s.add(s_i.shift(2*i * RIGHT))
         s.center()
 
-        self.play(Write(s))
+        self.play(Write(s), Write(r1), Write(r2), Write(t1), Write(t2))
         self.wait()
 
         r = BackgroundRectangle(s[2], buff=0.15)
@@ -133,6 +163,32 @@ class RS(Scene):
         r2 = BackgroundRectangle(s2[-1], buff=0.15)
 
         self.play(ShowCreation(r1), ShowCreation(r2))
+        self.wait()
+
+        self.embed()
+
+
+class RSAppl(Scene):
+    def construct(self):
+        title = TexText("Reed-Solomon Codes", color=A_YELLOW)
+        title.scale(1.5)
+        title.shift(3 * UP)
+
+        self.play(Write(title))
+
+        img1 = ImageMobject("img/qr.jpeg")
+        img1.scale(0.5)
+        img1.shift(3 * LEFT + UP)
+
+        img2 = ImageMobject("img/barcode.png")
+        img2.scale(0.5)
+        img2.shift(3 * RIGHT + UP)
+
+        img3 = ImageMobject("img/cd.png")
+        img3.scale(0.75)
+        img3.shift(2 * DOWN)
+
+        self.play(FadeIn(img1), FadeIn(img2), FadeIn(img3))
         self.wait()
 
         self.embed()
