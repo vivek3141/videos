@@ -9,7 +9,7 @@ def split_into(arr, n):
 class Outro(Scene):
     def construct(self):
         line = Line(12 * UP, 12 * DOWN)
-        
+
         btxt = TexText("Brought to you by", color=RED)
         btxt.scale(1.25)
         btxt.shift(FRAME_WIDTH/4 * LEFT + 0.5 * RIGHT + 3.25 * UP)
@@ -32,7 +32,8 @@ class Outro(Scene):
         t_text.next_to(i, RIGHT)
 
         self.play(Write(line))
-        self.play(Write(btxt), Write(plogo), FadeIn(t), FadeIn(i), Write(t_text))
+        self.play(Write(btxt), Write(plogo),
+                  FadeIn(t), FadeIn(i), Write(t_text))
 
         old_patreons = None
         list_of_patreons = open("patreon.txt").read().split("\n")
@@ -42,7 +43,8 @@ class Outro(Scene):
 
             for name, pos in zip(i, np.linspace(FRAME_HEIGHT/2, -FRAME_HEIGHT/2, num=18)):
                 patreons.add(
-                    TexText(name, tex_to_color_map={} if name != "3blue1brown" else {"blue": BLUE, "brown": "#CD853F"}).move_to([0, pos, 0]).scale(0.75)
+                    TexText(name, tex_to_color_map={} if name != "3blue1brown" else {
+                            "blue": BLUE, "brown": "#CD853F"}).move_to([0, pos, 0]).scale(0.75)
                 )
 
             patreons.center()
@@ -53,7 +55,7 @@ class Outro(Scene):
                 old_patreons = patreons
             else:
                 self.play(Transform(old_patreons, patreons))
-            
+
             self.wait(5)
 
         self.embed()

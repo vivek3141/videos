@@ -203,6 +203,28 @@ class ModularIntro(Scene):
         self.play(Write(title))
         self.wait()
 
+        eq = Tex(
+            r"a \equiv b \mod p",
+            tex_to_color_map={"a": A_ORANGE, "b": A_ORANGE, "p": A_AQUA}
+        )
+        eq.scale(2.5)
+
+        self.play(Write(eq))
+        self.wait()
+
+        b1 = Brace(eq[1])
+        b2 = Brace(eq[3:])
+
+        t1 = b1.get_text("Congruent")
+        t2 = b2.get_text("Same Remainder")
+
+        t1.shift(0.25 * DOWN)
+        t2.shift(0.25 * DOWN)
+
+        self.play(GrowFromCenter(b1), Write(t1))
+        self.play(GrowFromCenter(b2), Write(t2))
+        self.wait()
+
         s = Text("{0, 1, 2, 3, 4}", t2c={str(i): A_ORANGE for i in range(5)})
         s.scale(1.5)
         s.move_to(1.5 * UP)
