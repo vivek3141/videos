@@ -203,6 +203,22 @@ class ModularIntro(Scene):
         self.play(Write(title))
         self.wait()
 
+        s = Text("{0, 1, 2, 3, 4}", t2c={str(i): A_ORANGE for i in range(5)})
+        s.scale(1.5)
+        s.move_to(1.5 * UP)
+
+        ff = Tex(
+            r"(+, -, \cross, \olddiv) \mod {p}", tex_to_color_map={"{p}": A_AQUA})
+        ff.scale(1.5)
+
+        self.play(title.shift, 3.5 * LEFT)
+
+        ff.next_to(title, RIGHT)
+        ff.shift(0.5 * RIGHT)
+
+        self.play(Write(ff))
+        self.wait()
+
         eq = Tex(
             r"a \equiv b \mod p",
             tex_to_color_map={"a": A_ORANGE, "b": A_ORANGE, "p": A_AQUA}
@@ -225,20 +241,18 @@ class ModularIntro(Scene):
         self.play(GrowFromCenter(b2), Write(t2))
         self.wait()
 
-        s = Text("{0, 1, 2, 3, 4}", t2c={str(i): A_ORANGE for i in range(5)})
-        s.scale(1.5)
-        s.move_to(1.5 * UP)
+        eq0 = Tex(
+            r"1 \equiv 6 \mod 5",
+            tex_to_color_map={"1": A_ORANGE, "6": A_ORANGE, "5": A_AQUA}
+        )
+        eq0.scale(2.5)
+        eq0.shift(0.25 * UP)
 
-        ff = Tex(
-            r"(+, -, \cross, \olddiv) \mod {p}", tex_to_color_map={"{p}": A_AQUA})
-        ff.scale(1.5)
+        self.play(TransformMatchingTex(eq, eq0))
+        self.wait()
 
-        self.play(title.shift, 3.5 * LEFT)
-
-        ff.next_to(title, RIGHT)
-        ff.shift(0.5 * RIGHT)
-
-        self.play(Write(ff))
+        self.play(Uncreate(b1), Uncreate(b2), Uncreate(
+            t1), Uncreate(t2), Uncreate(eq0))
         self.wait()
 
         self.play(Write(s))
