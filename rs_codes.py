@@ -116,7 +116,7 @@ class RS(Scene):
         numbers = [2, 4, 3, 1, "?", "?"]
         numbers2 = [2, 4, 3, 1, 0, "?"]
         c = [2, 4, 0, 4, 1, 3]
-        pos = (FRAME_WIDTH/72 - 4.25)/2 + 4.25
+        pos = (FRAME_WIDTH/2 - 4.25)/2 + 4.25
 
         r1 = Rectangle(height=2.5, width=2.5).shift(pos * LEFT)
         r2 = Rectangle(height=2.5, width=2.5).shift(pos * RIGHT)
@@ -1027,6 +1027,13 @@ class RSCodes(Scene):
         shades = ["#fc998e", "#fb8d80", "#fb8072", "#e27367", "#c9665b"]
         numbers = [2, 4, 3, 1, "?", "?"]
         numbers2 = [2, 4, 3, 1, 0, "?"]
+        pos = (FRAME_WIDTH/2 - 4.25)/2 + 4.25
+
+        r1 = Rectangle(height=2.5, width=2.5).shift(pos * LEFT)
+        r2 = Rectangle(height=2.5, width=2.5).shift(pos * RIGHT)
+
+        tt1 = TexText("Vivek (Me)").move_to(r1).shift(2 * DOWN)
+        tt2 = TexText("Tony").move_to(r2).shift(2 * DOWN)
 
         c = [2, 4, 0, 4, 1, 3]
 
@@ -1038,6 +1045,7 @@ class RSCodes(Scene):
         s.center()
 
         self.play(Write(s))
+        self.play(Write(r1), Write(tt1), Write(r2), Write(tt2))
         self.wait()
 
         s2 = VGroup()
@@ -1104,7 +1112,8 @@ class RSCodes(Scene):
             t.scale(1.25)
             eqs.add(t)
 
-        self.play(Uncreate(VGroup(b1, t1, labels[-1], labels[-2])))
+        self.play(
+            Uncreate(VGroup(b1, t1, labels[-1], labels[-2], r1, r2, tt1, tt2)))
         self.play(
             Transform(s2, s_cp),
             ReplacementTransform(
