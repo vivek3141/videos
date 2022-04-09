@@ -1,5 +1,7 @@
 from manimlib import *
 
+random.seed(12345)
+
 A_AQUA = "#8dd3c7"
 A_YELLOW = "#ffffb3"
 A_LAVENDER = "#bebada"
@@ -107,6 +109,13 @@ class TitleU(TitleScene):
     CONFIG = {
         "color": "#5b6190",
         "text": "Upcoming"
+    }
+
+
+class TitleR(TitleScene):
+    CONFIG = {
+        "color": GREY,
+        "text": "Recap"
     }
 
 
@@ -1438,3 +1447,27 @@ class RSCodes(Scene):
     @staticmethod
     def f(x):
         return 1/3 * x**3 - 5/2 * x**2 + 25/6 * x + 2
+
+
+class Thumbnail(Scene):
+    def construct(self):
+        grp = VGroup()
+        for i, x in enumerate(np.linspace(-FRAME_WIDTH/2, FRAME_WIDTH/2, 50)):
+            grp.add(TexText("".join([str(random.randint(0, 1)) for i in range(200)]), color=GREY, stroke_opaicity=0.5, fill_opacity=0.5))
+            grp[i].move_to(x * UP).scale(0.5)
+
+        shades = ["#ca7a72", "#c97066", "#c9665b", "#b55c52", "#a15249"]
+        numbers = [2, 4, 3, 1, "?", "?"]
+        c = [2, 4, 0, 4, 1, 3]
+
+        s2 = VGroup()
+        for i in range(5):
+            s_i = NumberSquare(
+                numbers[i], shades[c[i]], side_length=1, num_scale=1.5, opacity=1)
+            s2.add(s_i.shift(1.5*i * RIGHT))
+        s2.scale(1.875)
+        s2.center()
+
+        self.add(grp, s2)
+
+        self.embed()

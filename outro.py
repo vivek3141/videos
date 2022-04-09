@@ -41,10 +41,10 @@ class Outro(Scene):
         for i in split_into(list_of_patreons, 15):
             patreons = VGroup()
 
-            for name, pos in zip(i, np.linspace(FRAME_HEIGHT/2, -FRAME_HEIGHT/2, num=18)):
+            for name, pos in zip(i, np.linspace(FRAME_HEIGHT/2-0.5, -FRAME_HEIGHT/2+0.5, num=18)):
                 patreons.add(
                     TexText(name, tex_to_color_map={} if name != "3blue1brown" else {
-                            "blue": BLUE, "brown": "#CD853F"}).move_to([0, pos, 0]).scale(0.75)
+                            "blue": BLUE, "brown": "#CD853F"}).move_to([0, pos, 0]).scale(0.65)
                 )
 
             patreons.center()
