@@ -1,23 +1,25 @@
 from manimlib import *
 
 
-MANDELBROT_COLORS = [
-    "#00065c",
-    "#061e7e",
-    "#0c37a0",
-    "#205abc",
-    "#4287d3",
-    "#D9EDE4",
-    "#F0F9E4",
-    "#BA9F6A",
-    "#573706",
-]
+# MANDELBROT_COLORS = [
+#     "#00065c",
+#     "#061e7e",
+#     "#0c37a0",
+#     "#205abc",
+#     "#4287d3",
+#     "#D9EDE4",
+#     "#F0F9E4",
+#     "#BA9F6A",
+#     "#573706",
+# ]
 
 
 class MandelbrotFractal(Mobject):
     CONFIG = {
         "shader_folder": "/Users/vivek/python/videos/shaders/mandelbrot",
-        "fractal_scale_factor": 2.5
+        "fractal_scale_factor": 2.5,
+        "num_steps": 100,
+        "max_arg": 2.0,
     }
 
     def __init__(self, plane, **kwargs):
@@ -26,15 +28,28 @@ class MandelbrotFractal(Mobject):
             offset=plane.n2p(0),
             **kwargs,
         )
+        self.init_uniforms()
+        self.replace(plane, stretch=True)
+
+    def init_uniforms(self):
+        super().init_uniforms()
         self.uniforms["scale_factor"] = self.fractal_scale_factor
         self.uniforms["opacity"] = self.opacity
-        self.replace(plane, stretch=True)
+        self.uniforms["num_steps"] = self.num_steps
+        self.uniforms["max_arg"] = self.max_arg
 
     def init_data(self):
         self.data = {
             "points": np.array([UL, DL, UR, DR]),
         }
 
+
+class MandelbrotTest(Scene):
+    def construct(self):
+        c = ComplexPlane()
+        t = MandelbrotFractal(c)
+        self.add(t)
+        self.embed()
 
 # class Test(Mobject):
 #     CONFIG = {
@@ -98,14 +113,6 @@ class MandelbrotFractal(Mobject):
 #     def set_n_steps(self, n_steps):
 #         self.uniforms["n_steps"] = float(n_steps)
 #         return self
-
-
-# class MandelbrotTest(Scene):
-#     def construct(self):
-#         c = ComplexPlane()
-#         t = Test2(c)
-#         self.add(t)
-#         self.embed()
 
 
 # class MandelbrotFractal(Mobject):
