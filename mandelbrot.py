@@ -25,11 +25,6 @@ class MandelbrotTest(Scene):
         self.embed()
 
 
-ROOT_COLORS_BRIGHT = [RED, GREEN, BLUE, YELLOW, MAROON_B]
-ROOT_COLORS_DEEP = ["#440154", "#3b528b", "#21908c", "#5dc963", "#29abca"]
-CUBIC_COLORS = [RED_E, TEAL_E, BLUE_E]
-
-
 MANDELBROT_COLORS = [
     "#00065c",
     "#061e7e",
