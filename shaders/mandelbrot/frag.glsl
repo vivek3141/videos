@@ -19,6 +19,31 @@ out vec4 frag_color;
 
 #INSERT finalize_color.glsl
 
+float interpolate(float start, float end, float alpha) {
+    return (1.0 - alpha) * start + alpha * end;
+}
+
+vec3 colorize(int steps) {
+    vec3 mapping[15] = vec3[](
+        vec3(0.0980,0.0275,0.1020),
+        vec3(0.0353,0.0039,0.1843),
+        vec3(0.0157,0.0157,0.2863),
+        vec3(0.0000,0.0275,0.3922),
+        vec3(0.0471,0.1725,0.5412),
+        vec3(0.0941,0.3216,0.6941),
+        vec3(0.2235,0.4902,0.8196),
+        vec3(0.5255,0.7098,0.8980),
+        vec3(0.8275,0.9255,0.9725),
+        vec3(0.9451,0.9137,0.7490),
+        vec3(0.9725,0.7882,0.3725),
+        vec3(1.0000,0.6667,0.0000),
+        vec3(0.8000,0.5020,0.0000),
+        vec3(0.6000,0.3412,0.0000),
+        vec3(0.4157,0.2039,0.0118)
+    );
+    return mapping[steps%16];
+}
+
 void main() {
     bool done = false;
     int steps = num_steps;
@@ -26,7 +51,7 @@ void main() {
     vec2 curr = vec2(0, 0);
     vec2 c = vec2(xyz_coords.x, xyz_coords.y);
 
-    while(steps >= 0 && !done) {        
+    while(steps >= 0 && !done) {
         curr = product(curr, curr) + c;
         steps--;
 
@@ -37,8 +62,9 @@ void main() {
 
     vec3 color;
     if(done) {
-        float ratio = float(steps) / float(num_steps);
-        color = vec3(ratio, ratio, 1.0);
+        color = colorize(int(num_steps - steps));
+        // float ratio = float(steps) / float(num_steps);
+        // color = vec3(0.5, 0.7, interpolate(0.3, 0.8, ratio));
     } else {
         color = vec3(0, 0, 0);
     }

@@ -40,7 +40,7 @@ for i in range(len(y_values) - 1)[::-1]:
                 done = True
                 break
             z = z**2 + c
-        pixel =i (255, 255, 255) if not done else (0, 0, 0)
+        pixel = (255, 255, 255) if not done else (0, 0, 0)
         pixels[-1].append(pixel)
 
 
