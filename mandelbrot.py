@@ -16,7 +16,7 @@ A_UNKA = "#ccebc5"
 A_UNKB = "#ffed6f"
 
 
-class MandelbrotFractal(Mobject):
+class MandelbrotSet(Mobject):
     CONFIG = {
         "shader_folder": "shaders/mandelbrot",
         "num_steps": 100,
@@ -53,7 +53,7 @@ class MandelbrotFractal(Mobject):
 class MandelbrotTest(Scene):
     def construct(self):
         c = ComplexPlane()
-        t = MandelbrotFractal(c)
+        t = MandelbrotSet(c)
         self.add(t)
         self.embed()
 
@@ -63,7 +63,13 @@ class MandelbrotIntro(Scene):
         c = ComplexPlane(x_range=(-2, 1), y_range=(-2, 2))
         c.scale(3)
         c.shift(3 * LEFT)
-        m = MandelbrotFractal(c, opacity=0.75)
 
-        self.add(c, m) 
+        m = MandelbrotSet(c, opacity=0.75)
+
+        eq1 = Tex("f(z) = z^2 + c",
+                  tex_to_color_map={"f": A_GREEN, "z": A_PINK, "c": A_YELLOW})
+        eq1.scale(1.5)
+        eq1.move_to(3 * UP + 4.5 * RIGHT)
+
+        self.add(c, m, eq1)
         self.embed()
