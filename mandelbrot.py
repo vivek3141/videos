@@ -62,14 +62,30 @@ class MandelbrotIntro(Scene):
     def construct(self):
         c = ComplexPlane(x_range=(-2, 1), y_range=(-2, 2))
         c.scale(3)
-        c.shift(3 * LEFT)
+        c.shift(3.75 * LEFT)
 
         m = MandelbrotSet(c, opacity=0.75)
 
-        eq1 = Tex("f(z) = z^2 + c",
-                  tex_to_color_map={"f": A_GREEN, "z": A_PINK, "c": A_YELLOW})
-        eq1.scale(1.5)
-        eq1.move_to(3 * UP + 4.5 * RIGHT)
+        l = Line(10 * UP, 10 * DOWN).shift(c.n2p(1))
 
-        self.add(c, m, eq1)
+        self.add(c, m, l)
+        self.wait()
+
+        eq1 = Tex("f(z) = z^2 + c",
+                  tex_to_color_map={"2": A_YELLOW, "f": A_GREEN, "z": A_PINK, "c": A_YELLOW})
+        eq2 = Tex("f(z) = z^2 + (1+i)", tex_to_color_map={
+                  "f": A_GREEN, "z": A_PINK, "1": A_YELLOW, "i": A_YELLOW, "2": A_YELLOW})
+        eq2.scale(1.5)
+        eq1.scale(1.5)
+
+        # 3.93 = (FRAME_WIDTH/2 - 0.75)/2 + 0.75
+        eq1.move_to(3 * UP + 3.93 * RIGHT)
+        eq2.move_to(3 * UP + 3.93 * RIGHT)
+
+        self.play(Write(eq1))
+        self.wait()
+
+        self.play(TransformMatchingTex(eq1, eq2))
+        self.wait()
+
         self.embed()
