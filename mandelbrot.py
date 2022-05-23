@@ -21,6 +21,7 @@ class MandelbrotSet(Mobject):
         "shader_folder": "shaders/mandelbrot",
         "num_steps": 100,
         "max_arg": 2.0,
+        "color_style": 0
     }
 
     def __init__(self, plane, **kwargs):
@@ -29,7 +30,6 @@ class MandelbrotSet(Mobject):
             offset=plane.n2p(0),
             **kwargs,
         )
-        self.init_uniforms()
         self.replace(plane, stretch=True)
 
     def init_uniforms(self):
@@ -40,6 +40,7 @@ class MandelbrotSet(Mobject):
         self.uniforms["max_arg"] = self.max_arg
         self.uniforms["opacity"] = self.opacity
         self.uniforms["offset"] = self.offset
+        self.uniforms["color_style"] = self.color_style
 
     def init_data(self):
         self.data = {
@@ -55,6 +56,27 @@ class MandelbrotTest(Scene):
         c = ComplexPlane()
         t = MandelbrotSet(c)
         self.add(t)
+        self.embed()
+
+
+class Intro(Scene):
+    def construct(self):
+        c = ComplexPlane(x_range=(-3, 2), y_range=(-1, 1))
+        c.scale(4)
+
+        m = MandelbrotSet(c, opacity=0.75)
+        v = ValueTracker(1)
+
+        def m_updater(m, v=v, c=c):
+            m_ = MandelbrotSet(c, opacity=0.75, num_steps=v.get_value())
+            m.become(m_)
+        m.add_updater(m_updater)
+
+        self.add(c, m)
+        self.wait(1)
+        self.play(v.increment_value, 100, run_time=5)
+        self.wait()
+
         self.embed()
 
 
@@ -87,5 +109,8 @@ class MandelbrotIntro(Scene):
 
         self.play(TransformMatchingTex(eq1, eq2))
         self.wait()
+
+        # self.play(TransformMatchingTex(eq2, eq1))
+        # self.wait()
 
         self.embed()

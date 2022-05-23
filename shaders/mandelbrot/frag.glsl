@@ -14,6 +14,8 @@ uniform float opacity;
 uniform float max_arg;
 uniform int num_steps;
 
+uniform int color_style;
+
 in vec3 xyz_coords;
 out vec4 frag_color;
 
@@ -62,9 +64,13 @@ void main() {
 
     vec3 color;
     if(done) {
-        color = colorize(int(num_steps - steps));
-        // float ratio = float(steps) / float(num_steps);
-        // color = vec3(0.5, 0.7, interpolate(0.3, 0.8, ratio));
+        if (color_style == 0) {
+            color = colorize(int(num_steps - steps));
+        } else {
+            float ratio = float(steps) / float(num_steps);
+            color = vec3(0.5, 0.7, interpolate(0.3, 0.8, ratio));
+        }
+        
     } else {
         color = vec3(0, 0, 0);
     }
