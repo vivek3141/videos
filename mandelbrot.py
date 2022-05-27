@@ -137,14 +137,29 @@ class MandelbrotIntro(Scene):
 
         steps = VGroup()
         for i in range(4):
-            eq = Tex(f"f({c_to_str(vals[i])}) = {c_to_str(vals[i+1])}",
+            eq = Tex("f(", c_to_str(vals[i]), ")", "=", c_to_str(vals[i+1]),
                      tex_to_color_map={**self.color_map, "f": A_GREEN})
             eq.scale(1.25)
             eq.move_to(eq2, LEFT)
-            eq.shift((i+1)*1.25*DOWN)
+            eq.shift((i+1) * 1.25*DOWN)
             steps.add(eq)
 
-        # self.play(TransformMatchingTex(eq2, eq1))
-        # self.wait()
+        self.play(Write(steps[0]))
+        self.wait()
+
+        for i in range(3):
+            self.play(
+                TransformFromCopy(steps[i][-5:], steps[i+1][2:7]),
+                Write(steps[i+1][:2]), Write(steps[i+1][7])
+            )
+            self.play(Write(steps[i+1][8:]))
+            self.wait()
+
+        dots = Tex(r"\vdots").scale(1.25)
+        dots.move_to(steps[-1])
+        dots.shift(1.25 * DOWN)
+
+        self.play(Write(dots))
+        self.wait()
 
         self.embed()
