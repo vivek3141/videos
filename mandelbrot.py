@@ -16,6 +16,19 @@ A_UNKA = "#ccebc5"
 A_UNKB = "#ffed6f"
 
 
+def c_to_str(c):
+    '''
+    Complex Number to String
+    (1+1j) -> "1 + i"
+    (1) -> "1"
+    (1-1j) -> "1 - i"
+    '''
+    if c.imag == 0:
+        return f"{int(c.real)}"
+    else:
+        return f"{int(c.real)} {'-' if c.imag < 0 else '+'} {abs(int(c.imag))}i"
+
+
 class MandelbrotSet(Mobject):
     CONFIG = {
         "shader_folder": "shaders/mandelbrot",
@@ -81,6 +94,10 @@ class Intro(Scene):
 
 
 class MandelbrotIntro(Scene):
+    CONFIG = {
+        "color_map": {**{str(i): A_YELLOW for i in range(10)}, "i": A_YELLOW}
+    }
+
     def construct(self):
         c = ComplexPlane(x_range=(-2, 1), y_range=(-2, 2))
         c.scale(3)
@@ -97,8 +114,8 @@ class MandelbrotIntro(Scene):
                   tex_to_color_map={"2": A_YELLOW, "f": A_GREEN, "z": A_PINK, "c": A_YELLOW})
         eq2 = Tex("f(z) = z^2 + (1+i)", tex_to_color_map={
                   "f": A_GREEN, "z": A_PINK, "1": A_YELLOW, "i": A_YELLOW, "2": A_YELLOW})
-        eq2.scale(1.5)
-        eq1.scale(1.5)
+        eq2.scale(1.25)
+        eq1.scale(1.25)
 
         # 3.93 = (FRAME_WIDTH/2 - 0.75)/2 + 0.75
         eq1.move_to(3 * UP + 3.93 * RIGHT)
@@ -109,6 +126,23 @@ class MandelbrotIntro(Scene):
 
         self.play(TransformMatchingTex(eq1, eq2))
         self.wait()
+
+        self.play(eq2.shift, 0.35 * LEFT)
+
+        vals = []
+        curr = 0
+        for _ in range(10):
+            vals.append(curr)
+            curr = (lambda z: z**2 + (-1 + 1j))(curr)
+
+        steps = VGroup()
+        for i in range(4):
+            eq = Tex(f"f({c_to_str(vals[i])}) = {c_to_str(vals[i+1])}",
+                     tex_to_color_map={**self.color_map, "f": A_GREEN})
+            eq.scale(1.25)
+            eq.move_to(eq2, LEFT)
+            eq.shift((i+1)*1.25*DOWN)
+            steps.add(eq)
 
         # self.play(TransformMatchingTex(eq2, eq1))
         # self.wait()
