@@ -168,8 +168,9 @@ class MandelbrotIntro(Scene):
             )
             self.play(Write(steps[i+1][8:]))
             self.play(TransformFromCopy(steps[i+1][-5:], d[i+2][1]))
-            self.play(Transform(d[0][0], d[i+2][0]), Uncreate(d[i+1][1]))
-            self.wait()
+            if i < 2:
+                self.play(Transform(d[0][0], d[i+2][0]), Uncreate(d[i+1][1]))
+                self.wait()
 
         vdots = Tex(r"\vdots").scale(1.25)
         vdots.move_to(steps[-1])
@@ -177,3 +178,5 @@ class MandelbrotIntro(Scene):
 
         self.play(Write(vdots))
         self.wait()
+
+        self.embed()

@@ -11,6 +11,8 @@ uniform float opacity;
 #define divide(a, b) vec2(((a.x*b.x+a.y*b.y)/(b.x*b.x+b.y*b.y)),((a.y*b.x-a.x*b.y)/(b.x*b.x+b.y*b.y)))
 #define arg(a) sqrt(a.x*a.x+a.y*a.y)
 
+#define RES=2;
+
 uniform float max_arg;
 uniform int num_steps;
 
@@ -23,6 +25,23 @@ out vec4 frag_color;
 
 float interpolate(float start, float end, float alpha) {
     return (1.0 - alpha) * start + alpha * end;
+}
+
+float mandelbrot(in vec2 c) {
+    const float B = 256.0;
+
+    float n = 0.0;
+    vec2 z = vec2(0.0);
+    for(int i = 0; i < num_steps; i++) {
+        z = vec2(z.x * z.x - z.y * z.y, 2.0 * z.x * z.y) + c; // z = z² + c
+        if(dot(z, z) > (B * B))
+            break;
+        n += 1.0;
+    }
+
+    float sn = n - log2(log2(dot(z, z))) + 4.0;  // optimized smooth iteration count
+
+    return sn;
 }
 
 vec3 colorize(int steps) {
@@ -47,32 +66,33 @@ vec3 colorize(int steps) {
 }
 
 void main() {
-    bool done = false;
-    int steps = num_steps;
-
-    vec2 curr = vec2(0, 0);
     vec2 c = vec2(xyz_coords.x, xyz_coords.y);
-
-    while(steps >= 0 && !done) {
-        curr = product(curr, curr) + c;
-        steps--;
-
-        if(arg(curr) > max_arg) {
-            done = true;
-        }
-    }
-
     vec3 color;
-    if(done) {
-        if (color_style == 0) {
-            color = colorize(int(num_steps - steps));
-        } else {
+
+    if(color_style == 0) {
+        bool done = false;
+        int steps = num_steps;
+        vec2 curr = vec2(0, 0);
+
+        while(steps >= 0 && !done) {
+            curr = product(curr, curr) + c;
+            steps--;
+
+            if(arg(curr) > max_arg) {
+                done = true;
+            }
+        }
+        if(done) {
             float ratio = float(steps) / float(num_steps);
             color = vec3(0.5, 0.7, interpolate(0.3, 0.8, ratio));
+        } else {
+            color = vec3(0, 0, 0);
         }
-        
+
     } else {
-        color = vec3(0, 0, 0);
+        float l = mandelbrot(c);
+        color = 0.5 + 0.5 * cos(3.0 + l * 0.15 + vec3(0.0, 0.6, 1.0));
     }
+
     frag_color = finalize_color(vec4(color, opacity), xyz_coords, vec3(0.0, 0.0, 1.0), light_source_position, gloss, shadow);
 }
