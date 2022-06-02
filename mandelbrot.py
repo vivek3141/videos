@@ -102,17 +102,19 @@ class MandelbrotIntro(Scene):
         c = ComplexPlane(x_range=(-2, 1), y_range=(-2, 2))
         c.scale(3)
         c.shift(3.75 * LEFT)
+        c.add_coordinate_labels()
 
         m = MandelbrotSet(c, opacity=0.75)
 
         l = Line(10 * UP, 10 * DOWN).shift(c.n2p(1))
 
-        self.add(c, m, l)
+        self.play(Write(c), Write(l))
+        self.play(FadeIn(m))
         self.wait()
 
         eq1 = Tex("f(z) = z^2 + c",
                   tex_to_color_map={"2": A_YELLOW, "f": A_GREEN, "z": A_PINK, "c": A_YELLOW})
-        eq2 = Tex("f(z) = z^2 + (1+i)", tex_to_color_map={
+        eq2 = Tex("f(z) = z^2 + ", "(", "-1+i", ")", tex_to_color_map={
                   "f": A_GREEN, "z": A_PINK, "1": A_YELLOW, "i": A_YELLOW, "2": A_YELLOW})
         eq2.scale(1.25)
         eq1.scale(1.25)
@@ -127,7 +129,7 @@ class MandelbrotIntro(Scene):
         self.play(TransformMatchingTex(eq1, eq2))
         self.wait()
 
-        self.play(eq2.shift, 0.35 * LEFT)
+        #self.play(eq2.shift, 0.35 * LEFT)
 
         vals = []
         curr = 0
@@ -144,7 +146,21 @@ class MandelbrotIntro(Scene):
             eq.shift((i+1) * 1.25*DOWN)
             steps.add(eq)
 
+        def get_dot_grp(z):
+            d_ = Dot(c.n2p(z), color=A_ORANGE, radius=0.1)
+            return VGroup(
+                d_,
+                Tex(c_to_str(z), tex_to_color_map=self.color_map
+                    ).next_to(d_, DOWN).add_background_rectangle(buff=0.075),
+            )
+        d_list = [get_dot_grp(z) for z in vals]
+
+        self.play(Write(d[0]))
+        self.wait()
+
         self.play(Write(steps[0]))
+        self.play(TransformFromCopy(steps[0][-5:], d[1][1]))
+        self.play(Transform(d[0][0], d[1][0]), Uncreate(d[0][1]))
         self.wait()
 
         for i in range(3):
@@ -153,13 +169,29 @@ class MandelbrotIntro(Scene):
                 Write(steps[i+1][:2]), Write(steps[i+1][7])
             )
             self.play(Write(steps[i+1][8:]))
+            self.play(TransformFromCopy(steps[i+1][-5:], d[i+2][1]))
+            self.play(Transform(d[i+1][0], d[i+2][0]), Uncreate(d[i+1][1]))
             self.wait()
 
-        dots = Tex(r"\vdots").scale(1.25)
-        dots.move_to(steps[-1])
-        dots.shift(1.25 * DOWN)
+        vdots = Tex(r"\vdots").scale(1.25)
+        vdots.move_to(steps[-1])
+        vdots.shift(1.25 * DOWN)
 
-        self.play(Write(dots))
+        self.play(Write(vdots))
+        self.wait()
+
+        self.embed()
+
+        d = Dot(c.n2p(0), color=A_ORANGE, radius=0.1)
+        self.play(Write(d))
+        for i in range(4):
+            l = DashedLine(c.n2p(vals[i]), c.n2p(vals[i+1]))
+            d_ = Dot(c.n2p(vals[i+1]), color=A_ORANGE, radius=0.1)
+            self.bring_to_front(d)
+            self.play(Write(l))
+            self.bring_to_front(d)
+            self.play(Transform(d, d_))
+            self.play(Uncreate(l))
         self.wait()
 
         self.embed()
