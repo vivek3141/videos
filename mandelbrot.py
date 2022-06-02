@@ -104,7 +104,7 @@ class MandelbrotIntro(Scene):
         c.shift(3.75 * LEFT)
         c.add_coordinate_labels()
 
-        m = MandelbrotSet(c, opacity=0.75)
+        m = MandelbrotSet(c, opacity=0.75, color_style=1)
 
         l = Line(10 * UP, 10 * DOWN).shift(c.n2p(1))
 

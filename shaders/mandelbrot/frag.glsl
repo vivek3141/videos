@@ -11,8 +11,6 @@ uniform float opacity;
 #define divide(a, b) vec2(((a.x*b.x+a.y*b.y)/(b.x*b.x+b.y*b.y)),((a.y*b.x-a.x*b.y)/(b.x*b.x+b.y*b.y)))
 #define arg(a) sqrt(a.x*a.x+a.y*a.y)
 
-#define RES=2;
-
 uniform float max_arg;
 uniform int num_steps;
 
@@ -83,8 +81,7 @@ void main() {
             }
         }
         if(done) {
-            float ratio = float(steps) / float(num_steps);
-            color = vec3(0.5, 0.7, interpolate(0.3, 0.8, ratio));
+            color = colorize(int(num_steps - steps));
         } else {
             color = vec3(0, 0, 0);
         }
