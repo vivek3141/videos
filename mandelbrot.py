@@ -129,8 +129,6 @@ class MandelbrotIntro(Scene):
         self.play(TransformMatchingTex(eq1, eq2))
         self.wait()
 
-        #self.play(eq2.shift, 0.35 * LEFT)
-
         vals = []
         curr = 0
         for _ in range(10):
@@ -153,7 +151,7 @@ class MandelbrotIntro(Scene):
                 Tex(c_to_str(z), tex_to_color_map=self.color_map
                     ).next_to(d_, DOWN).add_background_rectangle(buff=0.075),
             )
-        d_list = [get_dot_grp(z) for z in vals]
+        d = [get_dot_grp(z) for z in vals[:6]]
 
         self.play(Write(d[0]))
         self.wait()
@@ -170,7 +168,7 @@ class MandelbrotIntro(Scene):
             )
             self.play(Write(steps[i+1][8:]))
             self.play(TransformFromCopy(steps[i+1][-5:], d[i+2][1]))
-            self.play(Transform(d[i+1][0], d[i+2][0]), Uncreate(d[i+1][1]))
+            self.play(Transform(d[0][0], d[i+2][0]), Uncreate(d[i+1][1]))
             self.wait()
 
         vdots = Tex(r"\vdots").scale(1.25)
@@ -179,19 +177,3 @@ class MandelbrotIntro(Scene):
 
         self.play(Write(vdots))
         self.wait()
-
-        self.embed()
-
-        d = Dot(c.n2p(0), color=A_ORANGE, radius=0.1)
-        self.play(Write(d))
-        for i in range(4):
-            l = DashedLine(c.n2p(vals[i]), c.n2p(vals[i+1]))
-            d_ = Dot(c.n2p(vals[i+1]), color=A_ORANGE, radius=0.1)
-            self.bring_to_front(d)
-            self.play(Write(l))
-            self.bring_to_front(d)
-            self.play(Transform(d, d_))
-            self.play(Uncreate(l))
-        self.wait()
-
-        self.embed()
