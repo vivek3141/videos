@@ -16,7 +16,7 @@ A_UNKA = "#ccebc5"
 A_UNKB = "#ffed6f"
 
 
-def c_to_str(c):
+def c_to_str(c, conv=int):
     '''
     Complex Number to String
     (1+1j) -> "1 + i"
@@ -24,9 +24,9 @@ def c_to_str(c):
     (1-1j) -> "1 - i"
     '''
     if c.imag == 0:
-        return f"{int(c.real)}"
+        return f"{conv(c.real)}"
     else:
-        return f"{int(c.real)} {'-' if c.imag < 0 else '+'} {abs(int(c.imag))}i"
+        return f"{conv(c.real)} {'-' if c.imag < 0 else '+'} {conv(abs(c.imag))}i"
 
 
 class MandelbrotSet(Mobject):
@@ -176,6 +176,45 @@ class MandelbrotIntro(Scene):
         vdots.move_to(steps[-1])
         vdots.shift(1.25 * DOWN)
 
+        self.play(Write(vdots))
+        self.wait()
+
+        eq3 = Tex("f(z) = z^2 + ", "(", "-0.25+0.25i", ")", tex_to_color_map={
+                  "f": A_GREEN, "z": A_PINK, "0.25": A_YELLOW,
+                  "i": A_YELLOW, "2": A_YELLOW})
+        eq3.move_to(eq2)
+
+        self.play(FadeOut(VGroup(steps, vdots), DOWN))
+        self.play(TransformMatchingTex(eq2, eq3))
+        self.wait()
+
+        curr, prev = -0.25+0.25j, 0
+        grp, steps2 = VGroup(), VGroup()
+
+        for i in range(10):
+            grp.add_to_back(Line(c.n2p(curr), c.n2p(prev), stroke_opacity=0.5))
+            grp.add(Dot(c.n2p(curr), color=A_ORANGE))
+            curr, prev = (lambda z: z**2 + (-0.25 + 0.25j))(curr), curr
+
+        curr, prev = -0.25+0.25j, 0
+        for i in range(5):
+            eq = Tex(
+                "f(", c_to_str(prev, conv=lambda x: f"{x:.2f}"), ")",
+                "=", c_to_str(curr, conv=lambda x: f"{x:.2f}"),
+                tex_to_color_map={**self.color_map, "f": A_GREEN}
+            )
+            eq.scale(0.85)
+            eq.move_to(eq3, LEFT)
+            eq.shift((i+1) * 1*DOWN)
+            steps2.add(eq)
+            curr, prev = (lambda z: z**2 + (-0.25 + 0.25j))(curr), curr
+
+        vdots = Tex(r"\vdots").scale(1.25)
+        vdots.move_to(steps2[4]).shift(1.1 * DOWN)
+
+        self.play(TransformFromCopy(eq3, grp))
+        for i in steps2:
+            self.play(FadeIn(i, DOWN))
         self.play(Write(vdots))
         self.wait()
 
