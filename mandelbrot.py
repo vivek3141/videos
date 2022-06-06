@@ -96,7 +96,8 @@ class Intro(Scene):
 class MandelbrotIntro(Scene):
     CONFIG = {
         "color_map": {**{str(i): A_YELLOW for i in range(10)},
-                      "i": A_YELLOW, "-": A_YELLOW, ".": A_YELLOW}
+                      "i": A_YELLOW, "-": A_YELLOW, ".": A_YELLOW,
+                      "f": A_GREEN, "z": A_PINK}
     }
 
     def construct(self):
@@ -220,6 +221,18 @@ class MandelbrotIntro(Scene):
         self.wait()
 
         self.play(Uncreate(grp), FadeOut(steps2, UP), FadeOut(vdots, UP))
-        d = get_dot_grp(-0.75, conv=lambda s:f"{s:.2f}")
+
+        d = get_dot_grp(-0.75, conv=lambda s: f"{s:.2f}")
+        eq4 = Tex("f(z) = z^2 + (-0.75)", tex_to_color_map=self.color_map)
+        eq4.move_to(eq3, LEFT)
+
+        self.play(Write(d))
+        self.play(FocusOn(d))
+        self.play(Uncreate(eq3[8:]), Write(eq4[-1]))
+        self.play(TransformFromCopy(d[1], eq4[7:12]))
+        self.add(eq4)
+        self.remove(eq3)
+        self.play(eq4.move_to, 3 * UP + 3.93 * RIGHT)
+        self.wait()
 
         self.embed()
