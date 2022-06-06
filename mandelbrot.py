@@ -95,7 +95,8 @@ class Intro(Scene):
 
 class MandelbrotIntro(Scene):
     CONFIG = {
-        "color_map": {**{str(i): A_YELLOW for i in range(10)}, "i": A_YELLOW}
+        "color_map": {**{str(i): A_YELLOW for i in range(10)},
+                      "i": A_YELLOW, "-": A_YELLOW, ".": A_YELLOW}
     }
 
     def construct(self):
@@ -115,7 +116,7 @@ class MandelbrotIntro(Scene):
         eq1 = Tex("f(z) = z^2 + c",
                   tex_to_color_map={"2": A_YELLOW, "f": A_GREEN, "z": A_PINK, "c": A_YELLOW})
         eq2 = Tex("f(z) = z^2 + ", "(", "-1+i", ")", tex_to_color_map={
-                  "f": A_GREEN, "z": A_PINK, "1": A_YELLOW, "i": A_YELLOW, "2": A_YELLOW})
+                  "f": A_GREEN, "z": A_PINK, "1": A_YELLOW, "i": A_YELLOW, "2": A_YELLOW, "-": A_YELLOW})
         eq2.scale(1.25)
         eq1.scale(1.25)
 
@@ -144,11 +145,11 @@ class MandelbrotIntro(Scene):
             eq.shift((i+1) * 1.25*DOWN)
             steps.add(eq)
 
-        def get_dot_grp(z):
+        def get_dot_grp(z, conv=int):
             d_ = Dot(c.n2p(z), color=A_ORANGE, radius=0.1)
             return VGroup(
                 d_,
-                Tex(c_to_str(z), tex_to_color_map=self.color_map
+                Tex(c_to_str(z, conv), tex_to_color_map=self.color_map
                     ).next_to(d_, DOWN).add_background_rectangle(buff=0.075),
             )
         d = [get_dot_grp(z) for z in vals[:6]]
@@ -181,7 +182,7 @@ class MandelbrotIntro(Scene):
 
         eq3 = Tex("f(z) = z^2 + ", "(", "-0.25+0.25i", ")", tex_to_color_map={
                   "f": A_GREEN, "z": A_PINK, "0.25": A_YELLOW,
-                  "i": A_YELLOW, "2": A_YELLOW})
+                  "i": A_YELLOW, "2": A_YELLOW, "-": A_YELLOW})
         eq3.move_to(eq2)
 
         self.play(FadeOut(VGroup(steps, vdots), DOWN))
@@ -191,9 +192,9 @@ class MandelbrotIntro(Scene):
         curr, prev = -0.25+0.25j, 0
         grp, steps2 = VGroup(), VGroup()
 
-        for i in range(10):
+        for i in range(15):
             grp.add_to_back(Line(c.n2p(curr), c.n2p(prev), stroke_opacity=0.5))
-            grp.add(Dot(c.n2p(curr), color=A_ORANGE))
+            grp.add(Dot(c.n2p(prev), color=A_ORANGE))
             curr, prev = (lambda z: z**2 + (-0.25 + 0.25j))(curr), curr
 
         curr, prev = -0.25+0.25j, 0
@@ -217,5 +218,8 @@ class MandelbrotIntro(Scene):
             self.play(FadeIn(i, DOWN))
         self.play(Write(vdots))
         self.wait()
+
+        self.play(Uncreate(grp), FadeOut(steps2, UP), FadeOut(vdots, UP))
+        d = get_dot_grp(-0.75, conv=lambda s:f"{s:.2f}")
 
         self.embed()
