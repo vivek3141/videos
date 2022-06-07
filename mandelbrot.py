@@ -198,10 +198,10 @@ class MandelbrotIntro(Scene):
                 grp.add_to_back(
                     Line(c.n2p(curr), c.n2p(prev), stroke_opacity=0.5))
                 grp.add(Dot(c.n2p(prev), color=A_ORANGE))
-                try:
-                    curr, prev = (lambda z: z**2 + point)(curr), curr
-                except RuntimeWarning:
-                    break
+                # try:
+                curr, prev = (lambda z: z**2 + point)(curr), curr
+                # except RuntimeWarning:
+                #     break
 
             return grp
 
@@ -264,8 +264,8 @@ class MandelbrotIntro(Scene):
         m1.add_updater(m_updater)
         d.add_updater(dot_updater)
 
-        self.play(TransformFromCopy(eq4, m1))
-        self.play(v.increment_value, 1, run_time=7.5, rate_func=linear)
+        self.play(Write(m1))
+        self.play(v.increment_value, 1, run_time=7.5)
         self.wait()
 
         self.embed()
