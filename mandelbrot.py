@@ -146,8 +146,8 @@ class MandelbrotIntro(Scene):
             eq.shift((i+1) * 1.25*DOWN)
             steps.add(eq)
 
-        def get_dot_grp(z, conv=int):
-            d_ = Dot(c.n2p(z), color=A_ORANGE, radius=0.1)
+        def get_dot_grp(z, conv=int, color=A_ORANGE, radius=0.1):
+            d_ = Dot(c.n2p(z), color=color, radius=radius)
             return VGroup(
                 d_,
                 Tex(c_to_str(z, conv), tex_to_color_map=self.color_map
@@ -190,13 +190,23 @@ class MandelbrotIntro(Scene):
         self.play(TransformMatchingTex(eq2, eq3))
         self.wait()
 
-        curr, prev = -0.25+0.25j, 0
-        grp, steps2 = VGroup(), VGroup()
+        def get_mandel_lines(point, steps=15):
+            curr, prev = point, 0
+            grp = VGroup()
 
-        for i in range(15):
-            grp.add_to_back(Line(c.n2p(curr), c.n2p(prev), stroke_opacity=0.5))
-            grp.add(Dot(c.n2p(prev), color=A_ORANGE))
-            curr, prev = (lambda z: z**2 + (-0.25 + 0.25j))(curr), curr
+            for i in range(steps):
+                grp.add_to_back(
+                    Line(c.n2p(curr), c.n2p(prev), stroke_opacity=0.5))
+                grp.add(Dot(c.n2p(prev), color=A_ORANGE))
+                try:
+                    curr, prev = (lambda z: z**2 + point)(curr), curr
+                except RuntimeWarning:
+                    break
+
+            return grp
+
+        mandel1 = get_mandel_lines(-0.25 + 0.25j)
+        steps2 = VGroup()
 
         curr, prev = -0.25+0.25j, 0
         for i in range(5):
@@ -214,15 +224,15 @@ class MandelbrotIntro(Scene):
         vdots = Tex(r"\vdots").scale(1.25)
         vdots.move_to(steps2[4]).shift(1.1 * DOWN)
 
-        self.play(TransformFromCopy(eq3, grp))
+        self.play(TransformFromCopy(eq3, mandel1))
         for i in steps2:
             self.play(FadeIn(i, DOWN))
         self.play(Write(vdots))
         self.wait()
 
-        self.play(Uncreate(grp), FadeOut(steps2, UP), FadeOut(vdots, UP))
+        self.play(Uncreate(mandel1), FadeOut(steps2, UP), FadeOut(vdots, UP))
 
-        d = get_dot_grp(-0.75, conv=lambda s: f"{s:.2f}")
+        d = get_dot_grp(-0.75, conv=lambda s: f"{s:.2f}", color=A_RED)
         eq4 = Tex("f(z) = z^2 + (-0.75)", tex_to_color_map=self.color_map)
         eq4.move_to(eq3, LEFT)
 
@@ -230,8 +240,10 @@ class MandelbrotIntro(Scene):
         self.play(FocusOn(d))
         self.play(Uncreate(eq3[8:]), Write(eq4[-1]))
         self.play(TransformFromCopy(d[1], eq4[7:12]))
+
+        self.remove(self.mobjects[-1], eq3)
         self.add(eq4)
-        self.remove(eq3)
+
         self.play(eq4.move_to, 3 * UP + 3.93 * RIGHT)
         self.wait()
 
