@@ -247,4 +247,25 @@ class MandelbrotIntro(Scene):
         self.play(eq4.move_to, 3 * UP + 3.93 * RIGHT)
         self.wait()
 
+        v = ValueTracker(0)
+
+        def dot_updater(d):
+            d_ = get_dot_grp(
+                -0.75 + v.get_value()*1j,
+                conv=lambda s: f"{s:.2f}", color=A_RED)
+            d.become(d_)
+
+        def m_updater(m):
+            m_ = get_mandel_lines(-0.75 + v.get_value()*1j)
+            m.become(m_)
+            self.bring_to_front(d)
+
+        m1 = get_mandel_lines(-0.75)
+        m1.add_updater(m_updater)
+        d.add_updater(dot_updater)
+
+        self.play(TransformFromCopy(eq4, m1))
+        self.play(v.increment_value, 1, run_time=7.5, rate_func=linear)
+        self.wait()
+
         self.embed()
