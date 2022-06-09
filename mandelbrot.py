@@ -190,7 +190,7 @@ class MandelbrotIntro(Scene):
         self.play(TransformMatchingTex(eq2, eq3))
         self.wait()
 
-        def get_mandel_lines(point, steps=15):
+        def get_mandel_lines(point, steps=15, max_arg=10000):
             curr, prev = point, 0
             grp = VGroup()
 
@@ -198,10 +198,10 @@ class MandelbrotIntro(Scene):
                 grp.add_to_back(
                     Line(c.n2p(curr), c.n2p(prev), stroke_opacity=0.5))
                 grp.add(Dot(c.n2p(prev), color=A_ORANGE))
-                # try:
-                curr, prev = (lambda z: z**2 + point)(curr), curr
-                # except RuntimeWarning:
-                #     break
+                if abs(curr) < max_arg:  # Avoid RuntimeWarning
+                    curr, prev = (lambda z: z**2 + point)(curr), curr
+                else:
+                    break
 
             return grp
 
@@ -268,4 +268,40 @@ class MandelbrotIntro(Scene):
         self.play(v.increment_value, 1, run_time=7.5)
         self.wait()
 
+        h1 = Tex(r"\epsilon", color=A_LAVENDER)
+        h1.scale(1.5)
+        h1.move_to(2.34 * RIGHT + 1.75 * UP)
+
+        h_eq = Tex(r"f(z) = z^2 + (-0.75 + \epsilon i)",
+                   tex_to_color_map={**self.color_map, r"\epsilon": A_LAVENDER})
+        h_text = Text("# of steps till\n\nreaches a magnitude of 2")
+        h2 = VGroup(h_text, h_eq)
+        h2.scale(0.5)
+        h2.move_to(5.52 * RIGHT + 1.75 * UP)
+
+        l1 = Line(2.25 * UP, 5 * DOWN).shift(3.93 * RIGHT)
+        l2 = Line(0.75 * RIGHT, 7 * RIGHT).shift(1.25 * UP)
+
+        self.play(Write(l1), Write(l2))
+        self.play(Write(h1), Write(h2))
+
+        tab = VGroup()
+        for i in range(5):
+            t1 = Tex(str(1/10**i)).move_to(h1).shift(1 * (i+1) * DOWN)
+            t2 = Tex(str(int(10**i*PI))).move_to(h2).shift(1 * (i+1) * DOWN)
+            tab.add(t1, t2)
+        tab.shift(0.1 * DOWN)
+
+        for i in range(2):
+            self.play(TransformFromCopy(d[-5:-1], tab[2*i]))
+            self.play(TransformFromCopy(m1, tab[2*i+1]))
+            self.play(v.set_value, 1/10**(i+1))
+
+        self.play(TransformFromCopy(d[-5:-1], tab[2*2]))
+        self.play(TransformFromCopy(m1, tab[2*2+1]))
+
+        for i in range(3, 5):
+            self.play(FadeIn(tab[2*i], DOWN), FadeIn(tab[2*i+1], DOWN))
+
+        self.wait()
         self.embed()
