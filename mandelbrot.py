@@ -146,14 +146,7 @@ class MandelbrotIntro(Scene):
             eq.shift((i+1) * 1.25*DOWN)
             steps.add(eq)
 
-        def get_dot_grp(z, conv=int, color=A_ORANGE, radius=0.1):
-            d_ = Dot(c.n2p(z), color=color, radius=radius)
-            return VGroup(
-                d_,
-                Tex(c_to_str(z, conv), tex_to_color_map=self.color_map
-                    ).next_to(d_, DOWN).add_background_rectangle(buff=0.075),
-            )
-        d = [get_dot_grp(z) for z in vals[:6]]
+        d = [self.get_dot_grp(z, c) for z in vals[:6]]
 
         self.play(Write(d[0]))
         self.wait()
@@ -190,22 +183,7 @@ class MandelbrotIntro(Scene):
         self.play(TransformMatchingTex(eq2, eq3))
         self.wait()
 
-        def get_mandel_lines(point, steps=15, max_arg=10000):
-            curr, prev = point, 0
-            grp = VGroup()
-
-            for i in range(steps):
-                grp.add_to_back(
-                    Line(c.n2p(curr), c.n2p(prev), stroke_opacity=0.5))
-                grp.add(Dot(c.n2p(prev), color=A_ORANGE))
-                if abs(curr) < max_arg:  # Avoid RuntimeWarning
-                    curr, prev = (lambda z: z**2 + point)(curr), curr
-                else:
-                    break
-
-            return grp
-
-        mandel1 = get_mandel_lines(-0.25 + 0.25j)
+        mandel1 = self.get_mandel_lines(-0.25 + 0.25j, c)
         steps2 = VGroup()
 
         curr, prev = -0.25+0.25j, 0
@@ -232,7 +210,7 @@ class MandelbrotIntro(Scene):
 
         self.play(Uncreate(mandel1), FadeOut(steps2, UP), FadeOut(vdots, UP))
 
-        d = get_dot_grp(-0.75, conv=lambda s: f"{s:.2f}", color=A_RED)
+        d = self.get_dot_grp(-0.75, c, conv=lambda s: f"{s:.2f}", color=A_RED)
         eq4 = Tex("f(z) = z^2 + (-0.75)", tex_to_color_map=self.color_map)
         eq4.move_to(eq3, LEFT)
 
@@ -250,17 +228,17 @@ class MandelbrotIntro(Scene):
         v = ValueTracker(0)
 
         def dot_updater(d):
-            d_ = get_dot_grp(
-                -0.75 + v.get_value()*1j,
+            d_ = self.get_dot_grp(
+                -0.75 + v.get_value()*1j, c,
                 conv=lambda s: f"{s:.2f}", color=A_RED)
             d.become(d_)
 
         def m_updater(m):
-            m_ = get_mandel_lines(-0.75 + v.get_value()*1j)
+            m_ = self.get_mandel_lines(-0.75 + v.get_value()*1j, c)
             m.become(m_)
             self.bring_to_front(d)
 
-        m1 = get_mandel_lines(-0.75)
+        m1 = self.get_mandel_lines(-0.75, c)
         m1.add_updater(m_updater)
         d.add_updater(dot_updater)
 
@@ -305,3 +283,32 @@ class MandelbrotIntro(Scene):
 
         self.wait()
         self.embed()
+
+    def get_dot_grp(self, z, c, conv=int, color=A_ORANGE, radius=0.1):
+        d_ = Dot(c.n2p(z), color=color, radius=radius)
+        return VGroup(
+            d_,
+            Tex(c_to_str(z, conv), tex_to_color_map=self.color_map
+                ).next_to(d_, DOWN).add_background_rectangle(buff=0.075),
+        )
+
+    def get_mandel_lines(self, point, c, steps=15, max_arg=10000):
+        curr, prev = point, 0
+        grp = VGroup()
+
+        for i in range(steps):
+            grp.add_to_back(
+                Line(c.n2p(curr), c.n2p(prev), stroke_opacity=0.5))
+            grp.add(Dot(c.n2p(prev), color=A_ORANGE))
+            if abs(curr) < max_arg:  # Avoid RuntimeWarning
+                curr, prev = (lambda z: z**2 + point)(curr), curr
+            else:
+                break
+
+        return grp
+
+
+class ExpIntro(MandelbrotIntro):
+    def construct(self):
+        self.embed()
+        pass
