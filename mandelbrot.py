@@ -16,7 +16,7 @@ A_UNKA = "#ccebc5"
 A_UNKB = "#ffed6f"
 
 
-def c_to_str(c, conv=int):
+def c_to_str(c, conv=int, compare=lambda c: c.imag < 0):
     '''
     Complex Number to String
     (1+1j) -> "1 + i"
@@ -26,7 +26,7 @@ def c_to_str(c, conv=int):
     if c.imag == 0:
         return f"{conv(c.real)}"
     else:
-        return f"{conv(c.real)} {'-' if c.imag < 0 else '+'} {conv(abs(c.imag))}i"
+        return f"{conv(c.real)} {'-' if compare(c) else '+'} {conv(abs(c.imag))}i"
 
 
 class MandelbrotSet(Mobject):
@@ -284,11 +284,16 @@ class MandelbrotIntro(Scene):
         self.wait()
         self.embed()
 
-    def get_dot_grp(self, z, c, conv=int, color=A_ORANGE, radius=0.1):
+    def get_dot_grp(self, z, c, conv=int,
+                    c_str_func=c_to_str, color=A_ORANGE,
+                    tex_to_color_map=None, radius=0.1):
+        if tex_to_color_map is None:
+            tex_to_color_map = self.color_map
+
         d_ = Dot(c.n2p(z), color=color, radius=radius)
         return VGroup(
             d_,
-            Tex(c_to_str(z, conv), tex_to_color_map=self.color_map
+            Tex(c_str_func(z, conv), tex_to_color_map=tex_to_color_map
                 ).next_to(d_, DOWN).add_background_rectangle(buff=0.075),
         )
 
@@ -310,5 +315,23 @@ class MandelbrotIntro(Scene):
 
 class ExpIntro(MandelbrotIntro):
     def construct(self):
+        c = ComplexPlane(x_range=(-3, 2), y_range=(-1, 1))
+        c.scale(4)
+        c.add_coordinate_labels()
+
+        m = MandelbrotSet(c, opacity=0.75, color_style=1)
+        d1 = self.get_dot_grp(0.25, c, conv=lambda s: f"{s:.2f}", color=A_RED)
+
+        self.play(Write(c), FadeIn(m))
+        self.play(Write(d1), FocusOn(d1[0]))
+        self.wait()
+
+        d2 = self.get_dot_grp(
+            0.6, c, c_str_func=lambda c, _: r"0.25 + \epsilon",
+            tex_to_color_map={"0.25": A_YELLOW, "+": A_YELLOW, r"\epsilon": A_LAVENDER})
+        self.play(TransformFromCopy(d1, d2))
+        self.wait()
+
+        
+
         self.embed()
-        pass
