@@ -342,9 +342,10 @@ class ExpIntro(MandelbrotIntro):
             x_range=(-4, 4), y_range=(-1, 4), axis_config={"include_tip": False},
             x_axis_config={"stroke_width": 6}, y_axis_config={"stroke_width": 6},
         )
-        axes.shift(0.5 * DOWN)
+        axes.shift(0.65 * DOWN)
+        axes.add_coordinate_labels()
 
-        c = axes.get_graph(
+        c1 = axes.get_graph(
             lambda x: x**2 + 0.25,
             x_range=(-np.sqrt(3.75), np.sqrt(3.75)),
             color=A_RED, stroke_width=6
@@ -353,9 +354,19 @@ class ExpIntro(MandelbrotIntro):
         self.play(Write(eq))
         self.wait()
 
+        l1 = DashedLine(
+            axes.c2p(-4, 0.25), axes.c2p(4, 0.25), dash_length=0.1,
+            positive_space_ratio=0.4, color=A_YELLOW)
+
+        lbl1 = Tex("0.25", color=A_YELLOW)
+        lbl1.move_to(l1, LEFT)
+        lbl1.shift(0.4 * UP)
+
         self.play(FadeOut(m), Uncreate(d1), Uncreate(d2), Uncreate(c))
         self.play(Write(axes))
-        self.play(TransformFromCopy(eq, c))
+        self.play(TransformFromCopy(eq, c1))
+        self.play(Write(l1))
+        self.play(TransformFromCopy(eq[8:12], lbl1))
         self.wait()
 
         self.embed()
