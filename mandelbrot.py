@@ -329,9 +329,33 @@ class ExpIntro(MandelbrotIntro):
         d2 = self.get_dot_grp(
             0.6, c, c_str_func=lambda c, _: r"0.25 + \epsilon",
             tex_to_color_map={"0.25": A_YELLOW, "+": A_YELLOW, r"\epsilon": A_LAVENDER})
+
         self.play(TransformFromCopy(d1, d2))
         self.wait()
 
-        
+        eq = Tex("f(z) = z^2 + 0.25", tex_to_color_map=self.color_map)
+        eq.scale(1.5)
+        eq.shift(3.25 * UP)
+        eq.add_background_rectangle(buff=0.1, opacity=0.9)
+
+        axes = Axes(
+            x_range=(-4, 4), y_range=(-1, 4), axis_config={"include_tip": False},
+            x_axis_config={"stroke_width": 6}, y_axis_config={"stroke_width": 6},
+        )
+        axes.shift(0.5 * DOWN)
+
+        c = axes.get_graph(
+            lambda x: x**2 + 0.25,
+            x_range=(-np.sqrt(3.75), np.sqrt(3.75)),
+            color=A_RED, stroke_width=6
+        )
+
+        self.play(Write(eq))
+        self.wait()
+
+        self.play(FadeOut(m), Uncreate(d1), Uncreate(d2), Uncreate(c))
+        self.play(Write(axes))
+        self.play(TransformFromCopy(eq, c))
+        self.wait()
 
         self.embed()
