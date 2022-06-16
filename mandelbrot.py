@@ -145,16 +145,13 @@ class MandelbrotIntro(Scene):
         c.add_coordinate_labels()
 
         self.play(Transform(c2, c3))
-        self.play(howCreation(rect))
-        self.remove(c3)
-        self.add(c)
-        self.wait()
+        self.play(FadeIn(rect))
 
         m = MandelbrotSet(c, opacity=0.75, color_style=1)
 
         l = Line(10 * UP, 10 * DOWN).shift(c.n2p(1))
 
-        self.play(Write(c), Write(l))
+        self.play(Write(l))
         self.play(FadeIn(m))
         self.wait()
 
