@@ -101,10 +101,54 @@ class MandelbrotIntro(Scene):
     }
 
     def construct(self):
+        # This is some bad code by me, but hey it works. This is something I think manim can do better.
+        # If you're wondering why I don't transform each ComplexPlane into one another,
+        # it's because the coordinate labels make it weird-looking.
+
+        c1 = ComplexPlane()
+        c1.add_coordinate_labels()
+        c1.remove(c1.coordinate_labels)
+
+        c2 = ComplexPlane()
+        c2.scale(3)
+        c2.add_coordinate_labels()
+        c2.remove(c2.coordinate_labels)
+
+        c3 = ComplexPlane()
+        c3.scale(3)
+        c3.shift(2.25 * LEFT)
+        c3.add_coordinate_labels()
+
+        self.play(Write(c1), Write(c1.coordinate_labels))
+        self.wait()
+
+        self.play(Uncreate(c1.coordinate_labels), Transform(c1, c2))
+        self.play(Write(c2.coordinate_labels))
+
+        c2.add(c2.coordinate_labels)
+        self.remove(c1)
+        self.add(c2)
+
+        rect = Polygon(
+            [0.77, FRAME_HEIGHT/2, 0],
+            [FRAME_WIDTH/2, FRAME_HEIGHT/2, 0],
+            [FRAME_WIDTH/2, -FRAME_HEIGHT/2, 0],
+            [0.77, -FRAME_HEIGHT/2, 0],
+            fill_opacity=1,
+            stroke_width=0,
+            fill_color=BLACK
+        )
+
         c = ComplexPlane(x_range=(-2, 1), y_range=(-2, 2))
         c.scale(3)
         c.shift(3.75 * LEFT)
         c.add_coordinate_labels()
+
+        self.play(Transform(c2, c3))
+        self.play(howCreation(rect))
+        self.remove(c3)
+        self.add(c)
+        self.wait()
 
         m = MandelbrotSet(c, opacity=0.75, color_style=1)
 
