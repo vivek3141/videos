@@ -376,19 +376,20 @@ class ExpIntro(MandelbrotIntro):
 
         eq = Tex("f(z) = z^2 + 0.25", tex_to_color_map=self.color_map)
         eq.scale(1.5)
-        eq.shift(3.25 * UP)
+        eq.shift(3.35 * UP)
         eq.add_background_rectangle(buff=0.1, opacity=0.9)
 
         axes = Axes(
-            x_range=(-4, 4), y_range=(-1, 4), axis_config={"include_tip": False},
+            x_range=(-1, 1, 0.5), y_range=(0, 1, 0.5), axis_config={"include_tip": False},
             x_axis_config={"stroke_width": 6}, y_axis_config={"stroke_width": 6},
         )
-        axes.shift(0.65 * DOWN)
-        axes.add_coordinate_labels()
+        axes.scale(0.95)
+        axes.shift(0.3 * DOWN)
+        axes.add_coordinate_labels(font_size=36, num_decimal_places=1)
 
         c1 = axes.get_graph(
             lambda x: x**2 + 0.25,
-            x_range=(-np.sqrt(3.75), np.sqrt(3.75)),
+            x_range=(-np.sqrt(0.75), np.sqrt(0.75)),
             color=A_RED, stroke_width=6
         )
 
@@ -396,18 +397,22 @@ class ExpIntro(MandelbrotIntro):
         self.wait()
 
         l1 = DashedLine(
-            axes.c2p(-4, 0.25), axes.c2p(4, 0.25), dash_length=0.1,
+            axes.c2p(-1, 0.25), axes.c2p(1, 0.25), dash_length=0.1,
             positive_space_ratio=0.4, color=A_YELLOW)
 
         lbl1 = Tex("0.25", color=A_YELLOW)
         lbl1.move_to(l1, LEFT)
         lbl1.shift(0.4 * UP)
 
+        cp = lbl1.copy()
+        cp.scale(1.5)
+        cp.move_to(eq[8:12])
+
         self.play(FadeOut(m), Uncreate(d1), Uncreate(d2), Uncreate(c))
         self.play(Write(axes))
         self.play(TransformFromCopy(eq, c1))
         self.play(Write(l1))
-        self.play(TransformFromCopy(eq[8:12], lbl1))
+        self.play(TransformFromCopy(cp, lbl1))
         self.wait()
 
         self.embed()
