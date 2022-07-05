@@ -346,7 +346,7 @@ class MandelbrotIntro(Scene):
             grp.add_to_back(
                 Line(c.n2p(curr), c.n2p(prev), stroke_opacity=0.5))
             grp.add(Dot(c.n2p(prev), color=A_ORANGE))
-            if abs(curr) < max_arg:  # Avoid RuntimeWarning
+            if abs(curr) < max_arg:  # Avoid overflow
                 curr, prev = (lambda z: z**2 + point)(curr), curr
             else:
                 break
@@ -398,7 +398,7 @@ class ExpIntro(MandelbrotIntro):
 
         l1 = DashedLine(
             axes.c2p(-1, 0.25), axes.c2p(1, 0.25), dash_length=0.1,
-            positive_space_ratio=0.4, color=A_YELLOW)
+            positive_space_ratio=0.4, color=A_YELLOW, opacity=0.5)
 
         lbl1 = Tex("0.25", color=A_YELLOW)
         lbl1.move_to(l1, LEFT)
@@ -413,6 +413,37 @@ class ExpIntro(MandelbrotIntro):
         self.play(TransformFromCopy(eq, c1))
         self.play(Write(l1))
         self.play(TransformFromCopy(cp, lbl1))
+        self.wait()
+
+        l2 = axes.get_graph(lambda x: x)
+        l2_lbl = Tex("y = x")
+        l2_lbl.rotate(np.arctan2(5.805, 5.7))  # c2p(1, 1) - c2p(0, 0)
+        l2_lbl.move_to(4.2844 * RIGHT + 0.5710 * UP)
+
+        curr = 0
+        def f(z): return z**2 + 0.25
+        dot = Dot(axes.c2p(0, 0), color=A_BLUE)
+
+        self.play(Write(l2), Write(l2_lbl))
+        self.wait()
+
+        self.play(Write(dot))
+        self.play(FocusOn(dot))
+
+        for _ in range(10):
+            self.play(
+                ShowCreation(
+                    Line(axes.c2p(curr, curr), axes.c2p(curr, f(curr)),
+                         color=A_BLUE, stroke_width=6)),
+                ApplyMethod(dot.move_to, axes.c2p(curr, f(curr)))
+            )
+            self.play(
+                ShowCreation(
+                    Line(axes.c2p(curr, f(curr)), axes.c2p(f(curr), f(curr)),
+                         color=A_BLUE, stroke_width=6)),
+                ApplyMethod(dot.move_to, axes.c2p(f(curr), f(curr)))
+            )
+            curr = f(curr)
         self.wait()
 
         self.embed()
