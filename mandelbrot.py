@@ -97,7 +97,7 @@ class MandelbrotIntro(Scene):
     CONFIG = {
         "color_map": {**{str(i): A_YELLOW for i in range(10)},
                       "i": A_YELLOW, "-": A_YELLOW, ".": A_YELLOW,
-                      "f": A_GREEN, "z": A_PINK}
+                      "f": A_GREEN, "z": A_PINK, r"\epsilon": A_LAVENDER}
     }
 
     def construct(self):
@@ -292,7 +292,7 @@ class MandelbrotIntro(Scene):
         h1.move_to(2.34 * RIGHT + 1.75 * UP)
 
         h_eq = Tex(r"f(z) = z^2 + (-0.75 + \epsilon i)",
-                   tex_to_color_map={**self.color_map, r"\epsilon": A_LAVENDER})
+                   tex_to_color_map=self.color_map)
         h_text = Text("# of steps till\n\nreaches a magnitude of 2")
         h2 = VGroup(h_text, h_eq)
         h2.scale(0.5)
@@ -415,6 +415,8 @@ class ExpIntro(MandelbrotIntro):
         self.play(TransformFromCopy(cp, lbl1))
         self.wait()
 
+        eq.remove(eq.background_rectangle)
+
         l2 = axes.get_graph(lambda x: x)
         l2_lbl = Tex("y = x")
         l2_lbl.rotate(np.arctan2(5.805, 5.7))  # c2p(1, 1) - c2p(0, 0)
@@ -430,20 +432,26 @@ class ExpIntro(MandelbrotIntro):
         self.play(Write(dot))
         self.play(FocusOn(dot))
 
+        path = VGroup()
         for _ in range(10):
+            l_path1 = Line(
+                axes.c2p(curr, curr), axes.c2p(curr, f(curr)),
+                color=A_BLUE, stroke_width=6)
+            l_path2 = Line(
+                axes.c2p(curr, f(curr)), axes.c2p(f(curr), f(curr)),
+                color=A_BLUE, stroke_width=6)
+            path.add(l_path1, l_path2)
+
             self.play(
-                ShowCreation(
-                    Line(axes.c2p(curr, curr), axes.c2p(curr, f(curr)),
-                         color=A_BLUE, stroke_width=6)),
+                ShowCreation(l_path1),
                 ApplyMethod(dot.move_to, axes.c2p(curr, f(curr)))
             )
             self.play(
-                ShowCreation(
-                    Line(axes.c2p(curr, f(curr)), axes.c2p(f(curr), f(curr)),
-                         color=A_BLUE, stroke_width=6)),
+                ShowCreation(l_path2),
                 ApplyMethod(dot.move_to, axes.c2p(f(curr), f(curr)))
             )
             curr = f(curr)
+
         self.wait()
 
         self.embed()
