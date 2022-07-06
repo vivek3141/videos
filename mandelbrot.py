@@ -417,7 +417,15 @@ class ExpIntro(MandelbrotIntro):
 
         eq.remove(eq.background_rectangle)
 
-        l2 = axes.get_graph(lambda x: x, x_range=(-1, 2))
+        br1 = Polygon(
+            axes.c2p(0.65, 1.0), axes.c2p(0.65, 1.5),
+            axes.c2p(1.5, 1.5), axes.c2p(1.5, 0.65),
+            axes.c2p(1.0, 0.65), axes.c2p(1.0, 1.0),
+            stroke_width=0, fill_opacity=1, color=BLACK
+        )  # Rectangle to mask off blue lines
+        self.add(br1)
+
+        l2 = axes.get_graph(lambda x: x)  # , x_range=(-1, 2))
         l2_lbl = Tex("y = x")
         l2_lbl.rotate(np.arctan2(5.805, 5.7))  # c2p(1, 1) - c2p(0, 0)
         l2_lbl.move_to(4.2844 * RIGHT + 0.5710 * UP)
@@ -467,9 +475,9 @@ class ExpIntro(MandelbrotIntro):
         def para_updater(c):
             c1 = axes.get_graph(
                 lambda x: x**2 + (0.25+e.get_value()),
-                x_range=(-1, 2),
-                # x_range=(-np.sqrt(0.75-e.get_value()),
-                #          np.sqrt(0.75-e.get_value())),
+                #x_range=(-1, 2),
+                x_range=(-np.sqrt(0.75-e.get_value()),
+                         np.sqrt(0.75-e.get_value())),
                 color=A_RED, stroke_width=6
             )
             c.become(c1)
@@ -478,6 +486,7 @@ class ExpIntro(MandelbrotIntro):
         def path_updater(path):
             path.become(self.get_bounce_lines(
                 axes, num_steps=num_steps, offset=0.25+e.get_value(), max_arg=max_arg))
+            self.bring_to_front(br1)
         path.add_updater(path_updater)
 
         def dot_updater(dot):
@@ -498,11 +507,16 @@ class ExpIntro(MandelbrotIntro):
         self.remove(path)
         self.add(path)
 
-        self.play(e.increment_value, 0.05, run_time=5)
-        eq2 = Tex("f(z) = z^2 + 0.25 + \epsilon", tex_to_color_map=self.color_map)
+        eq2 = Tex("f(z) = z^2 + 0.25 + \epsilon",
+                  tex_to_color_map=self.color_map)
         eq2.scale(1.5)
         eq2.shift(3.35 * UP)
+
         self.play(TransformMatchingTex(eq, eq2))
+        self.wait()
+
+        self.play(e.increment_value, 0.05, run_time=5)
+        self.wait()
 
         self.embed()
 
