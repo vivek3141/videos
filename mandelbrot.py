@@ -417,13 +417,11 @@ class ExpIntro(MandelbrotIntro):
 
         eq.remove(eq.background_rectangle)
 
-        l2 = axes.get_graph(lambda x: x)
+        l2 = axes.get_graph(lambda x: x, x_range=(-1, 2))
         l2_lbl = Tex("y = x")
         l2_lbl.rotate(np.arctan2(5.805, 5.7))  # c2p(1, 1) - c2p(0, 0)
         l2_lbl.move_to(4.2844 * RIGHT + 0.5710 * UP)
 
-        curr = 0
-        def f(z): return z**2 + 0.25
         dot = Dot(axes.c2p(0, 0), color=A_BLUE)
 
         self.play(Write(l2), Write(l2_lbl))
@@ -432,26 +430,96 @@ class ExpIntro(MandelbrotIntro):
         self.play(Write(dot))
         self.play(FocusOn(dot))
 
-        path = VGroup()
-        for _ in range(10):
-            l_path1 = Line(
-                axes.c2p(curr, curr), axes.c2p(curr, f(curr)),
-                color=A_BLUE, stroke_width=6)
-            l_path2 = Line(
-                axes.c2p(curr, f(curr)), axes.c2p(f(curr), f(curr)),
-                color=A_BLUE, stroke_width=6)
-            path.add(l_path1, l_path2)
+        num_steps = 40
+        max_arg = 10
+        path = self.get_bounce_lines(
+            axes, num_steps=num_steps, offset=0.25, max_arg=max_arg)
+        curr, f = 0, lambda z: z**2 + 0.25
 
+        for i in range(10):
             self.play(
-                ShowCreation(l_path1),
+                ShowCreation(path[2*i]),
                 ApplyMethod(dot.move_to, axes.c2p(curr, f(curr)))
             )
             self.play(
-                ShowCreation(l_path2),
+                ShowCreation(path[2*i+1]),
                 ApplyMethod(dot.move_to, axes.c2p(f(curr), f(curr)))
+            )
+            curr = f(curr)
+
+        for i in range(10, len(path)//2):
+            self.play(
+                ShowCreation(path[2*i]),
+                ApplyMethod(dot.move_to, axes.c2p(curr, f(curr))),
+                run_time=1/(num_steps-10)
+            )
+            self.play(
+                ShowCreation(path[2*i+1]),
+                ApplyMethod(dot.move_to, axes.c2p(f(curr), f(curr))),
+                run_time=1/(num_steps-10)
             )
             curr = f(curr)
 
         self.wait()
 
+        e = ValueTracker(0)
+
+        def para_updater(c):
+            c1 = axes.get_graph(
+                lambda x: x**2 + (0.25+e.get_value()),
+                x_range=(-1, 2),
+                # x_range=(-np.sqrt(0.75-e.get_value()),
+                #          np.sqrt(0.75-e.get_value())),
+                color=A_RED, stroke_width=6
+            )
+            c.become(c1)
+        c1.add_updater(para_updater)
+
+        def path_updater(path):
+            path.become(self.get_bounce_lines(
+                axes, num_steps=num_steps, offset=0.25+e.get_value(), max_arg=max_arg))
+        path.add_updater(path_updater)
+
+        def dot_updater(dot):
+            curr, f = 0, lambda z: z**2 + 0.25 + e.get_value()
+            for _ in range(num_steps):
+                if curr > max_arg:
+                    break
+                curr = f(curr)
+            dot.become(Dot(axes.c2p(curr, curr), color=A_BLUE))
+        dot.add_updater(dot_updater)
+
+        """
+        Okay, the reason this is done is because in update_frame, it iterates through all mobjects,
+        but the updater is on the VGroup, not each individual line, so we need to add it as a VGroup,
+        so the updater updates it, so we remove it from the scene, removing all the lines, then add
+        the VGroup
+        """
+        self.remove(path)
+        self.add(path)
+
+        self.play(e.increment_value, 0.05, run_time=5)
+        eq2 = Tex("f(z) = z^2 + 0.25 + \epsilon", tex_to_color_map=self.color_map)
+        eq2.scale(1.5)
+        eq2.shift(3.35 * UP)
+        self.play(TransformMatchingTex(eq, eq2))
+
         self.embed()
+
+    def get_bounce_lines(self, axes, num_steps=20, offset=0.25, max_arg=1.0):
+        curr, f = 0, lambda z: z**2 + offset
+        path = VGroup()
+
+        for _ in range(num_steps):
+            if curr > max_arg:
+                break
+
+            path.add(Line(
+                axes.c2p(curr, curr), axes.c2p(curr, f(curr)),
+                color=A_BLUE, stroke_width=6))
+            path.add(Line(
+                axes.c2p(curr, f(curr)), axes.c2p(f(curr), f(curr)),
+                color=A_BLUE, stroke_width=6))
+            curr = f(curr)
+
+        return path
