@@ -304,22 +304,41 @@ class MandelbrotIntro(Scene):
         self.play(Write(l1), Write(l2))
         self.play(Write(h1), Write(h2))
 
+        num_steps = ["3", "33", "315", "3143",
+                     "31417", "314160", "3141593", "31415928"]
+        # str(1/10**i) produces 1eX
+        epsilon = ["1.0", *[f"0.{'0'*i}1" for i in range(9)]]
+
         tab = VGroup()
-        for i in range(5):
-            t1 = Tex(str(1/10**i)).move_to(h1).shift(1 * (i+1) * DOWN)
-            t2 = Tex(str(int(10**i*PI))).move_to(h2).shift(1 * (i+1) * DOWN)
+        for i in range(8):
+            t1 = Tex(epsilon[i]).move_to(h1).scale(
+                0.75).shift(0.65 * (i+1) * DOWN)
+            t2 = Tex(num_steps[i]).move_to(h2).scale(
+                0.75).shift(0.65 * (i+1) * DOWN)
             tab.add(t1, t2)
-        tab.shift(0.1 * DOWN)
+        tab.shift(0.2 * DOWN)
 
         for i in range(2):
-            self.play(TransformFromCopy(d[-5:-1], tab[2*i]))
-            self.play(TransformFromCopy(m1, tab[2*i+1]))
+            t_temp = Tex(epsilon[i], color=A_YELLOW).move_to(d[1][-5:-1])
+            self.add(t_temp)
+
+            self.play(Transform(
+                t_temp,
+                tab[2*i]
+            ))
+            self.play(TransformFromCopy(m1[0], tab[2*i+1]))
             self.play(v.set_value, 1/10**(i+1))
 
-        self.play(TransformFromCopy(d[-5:-1], tab[2*2]))
-        self.play(TransformFromCopy(m1, tab[2*2+1]))
+        t_temp = Tex(epsilon[2], color=A_YELLOW).move_to(d[1][-5:-1])
+        self.add(t_temp)
 
-        for i in range(3, 5):
+        self.play(Transform(
+            t_temp,
+            tab[2*2])
+        )
+        self.play(TransformFromCopy(m1[0], tab[2*2+1]))
+
+        for i in range(3, 8):
             self.play(FadeIn(tab[2*i], DOWN), FadeIn(tab[2*i+1], DOWN))
 
         self.wait()
@@ -425,7 +444,7 @@ class ExpIntro(MandelbrotIntro):
         )  # Rectangle to mask off blue lines
         self.add(br1)
 
-        l2 = axes.get_graph(lambda x: x)  # , x_range=(-1, 2))
+        l2 = axes.get_graph(lambda x: x)
         l2_lbl = Tex("y = x")
         l2_lbl.rotate(np.arctan2(5.805, 5.7))  # c2p(1, 1) - c2p(0, 0)
         l2_lbl.move_to(4.2844 * RIGHT + 0.5710 * UP)
@@ -475,7 +494,7 @@ class ExpIntro(MandelbrotIntro):
         def para_updater(c):
             c1 = axes.get_graph(
                 lambda x: x**2 + (0.25+e.get_value()),
-                #x_range=(-1, 2),
+                # x_range=(-1, 2),
                 x_range=(-np.sqrt(0.75-e.get_value()),
                          np.sqrt(0.75-e.get_value())),
                 color=A_RED, stroke_width=6
