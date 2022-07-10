@@ -374,6 +374,12 @@ class MandelbrotIntro(Scene):
 
 
 class ExpIntro(MandelbrotIntro):
+    CONFIG = {
+        "color_map": {**{str(i): A_YELLOW for i in range(10)},
+                      "i": A_YELLOW, ".": A_YELLOW,
+                      "f": A_GREEN, "z": A_PINK, r"\epsilon": A_LAVENDER}
+    }
+
     def construct(self):
         c = ComplexPlane(x_range=(-3, 2), y_range=(-1, 1))
         c.scale(4)
@@ -543,6 +549,11 @@ class ExpIntro(MandelbrotIntro):
         self.play(FocusOn(Point(axes.c2p(0.5, 0.5))))
         self.wait()
 
+        eq3 = Tex("f(z) = z^2 + 0.25 + \epsilon - 0.5",
+                  tex_to_color_map=self.color_map)
+        eq3.scale(1.5)
+        eq3.shift(3.35 * UP)
+
         c2 = axes.get_graph(lambda x: x**2 - 0.25+0.01,
                             color=A_RED, stroke_width=6)
         path2 = self.get_bounce_lines(
@@ -550,8 +561,14 @@ class ExpIntro(MandelbrotIntro):
         l3 = axes.get_graph(lambda x: x-0.5)
 
         self.play(Uncreate(l2_lbl))
+        self.play(TransformMatchingTex(eq2, eq3))
         self.play(Transform(c1, c2), Transform(path, path2), Transform(l2, l3))
         self.wait()
+
+        eq4 = Tex("f(z) = (z+0.5)^2 + 0.25 + \epsilon - 0.5",
+                  tex_to_color_map=self.color_map)
+        eq4.scale(1.5)
+        eq4.shift(3.35 * UP)
 
         c3 = axes.get_graph(lambda x: (x+0.5)**2-0.25+0.01,
                             color=A_RED, stroke_width=6)
@@ -559,6 +576,7 @@ class ExpIntro(MandelbrotIntro):
             axes, offset=0.25+0.01, num_steps=100, max_arg=2.0, start_coord=(-0.5, -0.5))
         l4 = axes.get_graph(lambda x: x)
 
+        self.play(TransformMatchingTex(eq3, eq4))
         self.play(Transform(c1, c3), Transform(path, path3), Transform(l2, l4))
         self.wait()
 
