@@ -580,6 +580,12 @@ class ExpIntro(MandelbrotIntro):
         self.play(Transform(c1, c3), Transform(path, path3), Transform(l2, l4))
         self.wait()
 
+        to_remove = VGroup(
+            *[i for i in self.mobjects if isinstance(i, VMobject) and i is not eq4]
+        )
+        self.play(Uncreate(to_remove))
+        self.wait()
+
         self.embed()
 
     def get_bounce_lines(self, axes, num_steps=20, offset=0.25, start_coord=(0, 0), max_arg=1.0):
