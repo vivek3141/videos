@@ -437,9 +437,9 @@ class ExpIntro(MandelbrotIntro):
         eq.remove(eq.background_rectangle)
 
         br1 = Polygon(
-            axes.c2p(0.65, 1.0), axes.c2p(0.65, 1.5),
-            axes.c2p(1.5, 1.5), axes.c2p(1.5, 0.65),
-            axes.c2p(1.0, 0.65), axes.c2p(1.0, 1.0),
+            axes.c2p(0.55, 1.0), axes.c2p(0.55, 1.5),
+            axes.c2p(1.5, 1.5), axes.c2p(1.5, 0.3),
+            axes.c2p(1.0, 0.3), axes.c2p(1.0, 1.0),
             stroke_width=0, fill_opacity=1, color=BLACK
         )  # Rectangle to mask off blue lines
         self.add(br1)
@@ -537,10 +537,36 @@ class ExpIntro(MandelbrotIntro):
         self.play(e.increment_value, 0.05, run_time=5)
         self.wait()
 
+        self.play(e.set_value, 0.01)
+        path.remove_updater(path_updater)
+        c1.remove_updater(para_updater)
+        self.play(FocusOn(Point(axes.c2p(0.5, 0.5))))
+        self.wait()
+
+        c2 = axes.get_graph(lambda x: x**2 - 0.25+0.01,
+                            color=A_RED, stroke_width=6)
+        path2 = self.get_bounce_lines(
+            axes, offset=0.25+0.01, num_steps=40, start_coord=(0, -0.5))
+        l3 = axes.get_graph(lambda x: x-0.5)
+
+        self.play(Uncreate(l2_lbl))
+        self.play(Transform(c1, c2), Transform(path, path2), Transform(l2, l3))
+        self.wait()
+
+        c3 = axes.get_graph(lambda x: (x+0.5)**2-0.25+0.01,
+                            color=A_RED, stroke_width=6)
+        path3 = self.get_bounce_lines(
+            axes, offset=0.25+0.01, num_steps=100, max_arg=2.0, start_coord=(-0.5, -0.5))
+        l4 = axes.get_graph(lambda x: x)
+
+        self.play(Transform(c1, c3), Transform(path, path3), Transform(l2, l4))
+        self.wait()
+
         self.embed()
 
-    def get_bounce_lines(self, axes, num_steps=20, offset=0.25, max_arg=1.0):
+    def get_bounce_lines(self, axes, num_steps=20, offset=0.25, start_coord=(0, 0), max_arg=1.0):
         curr, f = 0, lambda z: z**2 + offset
+        x, y = start_coord
         path = VGroup()
 
         for _ in range(num_steps):
@@ -548,10 +574,12 @@ class ExpIntro(MandelbrotIntro):
                 break
 
             path.add(Line(
-                axes.c2p(curr, curr), axes.c2p(curr, f(curr)),
+                axes.c2p(x + curr, y + curr),
+                axes.c2p(x + curr, y + f(curr)),
                 color=A_BLUE, stroke_width=6))
             path.add(Line(
-                axes.c2p(curr, f(curr)), axes.c2p(f(curr), f(curr)),
+                axes.c2p(x + curr, y + f(curr)),
+                axes.c2p(x + f(curr), y + f(curr)),
                 color=A_BLUE, stroke_width=6))
             curr = f(curr)
 
