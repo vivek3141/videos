@@ -376,7 +376,7 @@ class MandelbrotIntro(Scene):
 class ExpIntro(MandelbrotIntro):
     CONFIG = {
         "color_map": {**{str(i): A_YELLOW for i in range(10)},
-                      "i": A_YELLOW, ".": A_YELLOW,
+                      "i": A_YELLOW, ".": A_YELLOW, "-": None,
                       "f": A_GREEN, "z": A_PINK, r"\epsilon": A_LAVENDER}
     }
 
@@ -611,6 +611,14 @@ class ExpIntro(MandelbrotIntro):
 
 
 class Exp2(ExpIntro):
+    CONFIG = {
+        "color_map": {**{str(i): A_YELLOW for i in range(10)},
+                      "i": A_YELLOW, ".": A_YELLOW,
+                      r"\epsilon": A_LAVENDER,
+                      "f": A_GREEN, "z": A_PINK,
+                      "{n}": A_YELLOW}
+    }
+
     def construct(self):
         eq1 = Tex("f(z) = (z+0.5)^2 + 0.25 + \epsilon - 0.5",
                   tex_to_color_map=self.color_map)
@@ -629,12 +637,12 @@ class Exp2(ExpIntro):
         self.wait()
 
         eq3 = Tex("z_{{n}+1} = z^2 + z + \epsilon",
-                  tex_to_color_map={**self.color_map, "{n}": A_YELLOW})
+                  tex_to_color_map=self.color_map)
         eq3.scale(1.5)
         eq3.shift(eq2[4].get_center() - eq3[4].get_center())
 
         eq4 = Tex("z_{{n}+1} = z_{{n}}^2 + z_{{n}} + \epsilon",
-                  tex_to_color_map={**self.color_map, "{n}": A_YELLOW})
+                  tex_to_color_map=self.color_map)
         eq4.scale(1.5)
         eq4.shift(3.35 * UP)
 
@@ -654,3 +662,23 @@ class Exp2(ExpIntro):
         self.remove(eq3)
         self.add(eq4)
         self.wait()
+
+        eq5 = Tex("z_{{n}+1} - z_{{n}} = z_{{n}}^2 + \epsilon",
+                  tex_to_color_map=self.color_map)
+        eq5.scale(1.5)
+        eq5.shift(1.85 * UP)
+
+        self.play(TransformFromCopy(eq4[:4], eq5[:4]))
+        self.play(TransformFromCopy(eq4[8], eq5[4]),
+                  TransformFromCopy(eq4[9:11], eq5[5:7]))
+        self.play(
+            TransformFromCopy(eq4[4], eq5[7]), TransformFromCopy(
+                eq4[5:8], eq5[8:11]),
+            TransformFromCopy(eq4[11:], eq5[11:])
+        )
+        self.wait()
+
+        self.play(FadeOut(eq4, UP), ApplyMethod(eq5.shift, 1.5 * UP))
+        self.wait()
+
+        self.embed()
