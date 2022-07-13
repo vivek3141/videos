@@ -608,3 +608,49 @@ class ExpIntro(MandelbrotIntro):
             curr = f(curr)
 
         return path
+
+
+class Exp2(ExpIntro):
+    def construct(self):
+        eq1 = Tex("f(z) = (z+0.5)^2 + 0.25 + \epsilon - 0.5",
+                  tex_to_color_map=self.color_map)
+        eq1.scale(1.5)
+        eq1.shift(3.35 * UP)
+
+        self.add(eq1)
+        self.wait()
+
+        eq2 = Tex("f(z)", "=", "z^2 + z + \epsilon",
+                  tex_to_color_map=self.color_map)
+        eq2.scale(1.5)
+        eq2.shift(3.35 * UP)
+
+        self.play(TransformMatchingTex(eq1, eq2))
+        self.wait()
+
+        eq3 = Tex("z_{{n}+1} = z^2 + z + \epsilon",
+                  tex_to_color_map={**self.color_map, "{n}": A_YELLOW})
+        eq3.scale(1.5)
+        eq3.shift(eq2[4].get_center() - eq3[4].get_center())
+
+        eq4 = Tex("z_{{n}+1} = z_{{n}}^2 + z_{{n}} + \epsilon",
+                  tex_to_color_map={**self.color_map, "{n}": A_YELLOW})
+        eq4.scale(1.5)
+        eq4.shift(3.35 * UP)
+
+        self.play(FadeOut(eq2[:4], UP), FadeIn(eq3[:4], UP))
+        self.remove(eq2)
+        self.add(eq3)
+
+        self.play(
+            Transform(eq3[:5], eq4[:5]),
+            FadeOut(eq3[5:7], UP), FadeIn(eq4[5:8], UP),
+            Transform(eq3[7], eq4[8])
+        )
+        self.play(
+            FadeOut(eq3[8], UP), FadeIn(eq4[9:11], UP),
+            Transform(eq3[9:], eq4[11:])
+        )
+        self.remove(eq3)
+        self.add(eq4)
+        self.wait()
