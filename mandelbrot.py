@@ -681,4 +681,60 @@ class Exp2(ExpIntro):
         self.play(FadeOut(eq4, UP), ApplyMethod(eq5.shift, 1.5 * UP))
         self.wait()
 
+        rect = ScreenRectangle(height=6)
+        rect.shift(0.5 * DOWN)
+
+        self.play(Indicate(eq5[-1]))
+        self.play(Write(rect))
+        self.wait()
+
+        eq6 = Tex(
+            r"z^{\prime} = z^2 + \epsilon",
+            tex_to_color_map={
+                "z": A_PINK, r"\epsilon": A_LAVENDER, "2": A_YELLOW, r"\prime": A_YELLOW}
+        )
+        eq6.scale(1.5)
+        eq6.shift(1.85 * UP)
+
+        # TransformFromCopy creates copies w/out pointers making removing the entire
+        # group a pain, so creating copies manually makes it easier.
+        cp1 = eq5[:7].copy()
+        cp2 = eq5[8:11].copy()
+
+        self.play(Uncreate(rect))
+        self.play(Transform(cp1, eq6[:2]))
+        self.play(TransformFromCopy(eq5[7], eq6[2]),
+                  Transform(cp2, eq6[3:5]))
+        self.play(TransformFromCopy(eq5[11:], eq6[5:]))
+
+        self.remove(cp1, cp2, eq6)
+        self.add(eq6)
+
+        self.play(FadeOut(eq5, UP), ApplyMethod(eq6.shift, 1.5 * UP))
+        self.wait()
+
+        eq7 = Tex(
+            r"\int {dz \over z^2 + \epsilon} = \int d{n}",
+            tex_to_color_map={"z": A_PINK, r"\epsilon": A_LAVENDER,
+                              r"\int": WHITE, "2": A_YELLOW, "{n}": A_GREEN}
+        )
+        eq7.scale(1.5)
+        eq7.move_to(eq6).shift(2 * DOWN)
+
+        eq8 = Tex(
+            r"{1 \over \sqrt{\epsilon}} \tan^{-1} \left( {z \over \sqrt{\epsilon}} \right) = {n}",
+            tex_to_color_map={"z": A_PINK, r"\epsilon": A_LAVENDER, "{n}": A_GREEN})
+        eq8.scale(1.5)
+        eq8.move_to(eq7).shift(2.5 * DOWN)
+
+        eq9 = Tex(r"z = \sqrt{\epsilon} \tan(\sqrt{\epsilon} n)",
+                  tex_to_color_map={"z": A_PINK, r"\epsilon": A_LAVENDER, "{n}": A_GREEN})
+        eq9.scale(1.5)
+        eq9.move_to(eq8).shift(2 * DOWN)
+
+        self.play(FadeIn(eq7, DOWN))
+        self.play(FadeIn(eq8, DOWN))
+        self.play(FadeIn(eq9, DOWN))
+        self.wait()
+
         self.embed()
