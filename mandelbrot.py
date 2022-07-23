@@ -753,20 +753,19 @@ class Exp2(ExpIntro):
             "color": A_RED,
             "strok_width": 6
         }
-        tanc = VGroup(
-            axes.get_graph(lambda x: np.tan(x), x_range=(
-                np.arctan(-4)+2*PI, 2*PI), **tanc_kwargs),
-            axes.get_graph(lambda x: np.tan(x), x_range=(
-                np.arctan(-4)+PI, np.arctan(4)+PI), **tanc_kwargs),
-            axes.get_graph(lambda x: np.tan(x), x_range=(
-                np.arctan(-4), np.arctan(4)), **tanc_kwargs),
-            axes.get_graph(lambda x: np.tan(x), x_range=(
-                np.arctan(-4)-PI, np.arctan(4)-PI), **tanc_kwargs),
-            axes.get_graph(lambda x: np.tan(x), x_range=(-2*PI,
-                           np.arctan(4)-2*PI), **tanc_kwargs),
-        )
 
-        self.play(Write(axes), Write(tanc))
+        # Split since Manim treats as continuous
+        tanc = VGroup(*[
+            axes.get_graph(lambda x: np.tan(x), **tanc_kwargs,
+                           x_range=(max(-2*PI, np.arctan(-4)+i*PI), min(2*PI, np.arctan(4)+i*PI)))
+            for i in range(-2, 3)
+        ])
+
+        n_lbl = Tex("n", color=A_GREEN)
+        n_lbl.move_to(axes, RIGHT).shift(0.5 * UP)
+
+        self.play(Write(axes), Write(tanc),
+                  TransformFromCopy(eq9[-2], n_lbl))
         self.wait()
 
         self.embed()
