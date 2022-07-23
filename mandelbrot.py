@@ -722,19 +722,51 @@ class Exp2(ExpIntro):
         eq7.move_to(eq6).shift(2 * DOWN)
 
         eq8 = Tex(
-            r"{1 \over \sqrt{\epsilon}} \tan^{-1} \left( {z \over \sqrt{\epsilon}} \right) = {n}",
-            tex_to_color_map={"z": A_PINK, r"\epsilon": A_LAVENDER, "{n}": A_GREEN})
+            r"{{1} \over \sqrt{\epsilon} } \tan^{-1} \left(",
+            r"{{z} \over \sqrt{\epsilon}} \right) = {n}",
+            tex_to_color_map={"{z}": A_PINK, r"\sqrt{\epsilon}": A_LAVENDER,
+                              "{n}": A_GREEN, "{1}": A_YELLOW}
+        )
         eq8.scale(1.5)
         eq8.move_to(eq7).shift(2.5 * DOWN)
 
-        eq9 = Tex(r"z = \sqrt{\epsilon} \tan(\sqrt{\epsilon} n)",
-                  tex_to_color_map={"z": A_PINK, r"\epsilon": A_LAVENDER, "{n}": A_GREEN})
+        eq9 = Tex(r"{z} = \sqrt{\epsilon} \tan \left( \sqrt{\epsilon} {n} \right)",
+                  tex_to_color_map={"{z}": A_PINK, "{n}": A_GREEN, r"\sqrt{\epsilon}": A_LAVENDER})
         eq9.scale(1.5)
         eq9.move_to(eq8).shift(2 * DOWN)
 
         self.play(FadeIn(eq7, DOWN))
         self.play(FadeIn(eq8, DOWN))
         self.play(FadeIn(eq9, DOWN))
+        self.wait()
+
+        self.play(FadeOut(VGroup(eq6, eq7, eq8), UP),
+                  ApplyMethod(eq9.shift, 6.25 * UP))
+
+        axes = Axes(
+            x_range=(-2*PI, 2*PI, PI/2), y_range=(-4, 4, 2), axis_config={"include_tip": False},
+            x_axis_config={"stroke_width": 6}, y_axis_config={"stroke_width": 6},
+        )
+        axes.shift(0.5 * DOWN)
+
+        tanc_kwargs = {
+            "color": A_RED,
+            "strok_width": 6
+        }
+        tanc = VGroup(
+            axes.get_graph(lambda x: np.tan(x), x_range=(
+                np.arctan(-4)+2*PI, 2*PI), **tanc_kwargs),
+            axes.get_graph(lambda x: np.tan(x), x_range=(
+                np.arctan(-4)+PI, np.arctan(4)+PI), **tanc_kwargs),
+            axes.get_graph(lambda x: np.tan(x), x_range=(
+                np.arctan(-4), np.arctan(4)), **tanc_kwargs),
+            axes.get_graph(lambda x: np.tan(x), x_range=(
+                np.arctan(-4)-PI, np.arctan(4)-PI), **tanc_kwargs),
+            axes.get_graph(lambda x: np.tan(x), x_range=(-2*PI,
+                           np.arctan(4)-2*PI), **tanc_kwargs),
+        )
+
+        self.play(Write(axes), Write(tanc))
         self.wait()
 
         self.embed()
