@@ -803,6 +803,7 @@ class Exp2(ExpIntro):
         d1.clear_updaters()
         d2.clear_updaters()
         part_tanc.clear_updaters()
+        
         self.play(t.increment_value, PI/2-np.arctan(4))
         self.wait()
 
