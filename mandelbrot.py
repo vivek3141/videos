@@ -768,4 +768,52 @@ class Exp2(ExpIntro):
                   TransformFromCopy(eq9[-2], n_lbl))
         self.wait()
 
+        t = ValueTracker(0)
+
+        d1, d2 = VMobject(), VMobject()
+
+        def dot_updater(dot, coeff=(1, 1), color=A_AQUA):
+            dot.become(
+                Dot(axes.c2p(coeff[0] * t.get_value(), np.tan(coeff[1] * t.get_value())), color=color))
+        d1.add_updater(lambda dot: dot_updater(dot, (1, 1)))
+        d2.add_updater(lambda dot: dot_updater(dot, (-1, -1)))
+
+        part_tanc = VMobject()
+
+        def part_tanc_updater(curve):
+            curve.become(axes.get_graph(lambda x: np.tan(
+                x), x_range=(-t.get_value(), t.get_value()), color=A_AQUA))
+        part_tanc.add_updater(part_tanc_updater)
+
+        d3, d4 = VMobject(), VMobject()
+        d3.add_updater(lambda dot: dot_updater(dot, (1, 0), color=A_YELLOW))
+        d4.add_updater(lambda dot: dot_updater(dot, (-1, 0), color=A_YELLOW))
+
+        line = VMobject()
+
+        def line_updater(l):
+            l.become(Line(axes.c2p(-t.get_value(), 0),
+                     axes.c2p(t.get_value(), 0), color=A_YELLOW, stroke_width=10))
+        line.add_updater(line_updater)
+
+        self.play(FocusOn(Point(axes.c2p(0, 0))))
+        self.play(Write(VGroup(d1, d2, d3, d4, part_tanc, line)))
+        self.play(t.increment_value, np.arctan(4), run_time=10)
+
+        d1.clear_updaters()
+        d2.clear_updaters()
+        part_tanc.clear_updaters()
+        self.play(t.increment_value, PI/2-np.arctan(4))
+        self.wait()
+
+        b = Brace(line)
+        lbl = b.get_tex(
+            r"{\pi \over \sqrt{\epsilon}}",
+            tex_to_color_map={r"\pi": A_YELLOW, r"\sqrt{\epsilon}": A_LAVENDER})
+        b.add_background_rectangle()
+        lbl.add_background_rectangle()
+
+        self.play(Write(b), Write(lbl))
+        self.wait()
+
         self.embed()
