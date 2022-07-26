@@ -815,5 +815,6 @@ class Exp2(ExpIntro):
 
         self.play(Write(b), Write(lbl))
         self.wait()
+        
 
         self.embed()
