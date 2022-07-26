@@ -5,6 +5,7 @@ uniform float gloss;
 uniform float shadow;
 uniform float focal_distance;
 uniform float opacity;
+uniform float reflectiveness;
 
 #define product(a, b) vec2(a.x*b.x-a.y*b.y, a.x*b.y+a.y*b.x)
 #define conjugate(a) vec2(a.x,-a.y)
@@ -12,9 +13,9 @@ uniform float opacity;
 #define arg(a) sqrt(a.x*a.x+a.y*a.y)
 
 uniform float max_arg;
-uniform int num_steps;
+uniform float num_steps;
 
-uniform int color_style;
+uniform float color_style;
 
 in vec3 xyz_coords;
 out vec4 frag_color;
@@ -67,9 +68,9 @@ void main() {
     vec2 c = vec2(xyz_coords.x, xyz_coords.y);
     vec3 color;
 
-    if(color_style == 0) {
+    if (color_style == 0) {
         bool done = false;
-        int steps = num_steps;
+        float steps = num_steps;
         vec2 curr = vec2(0, 0);
 
         while(steps >= 0 && !done) {
@@ -90,6 +91,8 @@ void main() {
         float l = mandelbrot(c);
         color = 0.5 + 0.5 * cos(3.0 + l * 0.15 + vec3(0.0, 0.6, 1.0));
     }
-
-    frag_color = finalize_color(vec4(color, opacity), xyz_coords, vec3(0.0, 0.0, 1.0), light_source_position, gloss, shadow);
+    
+    frag_color = finalize_color(
+        vec4(color, opacity), xyz_coords, vec3(0.0, 0.0, 1.0), 
+        light_source_position, vec3(0, 0, focal_distance), reflectiveness, gloss, shadow);
 }

@@ -49,19 +49,18 @@ class MandelbrotSet(Mobject):
         super().init_uniforms()
         self.uniforms["scale_factor"] = self.scale_factor
         self.uniforms["opacity"] = self.opacity
-        self.uniforms["num_steps"] = self.num_steps
-        self.uniforms["max_arg"] = self.max_arg
-        self.uniforms["opacity"] = self.opacity
+        self.uniforms["num_steps"] = float(self.num_steps)
+        self.uniforms["max_arg"] = float(self.max_arg)
         self.uniforms["offset"] = self.offset
-        self.uniforms["color_style"] = self.color_style
+        self.uniforms["color_style"] = float(self.color_style)
 
     def init_data(self):
-        self.data = {
-            "points": np.array([UL, DL, UR, DR]),
-        }
+        super().init_data()
+        self.data["points"] = np.array([UL, DL, UR, DR])
 
     def set_opacity(self, opacity):
-        self.uniforms["opacity"] = opacity
+        super().set_opacity(opacity)
+        self.uniforms["opacity"] = float(opacity)
 
 
 class MandelbrotTest(Scene):
@@ -803,7 +802,7 @@ class Exp2(ExpIntro):
         d1.clear_updaters()
         d2.clear_updaters()
         part_tanc.clear_updaters()
-        
+
         self.play(t.increment_value, PI/2-np.arctan(4))
         self.wait()
 
