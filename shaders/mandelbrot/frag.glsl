@@ -5,7 +5,6 @@ uniform float gloss;
 uniform float shadow;
 uniform float focal_distance;
 uniform float opacity;
-uniform float reflectiveness;
 
 #define product(a, b) vec2(a.x*b.x-a.y*b.y, a.x*b.y+a.y*b.x)
 #define conjugate(a) vec2(a.x,-a.y)
@@ -91,8 +90,6 @@ void main() {
         float l = mandelbrot(c);
         color = 0.5 + 0.5 * cos(3.0 + l * 0.15 + vec3(0.0, 0.6, 1.0));
     }
-    
-    frag_color = finalize_color(
-        vec4(color, opacity), xyz_coords, vec3(0.0, 0.0, 1.0), 
-        light_source_position, vec3(0, 0, focal_distance), reflectiveness, gloss, shadow);
+
+    frag_color = finalize_color(vec4(color, opacity), xyz_coords, vec3(0.0, 0.0, 1.0), light_source_position, gloss, shadow);
 }

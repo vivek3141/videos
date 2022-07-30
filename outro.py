@@ -59,3 +59,25 @@ class Outro(Scene):
             self.wait(5)
 
         self.embed()
+
+
+class NewIntro(Scene):
+    def construct(self):
+        h1 = "#ff5757"
+        h2 = '#5ce1e6'
+
+        text = Tex(r"\textbf{\text{v}} ^3 \textbf{\text{(}}\textbf{\text{x}}\textbf{\text{)}}}", tex_to_color_map={
+            r'\textbf{\text{v}} ^3': h1,
+            r'\textbf{\text{x}}': h2
+        })
+        text.scale(4)
+
+        vc = TexText("vcubingx")
+        vc.scale(1.5)
+        vc.shift(2 * DOWN)
+
+        self.play(Write(text), run_time=2)
+        self.play(FadeIn(vc))
+        self.wait()
+
+        self.embed()
