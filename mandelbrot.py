@@ -817,3 +817,27 @@ class Exp2(ExpIntro):
         self.wait()
 
         self.embed()
+
+
+class TitleA(Scene):
+    def construct(self):
+        brect = Rectangle(height=FRAME_HEIGHT, width=FRAME_WIDTH,
+                          fill_opacity=1, color=GREY)
+
+        title1 = TexText("Dave Boll")
+        title1.scale(1.5)
+        title1.to_edge(UP)
+
+        title2 = TexText("Aaron Klebanoff")
+        title2.scale(1.5)
+        title2.to_edge(UP)
+
+        rect = ScreenRectangle(height=6)
+        rect.next_to(title1, DOWN)
+
+        self.add(brect)
+        self.play(FadeIn(rect, DOWN), Write(title1), run_time=2)
+        self.wait()
+
+        self.play(Transform(title1, title2))
+        self.wait()
