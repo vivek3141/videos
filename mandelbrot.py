@@ -819,6 +819,38 @@ class Exp2(ExpIntro):
         self.embed()
 
 
+class TitleScene(Scene):
+    CONFIG = {
+        "color": None,
+        "text": None
+    }
+
+    def construct(self):
+        if self.text is None:
+            raise NotImplementedError
+
+        brect = Rectangle(height=FRAME_HEIGHT, width=FRAME_WIDTH,
+                          fill_opacity=1, color=self.color)
+
+        title = TexText(self.text)
+        title.scale(1.5)
+        title.to_edge(UP)
+
+        rect = ScreenRectangle(height=6)
+        rect.next_to(title, DOWN)
+
+        self.add(brect)
+        self.play(FadeIn(rect, DOWN), Write(title), run_time=2)
+        self.wait()
+
+
+class TitleU(TitleScene):
+    CONFIG = {
+        "text": "Upcoming",
+        "color": GREY
+    }
+
+
 class TitleA(Scene):
     def construct(self):
         brect = Rectangle(height=FRAME_HEIGHT, width=FRAME_WIDTH,
