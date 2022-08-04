@@ -38,10 +38,10 @@ class Outro(Scene):
         old_patreons = None
         list_of_patreons = open("patreon.txt").read().split("\n")
 
-        for i in split_into(list_of_patreons, 15):
+        for i in split_into(list_of_patreons, 20):
             patreons = VGroup()
 
-            for name, pos in zip(i, np.linspace(FRAME_HEIGHT/2-0.5, -FRAME_HEIGHT/2+0.5, num=18)):
+            for name, pos in zip(i, np.linspace(FRAME_HEIGHT/2-0.5, -FRAME_HEIGHT/2+0.5, num=20)):
                 patreons.add(
                     TexText(name, tex_to_color_map={} if name != "3blue1brown" else {
                             "blue": BLUE, "brown": "#CD853F"}).move_to([0, pos, 0]).scale(0.65)
@@ -78,6 +78,23 @@ class NewIntro(Scene):
 
         self.play(Write(text), run_time=2)
         self.play(FadeIn(vc))
+        self.wait()
+
+        self.embed()
+
+
+class IntroW(Scene):
+    def construct(self):
+        wren = SVGMobject("img/wren-logo.svg")
+        wren.rotate(180 * DEGREES)
+        wren.shift(DOWN)
+
+        text = TexText("Sponsored by")
+        text.shift(UP)
+        text.scale(3)
+        text.stretch(-1, 0)
+
+        self.play(Write(wren), Write(text))
         self.wait()
 
         self.embed()

@@ -851,6 +851,20 @@ class TitleU(TitleScene):
     }
 
 
+class TitleC(TitleScene):
+    CONFIG = {
+        "text": "What you just saw",
+        "color": GREY
+    }
+
+
+class TitleW(TitleScene):
+    CONFIG = {
+        "text": "Wren",
+        "color": BLUE_E
+    }
+
+
 class TitleA(Scene):
     def construct(self):
         brect = Rectangle(height=FRAME_HEIGHT, width=FRAME_WIDTH,
