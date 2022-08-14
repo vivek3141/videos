@@ -168,7 +168,11 @@ class MandelbrotIntro(Scene):
         self.play(Write(eq1))
         self.wait()
 
-        self.play(TransformMatchingTex(eq1, eq2))
+        self.play(Transform(eq1[:-1], eq2[:-6]), Uncreate(eq1[-1]))
+        self.play(Write(eq2[-6:]))
+
+        self.remove(eq1)
+        self.add(eq2)
         self.wait()
 
         vals = []
@@ -887,3 +891,18 @@ class TitleA(Scene):
 
         self.play(Transform(title1, title2))
         self.wait()
+
+
+class Thumb(Scene):
+    def construct(self):
+        c = ComplexPlane()
+        c.scale(3)
+        c.shift(LEFT)
+
+        m = MandelbrotSet(c, color_style=1)
+        a = Arrow(3 * RIGHT, ORIGIN, stroke_width=16, stroke_color=A_RED)
+
+        self.add(m)
+        self.wait()
+
+        self.embed()
