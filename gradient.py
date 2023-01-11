@@ -87,13 +87,7 @@ class IntroGraphLeft(GraphScene):
                 ),
             )
             self.wait()
-
-        t = TexText("Riemann Integration")
-        t.scale(1.5)
-        t.shift(3 * UP)
-
-        self.play(FadeIn(t, DOWN))
-        self.wait()
+        self.embed()
 
 
 class IntroGraphRight(Scene):
