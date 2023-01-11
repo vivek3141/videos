@@ -167,4 +167,42 @@ class Involution(Scene):
 
 class CommonInvolution(Scene):
     def construct(self):
-        pass
+        input_line = NumberLine()
+        input_line.shift(1 * UP)
+        input_line.add_numbers(font_size=36)
+
+        x_label = Tex("x", color=A_YELLOW)
+        x_label.move_to([-6.5, 1.5, 0])
+
+        output_line = NumberLine()
+        output_line.shift(2 * DOWN)
+        output_line.add_numbers(font_size=36)
+
+        y_label = Tex("y=-x", tex_to_color_map={"x": A_YELLOW, "y": A_BLUE})
+        y_label.move_to([-5.75, -1.5, 0])
+
+        self.play(Write(input_line), Write(output_line))
+        self.play(Write(x_label), Write(y_label))
+
+        x_vals, y_vals = [], []
+        for x in np.linspace(-8, 8, 129):
+            x_vals.append(input_line.n2p(x))
+            y_vals.append(output_line.n2p(-x))
+
+        grad = color_gradient([A_PINK, A_GREEN], len(x_vals))
+        input_c = DotCloud(x_vals, color=grad)
+        output_c = DotCloud(y_vals, color=grad)
+
+        lines = VGroup()
+
+        for i in range(129):
+            lines.add(
+                Line(
+                    x_vals[i], y_vals[i],
+                    color=grad[i],
+                    stroke_opacity=0.3
+                )
+            )
+
+        self.add(input_c, output_c, lines)
+        self.embed()
