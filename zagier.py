@@ -212,5 +212,24 @@ class CommonInvolution(Scene):
         self.play(ShowCreation(input_c))
         self.play(TransformFromCopy(input_c, output_c), run_time=5)
         self.play(ShowCreation(lines))
+        self.wait()
+
+        lines2 = VGroup()
+        for i in range(129):
+            lines2.add(
+                Line(
+                    x_vals[i], y_vals[i],
+                    color=grad[len(grad)-i-1],
+                    stroke_opacity=0.3
+                )
+            )
+
+        self.play(FadeOut(input_c, UP), FadeOut(lines))
+        self.play(ApplyMethod(output_c.shift, 3 * UP))
+
+        input_c.shift(3 * DOWN)
+        self.play(TransformFromCopy(output_c, input_c), run_time=3)
+        self.play(ShowCreation(lines2))
+        self.wait()
 
         self.embed()
