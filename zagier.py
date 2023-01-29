@@ -178,11 +178,16 @@ class CommonInvolution(Scene):
         output_line.shift(2 * DOWN)
         output_line.add_numbers(font_size=36)
 
-        y_label = Tex("y=-x", tex_to_color_map={"x": A_YELLOW, "y": A_BLUE})
-        y_label.move_to([-5.75, -1.5, 0])
+        y_label = Tex("f(x)", tex_to_color_map={"x": A_YELLOW, "f": A_BLUE})
+        y_label.move_to([-6.1902, -1.5, 0])
+
+        f_label = Tex(
+            "f(x) = -x", tex_to_color_map={"x": A_YELLOW, "f": A_BLUE})
+        f_label.scale(1.5)
+        f_label.shift(3 * UP)
 
         self.play(Write(input_line), Write(output_line))
-        self.play(Write(x_label), Write(y_label))
+        self.play(Write(x_label), Write(y_label), Write(f_label))
 
         x_vals, y_vals = [], []
         for x in np.linspace(-8, 8, 129):
@@ -204,5 +209,8 @@ class CommonInvolution(Scene):
                 )
             )
 
-        self.add(input_c, output_c, lines)
+        self.play(ShowCreation(input_c))
+        self.play(TransformFromCopy(input_c, output_c), run_time=5)
+        self.play(ShowCreation(lines))
+
         self.embed()
