@@ -40,7 +40,7 @@ class PartOne(PartScene):
     CONFIG = {
         "n": 1,
         "title": "The Involution",
-        "title_color": A_AQUA
+        "title_color": A_RED
     }
 
 
@@ -301,3 +301,53 @@ class CommonInvolution(Scene):
         self.wait()
 
         self.embed()
+
+
+class MoreInvolution(Scene):
+    def construct(self):
+        color_map = {
+            r"\text{paired}": A_PINK, "{f}": A_YELLOW,
+            "0": A_UNKA, "2": A_UNKA, "S": A_GREEN,
+            r"\text{fixed}": A_PINK
+        }
+
+        eq1 = Tex(
+            r"| \text{paired} \ {f} \ S | \equiv 0 \mod 2",
+            tex_to_color_map=color_map
+        )
+        eq1.scale(2)
+        eq1.shift(1.5 * UP)
+
+        eq2 = Tex(
+            r"|S| = | \text{fixed} \ {f} \ S | + | \text{paired} \ {f} \ S |",
+            tex_to_color_map=color_map
+        )
+        eq2.scale(2)
+        eq2.shift(1.5 * DOWN)
+
+        eq3 = Tex(
+            r"|S| \equiv | \text{fixed} \ {f} \ S | \mod 2",
+            tex_to_color_map=color_map
+        )
+        eq3.scale(2)
+        eq3.shift(1.5 * DOWN)
+
+        self.play(Write(eq1))
+        self.wait()
+
+        self.play(Write(eq2))
+        self.wait()
+
+        self.play(TransformMatchingTex(eq2, eq3))
+        self.play(Indicate(eq3))
+        self.wait()
+
+        self.embed()
+
+
+class PartTwo(PartScene):
+    CONFIG = {
+        "n": 2,
+        "title": "The Windmill",
+        "title_color": A_AQUA
+    }
