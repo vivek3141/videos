@@ -217,12 +217,17 @@ class Involution(Scene):
 
         f_circ = f_circles2[0].copy()
         f_circ.scale(0.5)
-        f_circ.shift(circ.get_center() + 2 * DOWN)
+        f_circ.move_to(circ.get_center() + 2 * DOWN)
 
         self.play(Write(ff_text))
-        self.play(Write(arr))
-        self.play(Write(VGroup(q, circ)))
-        self.play(Write(f_circ))
+        self.play(Write(arr), Write(VGroup(q, circ)))
+        self.play(Write(arr2), Write(f_circ))
+        self.wait()
+
+        self.play(Uncreate(VGroup(circ, q, ff_text, arr, arr2, f_circ)))
+        self.play(grp.shift, DOWN)
+        self.play(grp.scale, 2)
+        self.play(Write(f_circles2[:-1]), Write(arrows2[:-1]))
         self.wait()
 
         self.embed()
