@@ -162,6 +162,72 @@ class Involution(Scene):
         )
         self.wait()
 
+        self.play(
+            FadeOut(f_circles, UP), FadeOut(arrows, UP),
+            ApplyMethod(circles.shift, 4 * UP)
+        )
+        self.wait()
+
+        arrows2 = VGroup()
+
+        for i in range(3):
+            start = circles[i].get_center() + 1.25 * DOWN
+            end = circles[(i != 2) * (1 - i) + 2 * (i == 2)
+                          ].get_center() + 1.25 * UP + 4 * DOWN
+
+            arrows2.add(Arrow(start, end, stroke_width=10,
+                              tip_width_ratio=6, stroke_color=A_YELLOW, buff=0))
+
+        f_circles2 = circles.deepcopy()
+        f_circles2.shift(4 * DOWN)
+
+        f_circles2[1].set_fill(color=RED_E)
+        f_circles2[1].set_stroke(color=RED_A)
+
+        f_circles2[0].set_fill(color=GREEN_E)
+        f_circles2[0].set_stroke(color=GREEN_A)
+
+        self.play(Write(arrows2[2]), Write(f_circles2[2]))
+        self.wait()
+
+        grp = VGroup(f_circles2[2], circles, fs_text, s_text, arrows2[2])
+
+        self.play(ApplyMethod(grp.scale, 0.5))
+        self.play(ApplyMethod(grp.shift, UP))
+
+        ff_text = Tex(
+            "f(f(S))",
+            tex_to_color_map={"f": A_YELLOW, ")": A_UNKA, "(": A_UNKA})
+        ff_text.scale(1.5)
+        ff_text.move_to(fs_text.get_center() + 2 * DOWN)
+
+        arr = arrows2[-1].copy()
+        arr.shift(1.75 * LEFT)
+
+        arr2 = arr.copy()
+        arr2.shift(2 * DOWN)
+
+        circ = Circle(stroke_color=WHITE)
+        circ.scale(0.5)
+        circ.move_to(f_circles2[2].get_center() + 1.75 * LEFT)
+
+        q = TexText("?")
+        q.scale(1.5)
+        q.move_to(circ)
+
+        f_circ = f_circles2[0].copy()
+        f_circ.scale(0.5)
+        f_circ.shift(circ.get_center() + 2 * DOWN)
+
+        self.play(Write(ff_text))
+        self.play(Write(arr))
+        self.play(Write(VGroup(q, circ)))
+        self.play(Write(f_circ))
+        self.wait()
+
+        
+
+
         self.embed()
 
 
