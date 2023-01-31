@@ -225,9 +225,6 @@ class Involution(Scene):
         self.play(Write(f_circ))
         self.wait()
 
-        
-
-
         self.embed()
 
 
