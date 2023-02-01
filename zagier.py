@@ -376,25 +376,45 @@ class GridRectangle(VGroup):
 
 
 class Windmill(VGroup):
-    def __init__(self, x, y, z, freq=1, *args, **kwargs):
+    def __init__(self, x, y, z, freq=1, 
+                 i_kwargs={"fill_color": A_BLUE, "fill_opacity": 1}, 
+                 o_kwargs={"fill_color": RED_E, "fill_opacity": 0.75},
+                 *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        self.x = x
-        self.y = y
-        self.z = z
-
-        self.square = GridRectangle(x, x, freq=freq)
+        self.square = GridRectangle(x, x, freq=freq, rect_kwargs=i_kwargs)
         self.rects = VGroup()
 
-        for i in range(4):
-            r = GridRectangle(y, z, freq=freq)
+        s_boundaries = []
+        
 
-        self.add(square, rects)
+        for i in range(4):
+            # curr_vec[0] = 1 if last two bits are 10 or 01 else -1
+            # curr_vec[1] = 1 if 2nd last bit is 1 else -1
+            curr_vec = np.array([
+                (((i & 1) ^ (i >> 1 & 1)) * 2 + -1),
+                ((i >> 1 & 1) * -2 + 1),
+                0
+            ])
+
+            r = GridRectangle(z, y, freq=freq, rect_kwargs=o_kwargs)
+            r.rotate(i * 90 * DEGREES)
+            r.move_to(curr_vec * x/2)
+
+            r.shift(curr_vec[0] * (i & 1) * z/2 * RIGHT)
+            r.shift(curr_vec[1] * (~i & 1) * z/2 * UP)
+
+            r.shift(curr_vec[0] * (i & 1) * y/2 * DOWN)
+            r.shift(curr_vec[1] * (~i & 1) * y/2 * RIGHT)
+
+            self.rects.add(r)
+
+        self.add(self.square, self.rects)
         
 
 class Test(Scene):
     def construct(self):
-        w = Windmill(2, 4, 2)
+        w = Windmill(3, 3, 1)
         self.add(w)
 
         self.embed()
