@@ -351,3 +351,50 @@ class PartTwo(PartScene):
         "title": "The Windmill",
         "title_color": A_AQUA
     }
+
+
+class GridRectangle(VGroup):
+    def __init__(self, height, width,
+                 freq=1, rect_kwargs={},
+                 line_kwargs={}, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.rect = Rectangle(height=height, width=width, **rect_kwargs)
+        self.lines = VGroup()
+
+        for i in np.arange(-height/2, height/2, freq):
+            self.lines.add(
+                Line(LEFT*width/2, RIGHT*width/2, **line_kwargs).shift(i*UP)
+            )
+
+        for i in np.arange(-width/2, width/2, freq):
+            self.lines.add(
+                Line(UP*height/2, DOWN*height/2, **line_kwargs).shift(i*RIGHT)
+            )
+
+        self.add(self.rect, self.lines)
+
+
+class Windmill(VGroup):
+    def __init__(self, x, y, z, freq=1, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.x = x
+        self.y = y
+        self.z = z
+
+        self.square = GridRectangle(x, x, freq=freq)
+        self.rects = VGroup()
+
+        for i in range(4):
+            r = GridRectangle(y, z, freq=freq)
+
+        self.add(square, rects)
+        
+
+class Test(Scene):
+    def construct(self):
+        w = Windmill(2, 4, 2)
+        self.add(w)
+
+        self.embed()
