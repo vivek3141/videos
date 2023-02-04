@@ -412,9 +412,28 @@ class Windmill(VGroup):
         self.add(self.square, self.rects)
         
 
-class Test(Scene):
+class WindmillIntro(Scene):
     def construct(self):
-        w = Windmill(3, 3, 1)
-        self.add(w)
+        head_t = Tex(r"\text{For all } p = 4k + 1", tex_to_color_map={"p": A_AQUA, "k": A_ORANGE, "4": A_UNKA, "1": A_UNKA})
+        head_t.scale(2)
+        head_t.shift(2.5 * UP)
+
+        bot_t = Tex(r"p = a^2 + b^2", tex_to_color_map={"p": A_AQUA, "a": A_PINK, "b": A_PINK, "2": A_UNKA})
+        bot_t.scale(2)
+
+        self.play(Write(head_t))
+        self.play(Write(bot_t))
+        self.wait()
+
+        self.play(FadeOut(head_t, UP))
+        self.play(bot_t.shift, 3 * UP + FRAME_WIDTH / 4 * LEFT)
+
+        s1 = Square(side_length=4, fill_opacity=0.5, fill_color=A_AQUA)
+        s1.shift(FRAME_WIDTH / 4 * LEFT + 0.5 * DOWN)
+
+        p_lbl = Tex("p").scale(3)
+        p_lbl.move_to(s1)
+
+        self.play(Write(s1), Write(p_lbl))
 
         self.embed()
