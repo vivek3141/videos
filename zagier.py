@@ -431,9 +431,32 @@ class WindmillIntro(Scene):
         s1 = Square(side_length=4, fill_opacity=0.5, fill_color=A_AQUA)
         s1.shift(FRAME_WIDTH / 4 * LEFT + 0.5 * DOWN)
 
-        p_lbl = Tex("p").scale(3)
-        p_lbl.move_to(s1)
+        s1_lbl = Tex("p").scale(3)
+        s1_lbl.move_to(s1)
 
-        self.play(Write(s1), Write(p_lbl))
+        self.play(Write(s1), Write(s1_lbl))
+
+        sr1 = Square(side_length=2, fill_color=A_PINK, fill_opacity=0.5)
+
+        r1_lbl = Tex("a").scale(3)
+        r1_lbl.move_to(sr1)
+
+        r1 = VGroup(sr1, r1_lbl)
+        r1.shift(2 * LEFT)
+
+        sr2 = Square(side_length=np.sqrt(12), fill_color=A_PINK, fill_opacity=0.5)
+
+        r2_lbl = Tex("b").scale(3)
+        r2_lbl.move_to(sr2)
+
+        r2 = VGroup(sr2, r2_lbl)
+        r2.shift(RIGHT)
+
+        r_left = VGroup(r1, r2)
+        r_left.move_to(s1)
+
+        s1 = VGroup(s1, s1_lbl)
+
+        self.play(Transform(s1, r_left))
 
         self.embed()
