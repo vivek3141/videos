@@ -377,8 +377,8 @@ class GridRectangle(VGroup):
 
 class Windmill(VGroup):
     def __init__(self, x, y, z, freq=1, 
-                 i_kwargs={"fill_color": A_BLUE, "fill_opacity": 1}, 
-                 o_kwargs={"fill_color": RED_E, "fill_opacity": 0.75},
+                 i_kwargs={"fill_color": A_PINK, "fill_opacity": 0.5}, 
+                 o_kwargs={"fill_color": A_AQUA, "fill_opacity": 0.5},
                  *args, **kwargs):
         super().__init__(*args, **kwargs)
 
@@ -414,11 +414,11 @@ class Windmill(VGroup):
 
 class WindmillIntro(Scene):
     def construct(self):
-        head_t = Tex(r"\text{For all } p = 4k + 1", tex_to_color_map={"p": A_AQUA, "k": A_ORANGE, "4": A_UNKA, "1": A_UNKA})
+        head_t = Tex(r"\text{For all } p = 4k + 1", tex_to_color_map={"p": A_GREEN, "k": A_ORANGE, "4": A_UNKA, "1": A_UNKA})
         head_t.scale(2)
         head_t.shift(2.5 * UP)
 
-        bot_t = Tex(r"p = a^2 + b^2", tex_to_color_map={"p": A_AQUA, "a": A_PINK, "b": A_PINK, "2": A_UNKA})
+        bot_t = Tex(r"p = a^2 + b^2", tex_to_color_map={"p": A_GREEN, "a": A_PINK, "b": A_PINK, "2": A_UNKA})
         bot_t.scale(2)
 
         self.play(Write(head_t))
@@ -428,17 +428,18 @@ class WindmillIntro(Scene):
         self.play(FadeOut(head_t, UP))
         self.play(bot_t.shift, 3 * UP + FRAME_WIDTH / 4 * LEFT)
 
-        s1 = Square(side_length=4, fill_opacity=0.5, fill_color=A_AQUA)
+        s1 = Square(side_length=4, fill_opacity=0.5, fill_color=A_GREEN)
         s1.shift(FRAME_WIDTH / 4 * LEFT + 0.5 * DOWN)
 
-        s1_lbl = Tex("p").scale(3)
+        s1_lbl = Tex("p").scale(2)
         s1_lbl.move_to(s1)
 
         self.play(Write(s1), Write(s1_lbl))
+        self.wait(1)
 
         sr1 = Square(side_length=2, fill_color=A_PINK, fill_opacity=0.5)
 
-        r1_lbl = Tex("a").scale(3)
+        r1_lbl = Tex("a^2").scale(2)
         r1_lbl.move_to(sr1)
 
         r1 = VGroup(sr1, r1_lbl)
@@ -446,7 +447,7 @@ class WindmillIntro(Scene):
 
         sr2 = Square(side_length=np.sqrt(12), fill_color=A_PINK, fill_opacity=0.5)
 
-        r2_lbl = Tex("b").scale(3)
+        r2_lbl = Tex("b^2").scale(2)
         r2_lbl.move_to(sr2)
 
         r2 = VGroup(sr2, r2_lbl)
@@ -458,5 +459,58 @@ class WindmillIntro(Scene):
         s1 = VGroup(s1, s1_lbl)
 
         self.play(Transform(s1, r_left))
+
+        other_t = Tex(r"p = x^2 + 4yz", tex_to_color_map={"p": A_GREEN, "x": A_PINK, "y": A_AQUA, "z": A_AQUA, "4": A_UNKA, "2": A_UNKA})
+        other_t.scale(2)
+        other_t.shift(FRAME_WIDTH/4 * RIGHT + 3 * UP)
+
+        s2 = Square(side_length=4, fill_opacity=0.5, fill_color=A_GREEN)
+        s2.shift(FRAME_WIDTH/4 * RIGHT + 0.5 * DOWN)
+
+        s2_lbl = Tex("p").scale(2)
+        s2_lbl.move_to(s2)
+
+        self.play(Write(other_t))
+        self.play(Write(s2), Write(s2_lbl))
+        self.wait(1)
+
+        wind_f = Windmill(2, 1, 3, freq=float("inf"))
+
+        # Positions calculated by moving rects and square relative as desired,
+        # then, moving all to FRAME_WIDTH / 4
+        wind_f.square.move_to(FRAME_WIDTH / 4 * RIGHT + 1.125 * UP)
+
+        for i in range(4):
+            wind_f.rects[i].move_to(ORIGIN + 1.25 * i * RIGHT)
+            if i & 1:
+                wind_f.rects[i].rotate(90 * DEGREES)
+
+        wind_f.rects.move_to(FRAME_WIDTH / 4 * RIGHT + 1.625 * DOWN)
+
+        sq_lbl = Tex("x^2")
+        sq_lbl.scale(2)
+        sq_lbl.move_to(wind_f.square)
+        
+        wr_lbls = VGroup()
+        for i in range(4):
+            wr_lbls.add(Tex("yz").move_to(wind_f.rects[i]))
+        
+        self.play(Transform(VGroup(s2, s2_lbl), wind_f))
+        self.play(Write(sq_lbl), Write(wr_lbls))
+        self.wait(1)
+        
+        self.play(FadeOut(VGroup(bot_t, s1), UP))
+        self.play(
+            ApplyMethod(other_t.shift, FRAME_WIDTH / 4 * LEFT),
+            FadeOut(VGroup(sq_lbl, wr_lbls))
+        )
+
+        wind = Windmill(2, 1, 3, freq=float("inf"))
+        wind.scale(0.75)
+        wind.rotate(45 * DEGREES)
+
+        self.play(Transform(wind_f.square, wind.square))
+        self.play(*[Transform(wind_f.rects[i], wind.rects[i]) for i in range(4)])
+        self.wait()
 
         self.embed()
