@@ -495,7 +495,11 @@ class WindmillIntro(Scene):
         for i in range(4):
             wr_lbls.add(Tex("yz").move_to(wind_f.rects[i]))
         
-        self.play(Transform(VGroup(s2, s2_lbl), wind_f))
+        s2 = VGroup(s2, s2_lbl)
+        self.play(Transform(s2, wind_f))
+        self.remove(s2)
+        self.add(wind_f)
+
         self.play(Write(sq_lbl), Write(wr_lbls))
         self.wait(1)
         
@@ -507,6 +511,7 @@ class WindmillIntro(Scene):
 
         wind = Windmill(2, 1, 3, freq=float("inf"))
         wind.scale(0.75)
+        wind.shift(0.5 * DOWN)
         wind.rotate(45 * DEGREES)
 
         self.play(Transform(wind_f.square, wind.square))
