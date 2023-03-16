@@ -376,8 +376,8 @@ class GridRectangle(VGroup):
 
 
 class Windmill(VGroup):
-    def __init__(self, x, y, z, freq=1, 
-                 i_kwargs={"fill_color": A_PINK, "fill_opacity": 0.5}, 
+    def __init__(self, x, y, z, freq=1,
+                 i_kwargs={"fill_color": A_PINK, "fill_opacity": 0.5},
                  o_kwargs={"fill_color": A_AQUA, "fill_opacity": 0.5},
                  *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -386,7 +386,6 @@ class Windmill(VGroup):
         self.rects = VGroup()
 
         s_boundaries = []
-        
 
         for i in range(4):
             # curr_vec[0] = 1 if last two bits are 10 or 01 else -1
@@ -410,15 +409,17 @@ class Windmill(VGroup):
             self.rects.add(r)
 
         self.add(self.square, self.rects)
-        
+
 
 class WindmillIntro(Scene):
     def construct(self):
-        head_t = Tex(r"\text{For all } p = 4k + 1", tex_to_color_map={"p": A_GREEN, "k": A_ORANGE, "4": A_UNKA, "1": A_UNKA})
+        head_t = Tex(r"\text{For all } p = 4k + 1", tex_to_color_map={
+                     "p": A_GREEN, "k": A_ORANGE, "4": A_UNKA, "1": A_UNKA})
         head_t.scale(2)
         head_t.shift(2.5 * UP)
 
-        bot_t = Tex(r"p = a^2 + b^2", tex_to_color_map={"p": A_GREEN, "a": A_PINK, "b": A_PINK, "2": A_UNKA})
+        bot_t = Tex(
+            r"p = a^2 + b^2", tex_to_color_map={"p": A_GREEN, "a": A_PINK, "b": A_PINK, "2": A_UNKA})
         bot_t.scale(2)
 
         self.play(Write(head_t))
@@ -445,7 +446,8 @@ class WindmillIntro(Scene):
         r1 = VGroup(sr1, r1_lbl)
         r1.shift(2 * LEFT)
 
-        sr2 = Square(side_length=np.sqrt(12), fill_color=A_PINK, fill_opacity=0.5)
+        sr2 = Square(side_length=np.sqrt(
+            12), fill_color=A_PINK, fill_opacity=0.5)
 
         r2_lbl = Tex("b^2").scale(2)
         r2_lbl.move_to(sr2)
@@ -460,7 +462,8 @@ class WindmillIntro(Scene):
 
         self.play(Transform(s1, r_left))
 
-        other_t = Tex(r"p = x^2 + 4yz", tex_to_color_map={"p": A_GREEN, "x": A_PINK, "y": A_AQUA, "z": A_AQUA, "4": A_UNKA, "2": A_UNKA})
+        other_t = Tex(r"p = x^2 + 4yz", tex_to_color_map={
+                      "p": A_GREEN, "x": A_PINK, "y": A_AQUA, "z": A_AQUA, "4": A_UNKA, "2": A_UNKA})
         other_t.scale(2)
         other_t.shift(FRAME_WIDTH/4 * RIGHT + 3 * UP)
 
@@ -490,11 +493,11 @@ class WindmillIntro(Scene):
         sq_lbl = Tex("x^2")
         sq_lbl.scale(2)
         sq_lbl.move_to(wind_f.square)
-        
+
         wr_lbls = VGroup()
         for i in range(4):
             wr_lbls.add(Tex("yz").move_to(wind_f.rects[i]))
-        
+
         s2 = VGroup(s2, s2_lbl)
         self.play(Transform(s2, wind_f))
         self.remove(s2)
@@ -502,20 +505,46 @@ class WindmillIntro(Scene):
 
         self.play(Write(sq_lbl), Write(wr_lbls))
         self.wait(1)
-        
+
         self.play(FadeOut(VGroup(bot_t, s1), UP))
+        self.play(other_t.scale, 1/1.5)
         self.play(
-            ApplyMethod(other_t.shift, FRAME_WIDTH / 4 * LEFT),
+            ApplyMethod(other_t.shift, FRAME_WIDTH / 4 * LEFT + 0.25 * UP),
             FadeOut(VGroup(sq_lbl, wr_lbls))
         )
 
         wind = Windmill(2, 1, 3, freq=float("inf"))
         wind.scale(0.75)
         wind.shift(0.5 * DOWN)
-        wind.rotate(45 * DEGREES)
 
         self.play(Transform(wind_f.square, wind.square))
-        self.play(*[Transform(wind_f.rects[i], wind.rects[i]) for i in range(4)])
+        self.play(*[Transform(wind_f.rects[i], wind.rects[i])
+                  for i in range(4)])
+        self.wait()
+
+        x_label = Tex("x")
+        x_label.scale(1.5)
+
+        y_label = Tex("y", color=A_AQUA)
+        y_label.scale(1.5)
+
+        z_label = Tex("z", color=A_AQUA)
+        z_label.scale(1.5)
+
+        b1 = Brace(wind_f.square, LEFT)
+        b1.rotate(180 * DEGREES)
+        b1.shift(0.5 * RIGHT)
+        b1.put_at_tip(x_label)
+
+        b2 = Brace(wind_f.rects[1], RIGHT)
+        b2.put_at_tip(y_label)
+
+        b3 = Brace(wind_f.rects[1], UP)
+        b3.put_at_tip(z_label)
+
+        self.play(GrowFromCenter(b1), TransformFromCopy(other_t[2], x_label))
+        self.play(GrowFromCenter(b2), TransformFromCopy(other_t[-2], y_label))
+        self.play(GrowFromCenter(b3), TransformFromCopy(other_t[-1], z_label))
         self.wait()
 
         self.embed()
