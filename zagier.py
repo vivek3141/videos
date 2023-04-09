@@ -188,6 +188,20 @@ class Involution(Scene):
         f_circles2[0].set_stroke(color=GREEN_A)
 
         self.play(Write(arrows2[2]), Write(f_circles2[2]))
+
+        b_rect = SurroundingRectangle(
+            VGroup(f_circles2[2], arrows2[2], f_circles[2]),
+            color=BLUE_E, buff=0.15, stroke_width=8
+        )
+        fixed_text = TexText("Fixed Element", color=BLUE_E)
+        fixed_text.scale(1.5)
+        fixed_text.move_to(b_rect, LEFT)
+        fixed_text.shift(5 * LEFT)
+
+        self.play(Write(b_rect), Write(fixed_text))
+        self.wait()
+
+        self.play(Uncreate(b_rect), Uncreate(fixed_text))
         self.wait()
 
         grp = VGroup(f_circles2[2], circles, fs_text, s_text, arrows2[2])
@@ -228,6 +242,20 @@ class Involution(Scene):
         self.play(grp.shift, DOWN)
         self.play(grp.scale, 2)
         self.play(Write(f_circles2[:-1]), Write(arrows2[:-1]))
+        self.wait()
+
+        c = color_gradient([RED_E, GREEN_E, RED_E], 15)
+        p_rect = SurroundingRectangle(
+            VGroup(*f_circles2[:-1], *arrows2[:-1], *f_circles[:-1]),
+            buff=0.15, color=c, stroke_width=8
+        )
+        p_text = Text("Paired Element",
+                      gradient=color_gradient([RED_E, GREEN_E], 10))
+        p_text.scale(1.5)
+        p_text.move_to(p_rect)
+        p_text.add_background_rectangle(buff=0.15)
+
+        self.play(Write(p_rect), Write(p_text))
         self.wait()
 
         self.embed()
@@ -391,7 +419,7 @@ class Windmill(VGroup):
             # curr_vec[0] = 1 if last two bits are 10 or 01 else -1
             # curr_vec[1] = 1 if 2nd last bit is 1 else -1
             curr_vec = np.array([
-                (((i & 1) ^ (i >> 1 & 1)) * 2 + -1),
+                (((i & 1) ^ (i >> 1 & 1)) * 2 - 1),
                 ((i >> 1 & 1) * -2 + 1),
                 0
             ])
@@ -547,4 +575,9 @@ class WindmillIntro(Scene):
         self.play(GrowFromCenter(b3), TransformFromCopy(other_t[-1], z_label))
         self.wait()
 
+        self.embed()
+
+
+class WindmillDef(Scene):
+    def construct(self):
         self.embed()
