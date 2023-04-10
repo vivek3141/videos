@@ -644,4 +644,64 @@ class WindmillDef(Scene):
         self.play(Write(b), Write(t))
         self.wait()
 
+        self.play(Uncreate(VGroup(b, t, windmills, labels)))
+
+        head_t = Tex(r"\text{For all } p = 4k + 1", tex_to_color_map={
+                     "p": A_GREEN, "k": A_ORANGE, "4": A_UNKA, "1": A_UNKA})
+        head_t.scale(1.5)
+        head_t.shift(3 * UP)
+
+        eq2 = Tex(
+            r"W_{p} = \lbrace (x, y, z) \in \mathbb{{N}}^3 \ | \ x^2 + 4yz = {p} \rbrace",
+            tex_to_color_map={"W": A_YELLOW, "{p}": A_GREEN,
+                              "x": A_PINK, "y": A_AQUA, "z": A_AQUA, "2": A_UNKA,
+                              "3": A_UNKA, "4": A_UNKA, "{N}": A_LAVENDER}
+        )
+        eq2.scale(1.5)
+        eq2.shift(1.5 * UP)
+
+        eq3 = Tex(r"{p} = x^2 + 4yz", tex_to_color_map={
+            "{p}": A_GREEN, "x": A_PINK, "y": A_AQUA,
+            "z": A_AQUA, "2": A_UNKA, "4": A_UNKA}
+        )
+        eq3.scale(1.5)
+
+        self.play(Transform(eq1, eq2))
+        self.play(Write(head_t))
+        self.wait()
+
+        self.play(TransformMatchingTex(eq2[12:-1], eq3))
+        self.wait()
+
+        eq4 = Tex(r"{p} = x^2 + 4y^2", tex_to_color_map={
+            "{p}": A_GREEN, "x": A_PINK, "y": A_AQUA,
+            "z": A_AQUA, "2": A_UNKA, "4": A_UNKA}
+        )
+        eq4.scale(1.5)
+        eq4.shift(3 * DOWN)
+
+        arrow = Arrow(eq3, eq4, stroke_color=A_YELLOW,
+                      buff=0.35, stroke_width=16)
+        arrow_tex = Tex("y=z", tex_to_color_map={"y": A_AQUA, "z": A_AQUA})
+        arrow_tex.scale(1.5)
+        arrow_tex.move_to(arrow)
+        arrow_tex.shift(1.5 * RIGHT)
+
+        cp = eq3.copy()
+        self.play(Write(arrow), Write(arrow_tex))
+        self.wait()
+
+        self.play(Transform(cp, eq4))
+        self.wait()
+
+        eq5 = Tex(r"{p} = x^2 + (2y)^2", tex_to_color_map={
+            "{p}": A_GREEN, "x": A_PINK, "y": A_AQUA,
+            "z": A_AQUA, "2": A_UNKA, "4": A_UNKA}
+        )
+        eq5.scale(1.5)
+        eq5.shift(3 * DOWN)
+
+        self.play(TransformMatchingTex(cp, eq5))
+        self.wait()
+
         self.embed()
