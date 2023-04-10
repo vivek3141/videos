@@ -1,4 +1,5 @@
 from manimlib import *
+from itertools import product
 
 YELLOW_Z = "#e2e1a4"
 
@@ -407,10 +408,12 @@ class Windmill(VGroup):
     def __init__(self, x, y, z, freq=1,
                  i_kwargs={"fill_color": A_PINK, "fill_opacity": 0.5},
                  o_kwargs={"fill_color": A_AQUA, "fill_opacity": 0.5},
+                 l_kwargs={},
                  *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        self.square = GridRectangle(x, x, freq=freq, rect_kwargs=i_kwargs)
+        self.square = GridRectangle(
+            x, x, freq=freq, rect_kwargs=i_kwargs, line_kwargs=l_kwargs)
         self.rects = VGroup()
 
         s_boundaries = []
@@ -424,7 +427,8 @@ class Windmill(VGroup):
                 0
             ])
 
-            r = GridRectangle(z, y, freq=freq, rect_kwargs=o_kwargs)
+            r = GridRectangle(
+                z, y, freq=freq, rect_kwargs=o_kwargs, line_kwargs=l_kwargs)
             r.rotate(i * 90 * DEGREES)
             r.move_to(curr_vec * x/2)
 
@@ -580,4 +584,64 @@ class WindmillIntro(Scene):
 
 class WindmillDef(Scene):
     def construct(self):
+        eq1 = Tex(
+            r"W_{n} = \lbrace (x, y, z) \in \mathbb{{N}}^3 \ | \ x^2 + 4yz = {n} \rbrace",
+            tex_to_color_map={"W": A_YELLOW, "{n}": A_GREEN,
+                              "x": A_PINK, "y": A_AQUA, "z": A_AQUA, "2": A_UNKA,
+                              "3": A_UNKA, "4": A_UNKA, "{N}": A_LAVENDER}
+        )
+        eq1.scale(1.5)
+        eq1.shift(3 * UP)
+
+        self.play(Write(eq1[:2]))
+        self.wait()
+
+        self.play(Write(eq1[2:12]))
+        self.wait()
+
+        self.play(Write(eq1[12:]))
+        self.wait()
+
+        w_29 = [
+            (x, y, z) for (x, y, z) in product(range(1, 10), repeat=3)
+            if x**2 + 4 * y * z == 29
+        ]
+
+        windmill_stroke_width = 2
+        windmills = VGroup()
+        # Arbritrarily chosen relative positions
+        positions = [-4.825, -1.25, 2, 4.5, 6.375]
+        for n, i in enumerate(w_29):
+            windmill = Windmill(
+                *i,
+                l_kwargs={"stroke_width": windmill_stroke_width},
+                i_kwargs={"fill_color": A_PINK,
+                          "fill_opacity": 0.5, "stroke_width": windmill_stroke_width},
+                o_kwargs={"fill_color": A_AQUA, "fill_opacity": 0.5,
+                          "stroke_width": windmill_stroke_width}
+            )
+            windmill.scale(0.25)
+            windmill.move_to(positions[n] * RIGHT)
+            windmills.add(windmill)
+        windmills.center()
+        windmills.shift(0.75 * DOWN)
+
+        labels = VGroup(*[
+            Tex(f"({x}, {y}, {z})").move_to(
+                windmills[i]).shift(2.5 * DOWN)
+            for i, (x, y, z) in enumerate(w_29)
+        ])
+
+        self.play(Write(windmills[2]), Write(labels[2]))
+        for i in range(5):
+            if i != 2:
+                self.play(Write(windmills[i]), Write(labels[i]))
+
+        b = Brace(windmills, UP)
+        t = Tex(r"W_{29}", tex_to_color_map={"W": A_YELLOW, "{29}": A_UNKA})
+        b.put_at_tip(t)
+
+        self.play(Write(b), Write(t))
+        self.wait()
+
         self.embed()
