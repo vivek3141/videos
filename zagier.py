@@ -17,6 +17,11 @@ A_UNKA = "#ccebc5"
 A_UNKB = "#ffed6f"
 
 
+def get_windmills(n):
+    return [(x, y, z) for (x, y, z) in product(range(1, n), repeat=3)
+            if x**2 + 4 * y * z == n]
+
+
 class PartScene(Scene):
     CONFIG = {
         "n": 1,
@@ -602,10 +607,7 @@ class WindmillDef(Scene):
         self.play(Write(eq1[12:]))
         self.wait()
 
-        w_29 = [
-            (x, y, z) for (x, y, z) in product(range(1, 10), repeat=3)
-            if x**2 + 4 * y * z == 29
-        ]
+        w_29 = get_windmills(29)
 
         windmill_stroke_width = 2
         windmills = VGroup()
@@ -703,5 +705,58 @@ class WindmillDef(Scene):
 
         self.play(TransformMatchingTex(cp, eq5))
         self.wait()
+
+        self.embed()
+
+
+class WindmillOne(Scene):
+    def construct(self):
+        w_13 = get_windmills(13)
+
+        windmill_stroke_width = 2
+        windmills = VGroup()
+        # Arbritrarily chosen relative positions
+        positions = [-4.825, -1.25, 2]
+        for n, i in enumerate(w_13):
+            windmill = Windmill(
+                *i,
+                l_kwargs={"stroke_width": windmill_stroke_width},
+                i_kwargs={"fill_color": A_PINK,
+                          "fill_opacity": 0.5, "stroke_width": windmill_stroke_width},
+                o_kwargs={"fill_color": A_AQUA, "fill_opacity": 0.5,
+                          "stroke_width": windmill_stroke_width}
+            )
+            windmill.scale(0.5)
+            windmill.move_to(positions[n] * RIGHT)
+            windmills.add(windmill)
+        windmills.center()
+
+        labels = VGroup(*[
+            Tex(f"({x}, {y}, {z})").move_to(
+                windmills[i]).shift(2.5 * DOWN)
+            for i, (x, y, z) in enumerate(w_13)
+        ])
+
+        title = Tex("W_{13}", tex_to_color_map={
+                    "W": A_YELLOW, "{13}": A_GREEN})
+        title.scale(1.5)
+
+        b = Brace(windmills, UP)
+        b.put_at_tip(title)
+
+        grp = VGroup(windmills, b, labels, title)
+        grp.center()
+
+        self.play(Write(title), Write(b))
+        for i in range(3):
+            self.play(Write(windmills[i]), Write(labels[i]))
+        self.wait()
+
+        self.play(Indicate(VGroup(windmills[-1], labels[-1])))
+        self.wait()
+
+
+
+
 
         self.embed()
