@@ -755,6 +755,16 @@ class WindmillOne(Scene):
         self.play(Indicate(VGroup(windmills[-1], labels[-1])))
         self.wait()
 
+        eq = Tex(r"(1, 1, k)", r"\in W_{4k+1}", tex_to_color_map={"W": A_YELLOW, "4": A_UNKA, "1": A_UNKA, "k": A_ORANGE})
+        eq.scale(1.5)
+        eq.shift(3.25 * DOWN)
+
+        self.play(
+            ApplyMethod(VGroup(windmills, labels, b, title).shift, 0.5 * UP),
+            Write(eq)
+        )
+        self.play(Indicate(eq[:7]), Indicate(VGroup(windmills[0], labels[0])))
+        self.wait()
 
 
 
