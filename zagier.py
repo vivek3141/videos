@@ -22,6 +22,47 @@ def get_windmills(n):
             if x**2 + 4 * y * z == n]
 
 
+class Windmill(VGroup):
+    def __init__(self, x, y, z, freq=1,
+                 i_kwargs={"stroke_width": 2,
+                           "fill_color": A_PINK,
+                           "fill_opacity": 0.5},
+                 o_kwargs={"stroke_width": 2,
+                           "fill_color": A_AQUA,
+                           "fill_opacity": 0.5},
+                 l_kwargs={},
+                 *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.square = GridRectangle(
+            x, x, freq=freq, rect_kwargs=i_kwargs, line_kwargs=l_kwargs)
+        self.rects = VGroup()
+
+        for i in range(4):
+            # curr_vec[0] = 1 if last two bits are 10 or 01 else -1
+            # curr_vec[1] = 1 if 2nd last bit is 1 else -1
+            curr_vec = np.array([
+                (((i & 1) ^ (i >> 1 & 1)) * 2 - 1),
+                ((i >> 1 & 1) * -2 + 1),
+                0
+            ])
+
+            r = GridRectangle(
+                z, y, freq=freq, rect_kwargs=o_kwargs, line_kwargs=l_kwargs)
+            r.rotate(i * 90 * DEGREES)
+            r.move_to(curr_vec * x/2)
+
+            r.shift(curr_vec[0] * (i & 1) * z/2 * RIGHT)
+            r.shift(curr_vec[1] * (~i & 1) * z/2 * UP)
+
+            r.shift(curr_vec[0] * (i & 1) * y/2 * DOWN)
+            r.shift(curr_vec[1] * (~i & 1) * y/2 * RIGHT)
+
+            self.rects.add(r)
+
+        self.add(self.square, self.rects)
+
+
 class PartScene(Scene):
     CONFIG = {
         "n": 1,
@@ -409,45 +450,6 @@ class GridRectangle(VGroup):
         self.add(self.rect, self.lines)
 
 
-class Windmill(VGroup):
-    def __init__(self, x, y, z, freq=1,
-                 i_kwargs={"fill_color": A_PINK, "fill_opacity": 0.5},
-                 o_kwargs={"fill_color": A_AQUA, "fill_opacity": 0.5},
-                 l_kwargs={},
-                 *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
-        self.square = GridRectangle(
-            x, x, freq=freq, rect_kwargs=i_kwargs, line_kwargs=l_kwargs)
-        self.rects = VGroup()
-
-        s_boundaries = []
-
-        for i in range(4):
-            # curr_vec[0] = 1 if last two bits are 10 or 01 else -1
-            # curr_vec[1] = 1 if 2nd last bit is 1 else -1
-            curr_vec = np.array([
-                (((i & 1) ^ (i >> 1 & 1)) * 2 - 1),
-                ((i >> 1 & 1) * -2 + 1),
-                0
-            ])
-
-            r = GridRectangle(
-                z, y, freq=freq, rect_kwargs=o_kwargs, line_kwargs=l_kwargs)
-            r.rotate(i * 90 * DEGREES)
-            r.move_to(curr_vec * x/2)
-
-            r.shift(curr_vec[0] * (i & 1) * z/2 * RIGHT)
-            r.shift(curr_vec[1] * (~i & 1) * z/2 * UP)
-
-            r.shift(curr_vec[0] * (i & 1) * y/2 * DOWN)
-            r.shift(curr_vec[1] * (~i & 1) * y/2 * RIGHT)
-
-            self.rects.add(r)
-
-        self.add(self.square, self.rects)
-
-
 class WindmillIntro(Scene):
     def construct(self):
         head_t = Tex(r"\text{For all } p = 4k + 1", tex_to_color_map={
@@ -755,7 +757,8 @@ class WindmillOne(Scene):
         self.play(Indicate(VGroup(windmills[-1], labels[-1])))
         self.wait()
 
-        eq = Tex(r"(1, 1, k)", r"\in W_{4k+1}", tex_to_color_map={"W": A_YELLOW, "4": A_UNKA, "1": A_UNKA, "k": A_ORANGE})
+        eq = Tex(r"(1, 1, k)", r"\in W_{4k+1}", tex_to_color_map={
+                 "W": A_YELLOW, "4": A_UNKA, "1": A_UNKA, "k": A_ORANGE})
         eq.scale(1.5)
         eq.shift(3.25 * DOWN)
 
@@ -766,7 +769,94 @@ class WindmillOne(Scene):
         self.play(Indicate(eq[:7]), Indicate(VGroup(windmills[0], labels[0])))
         self.wait()
 
+        self.embed()
 
 
+class WindmillProof(Scene):
+    def construct(self):
+        head_t = Tex(
+            r"\text{For } p = 4k + 1 \text{ and } ({x}, {y}, {z}) \in W_{p}",
+            tex_to_color_map={
+                "p": A_GREEN, "k": A_ORANGE, "4": A_UNKA,
+                "1": A_UNKA, "{x}": A_PINK, "{y}": A_AQUA,
+                "{z}": A_AQUA, "W": A_YELLOW, "{p}": A_GREEN
+            })
+        head_t.shift(3.25 * UP)
+
+        head_t_2 = Tex(
+            r"\text{If } {x}={y} \text{ then } {x}={y}=1",
+            tex_to_color_map={"{x}": A_PINK, "{y}": A_AQUA, "1": A_UNKA}
+        )
+        head_t_2.next_to(head_t, DOWN)
+
+        self.play(Write(head_t))
+        self.play(Write(head_t_2))
+
+        w = Windmill(1, 1, 3)
+        w.scale(0.75)
+        w.shift(0.8 * DOWN)
+
+        self.play(Write(w))
+
+        self.play(w.rects[0].rotate, 90 * DEGREES)
+        self.play(w.rects[0].shift, 2 * LEFT + 0.2 * DOWN)
+
+        b1 = Brace(w.rects[0], RIGHT)
+        b2 = Brace(w.square, UP)
+
+        x_label = Tex("x", color=A_PINK)
+        x_label.scale(1.5)
+        x_label.shift(0.5 * UP)
+
+        self.play(Write(b1), Write(b2), Write(x_label))
+        self.wait()
+
+        self.play(
+            Uncreate(VGroup(b1, b2, x_label)),
+            ApplyMethod(w.rects[0].rotate, -90 * DEGREES),
+        )
+        self.play(w.rects[0].shift, 2 * RIGHT + 0.2 * UP)
+        self.wait()
+
+        w2 = Windmill(1, 1, 3, freq=float("inf"))
+        w2.scale(0.75)
+        w2.shift(0.8 * DOWN)
+
+        self.play(w.become, w2)
+        self.wait()
+
+        x, z = ValueTracker(1), ValueTracker(3)
+        w.add_updater(
+            lambda w: w.become(
+                Windmill(x.get_value(), x.get_value(), z.get_value(),
+                         freq=float("inf"))
+            ).scale(0.75).shift(0.8 * DOWN)
+        )
+
+        self.play(x.increment_value, 2, rate_func=there_and_back)
+        self.play(x.increment_value, -0.75, rate_func=there_and_back)
+
+        self.play(z.increment_value, 0.75, rate_func=there_and_back)
+        self.play(z.increment_value, -2, rate_func=there_and_back)
+
+        self.wait()
+
+        w.clear_updaters()
+        self.play(w.shift, 3.5 * LEFT)
+
+        eq1 = Tex(r"\text{Area} = {x}^2 + 4{x}z", tex_to_color_map={r"\text{Area}": A_LAVENDER,
+                  "{x}": A_PINK, "y": A_AQUA, "z": A_AQUA, "2": A_UNKA, "4": A_UNKA})
+        eq1.move_to(2.5 * RIGHT + 1 * UP)
+
+        eq2 = Tex(r"= x(x+4z)", tex_to_color_map={
+                  "x": A_PINK, "y": A_AQUA, "z": A_AQUA})
+        eq2.move_to(eq1[1], LEFT)
+        eq2.shift(DOWN)
+
+        self.play(Write(eq1))
+        self.wait()
+
+        self.play(TransformMatchingTex(eq1[1:].copy(), eq2))
+        self.wait()
 
         self.embed()
