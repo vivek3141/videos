@@ -822,7 +822,7 @@ class WindmillProof(Scene):
         w2.scale(0.75)
         w2.shift(0.8 * DOWN)
 
-        self.play(w.become, w2)
+        self.play(Transform(w, w2))
         self.wait()
 
         x, z = ValueTracker(1), ValueTracker(3)
@@ -842,14 +842,18 @@ class WindmillProof(Scene):
         self.wait()
 
         w.clear_updaters()
-        self.play(w.shift, 3.5 * LEFT)
+        w3 = Windmill(1, 1, 3)
+        w3.scale(0.75)
+        w3.shift(0.8 * DOWN + 3.5 * LEFT)
+
+        self.play(Transform(w, w3))
 
         eq1 = Tex(r"\text{Area} = {x}^2 + 4{x}z", tex_to_color_map={r"\text{Area}": A_LAVENDER,
                   "{x}": A_PINK, "y": A_AQUA, "z": A_AQUA, "2": A_UNKA, "4": A_UNKA})
         eq1.move_to(2.5 * RIGHT + 1 * UP)
 
         eq2 = Tex(r"= x(x+4z)", tex_to_color_map={
-                  "x": A_PINK, "y": A_AQUA, "z": A_AQUA})
+                  "x": A_PINK, "4": A_UNKA, "z": A_AQUA})
         eq2.move_to(eq1[1], LEFT)
         eq2.shift(DOWN)
 
