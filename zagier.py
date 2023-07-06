@@ -863,4 +863,72 @@ class WindmillProof(Scene):
         self.play(TransformMatchingTex(eq1[1:].copy(), eq2))
         self.wait()
 
+        eq3 = Tex(r"\text{If } {x} \neq 1, \text{ then}",
+                  tex_to_color_map={"{x}": A_PINK, "1": A_UNKA})
+        eq3.move_to(eq1, LEFT)
+        eq3.shift(2.5 * DOWN)
+
+        eq4 = Tex(r"x + 4z \neq p \neq 1", tex_to_color_map={
+                  "x": A_PINK, "4": A_UNKA, "z": A_AQUA, "p": A_GREEN, "1": A_UNKA})
+        eq4.move_to(eq3)
+        eq4.shift(DOWN + RIGHT)
+
+        self.play(Write(eq3))
+        self.play(Write(eq4))
+        self.wait()
+
+        self.embed()
+
+
+class PartThree(PartScene):
+    CONFIG = {
+        "n": 3,
+        "title": "The Zagier Map",
+        "title_color": A_LAVENDER
+    }
+
+
+class FlipMap(Scene):
+    def construct(self):
+        left_w = Windmill(3, 1, 5)
+        left_w.scale(0.4)
+        left_w.shift(FRAME_WIDTH / 4 * LEFT + 0.5 * UP)
+
+        right_w = Windmill(3, 5, 1)
+        right_w.scale(0.4)
+        right_w.shift(FRAME_WIDTH / 4 * RIGHT + 0.5 * UP)
+
+        left_t = Tex("(x, y, z)", tex_to_color_map={
+                     "x": A_PINK, "y": A_UNKA, "z": A_UNKA})
+        left_t.scale(1.5)
+        left_t.move_to(FRAME_WIDTH / 4 * LEFT + 3 * DOWN)
+
+        right_t = Tex("(x, z, y)", tex_to_color_map={
+                      "x": A_PINK, "y": A_UNKA, "z": A_UNKA})
+        right_t.scale(1.5)
+        right_t.move_to(FRAME_WIDTH / 4 * RIGHT + 3 * DOWN)
+
+        red_arrow = Arrow(LEFT, RIGHT, stroke_color=A_RED,
+                          stroke_width=50, max_width_to_length_ratio=10)
+
+        self.play(Write(left_w), Write(left_t))
+        self.play(Write(red_arrow))
+        self.play(Write(right_w), Write(right_t))
+        self.wait()
+
+        # Change left_t to (3, 1, 5) and right_t to (3, 5, 1) and transform respectively
+        left_t_new = Tex("(3, 1, 5)", tex_to_color_map={
+            "3": A_UNKA, "1": A_UNKA, "5": A_UNKA})
+        left_t_new.scale(1.5)
+        left_t_new.move_to(FRAME_WIDTH / 4 * LEFT + 3 * DOWN)
+
+        right_t_new = Tex("(3, 5, 1)", tex_to_color_map={
+            "3": A_UNKA, "1": A_UNKA, "5": A_UNKA})
+        right_t_new.scale(1.5)
+        right_t_new.move_to(FRAME_WIDTH / 4 * RIGHT + 3 * DOWN)
+
+        self.play(TransformMatchingTex(left_t, left_t_new))
+        self.play(TransformMatchingTex(right_t, right_t_new))
+        self.wait()
+
         self.embed()
