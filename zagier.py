@@ -18,45 +18,51 @@ A_UNKB = "#ffed6f"
 
 
 def get_windmills(n):
-    return [(x, y, z) for (x, y, z) in product(range(1, n), repeat=3)
-            if x**2 + 4 * y * z == n]
+    return [
+        (x, y, z)
+        for (x, y, z) in product(range(1, n), repeat=3)
+        if x**2 + 4 * y * z == n
+    ]
 
 
 class Windmill(VGroup):
-    def __init__(self, x, y, z, freq=1,
-                 i_kwargs={"stroke_width": 2,
-                           "fill_color": A_PINK,
-                           "fill_opacity": 0.5},
-                 o_kwargs={"stroke_width": 2,
-                           "fill_color": A_AQUA,
-                           "fill_opacity": 0.5},
-                 l_kwargs={},
-                 *args, **kwargs):
+    def __init__(
+        self,
+        x,
+        y,
+        z,
+        freq=1,
+        i_kwargs={"stroke_width": 2, "fill_color": A_PINK, "fill_opacity": 0.5},
+        o_kwargs={"stroke_width": 2, "fill_color": A_AQUA, "fill_opacity": 0.5},
+        l_kwargs={},
+        *args,
+        **kwargs,
+    ):
         super().__init__(*args, **kwargs)
 
         self.square = GridRectangle(
-            x, x, freq=freq, rect_kwargs=i_kwargs, line_kwargs=l_kwargs)
+            x, x, freq=freq, rect_kwargs=i_kwargs, line_kwargs=l_kwargs
+        )
         self.rects = VGroup()
 
         for i in range(4):
             # curr_vec[0] = 1 if last two bits are 10 or 01 else -1
             # curr_vec[1] = 1 if 2nd last bit is 1 else -1
-            curr_vec = np.array([
-                (((i & 1) ^ (i >> 1 & 1)) * 2 - 1),
-                ((i >> 1 & 1) * -2 + 1),
-                0
-            ])
+            curr_vec = np.array(
+                [(((i & 1) ^ (i >> 1 & 1)) * 2 - 1), ((i >> 1 & 1) * -2 + 1), 0]
+            )
 
             r = GridRectangle(
-                z, y, freq=freq, rect_kwargs=o_kwargs, line_kwargs=l_kwargs)
+                z, y, freq=freq, rect_kwargs=o_kwargs, line_kwargs=l_kwargs
+            )
             r.rotate(i * 90 * DEGREES)
-            r.move_to(curr_vec * x/2)
+            r.move_to(curr_vec * x / 2)
 
-            r.shift(curr_vec[0] * (i & 1) * z/2 * RIGHT)
-            r.shift(curr_vec[1] * (~i & 1) * z/2 * UP)
+            r.shift(curr_vec[0] * (i & 1) * z / 2 * RIGHT)
+            r.shift(curr_vec[1] * (~i & 1) * z / 2 * UP)
 
-            r.shift(curr_vec[0] * (i & 1) * y/2 * DOWN)
-            r.shift(curr_vec[1] * (~i & 1) * y/2 * RIGHT)
+            r.shift(curr_vec[0] * (i & 1) * y / 2 * DOWN)
+            r.shift(curr_vec[1] * (~i & 1) * y / 2 * RIGHT)
 
             self.rects.add(r)
 
@@ -64,11 +70,7 @@ class Windmill(VGroup):
 
 
 class PartScene(Scene):
-    CONFIG = {
-        "n": 1,
-        "title": "",
-        "title_color": RED
-    }
+    CONFIG = {"n": 1, "title": "", "title_color": RED}
 
     def construct(self):
         self.part = TexText(f"Part {self.n}")
@@ -84,11 +86,7 @@ class PartScene(Scene):
 
 
 class PartOne(PartScene):
-    CONFIG = {
-        "n": 1,
-        "title": "The Involution",
-        "title_color": A_RED
-    }
+    CONFIG = {"n": 1, "title": "The Involution", "title_color": A_RED}
 
 
 class Involution(Scene):
@@ -98,10 +96,7 @@ class Involution(Scene):
             return [5 * np.cos(t), 3 * np.sin(t) + np.sin(0.5 * t), 0]
 
         set_bound = ParametricCurve(
-            set_bound_curve,
-            t_range=(0, 2 * PI),
-            color=A_YELLOW,
-            fill_opacity=0.35
+            set_bound_curve, t_range=(0, 2 * PI), color=A_YELLOW, fill_opacity=0.35
         )
         set_bound.center()
 
@@ -115,7 +110,7 @@ class Involution(Scene):
         circles = VGroup(
             Circle(fill_color=RED_E, stroke_color=RED_A, fill_opacity=0.75),
             Circle(fill_color=GREEN_E, stroke_color=GREEN_A, fill_opacity=0.75),
-            Circle(fill_color=BLUE_E, stroke_color=BLUE_A, fill_opacity=0.75)
+            Circle(fill_color=BLUE_E, stroke_color=BLUE_A, fill_opacity=0.75),
         )
 
         # Arbritrarly chosen coordinates
@@ -127,16 +122,12 @@ class Involution(Scene):
         self.wait()
 
         circle_move_anims = [
-            ApplyMethod(circles[i].move_to,
-                        (3.5 * (i - 1) + 1.75) * RIGHT + 2 * UP)
+            ApplyMethod(circles[i].move_to, (3.5 * (i - 1) + 1.75) * RIGHT + 2 * UP)
             for i in range(3)
         ]
 
         self.play(Uncreate(set_bound))
-        self.play(
-            *circle_move_anims,
-            ApplyMethod(s_text.move_to, 5 * LEFT + 2 * UP)
-        )
+        self.play(*circle_move_anims, ApplyMethod(s_text.move_to, 5 * LEFT + 2 * UP))
         self.wait()
 
         f_circles = circles.deepcopy()
@@ -154,8 +145,7 @@ class Involution(Scene):
         ]
 
         fs_text = Tex(
-            "f(S)",
-            tex_to_color_map={"f": A_YELLOW, ")": A_UNKA, "(": A_UNKA}
+            "f(S)", tex_to_color_map={"f": A_YELLOW, ")": A_UNKA, "(": A_UNKA}
         )
         fs_text.scale(3)
         fs_text.move_to(5 * LEFT + 2 * DOWN)
@@ -166,24 +156,30 @@ class Involution(Scene):
             start = circles[i].get_center() + 1.25 * DOWN
             end = f_circles[(i != 0) * (3 - i)].get_center() + 1.25 * UP
 
-            arrows.add(Arrow(start, end, stroke_width=10,
-                       tip_width_ratio=6, stroke_color=A_YELLOW, buff=0))
+            arrows.add(
+                Arrow(
+                    start,
+                    end,
+                    stroke_width=10,
+                    tip_width_ratio=6,
+                    stroke_color=A_YELLOW,
+                    buff=0,
+                )
+            )
 
-        self.play(
-            *transform_anims,
-            run_time=6
-        )
-        self.play(
-            Write(fs_text),
-            Write(arrows)
-        )
+        self.play(*transform_anims, run_time=6)
+        self.play(Write(fs_text), Write(arrows))
         self.bring_to_front(circles, f_circles)
         self.wait()
 
         inv_title = Tex(
             r"\text{Involution} \leftrightarrow f(f(x)) = x",
-            tex_to_color_map={r"\leftrightarrow": A_RED,
-                              "f": A_YELLOW, "(": A_UNKA, ")": A_UNKA}
+            tex_to_color_map={
+                r"\leftrightarrow": A_RED,
+                "f": A_YELLOW,
+                "(": A_UNKA,
+                ")": A_UNKA,
+            },
         )
         inv_title[1].set_color(A_RED)
         inv_title.scale(1.5)
@@ -203,15 +199,13 @@ class Involution(Scene):
         circles.shift(4 * DOWN)
 
         self.play(f_circles.shift, 4 * UP)
-        self.play(
-            *inv_transform_anims,
-            run_time=3
-        )
+        self.play(*inv_transform_anims, run_time=3)
         self.wait()
 
         self.play(
-            FadeOut(f_circles, UP), FadeOut(arrows, UP),
-            ApplyMethod(circles.shift, 4 * UP)
+            FadeOut(f_circles, UP),
+            FadeOut(arrows, UP),
+            ApplyMethod(circles.shift, 4 * UP),
         )
         self.wait()
 
@@ -219,11 +213,22 @@ class Involution(Scene):
 
         for i in range(3):
             start = circles[i].get_center() + 1.25 * DOWN
-            end = circles[(i != 2) * (1 - i) + 2 * (i == 2)
-                          ].get_center() + 1.25 * UP + 4 * DOWN
+            end = (
+                circles[(i != 2) * (1 - i) + 2 * (i == 2)].get_center()
+                + 1.25 * UP
+                + 4 * DOWN
+            )
 
-            arrows2.add(Arrow(start, end, stroke_width=10,
-                              tip_width_ratio=6, stroke_color=A_YELLOW, buff=0))
+            arrows2.add(
+                Arrow(
+                    start,
+                    end,
+                    stroke_width=10,
+                    tip_width_ratio=6,
+                    stroke_color=A_YELLOW,
+                    buff=0,
+                )
+            )
 
         f_circles2 = circles.deepcopy()
         f_circles2.shift(4 * DOWN)
@@ -238,7 +243,9 @@ class Involution(Scene):
 
         b_rect = SurroundingRectangle(
             VGroup(f_circles2[2], arrows2[2], f_circles[2]),
-            color=BLUE_E, buff=0.15, stroke_width=8
+            color=BLUE_E,
+            buff=0.15,
+            stroke_width=8,
         )
         fixed_text = TexText("Fixed Element", color=BLUE_E)
         fixed_text.scale(1.5)
@@ -257,8 +264,8 @@ class Involution(Scene):
         self.play(ApplyMethod(grp.shift, UP))
 
         ff_text = Tex(
-            "f(f(S))",
-            tex_to_color_map={"f": A_YELLOW, ")": A_UNKA, "(": A_UNKA})
+            "f(f(S))", tex_to_color_map={"f": A_YELLOW, ")": A_UNKA, "(": A_UNKA}
+        )
         ff_text.scale(1.5)
         ff_text.move_to(fs_text.get_center() + 2 * DOWN)
 
@@ -294,10 +301,11 @@ class Involution(Scene):
         c = color_gradient([RED_E, GREEN_E, RED_E], 15)
         p_rect = SurroundingRectangle(
             VGroup(*f_circles2[:-1], *arrows2[:-1], *f_circles[:-1]),
-            buff=0.15, color=c, stroke_width=8
+            buff=0.15,
+            color=c,
+            stroke_width=8,
         )
-        p_text = Text("Paired Element",
-                      gradient=color_gradient([RED_E, GREEN_E], 10))
+        p_text = Text("Paired Element", gradient=color_gradient([RED_E, GREEN_E], 10))
         p_text.scale(1.5)
         p_text.move_to(p_rect)
         p_text.add_background_rectangle(buff=0.15)
@@ -324,8 +332,7 @@ class CommonInvolution(Scene):
         y_label = Tex("f(x)", tex_to_color_map={"x": A_YELLOW, "f": A_BLUE})
         y_label.move_to([-6.1902, -1.5, 0])
 
-        f_label = Tex(
-            "f(x) = -x", tex_to_color_map={"x": A_YELLOW, "f": A_BLUE})
+        f_label = Tex("f(x) = -x", tex_to_color_map={"x": A_YELLOW, "f": A_BLUE})
         f_label.scale(1.5)
         f_label.shift(3 * UP)
 
@@ -344,13 +351,7 @@ class CommonInvolution(Scene):
         lines = VGroup()
 
         for i in range(129):
-            lines.add(
-                Line(
-                    x_vals[i], y_vals[i],
-                    color=grad[i],
-                    stroke_opacity=0.3
-                )
-            )
+            lines.add(Line(x_vals[i], y_vals[i], color=grad[i], stroke_opacity=0.3))
 
         self.play(ShowCreation(input_c))
         self.play(TransformFromCopy(input_c, output_c), run_time=5)
@@ -361,9 +362,10 @@ class CommonInvolution(Scene):
         for i in range(129):
             lines2.add(
                 Line(
-                    x_vals[i], y_vals[i],
-                    color=grad[len(grad)-i-1],
-                    stroke_opacity=0.3
+                    x_vals[i],
+                    y_vals[i],
+                    color=grad[len(grad) - i - 1],
+                    stroke_opacity=0.3,
                 )
             )
 
@@ -381,28 +383,29 @@ class CommonInvolution(Scene):
 class MoreInvolution(Scene):
     def construct(self):
         color_map = {
-            r"\text{paired}": A_PINK, "{f}": A_YELLOW,
-            "0": A_UNKA, "2": A_UNKA, "S": A_GREEN,
-            r"\text{fixed}": A_PINK
+            r"\text{paired}": A_PINK,
+            "{f}": A_YELLOW,
+            "0": A_UNKA,
+            "2": A_UNKA,
+            "S": A_GREEN,
+            r"\text{fixed}": A_PINK,
         }
 
         eq1 = Tex(
-            r"| \text{paired} \ {f} \ S | \equiv 0 \mod 2",
-            tex_to_color_map=color_map
+            r"| \text{paired} \ {f} \ S | \equiv 0 \mod 2", tex_to_color_map=color_map
         )
         eq1.scale(2)
         eq1.shift(1.5 * UP)
 
         eq2 = Tex(
             r"|S| = | \text{fixed} \ {f} \ S | + | \text{paired} \ {f} \ S |",
-            tex_to_color_map=color_map
+            tex_to_color_map=color_map,
         )
         eq2.scale(2)
         eq2.shift(1.5 * DOWN)
 
         eq3 = Tex(
-            r"|S| \equiv | \text{fixed} \ {f} \ S | \mod 2",
-            tex_to_color_map=color_map
+            r"|S| \equiv | \text{fixed} \ {f} \ S | \mod 2", tex_to_color_map=color_map
         )
         eq3.scale(2)
         eq3.shift(1.5 * DOWN)
@@ -421,30 +424,26 @@ class MoreInvolution(Scene):
 
 
 class PartTwo(PartScene):
-    CONFIG = {
-        "n": 2,
-        "title": "The Windmill",
-        "title_color": A_AQUA
-    }
+    CONFIG = {"n": 2, "title": "The Windmill", "title_color": A_AQUA}
 
 
 class GridRectangle(VGroup):
-    def __init__(self, height, width,
-                 freq=1, rect_kwargs={},
-                 line_kwargs={}, *args, **kwargs):
+    def __init__(
+        self, height, width, freq=1, rect_kwargs={}, line_kwargs={}, *args, **kwargs
+    ):
         super().__init__(*args, **kwargs)
 
         self.rect = Rectangle(height=height, width=width, **rect_kwargs)
         self.lines = VGroup()
 
-        for i in np.arange(-height/2, height/2, freq):
+        for i in np.arange(-height / 2, height / 2, freq):
             self.lines.add(
-                Line(LEFT*width/2, RIGHT*width/2, **line_kwargs).shift(i*UP)
+                Line(LEFT * width / 2, RIGHT * width / 2, **line_kwargs).shift(i * UP)
             )
 
-        for i in np.arange(-width/2, width/2, freq):
+        for i in np.arange(-width / 2, width / 2, freq):
             self.lines.add(
-                Line(UP*height/2, DOWN*height/2, **line_kwargs).shift(i*RIGHT)
+                Line(UP * height / 2, DOWN * height / 2, **line_kwargs).shift(i * RIGHT)
             )
 
         self.add(self.rect, self.lines)
@@ -452,13 +451,17 @@ class GridRectangle(VGroup):
 
 class WindmillIntro(Scene):
     def construct(self):
-        head_t = Tex(r"\text{For all } p = 4k + 1", tex_to_color_map={
-                     "p": A_GREEN, "k": A_ORANGE, "4": A_UNKA, "1": A_UNKA})
+        head_t = Tex(
+            r"\text{For all } p = 4k + 1",
+            tex_to_color_map={"p": A_GREEN, "k": A_ORANGE, "4": A_UNKA, "1": A_UNKA},
+        )
         head_t.scale(2)
         head_t.shift(2.5 * UP)
 
         bot_t = Tex(
-            r"p = a^2 + b^2", tex_to_color_map={"p": A_GREEN, "a": A_PINK, "b": A_PINK, "2": A_UNKA})
+            r"p = a^2 + b^2",
+            tex_to_color_map={"p": A_GREEN, "a": A_PINK, "b": A_PINK, "2": A_UNKA},
+        )
         bot_t.scale(2)
 
         self.play(Write(head_t))
@@ -485,8 +488,7 @@ class WindmillIntro(Scene):
         r1 = VGroup(sr1, r1_lbl)
         r1.shift(2 * LEFT)
 
-        sr2 = Square(side_length=np.sqrt(
-            12), fill_color=A_PINK, fill_opacity=0.5)
+        sr2 = Square(side_length=np.sqrt(12), fill_color=A_PINK, fill_opacity=0.5)
 
         r2_lbl = Tex("b^2").scale(2)
         r2_lbl.move_to(sr2)
@@ -501,13 +503,22 @@ class WindmillIntro(Scene):
 
         self.play(Transform(s1, r_left))
 
-        other_t = Tex(r"p = x^2 + 4yz", tex_to_color_map={
-                      "p": A_GREEN, "x": A_PINK, "y": A_AQUA, "z": A_AQUA, "4": A_UNKA, "2": A_UNKA})
+        other_t = Tex(
+            r"p = x^2 + 4yz",
+            tex_to_color_map={
+                "p": A_GREEN,
+                "x": A_PINK,
+                "y": A_AQUA,
+                "z": A_AQUA,
+                "4": A_UNKA,
+                "2": A_UNKA,
+            },
+        )
         other_t.scale(2)
-        other_t.shift(FRAME_WIDTH/4 * RIGHT + 3 * UP)
+        other_t.shift(FRAME_WIDTH / 4 * RIGHT + 3 * UP)
 
         s2 = Square(side_length=4, fill_opacity=0.5, fill_color=A_GREEN)
-        s2.shift(FRAME_WIDTH/4 * RIGHT + 0.5 * DOWN)
+        s2.shift(FRAME_WIDTH / 4 * RIGHT + 0.5 * DOWN)
 
         s2_lbl = Tex("p").scale(2)
         s2_lbl.move_to(s2)
@@ -546,10 +557,10 @@ class WindmillIntro(Scene):
         self.wait(1)
 
         self.play(FadeOut(VGroup(bot_t, s1), UP))
-        self.play(other_t.scale, 1/1.5)
+        self.play(other_t.scale, 1 / 1.5)
         self.play(
             ApplyMethod(other_t.shift, FRAME_WIDTH / 4 * LEFT + 0.25 * UP),
-            FadeOut(VGroup(sq_lbl, wr_lbls))
+            FadeOut(VGroup(sq_lbl, wr_lbls)),
         )
 
         wind = Windmill(2, 1, 3, freq=float("inf"))
@@ -557,8 +568,7 @@ class WindmillIntro(Scene):
         wind.shift(0.5 * DOWN)
 
         self.play(Transform(wind_f.square, wind.square))
-        self.play(*[Transform(wind_f.rects[i], wind.rects[i])
-                  for i in range(4)])
+        self.play(*[Transform(wind_f.rects[i], wind.rects[i]) for i in range(4)])
         self.wait()
 
         x_label = Tex("x")
@@ -593,9 +603,17 @@ class WindmillDef(Scene):
     def construct(self):
         eq1 = Tex(
             r"W_{n} = \lbrace (x, y, z) \in \mathbb{{N}}^3 \ | \ x^2 + 4yz = {n} \rbrace",
-            tex_to_color_map={"W": A_YELLOW, "{n}": A_GREEN,
-                              "x": A_PINK, "y": A_AQUA, "z": A_AQUA, "2": A_UNKA,
-                              "3": A_UNKA, "4": A_UNKA, "{N}": A_LAVENDER}
+            tex_to_color_map={
+                "W": A_YELLOW,
+                "{n}": A_GREEN,
+                "x": A_PINK,
+                "y": A_AQUA,
+                "z": A_AQUA,
+                "2": A_UNKA,
+                "3": A_UNKA,
+                "4": A_UNKA,
+                "{N}": A_LAVENDER,
+            },
         )
         eq1.scale(1.5)
         eq1.shift(3 * UP)
@@ -619,10 +637,16 @@ class WindmillDef(Scene):
             windmill = Windmill(
                 *i,
                 l_kwargs={"stroke_width": windmill_stroke_width},
-                i_kwargs={"fill_color": A_PINK,
-                          "fill_opacity": 0.5, "stroke_width": windmill_stroke_width},
-                o_kwargs={"fill_color": A_AQUA, "fill_opacity": 0.5,
-                          "stroke_width": windmill_stroke_width}
+                i_kwargs={
+                    "fill_color": A_PINK,
+                    "fill_opacity": 0.5,
+                    "stroke_width": windmill_stroke_width,
+                },
+                o_kwargs={
+                    "fill_color": A_AQUA,
+                    "fill_opacity": 0.5,
+                    "stroke_width": windmill_stroke_width,
+                },
             )
             windmill.scale(0.25)
             windmill.move_to(positions[n] * RIGHT)
@@ -630,11 +654,12 @@ class WindmillDef(Scene):
         windmills.center()
         windmills.shift(0.75 * DOWN)
 
-        labels = VGroup(*[
-            Tex(f"({x}, {y}, {z})").move_to(
-                windmills[i]).shift(2.5 * DOWN)
-            for i, (x, y, z) in enumerate(w_29)
-        ])
+        labels = VGroup(
+            *[
+                Tex(f"({x}, {y}, {z})").move_to(windmills[i]).shift(2.5 * DOWN)
+                for i, (x, y, z) in enumerate(w_29)
+            ]
+        )
 
         self.play(Write(windmills[2]), Write(labels[2]))
         for i in range(5):
@@ -650,23 +675,40 @@ class WindmillDef(Scene):
 
         self.play(Uncreate(VGroup(b, t, windmills, labels)))
 
-        head_t = Tex(r"\text{For all } p = 4k + 1", tex_to_color_map={
-                     "p": A_GREEN, "k": A_ORANGE, "4": A_UNKA, "1": A_UNKA})
+        head_t = Tex(
+            r"\text{For all } p = 4k + 1",
+            tex_to_color_map={"p": A_GREEN, "k": A_ORANGE, "4": A_UNKA, "1": A_UNKA},
+        )
         head_t.scale(1.5)
         head_t.shift(3 * UP)
 
         eq2 = Tex(
             r"W_{p} = \lbrace (x, y, z) \in \mathbb{{N}}^3 \ | \ x^2 + 4yz = {p} \rbrace",
-            tex_to_color_map={"W": A_YELLOW, "{p}": A_GREEN,
-                              "x": A_PINK, "y": A_AQUA, "z": A_AQUA, "2": A_UNKA,
-                              "3": A_UNKA, "4": A_UNKA, "{N}": A_LAVENDER}
+            tex_to_color_map={
+                "W": A_YELLOW,
+                "{p}": A_GREEN,
+                "x": A_PINK,
+                "y": A_AQUA,
+                "z": A_AQUA,
+                "2": A_UNKA,
+                "3": A_UNKA,
+                "4": A_UNKA,
+                "{N}": A_LAVENDER,
+            },
         )
         eq2.scale(1.5)
         eq2.shift(1.5 * UP)
 
-        eq3 = Tex(r"{p} = x^2 + 4yz", tex_to_color_map={
-            "{p}": A_GREEN, "x": A_PINK, "y": A_AQUA,
-            "z": A_AQUA, "2": A_UNKA, "4": A_UNKA}
+        eq3 = Tex(
+            r"{p} = x^2 + 4yz",
+            tex_to_color_map={
+                "{p}": A_GREEN,
+                "x": A_PINK,
+                "y": A_AQUA,
+                "z": A_AQUA,
+                "2": A_UNKA,
+                "4": A_UNKA,
+            },
         )
         eq3.scale(1.5)
 
@@ -677,15 +719,21 @@ class WindmillDef(Scene):
         self.play(TransformMatchingTex(eq2[12:-1], eq3))
         self.wait()
 
-        eq4 = Tex(r"{p} = x^2 + 4y^2", tex_to_color_map={
-            "{p}": A_GREEN, "x": A_PINK, "y": A_AQUA,
-            "z": A_AQUA, "2": A_UNKA, "4": A_UNKA}
+        eq4 = Tex(
+            r"{p} = x^2 + 4y^2",
+            tex_to_color_map={
+                "{p}": A_GREEN,
+                "x": A_PINK,
+                "y": A_AQUA,
+                "z": A_AQUA,
+                "2": A_UNKA,
+                "4": A_UNKA,
+            },
         )
         eq4.scale(1.5)
         eq4.shift(3 * DOWN)
 
-        arrow = Arrow(eq3, eq4, stroke_color=A_YELLOW,
-                      buff=0.35, stroke_width=16)
+        arrow = Arrow(eq3, eq4, stroke_color=A_YELLOW, buff=0.35, stroke_width=16)
         arrow_tex = Tex("y=z", tex_to_color_map={"y": A_AQUA, "z": A_AQUA})
         arrow_tex.scale(1.5)
         arrow_tex.move_to(arrow)
@@ -698,9 +746,16 @@ class WindmillDef(Scene):
         self.play(Transform(cp, eq4))
         self.wait()
 
-        eq5 = Tex(r"{p} = x^2 + (2y)^2", tex_to_color_map={
-            "{p}": A_GREEN, "x": A_PINK, "y": A_AQUA,
-            "z": A_AQUA, "2": A_UNKA, "4": A_UNKA}
+        eq5 = Tex(
+            r"{p} = x^2 + (2y)^2",
+            tex_to_color_map={
+                "{p}": A_GREEN,
+                "x": A_PINK,
+                "y": A_AQUA,
+                "z": A_AQUA,
+                "2": A_UNKA,
+                "4": A_UNKA,
+            },
         )
         eq5.scale(1.5)
         eq5.shift(3 * DOWN)
@@ -723,24 +778,30 @@ class WindmillOne(Scene):
             windmill = Windmill(
                 *i,
                 l_kwargs={"stroke_width": windmill_stroke_width},
-                i_kwargs={"fill_color": A_PINK,
-                          "fill_opacity": 0.5, "stroke_width": windmill_stroke_width},
-                o_kwargs={"fill_color": A_AQUA, "fill_opacity": 0.5,
-                          "stroke_width": windmill_stroke_width}
+                i_kwargs={
+                    "fill_color": A_PINK,
+                    "fill_opacity": 0.5,
+                    "stroke_width": windmill_stroke_width,
+                },
+                o_kwargs={
+                    "fill_color": A_AQUA,
+                    "fill_opacity": 0.5,
+                    "stroke_width": windmill_stroke_width,
+                },
             )
             windmill.scale(0.5)
             windmill.move_to(positions[n] * RIGHT)
             windmills.add(windmill)
         windmills.center()
 
-        labels = VGroup(*[
-            Tex(f"({x}, {y}, {z})").move_to(
-                windmills[i]).shift(2.5 * DOWN)
-            for i, (x, y, z) in enumerate(w_13)
-        ])
+        labels = VGroup(
+            *[
+                Tex(f"({x}, {y}, {z})").move_to(windmills[i]).shift(2.5 * DOWN)
+                for i, (x, y, z) in enumerate(w_13)
+            ]
+        )
 
-        title = Tex("W_{13}", tex_to_color_map={
-                    "W": A_YELLOW, "{13}": A_GREEN})
+        title = Tex("W_{13}", tex_to_color_map={"W": A_YELLOW, "{13}": A_GREEN})
         title.scale(1.5)
 
         b = Brace(windmills, UP)
@@ -757,14 +818,16 @@ class WindmillOne(Scene):
         self.play(Indicate(VGroup(windmills[-1], labels[-1])))
         self.wait()
 
-        eq = Tex(r"(1, 1, k)", r"\in W_{4k+1}", tex_to_color_map={
-                 "W": A_YELLOW, "4": A_UNKA, "1": A_UNKA, "k": A_ORANGE})
+        eq = Tex(
+            r"(1, 1, k)",
+            r"\in W_{4k+1}",
+            tex_to_color_map={"W": A_YELLOW, "4": A_UNKA, "1": A_UNKA, "k": A_ORANGE},
+        )
         eq.scale(1.5)
         eq.shift(3.25 * DOWN)
 
         self.play(
-            ApplyMethod(VGroup(windmills, labels, b, title).shift, 0.5 * UP),
-            Write(eq)
+            ApplyMethod(VGroup(windmills, labels, b, title).shift, 0.5 * UP), Write(eq)
         )
         self.play(Indicate(eq[:7]), Indicate(VGroup(windmills[0], labels[0])))
         self.wait()
@@ -777,15 +840,22 @@ class WindmillProof(Scene):
         head_t = Tex(
             r"\text{For } p = 4k + 1 \text{ and } ({x}, {y}, {z}) \in W_{p}",
             tex_to_color_map={
-                "p": A_GREEN, "k": A_ORANGE, "4": A_UNKA,
-                "1": A_UNKA, "{x}": A_PINK, "{y}": A_AQUA,
-                "{z}": A_AQUA, "W": A_YELLOW, "{p}": A_GREEN
-            })
+                "p": A_GREEN,
+                "k": A_ORANGE,
+                "4": A_UNKA,
+                "1": A_UNKA,
+                "{x}": A_PINK,
+                "{y}": A_AQUA,
+                "{z}": A_AQUA,
+                "W": A_YELLOW,
+                "{p}": A_GREEN,
+            },
+        )
         head_t.shift(3.25 * UP)
 
         head_t_2 = Tex(
             r"\text{If } {x}={y} \text{ then } {x}={y}=1",
-            tex_to_color_map={"{x}": A_PINK, "{y}": A_AQUA, "1": A_UNKA}
+            tex_to_color_map={"{x}": A_PINK, "{y}": A_AQUA, "1": A_UNKA},
         )
         head_t_2.next_to(head_t, DOWN)
 
@@ -828,9 +898,10 @@ class WindmillProof(Scene):
         x, z = ValueTracker(1), ValueTracker(3)
         w.add_updater(
             lambda w: w.become(
-                Windmill(x.get_value(), x.get_value(), z.get_value(),
-                         freq=float("inf"))
-            ).scale(0.75).shift(0.8 * DOWN)
+                Windmill(x.get_value(), x.get_value(), z.get_value(), freq=float("inf"))
+            )
+            .scale(0.75)
+            .shift(0.8 * DOWN)
         )
 
         self.play(x.increment_value, 2, rate_func=there_and_back)
@@ -848,12 +919,22 @@ class WindmillProof(Scene):
 
         self.play(Transform(w, w3))
 
-        eq1 = Tex(r"\text{Area} = {x}^2 + 4{x}z", tex_to_color_map={r"\text{Area}": A_LAVENDER,
-                  "{x}": A_PINK, "y": A_AQUA, "z": A_AQUA, "2": A_UNKA, "4": A_UNKA})
+        eq1 = Tex(
+            r"\text{Area} = {x}^2 + 4{x}z",
+            tex_to_color_map={
+                r"\text{Area}": A_LAVENDER,
+                "{x}": A_PINK,
+                "y": A_AQUA,
+                "z": A_AQUA,
+                "2": A_UNKA,
+                "4": A_UNKA,
+            },
+        )
         eq1.move_to(2.5 * RIGHT + 1 * UP)
 
-        eq2 = Tex(r"= x(x+4z)", tex_to_color_map={
-                  "x": A_PINK, "4": A_UNKA, "z": A_AQUA})
+        eq2 = Tex(
+            r"= x(x+4z)", tex_to_color_map={"x": A_PINK, "4": A_UNKA, "z": A_AQUA}
+        )
         eq2.move_to(eq1[1], LEFT)
         eq2.shift(DOWN)
 
@@ -863,13 +944,23 @@ class WindmillProof(Scene):
         self.play(TransformMatchingTex(eq1[1:].copy(), eq2))
         self.wait()
 
-        eq3 = Tex(r"\text{If } {x} \neq 1, \text{ then}",
-                  tex_to_color_map={"{x}": A_PINK, "1": A_UNKA})
+        eq3 = Tex(
+            r"\text{If } {x} \neq 1, \text{ then}",
+            tex_to_color_map={"{x}": A_PINK, "1": A_UNKA},
+        )
         eq3.move_to(eq1, LEFT)
         eq3.shift(2.5 * DOWN)
 
-        eq4 = Tex(r"x + 4z \neq p \neq 1", tex_to_color_map={
-                  "x": A_PINK, "4": A_UNKA, "z": A_AQUA, "p": A_GREEN, "1": A_UNKA})
+        eq4 = Tex(
+            r"x + 4z \neq p \neq 1",
+            tex_to_color_map={
+                "x": A_PINK,
+                "4": A_UNKA,
+                "z": A_AQUA,
+                "p": A_GREEN,
+                "1": A_UNKA,
+            },
+        )
         eq4.move_to(eq3)
         eq4.shift(DOWN + RIGHT)
 
@@ -881,11 +972,7 @@ class WindmillProof(Scene):
 
 
 class PartThree(PartScene):
-    CONFIG = {
-        "n": 3,
-        "title": "The Zagier Map",
-        "title_color": A_LAVENDER
-    }
+    CONFIG = {"n": 3, "title": "The Zagier Map", "title_color": A_LAVENDER}
 
 
 class FlipMap(Scene):
@@ -898,32 +985,44 @@ class FlipMap(Scene):
         right_w.scale(0.4)
         right_w.shift(FRAME_WIDTH / 4 * RIGHT + 0.5 * UP)
 
-        left_t = Tex("(x, y, z)", tex_to_color_map={
-                     "x": A_PINK, "y": A_UNKA, "z": A_UNKA})
+        left_t = Tex(
+            "(x, y, z)", tex_to_color_map={"x": A_PINK, "y": A_UNKA, "z": A_UNKA}
+        )
         left_t.scale(1.5)
         left_t.move_to(FRAME_WIDTH / 4 * LEFT + 3 * DOWN)
 
-        right_t = Tex("(x, z, y)", tex_to_color_map={
-                      "x": A_PINK, "y": A_UNKA, "z": A_UNKA})
+        right_t = Tex(
+            "(x, z, y)", tex_to_color_map={"x": A_PINK, "y": A_UNKA, "z": A_UNKA}
+        )
         right_t.scale(1.5)
         right_t.move_to(FRAME_WIDTH / 4 * RIGHT + 3 * DOWN)
 
-        red_arrow = Arrow(LEFT, RIGHT, stroke_color=A_RED,
-                          stroke_width=50, max_width_to_length_ratio=10)
+        red_arrow = Arrow(
+            LEFT,
+            RIGHT,
+            stroke_color=A_RED,
+            stroke_width=50,
+            max_width_to_length_ratio=10,
+        )
 
         self.play(Write(left_w), Write(left_t))
         self.play(Write(red_arrow))
-        self.play(Write(right_w), Write(right_t))
+        self.play(
+            TransformFromCopy(left_w, right_w),
+            TransformMatchingTex(left_t.copy(), right_t),
+            run_time=4,
+        )
         self.wait()
 
-        # Change left_t to (3, 1, 5) and right_t to (3, 5, 1) and transform respectively
-        left_t_new = Tex("(3, 1, 5)", tex_to_color_map={
-            "3": A_UNKA, "1": A_UNKA, "5": A_UNKA})
+        left_t_new = Tex(
+            "(3, 1, 5)", tex_to_color_map={"3": A_UNKA, "1": A_UNKA, "5": A_UNKA}
+        )
         left_t_new.scale(1.5)
         left_t_new.move_to(FRAME_WIDTH / 4 * LEFT + 3 * DOWN)
 
-        right_t_new = Tex("(3, 5, 1)", tex_to_color_map={
-            "3": A_UNKA, "1": A_UNKA, "5": A_UNKA})
+        right_t_new = Tex(
+            "(3, 5, 1)", tex_to_color_map={"3": A_UNKA, "1": A_UNKA, "5": A_UNKA}
+        )
         right_t_new.scale(1.5)
         right_t_new.move_to(FRAME_WIDTH / 4 * RIGHT + 3 * DOWN)
 
@@ -931,4 +1030,101 @@ class FlipMap(Scene):
         self.play(TransformMatchingTex(right_t, right_t_new))
         self.wait()
 
+        title = TexText("The Flip Map", color=A_BLUE)
+        title.scale(1.5)
+        title.shift(3 * UP)
+
+        self.play(Write(title))
+        self.wait()
+
+        left_w_yz = Windmill(3, 2, 2)
+        left_w_yz.scale(0.4)
+        left_w_yz.shift(FRAME_WIDTH / 4 * LEFT + 0.5 * UP)
+
+        right_w_yz = Windmill(3, 2, 2)
+        right_w_yz.scale(0.4)
+        right_w_yz.shift(FRAME_WIDTH / 4 * RIGHT + 0.5 * UP)
+
+        left_t_yz = Tex("(3, 2, 2)", tex_to_color_map={"3": A_UNKA, "2": A_UNKA})
+        left_t_yz.scale(1.5)
+        left_t_yz.move_to(FRAME_WIDTH / 4 * LEFT + 3 * DOWN)
+
+        right_t_yz = Tex("(3, 2, 2)", tex_to_color_map={"3": A_UNKA, "2": A_UNKA})
+        right_t_yz.scale(1.5)
+        right_t_yz.move_to(FRAME_WIDTH / 4 * RIGHT + 3 * DOWN)
+
+        self.play(
+            Transform(left_w, left_w_yz), TransformMatchingTex(left_t_new, left_t_yz)
+        )
+        self.play(
+            Transform(right_w, right_w_yz),
+            TransformMatchingTex(right_t_new, right_t_yz),
+        )
+        self.wait()
+
+        self.embed()
+
+
+class ZagierMap(Scene):
+    def construct(self):
+        title = TexText("The Zagier Map", color=A_LAVENDER)
+        title.scale(1.5)
+        title.shift(3 * UP)
+
+        w_1 = Windmill(3, 5, 1)
+        w_1.scale(0.5)
+
+        t_1 = Tex("(3, 5, 1)", tex_to_color_map={"3": A_UNKA, "5": A_UNKA, "1": A_UNKA})
+        t_1.scale(1.5)
+        t_1.shift(3 * DOWN)
+
+        s = Square(2.5, stroke_width=10, color=A_YELLOW)
+
+        red_arrow = Arrow(
+            LEFT,
+            RIGHT,
+            stroke_color=A_RED,
+            stroke_width=50,
+            max_width_to_length_ratio=10,
+        )
+
+        self.play(Write(title))
+        self.wait()
+
+        self.play(Write(w_1), Write(t_1))
+        self.wait()
+
+        self.play(Write(s))
+        self.play(Indicate(s))
+        self.wait()
+
+        self.play(
+            ApplyMethod(w_1.shift, FRAME_WIDTH / 4 * LEFT),
+            ApplyMethod(t_1.shift, FRAME_WIDTH / 4 * LEFT),
+        )
+
+        w_1_cp = w_1.deepcopy()
+
+        self.play(
+            Write(red_arrow),
+            ApplyMethod(w_1_cp.shift, FRAME_WIDTH / 2 * RIGHT),
+            ApplyMethod(s.shift, FRAME_WIDTH / 4 * RIGHT),
+        )
+        self.bring_to_front(s)
+        self.wait()
+
+        w_2 = Windmill(5, 1, 1)
+        w_2.scale(0.5)
+        w_2.shift(FRAME_WIDTH / 4 * RIGHT)
+
+        t_2 = Tex("(5, 1, 1)", tex_to_color_map={"5": A_UNKA, "1": A_UNKA})
+        t_2.scale(1.5)
+        t_2.shift(FRAME_WIDTH / 4 * RIGHT + 3 * DOWN)
+
+        self.play(Indicate(s))
+        self.play(
+            Transform(w_1_cp, w_2),
+            Uncreate(s),
+            TransformMatchingTex(t_1.copy(), t_2),
+        )
         self.embed()
