@@ -1127,4 +1127,67 @@ class ZagierMap(Scene):
             Uncreate(s),
             TransformMatchingTex(t_1.copy(), t_2),
         )
+        self.wait()
+
+        self.play(
+            FadeOut(w_1_cp, UP),
+            FadeOut(t_1, UP),
+            FadeOut(t_2, UP),
+            FadeOut(w_1, UP),
+            FadeOut(red_arrow, UP),
+        )
+
+        w_3 = Windmill(3, 1, 2)
+        w_3.scale(0.5)
+        w_3.shift(FRAME_WIDTH / 4 * LEFT)
+
+        t_3 = Tex("(3, 1, 2)", tex_to_color_map={"3": A_UNKA, "2": A_UNKA, "1": A_UNKA})
+        t_3.scale(1.5)
+        t_3.shift(FRAME_WIDTH / 4 * LEFT + 3 * DOWN)
+
+        red_arrow = Arrow(
+            LEFT,
+            RIGHT,
+            stroke_color=A_RED,
+            stroke_width=50,
+            max_width_to_length_ratio=10,
+        )
+
+        s = Square(1.5, stroke_width=10, color=A_YELLOW)
+        s.shift(FRAME_WIDTH / 4 * LEFT)
+
+        self.play(Write(w_3), Write(t_3))
+        self.play(Write(red_arrow))
+        self.wait()
+
+        self.play(Write(s))
+        self.play(Indicate(s))
+
+        w_4 = Windmill(1, 4, 1)
+        w_4.scale(0.5)
+        w_4.shift(FRAME_WIDTH / 4 * RIGHT)
+
+        t_4 = Tex("(1, 4, 1)", tex_to_color_map={"4": A_UNKA, "1": A_UNKA})
+        t_4.scale(1.5)
+        t_4.shift(FRAME_WIDTH / 4 * RIGHT + 3 * DOWN)
+
+        self.play(
+            TransformFromCopy(w_3, w_4),
+            Uncreate(s),
+            TransformMatchingTex(t_3.copy(), t_4),
+        )
+        self.wait()
+
+        self.play(
+            ApplyMethod(VGroup(w_3, t_3).shift, FRAME_WIDTH / 2 * RIGHT),
+            ApplyMethod(VGroup(w_4, t_4).shift, FRAME_WIDTH / 2 * LEFT),
+        )
+        self.wait()
+
+        self.play(
+            ApplyMethod(VGroup(w_3, t_3).shift, FRAME_WIDTH / 2 * LEFT),
+            ApplyMethod(VGroup(w_4, t_4).shift, FRAME_WIDTH / 2 * RIGHT),
+        )
+        self.wait()
+
         self.embed()
