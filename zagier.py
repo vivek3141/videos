@@ -25,6 +25,28 @@ def get_windmills(n):
     ]
 
 
+class GridRectangle(VGroup):
+    def __init__(
+        self, height, width, freq=1, rect_kwargs={}, line_kwargs={}, *args, **kwargs
+    ):
+        super().__init__(*args, **kwargs)
+
+        self.rect = Rectangle(height=height, width=width, **rect_kwargs)
+        self.lines = VGroup()
+
+        for i in np.arange(-height / 2, height / 2, freq):
+            self.lines.add(
+                Line(LEFT * width / 2, RIGHT * width / 2, **line_kwargs).shift(i * UP)
+            )
+
+        for i in np.arange(-width / 2, width / 2, freq):
+            self.lines.add(
+                Line(UP * height / 2, DOWN * height / 2, **line_kwargs).shift(i * RIGHT)
+            )
+
+        self.add(self.rect, self.lines)
+
+
 class Windmill(VGroup):
     def __init__(
         self,
@@ -32,8 +54,9 @@ class Windmill(VGroup):
         y,
         z,
         freq=1,
-        i_kwargs={"stroke_width": 2, "fill_color": A_PINK, "fill_opacity": 0.5},
-        o_kwargs={"stroke_width": 2, "fill_color": A_AQUA, "fill_opacity": 0.5},
+        stroke_width=2,
+        i_kwargs={"fill_color": A_PINK, "fill_opacity": 0.5},
+        o_kwargs={"fill_color": A_AQUA, "fill_opacity": 0.5},
         l_kwargs={},
         *args,
         **kwargs,
@@ -41,7 +64,11 @@ class Windmill(VGroup):
         super().__init__(*args, **kwargs)
 
         self.square = GridRectangle(
-            x, x, freq=freq, rect_kwargs=i_kwargs, line_kwargs=l_kwargs
+            x,
+            x,
+            freq=freq,
+            rect_kwargs={"stroke_width": stroke_width, **i_kwargs},
+            line_kwargs={"stroke_width": stroke_width, **l_kwargs},
         )
         self.rects = VGroup()
 
@@ -53,7 +80,11 @@ class Windmill(VGroup):
             )
 
             r = GridRectangle(
-                z, y, freq=freq, rect_kwargs=o_kwargs, line_kwargs=l_kwargs
+                z,
+                y,
+                freq=freq,
+                rect_kwargs={"stroke_width": stroke_width, **o_kwargs},
+                line_kwargs={"stroke_width": stroke_width, **l_kwargs},
             )
             r.rotate(i * 90 * DEGREES)
             r.move_to(curr_vec * x / 2)
@@ -70,7 +101,7 @@ class Windmill(VGroup):
 
 
 class PartScene(Scene):
-    CONFIG = {"n": 1, "title": "", "title_color": RED}
+    CONFIG = {"n": 1, "title": "Placeholder", "title_color": RED}
 
     def construct(self):
         self.part = TexText(f"Part {self.n}")
@@ -87,6 +118,32 @@ class PartScene(Scene):
 
 class PartOne(PartScene):
     CONFIG = {"n": 1, "title": "The Involution", "title_color": A_RED}
+
+
+class ZagierIntro(Scene):
+    def construct(self):
+        vectors = [
+            FRAME_WIDTH / 4 * LEFT + FRAME_HEIGHT / 4 * UP,
+            FRAME_WIDTH / 4 * RIGHT + FRAME_HEIGHT / 4 * UP,
+            FRAME_HEIGHT / 4 * DOWN,
+        ]
+        screens = [
+            ScreenRectangle(height=2.75, fill_opacity=1, fill_color=BLACK).move_to(
+                vectors[i]
+            )
+            for i in range(3)
+        ]
+
+        texts = ["Simplicity", "Elegance", "Visualization"]
+        text_objs = [TexText(texts[i]).next_to(screens[i], UP) for i in range(3)]
+
+        VGroup(*screens, *text_objs).center()
+        for i in range(3):
+            self.play(FadeIn(screens[i], DOWN))
+            self.play(Write(text_objs[i]))
+            self.wait(0.25)
+
+        self.embed()
 
 
 class Involution(Scene):
@@ -310,7 +367,7 @@ class Involution(Scene):
         p_text.move_to(p_rect)
         p_text.add_background_rectangle(buff=0.15)
 
-        self.play(Write(p_rect), Write(p_text))
+        self.play(ShowCreation(p_rect), Write(p_text))
         self.wait()
 
         self.embed()
@@ -425,28 +482,6 @@ class MoreInvolution(Scene):
 
 class PartTwo(PartScene):
     CONFIG = {"n": 2, "title": "The Windmill", "title_color": A_AQUA}
-
-
-class GridRectangle(VGroup):
-    def __init__(
-        self, height, width, freq=1, rect_kwargs={}, line_kwargs={}, *args, **kwargs
-    ):
-        super().__init__(*args, **kwargs)
-
-        self.rect = Rectangle(height=height, width=width, **rect_kwargs)
-        self.lines = VGroup()
-
-        for i in np.arange(-height / 2, height / 2, freq):
-            self.lines.add(
-                Line(LEFT * width / 2, RIGHT * width / 2, **line_kwargs).shift(i * UP)
-            )
-
-        for i in np.arange(-width / 2, width / 2, freq):
-            self.lines.add(
-                Line(UP * height / 2, DOWN * height / 2, **line_kwargs).shift(i * RIGHT)
-            )
-
-        self.add(self.rect, self.lines)
 
 
 class WindmillIntro(Scene):
@@ -1188,6 +1223,96 @@ class ZagierMap(Scene):
             ApplyMethod(VGroup(w_3, t_3).shift, FRAME_WIDTH / 2 * LEFT),
             ApplyMethod(VGroup(w_4, t_4).shift, FRAME_WIDTH / 2 * RIGHT),
         )
+        self.wait()
+
+        self.embed()
+
+
+class ZagierCases(Scene):
+    def construct(self):
+        cases = [
+            r"2y < x",
+            r"y < x \land x < 2y",
+            r"y = x",
+            r"y-z < x \land x < y",
+            r"x < y-z",
+        ]
+
+        windmills = [
+            [[3, 1, 1], [1, 3, 1]],
+            [[3, 2, 1], [1, 2, 2]],
+            [[3, 3, 1], [3, 3, 1]],
+            [[1, 2, 2], [3, 2, 1]],
+            [[1, 3, 1], [3, 1, 1]],
+        ]
+
+        mapping = [
+            r"(x, y, z) \mapsto (x-2y, x+z-y, y)",
+            r"(x, y, z) \mapsto (2y-x, y, x+z-y)",
+            r"(x, y, z) \mapsto (x, y, z)",
+            r"(x, y, z) \mapsto (2y-x, y, x+z-y)",
+            r"(x, y, z) \mapsto (x+2z, z, y-x-z)",
+        ]
+
+        c_grp, w_grp, m_grp, lines = VGroup(), VGroup(), VGroup(), VGroup()
+
+        for i in range(5):
+            wl = Windmill(*windmills[i][0], stroke_width=1).scale(0.25)
+            wl.shift((i - 2) * FRAME_WIDTH / 9 * UP + 2.75 * LEFT)
+            w_grp.add(wl)
+
+            red_arrow = Arrow(
+                1.75 * LEFT + (i - 2) * FRAME_WIDTH / 9 * UP,
+                0.75 * LEFT + (i - 2) * FRAME_WIDTH / 9 * UP,
+                stroke_color=A_RED,
+                stroke_width=7.5,
+                max_width_to_length_ratio=50,
+            )
+            w_grp.add(red_arrow)
+
+            wr = Windmill(*windmills[i][1], stroke_width=1).scale(0.25)
+            wr.shift((i - 2) * FRAME_WIDTH / 9 * UP + 0.25 * RIGHT)
+            w_grp.add(wr)
+
+            c = Tex(
+                cases[i],
+                tex_to_color_map={"x": A_PINK, "y": A_AQUA, "z": A_AQUA, "2": A_UNKA},
+            )
+            c.scale(0.75)
+            c.shift((i - 2) * FRAME_WIDTH / 9 * UP + 5.375 * LEFT)
+            c_grp.add(c)
+
+            m = Tex(
+                mapping[i],
+                tex_to_color_map={"x": A_PINK, "y": A_AQUA, "z": A_AQUA, "2": A_UNKA},
+            )
+            m.scale(0.75)
+            m.shift((i - 2) * FRAME_WIDTH / 9 * UP + 4 * RIGHT)
+            m_grp.add(m)
+
+        for i in range(4):
+            line = Line(10 * LEFT, 10 * RIGHT, stroke_width=0.75)
+            line.move_to(((i - 2) * FRAME_WIDTH / 9 + FRAME_WIDTH / 18) * UP)
+            lines.add(line)
+
+        left_line = Line(10 * UP, 10 * DOWN, stroke_width=0.75)
+        left_line.move_to(3.75 * LEFT)
+
+        right_line = Line(10 * UP, 10 * DOWN, stroke_width=0.75)
+        right_line.move_to(1.25 * RIGHT)
+
+        self.play(Write(c_grp), Write(w_grp), Write(m_grp), Write(lines))
+        self.wait()
+
+        b_rect = Rectangle(
+            width=FRAME_WIDTH, height=FRAME_WIDTH / 9, stroke_color=A_YELLOW
+        )
+        b_rect.shift(FRAME_WIDTH / 9 * DOWN)
+
+        self.play(Write(b_rect))
+        self.wait()
+
+        self.play(Uncreate(b_rect))
         self.wait()
 
         self.embed()
