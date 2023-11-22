@@ -1316,3 +1316,140 @@ class ZagierCases(Scene):
         self.wait()
 
         self.embed()
+
+
+class ZagierFixed(Scene):
+    def construct(self):
+        title = Tex(
+            r"\text{Fixed Point of Zagier Map }({x}={y})",
+            tex_to_color_map={
+                "{x}": A_PINK,
+                "{y}": A_AQUA,
+                "(": WHITE,
+                ")": WHITE,
+                "=": WHITE,
+                r"\text{Fixed Point of Zagier Map }": A_GREY,
+            },
+        )
+        title.scale(1.25)
+        title.shift(3 * UP)
+
+        w_1 = Windmill(3, 3, 2)
+        w_1.scale(0.5)
+
+        t_1 = Tex("(3, 3, 2)", tex_to_color_map={"3": A_UNKA, "2": A_UNKA})
+        t_1.scale(1.5)
+        t_1.shift(3 * DOWN)
+
+        s = Square(1.5, stroke_width=10, color=A_YELLOW)
+
+        red_arrow = Arrow(
+            LEFT,
+            RIGHT,
+            stroke_color=A_RED,
+            stroke_width=50,
+            max_width_to_length_ratio=10,
+        )
+
+        self.play(Write(title))
+        self.wait()
+
+        self.play(Write(w_1), Write(t_1))
+        self.wait()
+
+        self.play(Write(s))
+        self.play(Indicate(s))
+        self.wait()
+
+        self.play(
+            ApplyMethod(w_1.shift, FRAME_WIDTH / 4 * LEFT),
+            ApplyMethod(t_1.shift, FRAME_WIDTH / 4 * LEFT),
+        )
+
+        w_1_cp = w_1.deepcopy()
+
+        self.play(
+            Write(red_arrow),
+            ApplyMethod(w_1_cp.shift, FRAME_WIDTH / 2 * RIGHT),
+            ApplyMethod(s.shift, FRAME_WIDTH / 4 * RIGHT),
+        )
+        self.bring_to_front(s)
+        self.wait()
+
+        w_2 = Windmill(3, 3, 2)
+        w_2.scale(0.5)
+        w_2.shift(FRAME_WIDTH / 4 * RIGHT)
+
+        t_2 = Tex("(3, 3, 2)", tex_to_color_map={"3": A_UNKA, "2": A_UNKA})
+        t_2.scale(1.5)
+        t_2.shift(FRAME_WIDTH / 4 * RIGHT + 3 * DOWN)
+
+        self.play(Write(t_2))
+        self.wait()
+
+        self.embed()
+
+
+class ZagierPrime(Scene):
+    def construct(self):
+        title = Tex(
+            r"\text{Zagier Map has one fixed point on }W_{4k+1}",
+            tex_to_color_map={"W": A_YELLOW, "4": A_UNKA, "1": A_UNKA, "k": A_ORANGE},
+        )
+        title.scale(1.25)
+        title.shift(3 * UP)
+
+        w_1 = Windmill(1, 1, 3)
+        w_1.scale(0.5)
+
+        t_1 = Tex("(1, 1, k)", tex_to_color_map={"1": A_UNKA, "k": A_ORANGE})
+        t_1.scale(1.5)
+        t_1.shift(3 * DOWN)
+
+        s = Square(0.5, stroke_width=10, color=A_YELLOW)
+
+        red_arrow = Arrow(
+            LEFT,
+            RIGHT,
+            stroke_color=A_RED,
+            stroke_width=50,
+            max_width_to_length_ratio=10,
+        )
+
+        self.play(Write(title))
+        self.wait()
+
+        self.play(Write(w_1), Write(t_1))
+        self.wait()
+
+        self.play(Write(s))
+        self.play(Indicate(s))
+        self.wait()
+
+        self.play(
+            ApplyMethod(w_1.shift, FRAME_WIDTH / 4 * LEFT),
+            ApplyMethod(t_1.shift, FRAME_WIDTH / 4 * LEFT),
+        )
+
+        w_1_cp = w_1.deepcopy()
+
+        self.play(
+            Write(red_arrow),
+            ApplyMethod(w_1_cp.shift, FRAME_WIDTH / 2 * RIGHT),
+            ApplyMethod(s.shift, FRAME_WIDTH / 4 * RIGHT),
+        )
+        self.bring_to_front(s)
+        self.wait()
+
+        w_2 = Windmill(1, 1, 3)
+        w_2.scale(0.5)
+        w_2.shift(FRAME_WIDTH / 4 * RIGHT)
+
+        t_2 = Tex("(1, 1, k)", tex_to_color_map={"1": A_UNKA, "k": A_ORANGE})
+        t_2.scale(1.5)
+        t_2.shift(FRAME_WIDTH / 4 * RIGHT + 3 * DOWN)
+
+        self.play(Write(t_2))
+        self.wait()
+
+        self.embed()
