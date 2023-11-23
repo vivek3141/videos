@@ -1453,3 +1453,88 @@ class ZagierPrime(Scene):
         self.wait()
 
         self.embed()
+
+
+class FinalProof(Scene):
+    def construct(self):
+        text1 = Tex(
+            r"\text{For prime } {p} = 4k + 1",
+            tex_to_color_map={
+                "{p}": A_GREEN,
+                "k": A_ORANGE,
+                "4": A_UNKA,
+                "1": A_UNKA,
+            },
+        )
+        text1.move_to((FRAME_HEIGHT / 2 - FRAME_HEIGHT / 5) * UP, LEFT)
+
+        text2 = Tex(
+            r"\text{Zagier Map has one fixed point} \Longrightarrow |W_{p}| \text{ is odd}",
+            tex_to_color_map={
+                "W": A_YELLOW,
+                "{p}": A_GREEN,
+                "fixed point": A_LAVENDER,
+                "Zagier Map": A_GREY,
+                "odd": A_UNKA,
+            },
+        )
+        text2.move_to((FRAME_HEIGHT / 2 - 2 * FRAME_HEIGHT / 5) * UP, LEFT)
+
+        text3 = Tex(
+            r"|W_{p}| \text{ is }\text{odd} \Longrightarrow \text{Flip Map}",
+            r"\text{ has}",
+            r"\text{ odd number of}",
+            r"\text{ fixed point}",
+            r"\text{s}",
+            tex_to_color_map={
+                "W": A_YELLOW,
+                "{p}": A_GREEN,
+                r"\text{Flip Map}": A_BLUE,
+                r"\text{odd}": A_UNKA,
+            },
+        )
+        text3.move_to((FRAME_HEIGHT / 2 - 3 * FRAME_HEIGHT / 5) * UP, LEFT)
+
+        text4 = Tex(
+            r"|W_{p}| \text{ is }\text{odd} \Longrightarrow \text{Flip Map}",
+            r"\text{ has}",
+            r"\text{ at least one}",
+            r"\text{ fixed point}",
+            tex_to_color_map={
+                "W": A_YELLOW,
+                "{p}": A_GREEN,
+                r"\text{Flip Map}": A_BLUE,
+                r"\text{odd}": A_UNKA,
+            },
+        )
+        text4.move_to((FRAME_HEIGHT / 2 - 3 * FRAME_HEIGHT / 5) * UP, LEFT)
+
+        text5 = Tex(
+            r"|\text{fixed} \ \text{Flip Map} \ W_{p}| \geq 1 \Longrightarrow {p} \text{ is a sum of two squares}",
+            tex_to_color_map={
+                r"\text{Flip Map}": A_BLUE,
+                r"\text{fixed}": A_LAVENDER,
+                "{p}": A_GREEN,
+                "W": A_YELLOW,
+                "1": A_UNKA,
+            },
+        )
+        text5.move_to((FRAME_HEIGHT / 2 - 4 * FRAME_HEIGHT / 5) * UP, LEFT)
+        VGroup(text1, text2, text3, text4, text5).shift(6 * LEFT)
+
+        self.play(Write(text1))
+        self.wait()
+
+        self.play(Write(text2))
+        self.wait()
+
+        self.play(Write(text3))
+        self.wait()
+
+        self.play(TransformMatchingTex(text3, text4))
+        self.wait()
+
+        self.play(Write(text5))
+        self.wait()
+
+        self.embed()
