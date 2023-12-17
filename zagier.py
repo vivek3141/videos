@@ -120,6 +120,21 @@ class PartOne(PartScene):
     CONFIG = {"n": 1, "title": "The Involution", "title_color": A_RED}
 
 
+class OneSentence(Scene):
+    def construct(self):
+        title = TexText("Zagier's One Sentence Proof", color=A_LAVENDER)
+        title.scale(1.5)
+        title.shift(3 * UP)
+
+        img = ImageMobject("img/zagier_proof.png")
+        img.scale(0.85)
+
+        rect = SurroundingRectangle(img, color=A_LAVENDER, buff=0, stroke_width=8)
+        self.add(img, title, rect)
+
+        self.embed()
+
+
 class ZagierIntro(Scene):
     def construct(self):
         vectors = [
@@ -873,7 +888,11 @@ class WindmillOne(Scene):
 class WindmillProof(Scene):
     def construct(self):
         head_t = Tex(
-            r"\text{For } p = 4k + 1 \text{ and } ({x}, {y}, {z}) \in W_{p}",
+            r"\text{In }",
+            r"{W_{p = 4k}}",
+            r"{}_{+}",
+            r"{}_{1}",
+            r"\text{, (1, 1, k) is the ONLY windmill with } {x} = {y}",
             tex_to_color_map={
                 "p": A_GREEN,
                 "k": A_ORANGE,
@@ -887,15 +906,7 @@ class WindmillProof(Scene):
             },
         )
         head_t.shift(3.25 * UP)
-
-        head_t_2 = Tex(
-            r"\text{If } {x}={y} \text{ then } {x}={y}=1",
-            tex_to_color_map={"{x}": A_PINK, "{y}": A_AQUA, "1": A_UNKA},
-        )
-        head_t_2.next_to(head_t, DOWN)
-
         self.play(Write(head_t))
-        self.play(Write(head_t_2))
 
         w = Windmill(1, 1, 3)
         w.scale(0.75)
@@ -955,9 +966,21 @@ class WindmillProof(Scene):
         self.play(Transform(w, w3))
 
         eq1 = Tex(
-            r"\text{Area} = {x}^2 + 4{x}z",
+            r"\text{Area} = \text{prime } 4{k}+1",
             tex_to_color_map={
                 r"\text{Area}": A_LAVENDER,
+                r"\text{prime }": A_GREEN,
+                "{p}": A_GREEN,
+                "{k}": A_ORANGE,
+                "4": A_UNKA,
+                "1": A_UNKA,
+            },
+        )
+        eq1.move_to(2.5 * RIGHT + 2 * UP)
+
+        eq2 = Tex(
+            r"= {x}^2 + 4{x}z",
+            tex_to_color_map={
                 "{x}": A_PINK,
                 "y": A_AQUA,
                 "z": A_AQUA,
@@ -965,41 +988,30 @@ class WindmillProof(Scene):
                 "4": A_UNKA,
             },
         )
-        eq1.move_to(2.5 * RIGHT + 1 * UP)
-
-        eq2 = Tex(
-            r"= x(x+4z)", tex_to_color_map={"x": A_PINK, "4": A_UNKA, "z": A_AQUA}
-        )
         eq2.move_to(eq1[1], LEFT)
         eq2.shift(DOWN)
+
+        eq3 = Tex(r"x(x+4z)", tex_to_color_map={"x": A_PINK, "4": A_UNKA, "z": A_AQUA})
+        eq3.scale(1.25)
+        eq3.move_to(eq2)
+        eq3.shift(1.5 * DOWN)
 
         self.play(Write(eq1))
         self.wait()
 
-        self.play(TransformMatchingTex(eq1[1:].copy(), eq2))
+        self.play(Write(eq2))
         self.wait()
 
-        eq3 = Tex(
-            r"\text{If } {x} \neq 1, \text{ then}",
-            tex_to_color_map={"{x}": A_PINK, "1": A_UNKA},
-        )
-        eq3.move_to(eq1, LEFT)
-        eq3.shift(2.5 * DOWN)
+        self.play(TransformMatchingTex(eq2[1:].copy(), eq3))
+        self.wait()
 
         eq4 = Tex(
-            r"x + 4z \neq p \neq 1",
-            tex_to_color_map={
-                "x": A_PINK,
-                "4": A_UNKA,
-                "z": A_AQUA,
-                "p": A_GREEN,
-                "1": A_UNKA,
-            },
+            r"\text{If } {x} \neq 1, \text{ then this provides a}\\ \text{ decomposition of a prime}",
+            tex_to_color_map={"{x}": A_PINK, "1": A_UNKA},
         )
         eq4.move_to(eq3)
-        eq4.shift(DOWN + RIGHT)
+        eq4.shift(1.5 * DOWN)
 
-        self.play(Write(eq3))
         self.play(Write(eq4))
         self.wait()
 
@@ -1535,6 +1547,118 @@ class FinalProof(Scene):
         self.wait()
 
         self.play(Write(text5))
+        self.wait()
+
+        self.embed()
+
+
+class ErdosBook(Scene):
+    def construct(self):
+        back = ImageMobject("img/erdos_back.jpg", height=FRAME_HEIGHT)
+        # Remove this comment for debugging
+        # self.add(back)
+
+        rect = Rectangle(height=0.75, width=2.5, stroke_width=8)
+        rect.shift(1.4 * LEFT + 0.625 * UP)
+
+        self.play(Write(rect))
+
+        erdos = ImageMobject("img/paul_erdos.jpeg")
+        erdos.shift(4 * RIGHT + 1 * UP)
+
+        erdos_rect = BackgroundRectangle(
+            erdos, fill_opacity=0, stroke_width=8, stroke_color=WHITE, stroke_opacity=1
+        )
+        lines = VGroup(
+            Line(rect.get_vertices()[0], erdos_rect.get_vertices()[1], stroke_width=8),
+            Line(rect.get_vertices()[3], erdos_rect.get_vertices()[2], stroke_width=8),
+        )
+
+        text = TexText("Paul Erdős")
+        text.scale(1.5)
+        text.move_to(erdos_rect, DOWN)
+        text.shift(0.75 * DOWN)
+
+        self.play(Write(erdos_rect), Write(lines), Write(text))
+        self.wait()
+
+        self.embed()
+
+
+class BookFermat(Scene):
+    def construct(self):
+        back = ImageMobject("img/fermat_back", height=FRAME_HEIGHT)
+        # Remove this comment for debugging
+        # self.add(back)
+
+        title = TexText("Fermat's Two Squares Theorem", color=A_LAVENDER)
+        title.scale(1.5)
+        title.shift(3 * UP)
+
+        rect = BackgroundRectangle(title, buff=SMALL_BUFF)
+        title = VGroup(rect, title)
+
+        rect = Rectangle(width=3.5, height=0.5, stroke_width=8)
+        rect.shift(1.5 * RIGHT + 1.625 * UP)
+
+        rect_2 = Rectangle(
+            width=13.5, height=3, stroke_width=8, fill_color=GREY_D, fill_opacity=1
+        )
+        rect_2.shift(1.5 * DOWN)
+
+        lines = VGroup(
+            Line(rect.get_vertices()[2], rect_2.get_vertices()[1], stroke_width=8),
+            Line(rect.get_vertices()[3], rect_2.get_vertices()[0], stroke_width=8),
+        )
+
+        eq1 = Tex(
+            r"\text{Every prime of the form } {p}=4{k}+1 \text{ can be expressed as a sum of two squares.",
+            tex_to_color_map={
+                "{p}": A_GREEN,
+                "{k}": A_ORANGE,
+                "4": A_UNKA,
+                "1": A_UNKA,
+            },
+        )
+        eq1.scale(0.8)
+
+        eq2 = Tex(
+            r"{13} = 4 \cdot{ {3} }+ 1 ={3}^2 + {2}^2",
+            tex_to_color_map={
+                "{3}": A_UNKA,
+                "{ {3} }": A_ORANGE,
+                "^2": GREY_A,
+                "{2}": A_UNKA,
+                "4": A_UNKA,
+                "1": A_UNKA,
+                "{13}": A_GREEN,
+            },
+        )
+        eq2.scale(0.8)
+        eq2.shift(0.75 * DOWN)
+
+        eq3 = Tex(
+            r"29 = 4 \cdot 7 + 1 = 5^2 + {2}^2",
+            tex_to_color_map={
+                "29": A_GREEN,
+                "5": A_UNKA,
+                "^2": GREY_A,
+                "{2}": A_UNKA,
+                "4": A_UNKA,
+                "1": A_UNKA,
+                "7": A_ORANGE,
+            },
+        )
+        eq3.scale(0.8)
+        eq3.shift(1.5 * DOWN)
+
+        VGroup(eq1, eq2, eq3).move_to(rect_2)
+
+        self.play(Write(rect), Write(title))
+        self.play(Write(rect_2), Write(lines))
+        self.play(Write(eq1))
+        self.play(Write(eq2))
+        self.play(Write(eq3))
         self.wait()
 
         self.embed()
