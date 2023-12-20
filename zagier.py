@@ -116,6 +116,33 @@ class PartScene(Scene):
         self.wait()
 
 
+class TitleScene(Scene):
+    CONFIG = {"color": None, "text": None}
+
+    def construct(self):
+        if self.text is None:
+            raise NotImplementedError
+
+        brect = Rectangle(
+            height=FRAME_HEIGHT, width=FRAME_WIDTH, fill_opacity=1, color=self.color
+        )
+
+        title = TexText(self.text)
+        title.scale(1.5)
+        title.to_edge(UP)
+
+        rect = ScreenRectangle(height=6)
+        rect.next_to(title, DOWN)
+
+        self.add(brect)
+        self.play(FadeIn(rect, DOWN), Write(title), run_time=2)
+        self.wait()
+
+
+class Recap(TitleScene):
+    CONFIG = {"color": "#252626", "text": "What You Just Saw"}
+
+
 class PartOne(PartScene):
     CONFIG = {"n": 1, "title": "The Involution", "title_color": A_RED}
 
@@ -130,7 +157,10 @@ class OneSentence(Scene):
         img.scale(0.85)
 
         rect = SurroundingRectangle(img, color=A_LAVENDER, buff=0, stroke_width=8)
-        self.add(img, title, rect)
+
+        self.play(Write(title))
+        self.play(FadeIn(img), Write(rect))
+        self.wait()
 
         self.embed()
 
@@ -1659,6 +1689,31 @@ class BookFermat(Scene):
         self.play(Write(eq1))
         self.play(Write(eq2))
         self.play(Write(eq3))
+        self.wait()
+
+        self.embed()
+
+
+class Thumbnail(Scene):
+    def construct(self):
+        w1 = Windmill(3, 1, 2)
+        w1.scale(0.75)
+        w1.shift((FRAME_WIDTH / 4 + 0.5) * LEFT)
+
+        w2 = Windmill(1, 4, 1)
+        w2.scale(0.75)
+        w2.shift((FRAME_WIDTH / 4 + 0.5) * RIGHT)
+
+        red_arrow = Arrow(
+            LEFT,
+            RIGHT,
+            stroke_color=A_RED,
+            stroke_width=100,
+            max_width_to_length_ratio=35,
+            tip_width_ratio=2,
+        )
+
+        self.add(w1, w2, red_arrow)
         self.wait()
 
         self.embed()
