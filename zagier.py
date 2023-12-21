@@ -55,8 +55,8 @@ class Windmill(VGroup):
         z,
         freq=1,
         stroke_width=2,
-        i_kwargs={"fill_color": A_PINK, "fill_opacity": 0.5},
-        o_kwargs={"fill_color": A_AQUA, "fill_opacity": 0.5},
+        i_kwargs={"fill_color": "#7e6773", "fill_opacity": 1.0},
+        o_kwargs={"fill_color": "#476a64", "fill_opacity": 1.0},
         l_kwargs={},
         *args,
         **kwargs,
@@ -181,6 +181,44 @@ class ZagierIntro(Scene):
 
         texts = ["Simplicity", "Elegance", "Visualization"]
         text_objs = [TexText(texts[i]).next_to(screens[i], UP) for i in range(3)]
+
+        VGroup(*screens, *text_objs).center()
+        for i in range(3):
+            self.play(FadeIn(screens[i], DOWN))
+            self.play(Write(text_objs[i]))
+            self.wait(0.25)
+
+        self.embed()
+
+
+class ZagierIntroVertical(Scene):
+    def construct(self):
+        b_rect = Rectangle(
+            height=FRAME_HEIGHT,
+            width=9 / 16 * FRAME_HEIGHT,
+            fill_opacity=1,
+            fill_color="#252626",
+            stroke_width=0,
+        )
+        self.add(b_rect)
+
+        vectors = [
+            ((FRAME_HEIGHT / 2) - (FRAME_HEIGHT / 3.25)) * UP,
+            ((FRAME_HEIGHT / 2) - (2 * FRAME_HEIGHT / 3.25)) * UP,
+            ((FRAME_HEIGHT / 2) - (3 * FRAME_HEIGHT / 3.25)) * UP,
+        ]
+        screens = [
+            ScreenRectangle(height=1.75, fill_opacity=1, fill_color=BLACK).move_to(
+                vectors[i]
+            )
+            for i in range(3)
+        ]
+
+        texts = ["Simplicity", "Elegance", "Visualization"]
+        text_objs = [
+            TexText(texts[i]).move_to(screens[i]).scale(0.75).shift(1.15 * UP)
+            for i in range(3)
+        ]
 
         VGroup(*screens, *text_objs).center()
         for i in range(3):
@@ -1052,6 +1090,34 @@ class PartThree(PartScene):
     CONFIG = {"n": 3, "title": "The Zagier Map", "title_color": A_LAVENDER}
 
 
+def get_flip_transform(windmill, flipped):
+    windmill_copy = windmill.deepcopy()
+    windmill_copy.move_to(flipped)
+
+    return Succession(
+        TransformFromCopy(windmill, windmill_copy),
+        AnimationGroup(
+            *[
+                ApplyMethod(windmill_copy.rects[i].rotate, 90 * DEGREES)
+                for i in range(4)
+            ]
+        ),
+        AnimationGroup(
+            Transform(
+                windmill_copy.square,
+                flipped.square,
+            ),
+            *[
+                ApplyMethod(
+                    windmill_copy.rects[i].move_to,
+                    flipped.rects[i],
+                )
+                for i in range(4)
+            ],
+        ),
+    )
+
+
 class FlipMap(Scene):
     def construct(self):
         left_w = Windmill(3, 1, 5)
@@ -1085,10 +1151,12 @@ class FlipMap(Scene):
         self.play(Write(left_w), Write(left_t))
         self.play(Write(red_arrow))
         self.play(
-            TransformFromCopy(left_w, right_w),
+            get_flip_transform(left_w, right_w),
             TransformMatchingTex(left_t.copy(), right_t),
             run_time=4,
         )
+        self.remove(self.mobjects[-2])
+        self.add(right_w)
         self.wait()
 
         left_t_new = Tex(
@@ -1182,12 +1250,13 @@ class ZagierMap(Scene):
 
         w_1_cp = w_1.deepcopy()
 
+        self.add(w_1_cp)
+        self.bring_to_front(s)
         self.play(
             Write(red_arrow),
-            ApplyMethod(w_1_cp.shift, FRAME_WIDTH / 2 * RIGHT),
             ApplyMethod(s.shift, FRAME_WIDTH / 4 * RIGHT),
+            ApplyMethod(w_1_cp.shift, FRAME_WIDTH / 2 * RIGHT),
         )
-        self.bring_to_front(s)
         self.wait()
 
         w_2 = Windmill(5, 1, 1)
@@ -1200,14 +1269,16 @@ class ZagierMap(Scene):
 
         self.play(Indicate(s))
         self.play(
-            Transform(w_1_cp, w_2),
+            Transform(w_1_cp.square, w_2.square),
             Uncreate(s),
             TransformMatchingTex(t_1.copy(), t_2),
         )
+        self.remove(w_1_cp)
+        self.add(w_2)
         self.wait()
 
         self.play(
-            FadeOut(w_1_cp, UP),
+            FadeOut(w_2, UP),
             FadeOut(t_1, UP),
             FadeOut(t_2, UP),
             FadeOut(w_1, UP),
@@ -1244,16 +1315,23 @@ class ZagierMap(Scene):
         w_4.scale(0.5)
         w_4.shift(FRAME_WIDTH / 4 * RIGHT)
 
+        w_3_cp = w_3.deepcopy()
+        w_3_cp.move_to(w_4)
+
         t_4 = Tex("(1, 4, 1)", tex_to_color_map={"4": A_UNKA, "1": A_UNKA})
         t_4.scale(1.5)
         t_4.shift(FRAME_WIDTH / 4 * RIGHT + 3 * DOWN)
 
+        self.play(TransformFromCopy(w_3, w_3_cp))
         self.play(
-            TransformFromCopy(w_3, w_4),
+            Write(w_4),
             Uncreate(s),
             TransformMatchingTex(t_3.copy(), t_4),
         )
         self.wait()
+
+        self.remove(w_3_cp)
+        self.add(w_4)
 
         self.play(
             ApplyMethod(VGroup(w_3, t_3).shift, FRAME_WIDTH / 2 * RIGHT),
@@ -1602,6 +1680,45 @@ class ErdosBook(Scene):
         lines = VGroup(
             Line(rect.get_vertices()[0], erdos_rect.get_vertices()[1], stroke_width=8),
             Line(rect.get_vertices()[3], erdos_rect.get_vertices()[2], stroke_width=8),
+        )
+
+        text = TexText("Paul Erdős")
+        text.scale(1.5)
+        text.move_to(erdos_rect, DOWN)
+        text.shift(0.75 * DOWN)
+
+        self.play(Write(erdos_rect), Write(lines), Write(text))
+        self.wait()
+
+        self.embed()
+
+
+class ErdosBookVertical(Scene):
+    def construct(self):
+        b_rect = Rectangle(
+            height=FRAME_HEIGHT,
+            width=9 / 16 * FRAME_HEIGHT,
+            fill_opacity=1,
+            fill_color="#252626",
+            stroke_width=0,
+        )
+        # self.add(b_rect)
+
+        rect = Rectangle(height=0.75, width=2.5, stroke_width=8)
+        rect.shift(3 * UP)
+
+        self.play(Write(rect))
+
+        erdos = ImageMobject("img/paul_erdos.jpeg")
+        erdos.move_to(rect)
+        erdos.shift(4 * DOWN)
+
+        erdos_rect = BackgroundRectangle(
+            erdos, fill_opacity=0, stroke_width=8, stroke_color=WHITE, stroke_opacity=1
+        )
+        lines = VGroup(
+            Line(rect.get_vertices()[2], erdos_rect.get_vertices()[1], stroke_width=8),
+            Line(rect.get_vertices()[3], erdos_rect.get_vertices()[0], stroke_width=8),
         )
 
         text = TexText("Paul Erdős")
