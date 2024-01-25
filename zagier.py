@@ -1811,6 +1811,75 @@ class BookFermat(Scene):
         self.embed()
 
 
+class BookFermatVertical(Scene):
+    def construct(self):
+        # b_rect = Rectangle(
+        #     height=FRAME_HEIGHT,
+        #     width=9 / 16 * FRAME_HEIGHT,
+        #     fill_opacity=1,
+        #     fill_color="#252626",
+        #     stroke_width=0,
+        # )
+        # self.add(b_rect)
+
+        title = TexText("Fermat's Two \\\\ Squares Theorem", color=A_LAVENDER)
+        title.scale(1.25)
+        title.shift(2.5 * UP)
+
+        rect = BackgroundRectangle(title, buff=SMALL_BUFF)
+        title = VGroup(rect, title)
+
+        rect = Rectangle(width=9 / 16 * FRAME_HEIGHT, height=0.5, stroke_width=8)
+        rect.shift(1.25 * UP)
+
+        rect_2 = Rectangle(
+            width=4.5, height=3, stroke_width=8, fill_color=GREY_D, fill_opacity=1
+        )
+        rect_2.shift(1.75 * DOWN)
+
+        lines = VGroup(
+            Line(rect.get_vertices()[2], rect_2.get_vertices()[1], stroke_width=8),
+            Line(rect.get_vertices()[3], rect_2.get_vertices()[0], stroke_width=8),
+        )
+
+        eq1 = TexText(
+            r"Every prime of the form \\",
+            r"${p}$ $=$ $4$${k}$ $+$ $1$ can be expressed \\",
+            r"as a sum of two squares. \\ \leavevmode \\",
+            r"$13$ $=$ $4$ $\cdot$ ${3}$ $+$ $1$ $=$ $3$$^2$ $+$ $2$$^2$ \\",
+            r"$29$ $=$ $4$ $\cdot$ $7$ $+$ $1$ $=$ $5$$^2$ $+$ $2$$^2$ \\",
+            tex_to_color_map={
+                "${p}$": A_GREEN,
+                "${k}$": A_ORANGE,
+                "$4$": A_UNKA,
+                "$1$": A_UNKA,
+                "$13$": A_GREEN,
+                "${3}$": A_ORANGE,
+                "$^2$": GREY_A,
+                "$3$": A_UNKA,
+                "$2$": A_UNKA,
+                "$4$": A_UNKA,
+                "$1$": A_UNKA,
+                "$29$": A_GREEN,
+                "$5$": A_UNKA,
+                "$^2$": GREY_A,
+                "$2$": A_UNKA,
+                "$4$": A_UNKA,
+                "$1$": A_UNKA,
+                "$7$": A_ORANGE,
+            },
+        )
+        eq1.scale(0.7)
+        eq1.move_to(rect_2)
+
+        self.play(Write(rect), Write(title))
+        self.play(Write(rect_2), Write(lines))
+        self.play(Write(eq1))
+        self.wait()
+
+        self.embed()
+
+
 class Thumbnail(Scene):
     def construct(self):
         w1 = Windmill(3, 1, 2)
