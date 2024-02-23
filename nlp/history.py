@@ -50,6 +50,64 @@ class MNISTImage(VMobject):
             rect.set_stroke(opacity=opacity * rect.get_stroke_opacity())
 
 
+class Dice(VMobject):
+    def __init__(
+        self,
+        number,
+        dot_radius=0.15,
+        dot_color=A_UNKA,
+        square_color=A_GREY,
+        *args,
+        **kwargs,
+    ):
+        super().__init__(*args, **kwargs)
+        self.square = RoundedRectangle(
+            height=2, width=2, corner_radius=0.375, color=square_color
+        )
+        self.dots = VGroup()
+
+        dot_kwargs = {"radius": dot_radius, "color": dot_color}
+        if number == 1:
+            self.dots.add(Dot(**dot_kwargs))
+        elif number == 2:
+            self.dots.add(
+                Dot(**dot_kwargs).shift(0.5 * UP + 0.5 * LEFT),
+                Dot(**dot_kwargs).shift(0.5 * DOWN + 0.5 * RIGHT),
+            )
+        elif number == 3:
+            self.dots.add(
+                Dot(**dot_kwargs),
+                Dot(**dot_kwargs).shift(0.5 * UP + 0.5 * RIGHT),
+                Dot(**dot_kwargs).shift(0.5 * DOWN + 0.5 * LEFT),
+            )
+        elif number == 4:
+            self.dots.add(
+                Dot(**dot_kwargs).shift(0.5 * UP + 0.5 * LEFT),
+                Dot(**dot_kwargs).shift(0.5 * UP + 0.5 * RIGHT),
+                Dot(**dot_kwargs).shift(0.5 * DOWN + 0.5 * LEFT),
+                Dot(**dot_kwargs).shift(0.5 * DOWN + 0.5 * RIGHT),
+            )
+        elif number == 5:
+            self.dots.add(
+                Dot(**dot_kwargs),
+                Dot(**dot_kwargs).shift(0.5 * UP + 0.5 * LEFT),
+                Dot(**dot_kwargs).shift(0.5 * UP + 0.5 * RIGHT),
+                Dot(**dot_kwargs).shift(0.5 * DOWN + 0.5 * LEFT),
+                Dot(**dot_kwargs).shift(0.5 * DOWN + 0.5 * RIGHT),
+            )
+        elif number == 6:
+            self.dots.add(
+                Dot(**dot_kwargs).shift(0.5 * UP + 0.5 * LEFT),
+                Dot(**dot_kwargs).shift(0.5 * UP + 0.5 * RIGHT),
+                Dot(**dot_kwargs).shift(0.5 * DOWN + 0.5 * LEFT),
+                Dot(**dot_kwargs).shift(0.5 * DOWN + 0.5 * RIGHT),
+                Dot(**dot_kwargs).shift(0.5 * LEFT),
+                Dot(**dot_kwargs).shift(0.5 * RIGHT),
+            )
+
+        self.add(self.square, self.dots)
+
+
 class MNISTGroup(VGroup):
     def set_opacity(self, opacity):
         for img in self:
@@ -284,5 +342,20 @@ class NextWordPrediction(Scene):
         lm_text.shift(2 * UP)
 
         self.play(Write(lm_text))
+
+        self.embed()
+
+
+class DiceProbability(Scene):
+    def construct(self):
+        dice_grp = VGroup()
+        for i in range(1, 7):
+            d = Dice(i)
+            d.shift(FRAME_WIDTH / 7 * i * RIGHT)
+            d.scale(0.75)
+            dice_grp.add(d)
+        dice_grp.center()
+
+        self.add(dice_grp)
 
         self.embed()
