@@ -366,6 +366,17 @@ class DiceProbability(Scene):
             dice_grp.add(d)
         dice_grp.center()
 
-        self.add(dice_grp)
+        two_three = dice_grp[1:3].deepcopy()
+        two_three.center()
+        two_three.shift(1.5 * UP)
+
+        hline = Line(6.25 * LEFT, 6.25 * RIGHT)
+
+        self.play(Write(dice_grp))
+        self.wait()
+
+        self.play(ApplyMethod(dice_grp.shift, 1.5 * DOWN), Write(hline))
+        self.play(TransformFromCopy(dice_grp[1:3], two_three))
+        self.wait()
 
         self.embed()
