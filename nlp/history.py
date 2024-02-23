@@ -54,6 +54,7 @@ class Dice(VMobject):
     def __init__(
         self,
         number,
+        square_width=2.0,
         dot_radius=0.15,
         dot_color=A_UNKA,
         square_color=A_GREY,
@@ -62,7 +63,10 @@ class Dice(VMobject):
     ):
         super().__init__(*args, **kwargs)
         self.square = RoundedRectangle(
-            height=2, width=2, corner_radius=0.375, color=square_color
+            height=square_width,
+            width=square_width,
+            corner_radius=0.375,
+            color=square_color,
         )
         self.dots = VGroup()
 
@@ -350,7 +354,13 @@ class DiceProbability(Scene):
     def construct(self):
         dice_grp = VGroup()
         for i in range(1, 7):
-            d = Dice(i)
+            d = Dice(
+                i,
+                square_width=2.0,
+                dot_radius=0.15,
+                dot_color=A_UNKA,
+                square_color=A_GREY,
+            )
             d.shift(FRAME_WIDTH / 7 * i * RIGHT)
             d.scale(0.75)
             dice_grp.add(d)
