@@ -26,7 +26,6 @@ A_UNKB = "#ffed6f"
 class RNNCell(VMobject):
     def __init_(self, fill_color=A_RED, *args, **kwargs):
         super().__init__(*args, **kwargs)
-
         self.sq = Square()
 
 
@@ -260,5 +259,30 @@ class NextWordPrediction(Scene):
         self.play(Write(prob_arrows))
         self.play(Write(prob_bars))
         self.wait()
+
+        anims = [
+            ApplyMethod(prob_arrows[i].set_opacity, 0.25)
+            for i in range(len(probs))
+            if i != len(probs) - 2
+        ]
+        for i in range(len(probs)):
+            if i == len(probs) - 2:
+                continue
+
+            for j in range(3):
+                anims.append(ApplyMethod(prob_bars[3 * i + j].set_opacity, 0.25))
+
+        self.play(*anims)
+        self.wait()
+
+        lm_text = Text("Language\nModel", color=A_UNKA)
+        c1 = lm_text[:-5].get_center()
+        c2 = lm_text[-5:].get_center()
+        lm_text[-5:].move_to([c1[0], c2[1], 0])
+
+        lm_text.move_to(rect)
+        lm_text.shift(2 * UP)
+
+        self.play(Write(lm_text))
 
         self.embed()
