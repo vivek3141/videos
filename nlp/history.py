@@ -7,6 +7,8 @@ Scenes In Order:
 EmailModel
 MNISTClassification
 NextWordPrediction
+DiceProbability
+TheoreticalNextWordProbability
 """
 
 A_AQUA = "#8dd3c7"
@@ -110,6 +112,24 @@ class Dice(VMobject):
             )
 
         self.add(self.square, self.dots)
+
+
+class Document(VMobject):
+    def __init__(self, rect_color=GREY_D, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.rect = Rectangle(
+            height=2.5, width=2, fill_color=rect_color, fill_opactiy=1
+        )
+        self.lines = VGroup(
+            *[
+                Line(0.75 * LEFT, 0.75 * RIGHT).shift(0.25 * (i - 3) * UP)
+                for i in range(7)
+            ]
+        )
+        self.lines[-1].set_width(1)
+        self.lines[-1].shift(0.25 * LEFT)
+
+        self.add(self.rect, self.lines)
 
 
 class MNISTGroup(VGroup):
@@ -378,5 +398,30 @@ class DiceProbability(Scene):
         self.play(ApplyMethod(dice_grp.shift, 1.5 * DOWN), Write(hline))
         self.play(TransformFromCopy(dice_grp[1:3], two_three))
         self.wait()
+
+        self.embed()
+
+
+class TheoreticalNextWordProbability(Scene):
+    def construct(self):
+        eq = Tex(
+            r"\mathbb{P}[" r"\text{blue} \ | \ \text{the sky is}]",
+            r"= {C(\text{the sky is}\text{ }\text{blue}) \over C(\text{the sky is})}",
+            tex_to_color_map={
+                r"\text{blue}": A_BLUE,
+                r"\text{the sky is}": A_UNKA,
+                r"C": A_UNKB,
+                r"\mathbb{P}": A_ORANGE,
+            },
+        )
+        eq.scale(1.5)
+
+        self.play(Write(eq[:6]))
+        self.wait(0.5)
+
+        self.play(Write(eq[6:]))
+        self.wait()
+
+        self.play(Transform(eq, eq.copy().scale(1 / 1.5).shift(3 * UP)))
 
         self.embed()
