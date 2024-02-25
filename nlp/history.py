@@ -118,7 +118,7 @@ class Document(VMobject):
     def __init__(self, rect_color=GREY_D, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.rect = Rectangle(
-            height=2.5, width=2, fill_color=rect_color, fill_opactiy=1
+            height=2.5, width=2, fill_color=rect_color, fill_opacity=1
         )
         self.lines = VGroup(
             *[
@@ -423,5 +423,81 @@ class TheoreticalNextWordProbability(Scene):
         self.wait()
 
         self.play(Transform(eq, eq.copy().scale(1 / 1.5).shift(3 * UP)))
+
+        d_grp = VGroup()
+        for i in range(2):
+            for j in range(4):
+                d_grp.add(Document().shift(i * 3 * UP + j * 3 * RIGHT))
+        d_grp.center()
+        d_grp.shift(0.75 * DOWN)
+
+        d = Document()
+
+        anims = [TransformFromCopy(d, d_grp[i]) for i in range(len(d_grp) - 1)] + [
+            Transform(d, d_grp[-1], replace_mobject_with_target_in_scene=True)
+        ]
+        self.play(Write(d))
+        self.play(*anims)
+        self.wait()
+
+        blue_prob = 0.3
+        other_words = ["red", "green", "yellow", "orange"]
+        other_word_color_map = {
+            "red": A_RED,
+            "green": A_GREEN,
+            "yellow": A_YELLOW,
+            "orange": A_ORANGE,
+        }
+
+        np.random.seed(15)
+        texts_is, texts_was = VGroup(), VGroup()
+        is_anims, was_anims = [], []
+
+        for i in range(len(d_grp)):
+            if np.random.rand() < blue_prob:
+                text_is = TexText(
+                    "the sky is blue",
+                    tex_to_color_map={"blue": A_BLUE, "the sky is": A_UNKA},
+                )
+                text_was = TexText(
+                    "the sky was blue",
+                    tex_to_color_map={"blue": A_BLUE, "the sky was": A_UNKA},
+                )
+            else:
+                other_word = np.random.choice(other_words)
+                text_is = TexText(
+                    f"the sky is {other_word}",
+                    tex_to_color_map={
+                        other_word: other_word_color_map[other_word],
+                        "the sky is": A_UNKA,
+                    },
+                )
+                text_was = TexText(
+                    f"the sky was {other_word}",
+                    tex_to_color_map={
+                        other_word: other_word_color_map[other_word],
+                        "the sky was": A_UNKA,
+                    },
+                )
+
+            curr_line = d_grp[i].lines[np.random.randint(7)]
+
+            text_is.move_to(curr_line)
+            text_is.scale(0.5)
+
+            text_was.move_to(curr_line)
+            text_was.scale(0.5)
+
+            texts_is.add(text_is)
+            texts_was.add(text_was)
+
+            is_anims.append(Transform(curr_line, text_is))
+            was_anims.append(TransformMatchingTex(text_is, text_was))
+
+        self.play(*is_anims)
+        self.wait()
+
+        self.play(*was_anims)
+        self.wait()
 
         self.embed()
