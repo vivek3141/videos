@@ -491,8 +491,10 @@ class TheoreticalNextWordProbability(Scene):
             texts_is.add(text_is)
             texts_was.add(text_was)
 
-            is_anims.append(Transform(curr_line, text_is))
-            was_anims.append(TransformMatchingTex(text_is, text_was))
+            is_anims.append(
+                Transform(curr_line, text_is, replace_mobject_with_target_in_scene=True)
+            )
+            was_anims.append(TransformMatchingShapes(text_is, text_was))
 
         self.play(*is_anims)
         self.wait()
