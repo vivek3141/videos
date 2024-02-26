@@ -602,7 +602,7 @@ class NGramModel(Scene):
                 r"\mathbb{P}": A_ORANGE,
             },
         )
-        eq4.scale(1.5)
+        eq4.scale(1.25)
 
         self.play(
             TransformFromCopy(eq3[:2], eq4[:2]),
@@ -632,5 +632,27 @@ class NGramModel(Scene):
 
         self.play(FadeOut(eq3, UP), Write(title))
         self.wait()
+
+        b = Brace(eq4)
+        b_tex = b.get_tex(r"\text{Trigram Model}")
+
+        self.play(Write(b), Write(b_tex))
+        self.wait()
+
+        self.play(Uncreate(b), Uncreate(b_tex))
+
+        eq5 = Tex(
+            r"\mathbb{P}[" r"w_i \ | \ w_{i-3}w_{i-2}w_{i-1}]",
+            r"\approx {C(w_{i-2}w_{i-1}w_i) + 1 \over C(w_{i-2}w_{i-1}) + |V|}",
+            tex_to_color_map={
+                r"w_i": A_BLUE,
+                r"w_{i-3}": A_UNKA,
+                r"w_{i-2}": A_UNKA,
+                r"w_{i-1}": A_UNKA,
+                r"C": A_UNKB,
+                r"\mathbb{P}": A_ORANGE,
+            },
+        )
+        eq5.scale(1.25)
 
         self.embed()
