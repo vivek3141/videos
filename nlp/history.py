@@ -406,10 +406,12 @@ class TheoreticalNextWordProbability(Scene):
     def construct(self):
         eq = Tex(
             r"\mathbb{P}[" r"\text{blue} \ | \ \text{the sky is}]",
-            r"= {C(\text{the sky is}\text{ }\text{blue}) \over C(\text{the sky is})}",
+            r"= {C(\text{the }\text{sky is}\text{ }\text{blue}) \over C(\text{the }\text{sky is})}",
             tex_to_color_map={
                 r"\text{blue}": A_BLUE,
                 r"\text{the sky is}": A_UNKA,
+                r"\text{sky is}": A_UNKA,
+                r"\text{the }": A_UNKA,
                 r"C": A_UNKB,
                 r"\mathbb{P}": A_ORANGE,
             },
@@ -450,8 +452,8 @@ class TheoreticalNextWordProbability(Scene):
         }
 
         np.random.seed(15)
-        texts_is, texts_was = VGroup(), VGroup()
-        is_anims, was_anims = [], []
+        texts_is, texts_was, texts_two = VGroup(), VGroup(), VGroup()
+        is_anims, was_anims, two_anims = [], [], []
 
         for i in range(len(d_grp)):
             if np.random.rand() < blue_prob:
@@ -461,7 +463,11 @@ class TheoreticalNextWordProbability(Scene):
                 )
                 text_was = TexText(
                     "the sky was blue",
-                    tex_to_color_map={"blue": A_BLUE, "the sky was": A_UNKA},
+                    tex_to_color_map={"blue": A_BLUE, "sky was": A_UNKA, "the": A_UNKA},
+                )
+                text_two = TexText(
+                    "sky is blue",
+                    tex_to_color_map={"blue": A_BLUE, "sky is": A_UNKA},
                 )
             else:
                 other_word = np.random.choice(other_words)
@@ -476,30 +482,86 @@ class TheoreticalNextWordProbability(Scene):
                     f"the sky was {other_word}",
                     tex_to_color_map={
                         other_word: other_word_color_map[other_word],
-                        "the sky was": A_UNKA,
+                        "sky was": A_UNKA,
+                        "the": A_UNKA,
+                    },
+                )
+                text_two = TexText(
+                    f"sky is {other_word}",
+                    tex_to_color_map={
+                        other_word: other_word_color_map[other_word],
+                        "sky is": A_UNKA,
                     },
                 )
 
             curr_line = d_grp[i].lines[np.random.randint(7)]
 
             text_is.move_to(curr_line)
-            text_is.scale(0.5)
+            text_is.scale(0.45)
 
             text_was.move_to(curr_line)
-            text_was.scale(0.5)
+            text_was.scale(0.45)
+
+            text_two.move_to(curr_line)
+            text_two.scale(0.45)
 
             texts_is.add(text_is)
             texts_was.add(text_was)
+            texts_two.add(text_two)
 
             is_anims.append(
                 Transform(curr_line, text_is, replace_mobject_with_target_in_scene=True)
             )
-            was_anims.append(TransformMatchingShapes(text_is, text_was))
+            was_anims.append(
+                TransformMatchingShapes(
+                    text_is, text_was, replace_mobject_with_target_in_scene=True
+                )
+            )
+            two_anims += [
+                Uncreate(text_was[0]),
+                TransformMatchingShapes(
+                    text_was[1:], text_two, replace_mobject_with_target_in_scene=True
+                ),
+            ]
 
         self.play(*is_anims)
         self.wait()
 
         self.play(*was_anims)
+        self.wait()
+
+        b = Brace(eq[-1], RIGHT)
+        b_tex = b.get_tex(r"k = 3", tex_to_color_map={r"k": A_YELLOW, "3": A_UNKA})
+        b_tex.add_background_rectangle(buff=0.1)
+
+        self.play(Write(b), Write(b_tex))
+        self.wait()
+
+        self.play(Uncreate(b), Uncreate(b_tex))
+
+        eq2 = Tex(
+            r"\mathbb{P}[" r"\text{blue} \ | \ \text{the sky is}]",
+            r"= {C(\text{sky is}\text{ }\text{blue}) \over C(\text{sky is})}",
+            tex_to_color_map={
+                r"\text{blue}": A_BLUE,
+                r"\text{the sky is}": A_UNKA,
+                r"\text{sky is}": A_UNKA,
+                r"C": A_UNKB,
+                r"\mathbb{P}": A_ORANGE,
+            },
+        )
+        eq2.shift(3 * UP)
+
+        self.embed()
+
+        self.play(
+            Transform(eq[:9], eq2[:9]),
+            FadeOut(eq[9]),
+            Transform(eq[10:15], eq2[9:14]),
+            Uncreate(eq[15]),
+            Transform(eq[16:], eq2[14:]),
+        )
+        self.play(*two_anims)
         self.wait()
 
         self.embed()
