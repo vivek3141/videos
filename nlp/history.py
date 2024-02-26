@@ -8,7 +8,7 @@ EmailModel
 MNISTClassification
 NextWordPrediction
 DiceProbability
-TheoreticalNextWordProbability
+NGramModel
 """
 
 A_AQUA = "#8dd3c7"
@@ -402,7 +402,7 @@ class DiceProbability(Scene):
         self.embed()
 
 
-class TheoreticalNextWordProbability(Scene):
+class NGramModel(Scene):
     def construct(self):
         eq = Tex(
             r"\mathbb{P}[" r"\text{blue} \ | \ \text{the sky is}]",
@@ -552,8 +552,6 @@ class TheoreticalNextWordProbability(Scene):
         )
         eq2.shift(3 * UP)
 
-        self.embed()
-
         self.play(
             Transform(eq[:9], eq2[:9]),
             FadeOut(eq[9]),
@@ -561,7 +559,78 @@ class TheoreticalNextWordProbability(Scene):
             Uncreate(eq[15]),
             Transform(eq[16:], eq2[14:]),
         )
+        self.remove(eq)
+        self.add(eq2)
+
         self.play(*two_anims)
+        self.wait()
+
+        eq3 = Tex(
+            r"\mathbb{P}[" r"\text{blue} \ | \ \text{the sky is}]",
+            r"\approx {C(\text{sky is}\text{ }\text{blue}) \over C(\text{sky is})}",
+            tex_to_color_map={
+                r"\text{blue}": A_BLUE,
+                r"\text{the sky is}": A_UNKA,
+                r"\text{sky is}": A_UNKA,
+                r"C": A_UNKB,
+                r"\mathbb{P}": A_ORANGE,
+            },
+        )
+        eq3.shift(3 * UP)
+
+        self.play(TransformMatchingTex(eq2, eq3))
+        self.wait()
+
+        self.play(
+            FadeOut(
+                VGroup(
+                    *[i for i in self.mobjects if isinstance(i, VMobject) and i != eq3]
+                ),
+                DOWN,
+            )
+        )
+
+        eq4 = Tex(
+            r"\mathbb{P}[" r"w_i \ | \ w_{i-3}w_{i-2}w_{i-1}]",
+            r"\approx {C(w_{i-2}w_{i-1}w_i) \over C(w_{i-2}w_{i-1})}",
+            tex_to_color_map={
+                r"w_i": A_BLUE,
+                r"w_{i-3}": A_UNKA,
+                r"w_{i-2}": A_UNKA,
+                r"w_{i-1}": A_UNKA,
+                r"C": A_UNKB,
+                r"\mathbb{P}": A_ORANGE,
+            },
+        )
+        eq4.scale(1.5)
+
+        self.play(
+            TransformFromCopy(eq3[:2], eq4[:2]),
+            TransformFromCopy(eq3[3], eq4[3]),
+            TransformFromCopy(eq3[5:9], eq4[7:11]),
+            TransformFromCopy(eq3[11:14], eq4[14:17]),
+            TransformFromCopy(eq3[15:], eq4[19:]),
+        )
+        self.play(
+            TransformFromCopy(eq3[2], eq4[2]), TransformFromCopy(eq3[10], eq4[13])
+        )
+        self.play(TransformFromCopy(eq3[4][:3], eq4[4]))
+        self.play(
+            TransformFromCopy(eq3[4][3:6], eq4[5]),
+            TransformFromCopy(eq3[9][:3], eq4[11]),
+            TransformFromCopy(eq3[14][:3], eq4[17]),
+        )
+        self.play(
+            TransformFromCopy(eq3[4][6:], eq4[6]),
+            TransformFromCopy(eq3[9][3:], eq4[12]),
+            TransformFromCopy(eq3[14][3:], eq4[18]),
+        )
+
+        title = Text("N-Gram Language Model", color=A_VIOLET)
+        title.scale(1.5)
+        title.shift(3 * UP)
+
+        self.play(FadeOut(eq3, UP), Write(title))
         self.wait()
 
         self.embed()
