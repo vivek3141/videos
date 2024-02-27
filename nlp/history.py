@@ -625,6 +625,8 @@ class NGramModel(Scene):
             TransformFromCopy(eq3[9][3:], eq4[12]),
             TransformFromCopy(eq3[14][3:], eq4[18]),
         )
+        self.remove(eq3)
+        self.add(eq4)
 
         title = Text("N-Gram Language Model", color=A_VIOLET)
         title.scale(1.5)
@@ -651,8 +653,21 @@ class NGramModel(Scene):
                 r"w_{i-1}": A_UNKA,
                 r"C": A_UNKB,
                 r"\mathbb{P}": A_ORANGE,
+                r"V": MAROON_A,
+                r"1": A_UNKA,
             },
         )
         eq5.scale(1.25)
+
+        self.play(
+            ApplyMethod(eq4[:14].move_to, eq5[:14]),
+            ApplyMethod(eq4[14][0].move_to, eq5[14][0]),
+            Transform(eq4[14][1:], eq5[16]),
+            ApplyMethod(eq4[15:].move_to, VGroup(eq5[17:21], eq5[21][0])),
+        )
+        self.play(
+            Write(eq5[15]), Write(eq5[14][1:]), Write(eq5[21][1:]), Write(eq5[22:])
+        )
+        self.wait()
 
         self.embed()
