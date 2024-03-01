@@ -10,6 +10,7 @@ NextWordPrediction
 DiceProbability
 NGramModel
 Inference
+InferenceAlgorithms
 """
 
 A_AQUA = "#8dd3c7"
@@ -140,7 +141,7 @@ class MNISTGroup(VGroup):
 
 
 class WordDistribution(VMobject):
-    def __init__(self, words, probs, *args, **kwargs):
+    def __init__(self, words, probs, prob_bar_color=A_LAVENDER, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
         self.prob_bars_small = VGroup()
@@ -152,7 +153,7 @@ class WordDistribution(VMobject):
             bar_small = Rectangle(
                 height=0.5,
                 width=0,
-                fill_color=A_LAVENDER,
+                fill_color=prob_bar_color,
                 fill_opacity=1,
                 stroke_width=0,
             )
@@ -160,7 +161,7 @@ class WordDistribution(VMobject):
             bar_large = Rectangle(
                 height=0.5,
                 width=prob * 10,
-                fill_color=A_LAVENDER,
+                fill_color=prob_bar_color,
                 fill_opacity=1,
             )
 
@@ -735,5 +736,98 @@ class Inference(Scene):
         prob_bars.shift(0.5 * DOWN)
 
         prob_bars.write(self)
+
+        self.embed()
+
+
+class InferenceAlgorithms(Scene):
+    def construct(self):
+        probs = [
+            ("a", 0.08705387523141485),
+            ("the", 0.07940873709043825),
+            ("not", 0.05225144958160702),
+            ("to", 0.027861431060304042),
+            (",", 0.024988107409824458),
+            ("that", 0.023519410891033286),
+            ("in", 0.017348392643645783),
+        ]
+
+        l = Line(10 * UP, 10 * DOWN)
+        self.add(l)
+
+        top_k_head = Tex(
+            r"\text{Top }k\text{-sampling}",
+            tex_to_color_map={r"k": A_YELLOW},
+        )
+        top_k_head.scale(1.5)
+        top_k_head.shift(FRAME_WIDTH / 4 * LEFT + 3.125 * UP)
+
+        cot_head = Text("Chain-of-Thought")
+        cot_head.scale(1.5)
+        cot_head.shift(FRAME_WIDTH / 4 * RIGHT + 3.125 * UP)
+
+        prob_bars = WordDistribution(*zip(*probs), prob_bar_color=A_AQUA)
+        prob_bars.shift(FRAME_WIDTH / 4 * LEFT + 0.5 * DOWN)
+
+        rect = SurroundingRectangle(
+            VGroup(
+                prob_bars.prob_bars_large[3:],
+                prob_bars.words[3:],
+                prob_bars.probs[3:],
+            ),
+            fill_color=BLACK,
+            fill_opacity=0.75,
+            stroke_width=0,
+            stroke_opacity=0,
+            stroke_color=BLACK,
+        )
+
+        self.play(Write(l), Write(top_k_head))
+        prob_bars.write(self, text_run_time=0.5, prob_run_time=0.25)
+        self.play(Write(rect))
+        self.wait()
+
+        cot_texts = [
+            "Roger has 5 tennis balls.\nHe buys 2 more cans"
+            " of\ntennis balls. Each can has 3\ntennis balls."
+            " How many tennis\nballs does he have now?",
+            "Roger started with 5 balls.\n2 cans of 3 tennis balls\n"
+            "each is 6 tennis balls",
+            "5 + 6 = 11",
+            "The answer is 11.",
+        ]
+        offsets = [0, 2.125, 3.625, 4.875]
+
+        texts, arrows = VGroup(), VGroup()
+        for i in range(len(cot_texts)):
+            text = TexText(cot_texts[i].replace("\n", r"\\"))
+            text.shift(offsets[i] * DOWN)
+            text.scale(0.5)
+            texts.add(text)
+
+            if i != 0:
+                arrows.add(
+                    Arrow(
+                        texts[i - 1].get_bottom(),
+                        texts[i].get_top(),
+                        stroke_color=A_PINK,
+                        max_width_to_Length_ratio=float("inf"),
+                        stroke_width=10,
+                    )
+                )
+
+        grp = VGroup(texts, arrows)
+        grp.center()
+        grp.shift(FRAME_WIDTH / 4 * RIGHT + 0.5 * DOWN)
+
+        self.play(Write(cot_head))
+        for i in range(len(texts)):
+            if i != 0:
+                self.play(
+                    FadeIn(texts[i], DOWN), FadeIn(arrows[i - 1], DOWN), run_time=1
+                )
+            else:
+                self.play(FadeIn(texts[i], DOWN), run_time=1)
+        self.wait()
 
         self.embed()
