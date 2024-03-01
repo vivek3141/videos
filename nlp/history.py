@@ -139,6 +139,61 @@ class MNISTGroup(VGroup):
             img.set_opacity(opacity)
 
 
+class WordDistribution(VMobject):
+    def __init__(self, words, probs, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.prob_bars_small = VGroup()
+        self.prob_bars_large = VGroup()
+        self.words = VGroup()
+        self.probs = VGroup()
+
+        for i, (word, prob) in enumerate(zip(words, probs)):
+            bar_small = Rectangle(
+                height=0.5,
+                width=0,
+                fill_color=A_LAVENDER,
+                fill_opacity=1,
+                stroke_width=0,
+            )
+
+            bar_large = Rectangle(
+                height=0.5,
+                width=prob * 10,
+                fill_color=A_LAVENDER,
+                fill_opacity=1,
+            )
+
+            bar_small.move_to(FRAME_HEIGHT / 10 * i * DOWN, LEFT)
+            bar_large.move_to(FRAME_HEIGHT / 10 * i * DOWN, LEFT)
+
+            word_text = Text(word)
+            word_text.move_to(bar_large.get_bounding_box_point(LEFT) + 1 * LEFT)
+
+            prob_text = Text(f"{prob:.4f}")
+            prob_text.move_to(bar_large.get_bounding_box_point(RIGHT) + 1 * RIGHT)
+
+            self.prob_bars_small.add(bar_small)
+            self.prob_bars_large.add(bar_large)
+            self.words.add(word_text)
+            self.probs.add(prob_text)
+
+        self.add(self.prob_bars_small, self.prob_bars_large, self.words, self.probs)
+        self.center()
+
+    def write(self, scene, text_run_time=1.5, prob_run_time=0.75):
+        scene.play(
+            Write(self.words), Write(self.prob_bars_small), run_time=text_run_time
+        )
+
+        for i in range(len(self.prob_bars_small)):
+            scene.play(
+                ApplyMethod(self.prob_bars_small[i].become, self.prob_bars_large[i]),
+                FadeIn(self.probs[i], RIGHT),
+                run_time=prob_run_time,
+            )
+
+
 class EmailModel(Scene):
     def construct(self):
         prompt = Text("Write an email to my mom.")
@@ -705,45 +760,47 @@ class Inference(Scene):
         prob_bars_small, prob_bars_large = VGroup(), VGroup()
         words, probs = VGroup(), VGroup()
 
-        for i, (word, prob) in enumerate(zip(words1, probs1)):
-            bar_small = Rectangle(
-                height=0.5,
-                width=0,
-                fill_color=A_LAVENDER,
-                fill_opacity=1,
-            )
+        prob_bars = WordDistribution(words1, probs1)
 
-            bar_large = Rectangle(
-                height=0.5,
-                width=prob * 10,
-                fill_color=A_LAVENDER,
-                fill_opacity=1,
-            )
+        # for i, (word, prob) in enumerate(zip(words1, probs1)):
+        #     bar_small = Rectangle(
+        #         height=0.5,
+        #         width=0,
+        #         fill_color=A_LAVENDER,
+        #         fill_opacity=1,
+        #     )
 
-            bar_small.move_to(FRAME_HEIGHT / 10 * i * DOWN, LEFT)
-            bar_large.move_to(FRAME_HEIGHT / 10 * i * DOWN, LEFT)
+        #     bar_large = Rectangle(
+        #         height=0.5,
+        #         width=prob * 10,
+        #         fill_color=A_LAVENDER,
+        #         fill_opacity=1,
+        #     )
 
-            word_text = Text(word)
-            word_text.move_to(bar_large.get_bounding_box_point(LEFT) + 1 * LEFT)
+        #     bar_small.move_to(FRAME_HEIGHT / 10 * i * DOWN, LEFT)
+        #     bar_large.move_to(FRAME_HEIGHT / 10 * i * DOWN, LEFT)
 
-            prob_text = Text(f"{prob:.4f}")
-            prob_text.move_to(bar_large.get_bounding_box_point(RIGHT) + 1 * RIGHT)
+        #     word_text = Text(word)
+        #     word_text.move_to(bar_large.get_bounding_box_point(LEFT) + 1 * LEFT)
 
-            prob_bars_small.add(bar_small)
-            prob_bars_large.add(bar_large)
-            words.add(word_text)
-            probs.add(prob_text)
+        #     prob_text = Text(f"{prob:.4f}")
+        #     prob_text.move_to(bar_large.get_bounding_box_point(RIGHT) + 1 * RIGHT)
 
-        prob_bars_grp = VGroup(prob_bars_large, words, probs)
-        prob_bars_grp.center()
-        prob_bars_grp.shift(0.5 * DOWN)
+        #     prob_bars_small.add(bar_small)
+        #     prob_bars_large.add(bar_large)
+        #     words.add(word_text)
+        #     probs.add(prob_text)
 
-        anims = []
-        for i in range(len(prob_bars_small)):
-            prob_bars_small[i].move_to(prob_bars_large[i], LEFT)
-            anims.append(
-                ApplyMethod(prob_bars_small[i].become, prob_bars_large[i].copy())
-            )
+        # prob_bars_grp = VGroup(prob_bars_large, words, probs)
+        # prob_bars_grp.center()
+        # prob_bars_grp.shift(0.5 * DOWN)
+
+        # anims = []
+        # for i in range(len(prob_bars_small)):
+        #     prob_bars_small[i].move_to(prob_bars_large[i], LEFT)
+        #     anims.append(
+        #         ApplyMethod(prob_bars_small[i].become, prob_bars_large[i].copy())
+        #     )
 
         # prob_bars = VGroup()
         # widths = []
