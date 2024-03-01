@@ -715,25 +715,15 @@ class NGramModel(Scene):
 
 class Inference(Scene):
     def construct(self):
-        words1 = [
-            " a",
-            " the",
-            " not",
-            " to",
-            " ,",
-            " that",
-            " in",
+        probs = [
+            ("a", 0.08705387523141485),
+            ("the", 0.07940873709043825),
+            ("not", 0.05225144958160702),
+            ("to", 0.027861431060304042),
+            (",", 0.024988107409824458),
+            ("that", 0.023519410891033286),
+            ("in", 0.017348392643645783),
         ]
-        probs1 = (
-            0.08705387523141485,
-            0.07940873709043825,
-            0.05225144958160702,
-            0.027861431060304042,
-            0.024988107409824458,
-            0.023519410891033286,
-            0.017348392643645783,
-        )
-        # words1, probs1 = words1[::-1], probs1[::-1]
 
         text = Text("The most beautiful proof in math is")
         text.scale(1.25)
@@ -741,86 +731,9 @@ class Inference(Scene):
 
         self.play(Write(text))
 
-        prob_bars_small, prob_bars_large = VGroup(), VGroup()
-        words, probs = VGroup(), VGroup()
+        prob_bars = WordDistribution(*zip(*probs))
+        prob_bars.shift(0.5 * DOWN)
 
-        prob_bars = WordDistribution(words1, probs1)
-
-        # for i, (word, prob) in enumerate(zip(words1, probs1)):
-        #     bar_small = Rectangle(
-        #         height=0.5,
-        #         width=0,
-        #         fill_color=A_LAVENDER,
-        #         fill_opacity=1,
-        #     )
-
-        #     bar_large = Rectangle(
-        #         height=0.5,
-        #         width=prob * 10,
-        #         fill_color=A_LAVENDER,
-        #         fill_opacity=1,
-        #     )
-
-        #     bar_small.move_to(FRAME_HEIGHT / 10 * i * DOWN, LEFT)
-        #     bar_large.move_to(FRAME_HEIGHT / 10 * i * DOWN, LEFT)
-
-        #     word_text = Text(word)
-        #     word_text.move_to(bar_large.get_bounding_box_point(LEFT) + 1 * LEFT)
-
-        #     prob_text = Text(f"{prob:.4f}")
-        #     prob_text.move_to(bar_large.get_bounding_box_point(RIGHT) + 1 * RIGHT)
-
-        #     prob_bars_small.add(bar_small)
-        #     prob_bars_large.add(bar_large)
-        #     words.add(word_text)
-        #     probs.add(prob_text)
-
-        # prob_bars_grp = VGroup(prob_bars_large, words, probs)
-        # prob_bars_grp.center()
-        # prob_bars_grp.shift(0.5 * DOWN)
-
-        # anims = []
-        # for i in range(len(prob_bars_small)):
-        #     prob_bars_small[i].move_to(prob_bars_large[i], LEFT)
-        #     anims.append(
-        #         ApplyMethod(prob_bars_small[i].become, prob_bars_large[i].copy())
-        #     )
-
-        # prob_bars = VGroup()
-        # widths = []
-
-        # for i, (word, prob) in enumerate(zip(words1, probs1)):
-        #     bar = Rectangle(
-        #         height=0.5,
-        #         width=prob * 10,
-        #         fill_color=A_LAVENDER,
-        #         fill_opacity=1,
-        #     )
-        #     widths.append(prob * 10)
-
-        #     bar.move_to(FRAME_HEIGHT / (10) * i * UP, LEFT)
-
-        #     word_text = Text(word)
-        #     word_text.move_to(bar.get_bounding_box_point(LEFT) + 1 * LEFT)
-
-        #     prob_text = Text(f"{prob:.4f}")
-        #     prob_text.move_to(bar.get_bounding_box_point(RIGHT) + 1 * RIGHT)
-
-        #     prob_bars.add(bar, word_text, prob_text)
-
-        # prob_bars.center()
-        # prob_bars.shift(0.5 * DOWN)
-
-        # anims = [
-        #     ApplyMethod(
-        #         prob_bars[3 * i].become,
-        #         Rectangle(
-        #             height=0.5, width=widths[i], fill_color=A_LAVENDER, fill_opacity=1
-        #         ).move_to(prob_bars[3 * i]),
-        #     )
-        #     for i in range(len(words1))
-        # ]
-
-        # self.add(prob_bars)
+        prob_bars.write(self)
 
         self.embed()

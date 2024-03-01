@@ -7,7 +7,7 @@ enc = tiktoken.encoding_for_model("davinci")
 tokenizer = enc.encode
 trigram = train_trigram()
 
-prompt = "The most beautiful proof in math is"
+prompt = "The most beautiful proof in math is "
 tokens = tokenizer(prompt)
 next_word = ""
 
@@ -21,7 +21,11 @@ for i in range(5):
     top = sorted(zip(values, probabilities), key=lambda x: x[1], reverse=True)[:50]
     values, probabilities = zip(*top)
 
-    print([enc.decode([i]) for i in values[:10]], probabilities[:10])
+    print("Top Predictions:")
+    for i in range(10):
+        print(f"{enc.decode([values[i]]):<10}: {probabilities[i]:.4f}")
+
+    # print([enc.decode([i]) for i in values[:10]], probabilities[:10])
 
     total = sum(probabilities)
     probabilities = [p / total for p in probabilities]
