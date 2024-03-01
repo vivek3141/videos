@@ -311,7 +311,7 @@ class NextWordPrediction(Scene):
             ("not", 0.028),
             ("clear", 0.0237),
             ("black", 0.0189),
-        ][::-1]
+        ]
 
         rect = RoundedRectangle(
             height=2.5,
@@ -349,38 +349,19 @@ class NextWordPrediction(Scene):
         self.play(Write(brace))
         self.wait()
 
-        prob_bars = VGroup()
-        prob_arrows = VGroup()
-        for i, (word, prob) in enumerate(probs):
-            bar = Rectangle(
-                height=0.5,
-                width=prob * 10,
-                fill_color=A_LAVENDER,
-                fill_opacity=1,
-            )
-            bar.move_to(FRAME_HEIGHT / (len(probs) + 1) * i * UP, LEFT)
-
-            word_text = Text(word)
-            word_text.move_to(bar.get_bounding_box_point(LEFT) + 1 * LEFT)
-
-            prob_text = Text(f"{prob:.4f}")
-            prob_text.move_to(bar.get_bounding_box_point(RIGHT) + 1 * RIGHT)
-
-            prob_bars.add(bar, word_text, prob_text)
-
-        prob_bars.center()
+        prob_bars = WordDistribution(*zip(*probs))
         prob_bars.shift(4.5 * RIGHT)
 
         min_left_point = min(
             [
-                prob_bars[3 * i + 1].get_bounding_box_point(LEFT)[0]
+                prob_bars.words[i].get_bounding_box_point(LEFT)[0]
                 for i in range(len(probs))
             ]
         )
 
         prob_arrows = VGroup()
         for i in range(len(probs)):
-            left_point = prob_bars[3 * i + 1].get_bounding_box_point(LEFT)
+            left_point = prob_bars.words[i].get_bounding_box_point(LEFT)
             left_point[0] = min_left_point - 0.25
 
             prob_arrows.add(
@@ -395,20 +376,23 @@ class NextWordPrediction(Scene):
             )
 
         self.play(Write(prob_arrows))
-        self.play(Write(prob_bars))
+        prob_bars.write(self, prob_run_time=0.5)
         self.wait()
 
         anims = [
             ApplyMethod(prob_arrows[i].set_opacity, 0.25)
             for i in range(len(probs))
-            if i != len(probs) - 2
+            if i != 1
         ]
         for i in range(len(probs)):
-            if i == len(probs) - 2:
+            if i == 1:
                 continue
 
-            for j in range(3):
-                anims.append(ApplyMethod(prob_bars[3 * i + j].set_opacity, 0.25))
+            anims += [
+                ApplyMethod(prob_bars.words[i].set_opacity, 0.25),
+                ApplyMethod(prob_bars.probs[i].set_opacity, 0.25),
+                ApplyMethod(prob_bars.prob_bars_large[i].set_opacity, 0.25),
+            ]
 
         self.play(*anims)
         self.wait()
