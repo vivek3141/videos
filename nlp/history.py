@@ -1,5 +1,5 @@
 from manimlib import *
-
+import tiktoken
 
 """
 Scenes In Order:
@@ -141,13 +141,17 @@ class MNISTGroup(VGroup):
 
 
 class WordDistribution(VMobject):
-    def __init__(self, words, probs, prob_bar_color=A_LAVENDER, *args, **kwargs):
+    def __init__(
+        self, words, probs, max_bar_width=1, prob_bar_color=A_LAVENDER, *args, **kwargs
+    ):
         super().__init__(*args, **kwargs)
 
         self.prob_bars_small = VGroup()
         self.prob_bars_large = VGroup()
         self.words = VGroup()
         self.probs = VGroup()
+
+        widths = np.array(probs) / max(probs)
 
         for i, (word, prob) in enumerate(zip(words, probs)):
             bar_small = Rectangle(
@@ -160,7 +164,7 @@ class WordDistribution(VMobject):
 
             bar_large = Rectangle(
                 height=0.5,
-                width=prob * 10,
+                width=widths[i] * max_bar_width,
                 fill_color=prob_bar_color,
                 fill_opacity=1,
             )
@@ -193,6 +197,9 @@ class WordDistribution(VMobject):
                 FadeIn(self.probs[i], RIGHT),
                 run_time=prob_run_time,
             )
+
+        scene.remove(self.prob_bars_small)
+        scene.add(self.prob_bars_large)
 
 
 class EmailModel(Scene):
@@ -714,28 +721,97 @@ class NGramModel(Scene):
         self.embed()
 
 
-class Inference(Scene):
+class NGramInference(Scene):
     def construct(self):
-        probs = [
-            ("a", 0.08705387523141485),
-            ("the", 0.07940873709043825),
-            ("not", 0.05225144958160702),
-            ("to", 0.027861431060304042),
-            (",", 0.024988107409824458),
-            ("that", 0.023519410891033286),
-            ("in", 0.017348392643645783),
-        ]
+        enc = tiktoken.encoding_for_model("davinci")
 
-        text = Text("The most beautiful proof in math is")
-        text.scale(1.25)
-        text.shift(3 * UP)
+        raw_text = "The most beautiful proof in math is \nthe only one with the other hand , \nthe same way to determine the value \nof the United States had been a man \nof the American League pennant , \nand his sister's a good time ."
+        next_probs = np.load("next_probs.npy")
 
-        self.play(Write(text))
+        def get_next_probs(idx):
+            new_words, new_probs = [], []
+            for w, p in next_probs[idx]:
+                new_words.append(enc.decode([int(w)]).strip())
+                new_probs.append(float(p))
+            return new_words[:7], new_probs[:7]
 
-        prob_bars = WordDistribution(*zip(*probs))
+        prompt = Text("The most beautiful proof in math is")
+        prompt.scale(1.25)
+        prompt.shift(3 * UP)
+
+        self.play(Write(prompt))
+
+        prob_bars = WordDistribution(*get_next_probs(0))
         prob_bars.shift(0.5 * DOWN)
 
         prob_bars.write(self)
+        self.wait()
+
+        l = Line(10 * UP, 10 * DOWN)
+        l.shift(2 * RIGHT)
+
+        n_gram_text = Text("Trigram Model")
+        n_gram_text.shift(4.5 * RIGHT + 3 * UP)
+
+        self.play(
+            ApplyMethod(prompt.become, prompt.copy().scale(1 / 1.25).shift(2.5 * LEFT)),
+            ApplyMethod(prob_bars.shift, 4.5 * RIGHT),
+            Write(l),
+            Write(n_gram_text),
+        )
+        self.wait()
+
+        text = TexText(
+            *[i.replace("\n", r"\\") + " " for i in raw_text.split(" ")], alignment=""
+        )
+        text.move_to(prompt, UP + LEFT)
+        self.remove(prob_bars.prob_bars_small)
+
+        words = raw_text.split(" ")
+        for i in range(7, len(words)):
+            next_word = words[i]
+            prob_word_obj = None
+
+            for word_obj in prob_bars.words:
+                print(word_obj.text.strip(), next_word.strip())
+                if word_obj.text.strip() == next_word.strip():
+                    prob_word_obj = word_obj
+                    break
+
+            if prob_word_obj is None:
+                prob_word_obj = Text(next_word)
+                prob_word_obj = prob_word_obj.move_to(prob_bars)
+                prob_word_obj.shift(FRAME_HEIGHT / 2 * 1 * DOWN)
+            else:
+                self.play(Indicate(prob_word_obj), run_time=1)
+
+            self.play(
+                TransformFromCopy(prob_word_obj, prob_word_obj.copy().move_to(text[i]))
+            )
+            self.wait()
+
+            new_dist = WordDistribution(*get_next_probs(i - 6))
+            new_dist.move_to(prob_bars)
+
+            anims = [
+                FadeOut(prob_bars.words, UP),
+                FadeOut(prob_bars.probs, UP),
+                FadeIn(new_dist.words, UP),
+                FadeIn(new_dist.probs, UP),
+            ]
+            for i in range(len(prob_bars.words)):
+                anims += [
+                    Transform(
+                        prob_bars.prob_bars_large[i],
+                        new_dist.prob_bars_large[i],
+                    ),
+                ]
+
+            self.play(*anims)
+            self.remove(prob_bars)
+            self.add(new_dist)
+
+            prob_bars = new_dist
 
         self.embed()
 
