@@ -142,7 +142,15 @@ class MNISTGroup(VGroup):
 
 class WordDistribution(VMobject):
     def __init__(
-        self, words, probs, max_bar_width=1, prob_bar_color=A_LAVENDER, *args, **kwargs
+        self,
+        words,
+        probs,
+        max_bar_width=1.5,
+        word_scale=1.0,
+        prob_scale=1.0,
+        prob_bar_color=A_LAVENDER,
+        *args,
+        **kwargs,
     ):
         super().__init__(*args, **kwargs)
 
@@ -164,7 +172,7 @@ class WordDistribution(VMobject):
 
             bar_large = Rectangle(
                 height=0.5,
-                width=widths[i] * max_bar_width,
+                width=prob * max_bar_width,
                 fill_color=prob_bar_color,
                 fill_opacity=1,
             )
@@ -173,9 +181,11 @@ class WordDistribution(VMobject):
             bar_large.move_to(FRAME_HEIGHT / 10 * i * DOWN, LEFT)
 
             word_text = Text(word)
+            word_text.scale(word_scale)
             word_text.move_to(bar_large.get_bounding_box_point(LEFT) + 1 * LEFT)
 
             prob_text = Text(f"{prob:.4f}")
+            prob_text.scale(prob_scale)
             prob_text.move_to(bar_large.get_bounding_box_point(RIGHT) + 1 * RIGHT)
 
             self.prob_bars_small.add(bar_small)
@@ -741,7 +751,7 @@ class NGramInference(Scene):
 
         self.play(Write(prompt))
 
-        prob_bars = WordDistribution(*get_next_probs(0))
+        prob_bars = WordDistribution(*get_next_probs(0), max_bar_width=10)
         prob_bars.shift(0.5 * DOWN)
 
         prob_bars.write(self)
@@ -750,12 +760,24 @@ class NGramInference(Scene):
         l = Line(10 * UP, 10 * DOWN)
         l.shift(2 * RIGHT)
 
-        n_gram_text = Text("Trigram Model")
+        n_gram_text = Text("Trigram Model", color=A_VIOLET)
+        n_gram_text.scale(1.25)
         n_gram_text.shift(4.5 * RIGHT + 3 * UP)
+
+        new_prob_bars = WordDistribution(
+            *get_next_probs(0), max_bar_width=1.5, word_scale=0.75, prob_scale=0.75
+        )
+        new_prob_bars.shift(4.5 * RIGHT + 0.5 * DOWN)
+        new_prob_bars.scale(0.9)
+
+        self.remove(prob_bars.prob_bars_small)
+        prob_bars.remove(prob_bars.prob_bars_small)
 
         self.play(
             ApplyMethod(prompt.become, prompt.copy().scale(1 / 1.25).shift(2.5 * LEFT)),
-            ApplyMethod(prob_bars.shift, 4.5 * RIGHT),
+            Transform(prob_bars.words, new_prob_bars.words),
+            Transform(prob_bars.probs, new_prob_bars.probs),
+            Transform(prob_bars.prob_bars_large, new_prob_bars.prob_bars_large),
             Write(l),
             Write(n_gram_text),
         )
@@ -769,28 +791,43 @@ class NGramInference(Scene):
 
         words = raw_text.split(" ")
         for i in range(7, len(words)):
+            if i > 15:
+                run_time = 0.5
+            else:
+                run_time = 1
+
             next_word = words[i]
             prob_word_obj = None
 
             for word_obj in prob_bars.words:
-                print(word_obj.text.strip(), next_word.strip())
                 if word_obj.text.strip() == next_word.strip():
                     prob_word_obj = word_obj
                     break
 
             if prob_word_obj is None:
                 prob_word_obj = Text(next_word)
+                prob_word_obj.scale(0.75)
                 prob_word_obj = prob_word_obj.move_to(prob_bars)
                 prob_word_obj.shift(FRAME_HEIGHT / 2 * 1 * DOWN)
             else:
-                self.play(Indicate(prob_word_obj), run_time=1)
+                self.play(Indicate(prob_word_obj), run_time=0.5 * run_time)
+
+            new_prob_word_obj = prob_word_obj.copy()
+            new_prob_word_obj.scale(1 / 0.75)
+            new_prob_word_obj.move_to(text[i])
 
             self.play(
-                TransformFromCopy(prob_word_obj, prob_word_obj.copy().move_to(text[i]))
+                TransformFromCopy(prob_word_obj, new_prob_word_obj),
+                run_time=run_time,
             )
-            self.wait()
+            self.wait(0.5 * run_time)
 
-            new_dist = WordDistribution(*get_next_probs(i - 6))
+            new_dist = WordDistribution(
+                *get_next_probs(i - 6),
+                max_bar_width=1.5,
+                word_scale=0.75,
+                prob_scale=0.75,
+            )
             new_dist.move_to(prob_bars)
 
             anims = [
@@ -807,9 +844,9 @@ class NGramInference(Scene):
                     ),
                 ]
 
-            self.play(*anims)
+            self.play(*anims, run_time=1)
             self.remove(prob_bars)
-            self.add(new_dist)
+            self.add(new_dist.words, new_dist.probs, new_dist.prob_bars_large)
 
             prob_bars = new_dist
 
