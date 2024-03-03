@@ -11,6 +11,8 @@ DiceProbability
 NGramModel
 Inference
 InferenceAlgorithms
+AlexNet
+NeuralLM
 """
 
 A_AQUA = "#8dd3c7"
@@ -941,6 +943,86 @@ class InferenceAlgorithms(Scene):
                 )
             else:
                 self.play(FadeIn(texts[i], DOWN), run_time=1)
+        self.wait()
+
+        self.embed()
+
+
+class AlexNet(Scene):
+    def construct(self):
+        pass
+
+
+class NeuralLM(Scene):
+    def construct(self):
+        head = Text("Neural Language Model", color=A_PINK)
+        head.scale(1.5)
+        head.shift(3 * UP)
+
+        yoshua_img = ImageMobject("img/yoshua.jpeg")
+        yoshua_rect = SurroundingRectangle(
+            yoshua_img, buff=0, color=WHITE, stroke_width=6
+        )
+        yoshua_text = Text("Yoshua Bengio").next_to(yoshua_img, DOWN)
+        yoshua = Group(yoshua_img, yoshua_rect, yoshua_text)
+
+        self.play(Write(head))
+        self.play(GrowFromPoint(yoshua, head.get_center()))
+        self.wait()
+
+        self.play(Transform(yoshua, yoshua.copy().move_to(head).scale(0)))
+        self.wait()
+
+        words = ["the", "sky", "is"]
+        word_objs, word_vecs = VGroup(), VGroup()
+        arrows = VGroup()
+
+        np.random.seed(10)
+        for n, word in enumerate(words):
+            t = Text(word)
+            t.scale(1.25)
+            t.shift(n * 2 * DOWN)
+            word_objs.add(t)
+
+            vec = Tex(
+                f"""
+                \\begin{{bmatrix}}
+                {20 * (np.random.rand() - 0.5):.2f} \\\\
+                {20 * (np.random.rand() - 0.5):.2f} \\\\
+                \\vdots \\\\
+                {20 * (np.random.rand() - 0.5):.2f}
+                \\end{{bmatrix}}
+                """
+            )
+            vec.scale(0.5)
+            vec.shift(n * 2 * DOWN + 2 * RIGHT)
+            word_vecs.add(vec)
+
+            arrow = Arrow(
+                0.75 * RIGHT,
+                1.25 * RIGHT,
+                max_width_to_Length_ratio=float("inf"),
+                stroke_width=10,
+                stroke_color=A_YELLOW,
+                buff=0,
+            )
+            arrow.shift(n * 2 * DOWN)
+            arrows.add(arrow)
+
+        grp = VGroup(word_objs, word_vecs, arrows)
+        grp.center()
+        grp.shift(0.5 * DOWN)
+
+        word_objs_center = word_objs.get_center().copy()
+        word_objs.center()
+        word_objs.shift(0.5 * DOWN)
+
+        self.play(Write(word_objs))
+        self.play(
+            ApplyMethod(word_objs.move_to, word_objs_center),
+            FadeIn(arrows, RIGHT),
+            FadeIn(word_vecs, RIGHT),
+        )
         self.wait()
 
         self.embed()
