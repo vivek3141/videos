@@ -374,9 +374,9 @@ class NeuralNetwork(VGroup):
         self.output_labels = VGroup()
         for n, neuron in enumerate(self.layers[-1].neurons):
             label = Tex(labels[n])
-            label.set_height(0.75 * neuron.get_height())
+            label.scale(0.85)
             label.move_to(neuron)
-            label.shift(neuron.get_width() * RIGHT)
+            label.shift(1 * RIGHT)
             self.output_labels.add(label)
         self.add(self.output_labels)
 
@@ -1216,11 +1216,22 @@ class NeuralLM(Scene):
         nn.scale(1.5)
         nn.shift(2.11 * RIGHT + 0.5 * DOWN)
 
+        nn.add_output_labels(
+            labels=[
+                r"\text{blue}",
+                r"\text{red}",
+                r"\text{green}",
+                r"\text{yellow}",
+                r"\text{orange}",
+                r"\text{purple}",
+            ]
+        )
+
         grp_nn_arrows = VGroup()
         for i in range(3):
             grp_nn_arrows.add(
                 Arrow(
-                    word_vecs[i].get_bounding_box_point(RIGHT) + 2.88 * LEFT,
+                    word_vecs[i].get_bounding_box_point(RIGHT) + 3.55 * LEFT,
                     nn.layers[0].neurons[i].get_bounding_box_point(LEFT),
                     stroke_width=5,
                     stroke_color=A_YELLOW,
@@ -1228,7 +1239,7 @@ class NeuralLM(Scene):
                 )
             )
 
-        self.play(ApplyMethod(grp.shift, 2.88 * LEFT), Write(grp_nn_arrows))
+        self.play(ApplyMethod(grp.shift, 3.55 * LEFT), Write(grp_nn_arrows))
         self.play(Write(nn))
         self.wait()
 
