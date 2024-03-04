@@ -214,6 +214,183 @@ class WordDistribution(VMobject):
         scene.add(self.prob_bars_large)
 
 
+class NeuralNetwork(VGroup):
+    CONFIG = {
+        "neuron_radius": 0.15,
+        "neuron_to_neuron_buff": MED_SMALL_BUFF,
+        "first_layer_buff": MED_SMALL_BUFF,
+        "layer_to_layer_buff": LARGE_BUFF,
+        "neuron_stroke_color": BLUE,
+        "neuron_stroke_width": 6,
+        "neuron_fill_color": GREEN,
+        "edge_color": GREY,
+        "edge_stroke_width": 2,
+        "edge_propogation_color": YELLOW,
+        "edge_propogation_time": 1,
+        "max_shown_neurons": 16,
+        "brace_for_large_layers": True,
+        "average_shown_activation_of_large_layer": True,
+        "include_output_labels": False,
+        "arrow": False,
+        "arrow_tip_size": 0.1,
+        "left_size": 1,
+        "neuron_fill_opacity": 1,
+    }
+
+    def __init__(self, neural_network, *args, **kwargs):
+        VGroup.__init__(self, *args, **kwargs)
+        self.layer_sizes = neural_network
+        self.add_neurons()
+        self.add_edges()
+        self.add(self.layers)
+
+    def add_neurons(self):
+        layers = VGroup(
+            *[
+                self.get_layer(size, index)
+                for index, size in enumerate(self.layer_sizes)
+            ]
+        )
+        layers.arrange(RIGHT, buff=self.layer_to_layer_buff)
+        self.layers = layers
+        if self.include_output_labels:
+            self.add_output_labels()
+
+    def get_nn_fill_color(self, index):
+        if index == -1:
+            return self.neuron_stroke_color
+        if index == 0:
+            return A_PINK
+        elif index == len(self.layer_sizes) - 1:
+            return A_BLUE
+        else:
+            return A_GREEN
+
+    def get_layer(self, size, index=-1):
+        layer = VGroup()
+        n_neurons = size
+        if n_neurons > self.max_shown_neurons:
+            n_neurons = self.max_shown_neurons
+        neurons = VGroup(
+            *[
+                Circle(
+                    radius=self.neuron_radius,
+                    stroke_color=self.get_nn_fill_color(index),
+                    stroke_width=self.neuron_stroke_width,
+                    fill_color=BLACK,
+                    fill_opacity=self.neuron_fill_opacity,
+                )
+                for x in range(n_neurons)
+            ]
+        )
+        neurons.arrange(
+            DOWN,
+            buff=self.first_layer_buff if index == 0 else self.neuron_to_neuron_buff,
+        )
+        for neuron in neurons:
+            neuron.edges_in = VGroup()
+            neuron.edges_out = VGroup()
+        layer.neurons = neurons
+        layer.add(neurons)
+
+        if size > n_neurons:
+            dots = Tex("\\vdots")
+            dots.move_to(neurons)
+            VGroup(*neurons[: len(neurons) // 2]).next_to(dots, UP, MED_SMALL_BUFF)
+            VGroup(*neurons[len(neurons) // 2 :]).next_to(dots, DOWN, MED_SMALL_BUFF)
+            layer.dots = dots
+            layer.add(dots)
+            if self.brace_for_large_layers:
+                brace = Brace(layer, LEFT)
+                brace_label = brace.get_tex(str(size))
+                layer.brace = brace
+                layer.brace_label = brace_label
+                layer.add(brace, brace_label)
+
+        return layer
+
+    def add_edges(self):
+        self.edge_groups = VGroup()
+        for l1, l2 in zip(self.layers[:-1], self.layers[1:]):
+            edge_group = VGroup()
+            for n1, n2 in it.product(l1.neurons, l2.neurons):
+                edge = self.get_edge(n1, n2)
+                edge_group.add(edge)
+                n1.edges_out.add(edge)
+                n2.edges_in.add(edge)
+            self.edge_groups.add(edge_group)
+        self.add_to_back(self.edge_groups)
+
+    def get_edge(self, neuron1, neuron2):
+        if self.arrow:
+            return Arrow(
+                neuron1.get_center(),
+                neuron2.get_center(),
+                buff=self.neuron_radius,
+                stroke_color=self.edge_color,
+                stroke_width=self.edge_stroke_width,
+                tip_length=self.arrow_tip_size,
+            )
+        return Line(
+            neuron1.get_center(),
+            neuron2.get_center(),
+            buff=self.neuron_radius,
+            stroke_color=self.edge_color,
+            stroke_width=self.edge_stroke_width,
+        )
+
+    def add_input_labels(self):
+        self.output_labels = VGroup()
+        for n, neuron in enumerate(self.layers[0].neurons):
+            label = Tex(f"x_{n + 1}")
+            label.set_height(0.3 * neuron.get_height())
+            label.move_to(neuron)
+            self.output_labels.add(label)
+        self.add(self.output_labels)
+
+    def add_y(self):
+        self.output_labels = VGroup()
+        for n, neuron in enumerate(self.layers[-1].neurons):
+            label = Tex(r"\hat{y}_" + "{" + f"{n + 1}" + "}")
+            label.set_height(0.4 * neuron.get_height())
+            label.move_to(neuron)
+            self.output_labels.add(label)
+        self.add(self.output_labels)
+
+    def add_weight_labels(self):
+        weight_group = VGroup()
+
+        for n, i in enumerate(self.layers[0].neurons):
+            edge = self.get_edge(i, self.layers[-1][0])
+            text = Tex(f"w_{n + 1}", color=RED)
+            text.move_to(edge)
+            weight_group.add(text)
+        self.add(weight_group)
+
+    def add_output_labels(self, labels=None):
+        if labels is None:
+            labels = list(map(str, range(len(self.layers[-1].neurons) + 1)))
+
+        self.output_labels = VGroup()
+        for n, neuron in enumerate(self.layers[-1].neurons):
+            label = Tex(labels[n])
+            label.set_height(0.75 * neuron.get_height())
+            label.move_to(neuron)
+            label.shift(neuron.get_width() * RIGHT)
+            self.output_labels.add(label)
+        self.add(self.output_labels)
+
+    def add_middle_a(self):
+        self.output_labels = VGroup()
+        for layer in self.layers[1:-1]:
+            for n, neuron in enumerate(layer.neurons):
+                label = Tex(f"h_{n + 1}")
+                label.set_height(0.4 * neuron.get_height())
+                label.move_to(neuron)
+                self.output_labels.add(label)
+        self.add(self.output_labels)
+
+
 class EmailModel(Scene):
     def construct(self):
         prompt = Text("Write an email to my mom.")
@@ -955,7 +1132,7 @@ class AlexNet(Scene):
 
 class NeuralLM(Scene):
     def construct(self):
-        head = Text("Neural Language Model", color=A_PINK)
+        head = Text("Neural Language Model", color=A_RED)
         head.scale(1.5)
         head.shift(3 * UP)
 
@@ -1023,6 +1200,36 @@ class NeuralLM(Scene):
             FadeIn(arrows, RIGHT),
             FadeIn(word_vecs, RIGHT),
         )
+        self.wait()
+
+        layer_buff = (word_objs[0].get_center() - word_objs[1].get_center())[1]
+        layer_buff -= 1
+
+        nn = NeuralNetwork(
+            [3, 5, 100],
+            neuron_radius=0.15,
+            neuron_stroke_width=3,
+            max_shown_neurons=6,
+            brace_for_large_layers=False,
+            first_layer_buff=layer_buff,
+        )
+        nn.scale(1.5)
+        nn.shift(2.11 * RIGHT + 0.5 * DOWN)
+
+        grp_nn_arrows = VGroup()
+        for i in range(3):
+            grp_nn_arrows.add(
+                Arrow(
+                    word_vecs[i].get_bounding_box_point(RIGHT) + 2.88 * LEFT,
+                    nn.layers[0].neurons[i].get_bounding_box_point(LEFT),
+                    stroke_width=5,
+                    stroke_color=A_YELLOW,
+                    buff=0.35,
+                )
+            )
+
+        self.play(ApplyMethod(grp.shift, 2.88 * LEFT), Write(grp_nn_arrows))
+        self.play(Write(nn))
         self.wait()
 
         self.embed()
