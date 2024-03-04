@@ -13,6 +13,7 @@ Inference
 InferenceAlgorithms
 AlexNet
 NeuralLM
+Extrapolation
 """
 
 A_AQUA = "#8dd3c7"
@@ -1284,11 +1285,24 @@ class NeuralLM(Scene):
         left_grp.move_to(FRAME_WIDTH / 4 * LEFT)
         right_grp.move_to(FRAME_WIDTH / 4 * RIGHT)
 
-        self.play(Write(left_grp))
-        self.play(Write(right_grp))
+        self.play(
+            ShowCreation(nn_left.edge_groups),
+            Write(nn_left.layers),
+            Write(first_sent_grp),
+        )
+        self.play(
+            ShowCreation(nn_right.edge_groups),
+            Write(nn_right.layers),
+            Write(second_sent_grp),
+        )
         self.wait()
 
         self.play(Indicate(second_sent_grp[0]))
         self.wait()
 
+        self.embed()
+
+
+class Extrapolation(Scene):
+    def construct(self):
         self.embed()
