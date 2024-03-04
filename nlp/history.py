@@ -1243,4 +1243,52 @@ class NeuralLM(Scene):
         self.play(Write(nn))
         self.wait()
 
+        self.play(FadeOut(VGroup(grp, grp_nn_arrows, nn), UP))
+
+        first_sent = "the movie is great".split(" ")
+        second_sent = "that was great !".split(" ")
+        grey_black_grad = color_gradient([GREY, BLACK], 10)
+
+        nn_left = NeuralNetwork(
+            [4, 4],
+            neuron_radius=0.15,
+            neuron_stroke_width=3,
+            max_shown_neurons=6,
+            brace_for_large_layers=False,
+            first_layer_buff=0.5,
+        )
+        nn_left.scale(1.5)
+        nn_left.rotate(90 * DEGREES)
+        nn_left.layers.remove(nn_left.layers[1])
+        nn_left.edge_groups.set_color(grey_black_grad)
+
+        nn_right = nn_left.deepcopy()
+        first_sent_grp, second_sent_grp = VGroup(), VGroup()
+        for i in range(4):
+            t1 = Text(first_sent[i])
+            t1.move_to(nn_left.layers[0].neurons[i])
+            t1.shift(0.675 * DOWN)
+            first_sent_grp.add(t1)
+
+            t2 = Text(second_sent[i])
+            t2.move_to(nn_left.layers[0].neurons[i])
+            t2.shift(0.675 * DOWN)
+            second_sent_grp.add(t2)
+
+        left_grp = VGroup(nn_left, first_sent_grp)
+        right_grp = VGroup(nn_right, second_sent_grp)
+
+        left_grp.scale(1.25)
+        right_grp.scale(1.25)
+
+        left_grp.move_to(FRAME_WIDTH / 4 * LEFT)
+        right_grp.move_to(FRAME_WIDTH / 4 * RIGHT)
+
+        self.play(Write(left_grp))
+        self.play(Write(right_grp))
+        self.wait()
+
+        self.play(Indicate(second_sent_grp[0]))
+        self.wait()
+
         self.embed()
