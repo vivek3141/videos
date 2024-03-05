@@ -1435,7 +1435,7 @@ class RNNCell(VMobject):
         "arrow_buff": 0.25,
         "arrow_color": A_GREY,
         "arrow_width": 10,
-        "add_labels": False,
+        "add_labels": True,
         "label_buff": 0.25,
     }
 
@@ -1450,24 +1450,30 @@ class RNNCell(VMobject):
                 self.sq.get_left() + self.arrow_length * LEFT,
                 self.sq.get_left(),
             )
+            self.left_arrow = self.arrows[-1]
+
         if not self.right_most:
             self.add_arrow(
                 self.sq.get_right(),
                 self.sq.get_right() + self.arrow_length * RIGHT,
             )
+            self.right_arrow = self.arrows[-1]
+
         self.add_arrow(
             self.sq.get_top(),
             self.sq.get_top() + self.arrow_length * UP,
         )
+        self.up_arrow = self.arrows[-1]
+
         self.add_arrow(
             self.sq.get_bottom() + self.arrow_length * DOWN,
             self.sq.get_bottom(),
         )
+        self.down_arrow = self.arrows[-1]
+
         self.add(self.arrows)
-        
-        if self.add_labels:
-            self.get_labels(add_to_obj=True)
-        
+        self.get_labels(add_to_obj=self.add_labels)
+
         self.center()
 
     def add_arrow(self, start, end):
@@ -1485,13 +1491,13 @@ class RNNCell(VMobject):
     def get_labels(self, english=False, add_to_obj=True):
         self.labels = VGroup()
         if english:
-            labels = ["{h}_{{t}-1}", "{h}_{t}", "{x}_{t}", "{y}_{t}"]
+            labels = ["{h}_{{t}-1}", "{h}_{t}", "{y}_{t}", "{x}_{t}"]
         else:
             labels = [
                 r"\text{previous } {h}",
                 r"\text{next } {h}",
-                r"\text{input } {x}",
                 r"\text{output } {y}",
+                r"\text{input } {x}",
             ]
 
         tex_to_color_map = {
@@ -1503,7 +1509,7 @@ class RNNCell(VMobject):
         for n, (label, arrow) in enumerate(zip(labels, self.arrows)):
             curr_arrow_vec = arrow.get_end() - arrow.get_start()
             label_tex = Tex(label, tex_to_color_map=tex_to_color_map)
-            if (n & 1) ^ (n >> 1 & 1):
+            if (n & 1) ^ (n >> 1 & 1):  # odd number of bits
                 label_tex.next_to(arrow.get_end(), curr_arrow_vec)
             else:
                 label_tex.next_to(arrow.get_start(), -curr_arrow_vec)
@@ -1548,14 +1554,14 @@ class RNNIntro(Scene):
             )
         self.wait()
 
-        title = Text("Recurrence", color=A_VIOLET)
+        title = Text("Recurrence", color=A_YELLOW)
         title.scale(1.5)
         title.shift(3.25 * UP)
 
         self.play(Write(title))
         self.wait()
 
-        new_title = Text("Recurrent Neural Network", color=A_VIOLET)
+        new_title = Text("Recurrent Neural Network", color=A_YELLOW)
         new_title.scale(1.5)
         new_title.shift(3.25 * UP)
 
@@ -1567,7 +1573,65 @@ class RNNIntro(Scene):
         self.play(Uncreate(VGroup(words, arrows)))
 
         r = RNNCell()
-        self.add(r)
         r.shift(0.5 * DOWN)
+
+        self.play(Write(r.sq))
+        self.wait()
+
+        self.play(Write(r.labels[3]), FadeIn(r.arrows[3], UP))
+        self.play(Write(r.labels[2]), FadeIn(r.arrows[2], UP))
+        self.wait()
+
+        self.play(Write(r.labels[0]), FadeIn(r.arrows[0], RIGHT))
+        self.play(Write(r.labels[1]), FadeIn(r.arrows[1], RIGHT))
+        self.wait()
+
+        cells = VGroup()
+        for i in range(4):
+            if i == 0:
+                c = RNNCell(add_labels=False, left_most=True)
+            elif i == 2:
+                c = RNNCell(add_labels=False)
+            elif i == 3:
+                c = RNNCell(add_labels=False, right_most=True)
+            else:
+                c = RNNCell(add_labels=False)
+
+            if i != 0:
+                if i == 1:
+                    left = cells[i - 1].arrows[0].get_center()
+                else:
+                    left = cells[i - 1].arrows[1].get_center()
+                right = c.arrows[0].get_center()
+                c.shift(left - right)
+
+            cells.add(c)
+        cells.center()
+        cells.scale(0.75)
+
+        self.play(
+            FadeOut(r.labels[0], LEFT),
+            FadeOut(r.labels[1], RIGHT),
+            FadeOut(r.labels[2], UP),
+            FadeOut(r.labels[3], DOWN),
+        )
+        self.play(
+            Transform(
+                VGroup(r.sq, r.arrows),
+                cells[1],
+                replace_mobject_with_target_in_scene=True,
+            )
+        )
+        self.play(Write(cells[0]), Write(cells[2:]))
+
+        words = VGroup()
+        for n, i in enumerate(sent):
+            w = Text(i)
+            w.scale(1.25)
+            w.next_to(cells[n].down_arrow.get_start(), 1.5 * DOWN)
+            words.add(w)
+
+        self.play(FadeIn(words, UP))
+        self.wait()
 
         self.embed()
