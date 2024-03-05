@@ -31,12 +31,6 @@ A_UNKA = "#ccebc5"
 A_UNKB = "#ffed6f"
 
 
-class RNNCell(VMobject):
-    def __init_(self, fill_color=A_RED, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.sq = Square()
-
-
 class MNISTImage(VMobject):
     def __init__(self, data, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -1432,6 +1426,107 @@ class Extrapolation(Scene):
         self.embed()
 
 
+class RNNCell(VMobject):
+    CONFIG = {
+        "fill_color": A_RED,
+        "left_most": False,
+        "right_most": False,
+        "arrow_length": 1.0,
+        "arrow_buff": 0.25,
+        "arrow_color": A_YELLOW,
+        "arrow_width": 8,
+    }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.sq = Square(fill_opacity=0.75, fill_color=self.fill_color)
+        self.add(self.sq)
+
+        self.arrows = VGroup()
+        if not self.left_most:
+            self.add_arrow(
+                self.sq.get_left() + self.arrow_length * LEFT,
+                self.sq.get_left(),
+            )
+        if not self.right_most:
+            self.add_arrow(
+                self.sq.get_right(),
+                self.sq.get_right() + self.arrow_length * RIGHT,
+            )
+        self.add_arrow(
+            self.sq.get_top(),
+            self.sq.get_top() + self.arrow_length * UP,
+        )
+        self.add_arrow(
+            self.sq.get_bottom() + self.arrow_length * DOWN,
+            self.sq.get_bottom(),
+        )
+        self.add(self.arrows)
+
+    def add_arrow(self, start, end):
+        self.arrows.add(
+            Arrow(
+                start,
+                end,
+                max_width_to_Length_ratio=float("inf"),
+                stroke_width=self.arrow_width,
+                stroke_color=self.arrow_color,
+                buff=self.arrow_buff,
+            )
+        )
+
+
 class RNNIntro(Scene):
     def construct(self):
-        pass
+        sent = ["the", "sky", "is", "blue"]
+        words, arrows = VGroup(), VGroup()
+
+        for n, i in enumerate(sent):
+            w = Text(i)
+            w.scale(1.5)
+            w.shift(n * 3 * RIGHT)
+            words.add(w)
+
+            if n != 0:
+                a = Arrow(
+                    words[n - 1].get_right(),
+                    w.get_left(),
+                    buff=MED_LARGE_BUFF,
+                    stroke_width=8,
+                    max_tip_length_to_length_ratio=float("inf"),
+                    stroke_color=A_YELLOW,
+                )
+                arrows.add(a)
+
+        grp = VGroup(words, arrows)
+        grp.center()
+
+        self.play(Write(words[0]))
+        for i in range(3):
+            self.play(
+                FadeIn(arrows[i], RIGHT), FadeIn(words[i + 1], RIGHT), run_time=0.75
+            )
+        self.wait()
+
+        title = Text("Recurrence", color=A_VIOLET)
+        title.scale(1.5)
+        title.shift(3 * UP)
+
+        self.play(Write(title))
+        self.wait()
+
+        new_title = Text("Recurrent Neural Network", color=A_VIOLET)
+        new_title.scale(1.5)
+        new_title.shift(3 * UP)
+
+        self.play(
+            Transform(title[:8], new_title[:8]),
+            Uncreate(title[8:]),
+            Write(new_title[8:]),
+        )
+        self.play(Uncreate(VGroup(words, arrows)))
+
+        r = RNNCell()
+        self.add(r)
+
+        self.embed()
