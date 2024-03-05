@@ -1303,6 +1303,61 @@ class NeuralLM(Scene):
         self.embed()
 
 
-class Extrapolation(Scene):
+class Pendulum(Scene):
     def construct(self):
+        origin = 2 * UP
+        theta_0 = 20 * DEGREES
+        L = 3
+
+        string = Line(2 * UP, DOWN)
+        bob = Sphere(radius=0.35, color=A_BLUE, fill_opacity=1)
+
+        t = ValueTracker(0)
+
+        def compute_bob_pos(t):
+            # sin(x) = x approximation
+            theta = theta_0 * np.cos(np.sqrt(9.8 / L) * t)
+            x_t = L * np.sin(theta)
+            y_t = -L * np.cos(theta)
+            return np.array([x_t, y_t, 0]) + origin
+
+        def bob_updater(bob):
+            bob_pos = compute_bob_pos(t.get_value())
+            bob.move_to(bob_pos)
+
+        def string_updater(string):
+            bob_pos = compute_bob_pos(t.get_value())
+            string.put_start_and_end_on(origin, bob_pos)
+
+        bob.add_updater(bob_updater)
+        string.add_updater(string_updater)
+
+        c = VMobject()
+
+        def curve_updater(c):
+            max_t = t.get_value()
+            if max_t < 5:
+                opacity = 0
+            elif 5 <= max_t <= 7:
+                opacity = (max_t - 5) / 2
+            else:
+                opacity = 1.0
+
+            c_new = ParametricCurve(
+                lambda t: [compute_bob_pos(t)[0], -1 - (max_t - t), 0],
+                t_range=(5, max_t),
+                stroke_opacity=opacity,
+                stroke_color=A_AQUA,
+                stroke_width=6,
+            )
+            c.become(c_new)
+
+        c.add_updater(curve_updater)
+        
+        self.add(c)
+        self.play(Write(string), FadeIn(bob))
+        
+        self.play(ApplyMethod(t.increment_value, 30), run_time=25, rate_func=linear)
+        self.wait()
+
         self.embed()
