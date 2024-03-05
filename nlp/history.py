@@ -1431,10 +1431,12 @@ class RNNCell(VMobject):
         "fill_color": A_RED,
         "left_most": False,
         "right_most": False,
-        "arrow_length": 1.0,
+        "arrow_length": 1.5,
         "arrow_buff": 0.25,
-        "arrow_color": A_YELLOW,
-        "arrow_width": 8,
+        "arrow_color": A_GREY,
+        "arrow_width": 10,
+        "add_labels": False,
+        "label_buff": 0.25,
     }
 
     def __init__(self, *args, **kwargs):
@@ -1462,6 +1464,11 @@ class RNNCell(VMobject):
             self.sq.get_bottom(),
         )
         self.add(self.arrows)
+        
+        if self.add_labels:
+            self.get_labels(add_to_obj=True)
+        
+        self.center()
 
     def add_arrow(self, start, end):
         self.arrows.add(
@@ -1474,6 +1481,39 @@ class RNNCell(VMobject):
                 buff=self.arrow_buff,
             )
         )
+
+    def get_labels(self, english=False, add_to_obj=True):
+        self.labels = VGroup()
+        if english:
+            labels = ["{h}_{{t}-1}", "{h}_{t}", "{x}_{t}", "{y}_{t}"]
+        else:
+            labels = [
+                r"\text{previous } {h}",
+                r"\text{next } {h}",
+                r"\text{input } {x}",
+                r"\text{output } {y}",
+            ]
+
+        tex_to_color_map = {
+            "{x}": A_PINK,
+            "{h}": A_GREEN,
+            "{y}": A_BLUE,
+        }
+
+        for n, (label, arrow) in enumerate(zip(labels, self.arrows)):
+            curr_arrow_vec = arrow.get_end() - arrow.get_start()
+            label_tex = Tex(label, tex_to_color_map=tex_to_color_map)
+            if (n & 1) ^ (n >> 1 & 1):
+                label_tex.next_to(arrow.get_end(), curr_arrow_vec)
+            else:
+                label_tex.next_to(arrow.get_start(), -curr_arrow_vec)
+
+            self.labels.add(label_tex)
+
+        if add_to_obj:
+            self.add(self.labels)
+
+        return self.labels
 
 
 class RNNIntro(Scene):
@@ -1510,14 +1550,14 @@ class RNNIntro(Scene):
 
         title = Text("Recurrence", color=A_VIOLET)
         title.scale(1.5)
-        title.shift(3 * UP)
+        title.shift(3.25 * UP)
 
         self.play(Write(title))
         self.wait()
 
         new_title = Text("Recurrent Neural Network", color=A_VIOLET)
         new_title.scale(1.5)
-        new_title.shift(3 * UP)
+        new_title.shift(3.25 * UP)
 
         self.play(
             Transform(title[:8], new_title[:8]),
@@ -1528,5 +1568,6 @@ class RNNIntro(Scene):
 
         r = RNNCell()
         self.add(r)
+        r.shift(0.5 * DOWN)
 
         self.embed()
