@@ -13,6 +13,7 @@ Inference
 InferenceAlgorithms
 AlexNet
 NeuralLM
+Pendulum
 Extrapolation
 """
 
@@ -1353,11 +1354,84 @@ class Pendulum(Scene):
             c.become(c_new)
 
         c.add_updater(curve_updater)
-        
+
         self.add(c)
         self.play(Write(string), FadeIn(bob))
-        
+
         self.play(ApplyMethod(t.increment_value, 30), run_time=25, rate_func=linear)
         self.wait()
 
         self.embed()
+
+
+class Extrapolation(Scene):
+    def construct(self):
+        func = lambda t: 1.5 * np.sin(1.5 * t)
+
+        axes = Axes(
+            x_range=(0, 10), y_range=(-3, 3), axis_config={"include_tip": False}
+        )
+        sin_wave = axes.get_graph(
+            func,
+            x_range=(0, 10),
+            stroke_width=6,
+            color=A_RED,
+        )
+
+        def get_dot(x):
+            coords = axes.coords_to_point(x, func(x))
+            return Dot([coords[0], coords[1], 0], color=A_GREY)
+
+        x_coords = [1.5, 3.75, 6.5, 8.5]
+        y_coords = [func(x) for x in x_coords]
+        dots = VGroup(*[get_dot(x) for x in x_coords])
+
+        poly_interp = np.poly1d(np.polyfit(x_coords, y_coords, 3))
+        poly_curve = axes.get_graph(
+            poly_interp,
+            x_range=(0, 10),
+            stroke_width=6,
+            color=A_GREEN,
+        )
+
+        self.play(Write(axes), Write(sin_wave))
+        self.wait()
+
+        self.play(Write(dots))
+        self.play(FadeOut(sin_wave))
+        self.wait()
+
+        self.bring_to_back(poly_curve)
+        self.play(Write(poly_curve))
+        self.wait()
+
+        more_dots = VGroup(*[get_dot(x) for x in np.arange(0, 10, 0.5)])
+        self.play(FadeOut(poly_curve))
+        self.play(ShowCreation(more_dots))
+        self.wait()
+
+        many_sin_curves = VGroup()
+        for i in np.linspace(0.5, 3.0, 10):
+            t = (i - 0.5) / 2.5
+            color = rgb_to_hex(t * hex_to_rgb(A_PINK) + (1 - t) * hex_to_rgb(A_GREEN))
+
+            curr_sin = axes.get_graph(
+                lambda t: 1.5 * np.sin(i * t),
+                x_range=(0, 10),
+                stroke_width=3,
+                stroke_opacity=0.65 * t + 0.25,
+                color=color,
+            )
+            many_sin_curves.add(curr_sin)
+
+        self.play(Uncreate(more_dots), Uncreate(dots))
+        for i in many_sin_curves:
+            self.play(Write(i), run_time=0.5)
+        self.wait()
+
+        self.embed()
+
+
+class RNNIntro(Scene):
+    def construct(self):
+        pass
