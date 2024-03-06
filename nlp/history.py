@@ -1488,9 +1488,9 @@ class RNNCell(VMobject):
             )
         )
 
-    def get_labels(self, english=False, add_to_obj=True):
+    def get_labels(self, english=True, add_to_obj=True):
         self.labels = VGroup()
-        if english:
+        if not english:
             labels = ["{h}_{{t}-1}", "{h}_{t}", "{y}_{t}", "{x}_{t}"]
         else:
             labels = [
@@ -1504,11 +1504,15 @@ class RNNCell(VMobject):
             "{x}": A_PINK,
             "{h}": A_GREEN,
             "{y}": A_BLUE,
+            "{t}": A_YELLOW,
+            "1": A_UNKA,
         }
 
         for n, (label, arrow) in enumerate(zip(labels, self.arrows)):
             curr_arrow_vec = arrow.get_end() - arrow.get_start()
             label_tex = Tex(label, tex_to_color_map=tex_to_color_map)
+            if not english:
+                label_tex.scale(1.25)
             if (n & 1) ^ (n >> 1 & 1):  # odd number of bits
                 label_tex.next_to(arrow.get_end(), curr_arrow_vec)
             else:
@@ -1633,5 +1637,55 @@ class RNNIntro(Scene):
 
         self.play(FadeIn(words, UP))
         self.wait()
+
+        self.play(
+            FadeOut(words, DOWN), FadeOut(cells[0], DOWN), FadeOut(cells[2:], DOWN)
+        )
+        rnn_cell = cells[1]
+        self.play(
+            rnn_cell.become,
+            rnn_cell.deepcopy().scale(1).move_to(0.5 * DOWN + 3.75 * LEFT),
+        )
+        self.wait()
+
+        labels = rnn_cell.get_labels(english=False, add_to_obj=False)
+        self.play(Write(labels[0]))
+        self.play(Write(labels[1]))
+        self.play(Write(labels[2]))
+        self.play(Write(labels[3]))
+        self.wait()
+
+        eq1 = Tex(
+            r"{h}_{t} = \sigma ( {W} {h}_{{t}-1} + {V} {x}_{t} + {b}_{h})",
+            tex_to_color_map={
+                "{h}": A_GREEN,
+                "{t}": A_YELLOW,
+                "{x}": A_PINK,
+                r"\sigma": A_AQUA,
+                "{W}": A_GREY,
+                "{V}": A_GREY,
+                "{b}": A_BLUE,
+                "1": A_UNKA,
+            },
+        )
+        eq1.scale(1.25)
+        eq1.shift(3 * RIGHT + 1 * UP)
+
+        eq2 = Tex(
+            r"{y}_{t} = \sigma ( {U} {h}_{t} + {b}_{y})",
+            tex_to_color_map={
+                "{y}": A_BLUE,
+                "{t}": A_YELLOW,
+                "{h}": A_GREEN,
+                r"\sigma": A_AQUA,
+                "{U}": A_GREY,
+                "{b}": A_BLUE,
+                "1": A_UNKA,
+            },
+        )
+        eq2.scale(1.25)
+        eq2.shift(3 * RIGHT + 1 * DOWN)
+
+        self.add(eq1, eq2)
 
         self.embed()
